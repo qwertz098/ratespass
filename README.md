@@ -63,6 +63,10 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 | `VAPID_FILE` | `DATA_DIR/vapid.json` | Push-Schlüssel (wird beim ersten Start erzeugt, mit dem Backup sichern) |
 | `PUSH_EXTRA_HOSTS` | – | zusätzlich erlaubte Push-Dienst-Hosts (kommagetrennt) |
 
+## Klickbare Demo
+
+`npm run build:demo` baut `demo/demo.html`: eine einzige Datei mit der echten Oberfläche (`web/`), allen Fragen und einem Mini-Server im Browser (`demo/mock.js`, Bot-Gegner, Daten nur im Browser). Sie lässt sich lokal im Browser öffnen oder als Claude-Artifact veröffentlichen. Nach Änderungen an `web/` oder den Batches neu bauen; der Mini-Server bildet die API nach und muss bei neuen Endpunkten ergänzt werden.
+
 ## Fragen
 
 Beim Start werden alle neuen Dateien aus `batches/` importiert (idempotent, dedupliziert, Lizenz geprüft). Neue Batches = Datei ablegen, Container neu starten. Freigegebene Community-Fragen lassen sich per `npm run export:community` (oder `/admin` → „Batch exportieren“) als Batch ins Repo zurückschreiben. Details, Workflow für „200er-Batches auf Abruf“ und die **Lizenzregeln** stehen in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
