@@ -1,0 +1,4810 @@
+{
+ "format": "ratespass-batch",
+ "version": 1,
+ "batch": "original-017",
+ "source": "original",
+ "license": "CC-BY-SA-4.0",
+ "attribution": "Ratespaß-Projekt (eigene Formulierungen, Faktenwissen)",
+ "questions": [
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Herzen hat der Doktor in „Doctor Who“?",
+     "correct": "2",
+     "wrong": [
+      "1",
+      "3",
+      "4"
+     ]
+    },
+    "en": {
+     "text": "How many hearts does the Doctor have in “Doctor Who”?",
+     "correct": "2",
+     "wrong": [
+      "1",
+      "3",
+      "4"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Was ergibt '5' + 3 in JavaScript?",
+     "correct": "\"53\"",
+     "wrong": [
+      "8",
+      "NaN",
+      "Fehler"
+     ]
+    },
+    "en": {
+     "text": "What does '5' + 3 evaluate to in JavaScript?",
+     "correct": "\"53\"",
+     "wrong": [
+      "8",
+      "NaN",
+      "Error"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Was bedeutet das Genre-Wort „Isekai“?",
+     "correct": "Eine andere Welt",
+     "wrong": [
+      "Schulalltag",
+      "Zeitreise",
+      "Kampfsport"
+     ]
+    },
+    "en": {
+     "text": "What does the genre term “isekai” mean?",
+     "correct": "Another world",
+     "wrong": [
+      "School life",
+      "Time travel",
+      "Martial arts"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Held von „Commander Keen“?",
+     "correct": "Billy Blaze",
+     "wrong": [
+      "Duke Nukem",
+      "Gordon Freeman",
+      "Max Payne"
+     ]
+    },
+    "en": {
+     "text": "What is the hero of “Commander Keen” called?",
+     "correct": "Billy Blaze",
+     "wrong": [
+      "Duke Nukem",
+      "Gordon Freeman",
+      "Max Payne"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe hat das Lichtschwert von Mace Windu?",
+     "correct": "Violett",
+     "wrong": [
+      "Grün",
+      "Blau",
+      "Gelb"
+     ]
+    },
+    "en": {
+     "text": "What colour is Mace Windu's lightsaber?",
+     "correct": "Purple",
+     "wrong": [
+      "Green",
+      "Blue",
+      "Yellow"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Datei, die beschreibt, wie ein Docker-Image gebaut wird?",
+     "correct": "Dockerfile",
+     "wrong": [
+      "docker.json",
+      "compose.lock",
+      "image.yaml"
+     ]
+    },
+    "en": {
+     "text": "What is the file called that describes how a Docker image is built?",
+     "correct": "Dockerfile",
+     "wrong": [
+      "docker.json",
+      "compose.lock",
+      "image.yaml"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was für ein Wesen ist Totoro?",
+     "correct": "Ein Waldgeist",
+     "wrong": [
+      "Ein Dämon",
+      "Ein Roboter",
+      "Ein Gespenst"
+     ]
+    },
+    "en": {
+     "text": "What kind of creature is Totoro?",
+     "correct": "A forest spirit",
+     "wrong": [
+      "A demon",
+      "A robot",
+      "A ghost"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der blaue Roboter-Held von Capcom?",
+     "correct": "Mega Man",
+     "wrong": [
+      "Astro Boy",
+      "Bomberman",
+      "Zero"
+     ]
+    },
+    "en": {
+     "text": "What is Capcom's blue robot hero called?",
+     "correct": "Mega Man",
+     "wrong": [
+      "Astro Boy",
+      "Bomberman",
+      "Zero"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die Ringgeister Saurons?",
+     "correct": "Nazgûl",
+     "wrong": [
+      "Uruk-hai",
+      "Haradrim",
+      "Balrogs"
+     ]
+    },
+    "en": {
+     "text": "What are Sauron's ringwraiths called?",
+     "correct": "Nazgûl",
+     "wrong": [
+      "Uruk-hai",
+      "Haradrim",
+      "Balrogs"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nannte Tony Hoare die Erfindung der Null-Referenz?",
+     "correct": "Seinen Milliarden-Dollar-Fehler",
+     "wrong": [
+      "Seinen größten Erfolg",
+      "Eine Notlösung",
+      "Ein Spiel"
+     ]
+    },
+    "en": {
+     "text": "What did Tony Hoare call his invention of the null reference?",
+     "correct": "His billion-dollar mistake",
+     "wrong": [
+      "His greatest success",
+      "A stopgap",
+      "A game"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Anime erzählt die Geschichte des Wikingers Thorfinn?",
+     "correct": "Vinland Saga",
+     "wrong": [
+      "Mushishi",
+      "Kingdom",
+      "Golden Kamuy"
+     ]
+    },
+    "en": {
+     "text": "Which anime tells the story of the Viking Thorfinn?",
+     "correct": "Vinland Saga",
+     "wrong": [
+      "Mushishi",
+      "Kingdom",
+      "Golden Kamuy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien „The Legend of Zelda: Ocarina of Time“?",
+     "correct": "1998",
+     "wrong": [
+      "1996",
+      "2000",
+      "1994"
+     ]
+    },
+    "en": {
+     "text": "In which year was “The Legend of Zelda: Ocarina of Time” released?",
+     "correct": "1998",
+     "wrong": [
+      "1996",
+      "2000",
+      "1994"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Kopfgeldjäger liefert Han Solo an Jabba den Hutten aus?",
+     "correct": "Boba Fett",
+     "wrong": [
+      "Jango Fett",
+      "Bossk",
+      "IG-88"
+     ]
+    },
+    "en": {
+     "text": "Which bounty hunter delivers Han Solo to Jabba the Hutt?",
+     "correct": "Boba Fett",
+     "wrong": [
+      "Jango Fett",
+      "Bossk",
+      "IG-88"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht das Prinzip „KISS“?",
+     "correct": "Keep It Simple, Stupid",
+     "wrong": [
+      "Keep It Secure, Stable",
+      "Know Input, Sort Smart",
+      "Kill Idle Server Sessions"
+     ]
+    },
+    "en": {
+     "text": "What does the principle “KISS” stand for?",
+     "correct": "Keep It Simple, Stupid",
+     "wrong": [
+      "Keep It Secure, Stable",
+      "Know Input, Sort Smart",
+      "Kill Idle Server Sessions"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer ist die Hauptfigur von „Bleach“?",
+     "correct": "Ichigo Kurosaki",
+     "wrong": [
+      "Renji Abarai",
+      "Uryū Ishida",
+      "Byakuya Kuchiki"
+     ]
+    },
+    "en": {
+     "text": "Who is the main character of “Bleach”?",
+     "correct": "Ichigo Kurosaki",
+     "wrong": [
+      "Renji Abarai",
+      "Uryū Ishida",
+      "Byakuya Kuchiki"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Nintendo-Konsole mit rotem 3D-Display floppte 1995?",
+     "correct": "Virtual Boy",
+     "wrong": [
+      "Game Boy Color",
+      "Famicom Disk System",
+      "Nintendo DS"
+     ]
+    },
+    "en": {
+     "text": "Which Nintendo console with a red 3D display flopped in 1995?",
+     "correct": "Virtual Boy",
+     "wrong": [
+      "Game Boy Color",
+      "Famicom Disk System",
+      "Nintendo DS"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Aragorns neu geschmiedetes Schwert?",
+     "correct": "Andúril",
+     "wrong": [
+      "Glamdring",
+      "Orcrist",
+      "Sting"
+     ]
+    },
+    "en": {
+     "text": "What is Aragorn's reforged sword called?",
+     "correct": "Andúril",
+     "wrong": [
+      "Glamdring",
+      "Orcrist",
+      "Sting"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was bewirkt „sudo“ unter Linux?",
+     "correct": "Führt einen Befehl mit Administratorrechten aus",
+     "wrong": [
+      "Löscht einen Benutzer",
+      "Startet das System neu",
+      "Zeigt Dateien an"
+     ]
+    },
+    "en": {
+     "text": "What does “sudo” do on Linux?",
+     "correct": "Runs a command with administrator privileges",
+     "wrong": [
+      "Deletes a user",
+      "Reboots the system",
+      "Lists files"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf den Cyberpunk-Manga „Akira“?",
+     "correct": "Katsuhiro Otomo",
+     "wrong": [
+      "Masamune Shirow",
+      "Yukito Kishiro",
+      "Satoshi Kon"
+     ]
+    },
+    "en": {
+     "text": "Who created the cyberpunk manga “Akira”?",
+     "correct": "Katsuhiro Otomo",
+     "wrong": [
+      "Masamune Shirow",
+      "Yukito Kishiro",
+      "Satoshi Kon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher kleine Affe begleitet Donkey Kong im ersten „Donkey Kong Country“?",
+     "correct": "Diddy Kong",
+     "wrong": [
+      "Cranky Kong",
+      "Funky Kong",
+      "King K. Rool"
+     ]
+    },
+    "en": {
+     "text": "Which small monkey accompanies Donkey Kong in the first “Donkey Kong Country”?",
+     "correct": "Diddy Kong",
+     "wrong": [
+      "Cranky Kong",
+      "Funky Kong",
+      "King K. Rool"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Replikant, der in „Blade Runner“ den Monolog über „Tränen im Regen“ hält?",
+     "correct": "Roy Batty",
+     "wrong": [
+      "Rick Deckard",
+      "Pris",
+      "Leon Kowalski"
+     ]
+    },
+    "en": {
+     "text": "What is the name of the replicant who delivers the “tears in rain” monologue in “Blade Runner”?",
+     "correct": "Roy Batty",
+     "wrong": [
+      "Rick Deckard",
+      "Pris",
+      "Leon Kowalski"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Paketmanager, der standardmäßig mit Node.js ausgeliefert wird?",
+     "correct": "npm",
+     "wrong": [
+      "pip",
+      "gem",
+      "cargo"
+     ]
+    },
+    "en": {
+     "text": "Which package manager ships with Node.js by default?",
+     "correct": "npm",
+     "wrong": [
+      "pip",
+      "gem",
+      "cargo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie lautet der Titel des Dorfoberhaupts in „Naruto“?",
+     "correct": "Hokage",
+     "wrong": [
+      "Kazekage",
+      "Shogun",
+      "Daimyo"
+     ]
+    },
+    "en": {
+     "text": "What is the title of the village leader in “Naruto”?",
+     "correct": "Hokage",
+     "wrong": [
+      "Kazekage",
+      "Shogun",
+      "Daimyo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Arcade-Klassiker von 1979 handelt von einem Raumschiff, das Felsbrocken abschießt?",
+     "correct": "Asteroids",
+     "wrong": [
+      "Galaga",
+      "Defender",
+      "Centipede"
+     ]
+    },
+    "en": {
+     "text": "Which 1979 arcade classic is about a spaceship shooting rocks?",
+     "correct": "Asteroids",
+     "wrong": [
+      "Galaga",
+      "Defender",
+      "Centipede"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer trägt laut Pratchett die Scheibenwelt?",
+     "correct": "Vier Elefanten auf einer Riesenschildkröte",
+     "wrong": [
+      "Ein Riese",
+      "Eine Säule aus Stein",
+      "Fünf Drachen"
+     ]
+    },
+    "en": {
+     "text": "According to Pratchett, what carries the Discworld?",
+     "correct": "Four elephants standing on a giant turtle",
+     "wrong": [
+      "A giant",
+      "A stone pillar",
+      "Five dragons"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Git-Befehl legt eine lokale Kopie eines entfernten Repositories an?",
+     "correct": "git clone",
+     "wrong": [
+      "git init",
+      "git fork",
+      "git copy"
+     ]
+    },
+    "en": {
+     "text": "Which Git command creates a local copy of a remote repository?",
+     "correct": "git clone",
+     "wrong": [
+      "git init",
+      "git fork",
+      "git copy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Serie gilt als erste japanische Fernsehanimation (1963)?",
+     "correct": "Astro Boy",
+     "wrong": [
+      "Kimba, der weiße Löwe",
+      "Speed Racer",
+      "Sazae-san"
+     ]
+    },
+    "en": {
+     "text": "Which series is considered the first Japanese TV anime (1963)?",
+     "correct": "Astro Boy",
+     "wrong": [
+      "Kimba the White Lion",
+      "Speed Racer",
+      "Sazae-san"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche 1993 erschienene CD-Konsole geht auf die von Trip Hawkins gegründete Firma zurück?",
+     "correct": "3DO",
+     "wrong": [
+      "Philips CD-i",
+      "Amiga CD32",
+      "Neo Geo CD"
+     ]
+    },
+    "en": {
+     "text": "Which CD console released in 1993 came from the company founded by Trip Hawkins?",
+     "correct": "3DO",
+     "wrong": [
+      "Philips CD-i",
+      "Amiga CD32",
+      "Neo Geo CD"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Unter welchem Gebirge liegt das Zwergenreich Moria?",
+     "correct": "Nebelgebirge",
+     "wrong": [
+      "Weiße Berge",
+      "Aschengebirge",
+      "Eisenberge"
+     ]
+    },
+    "en": {
+     "text": "Under which mountain range does the dwarf kingdom of Moria lie?",
+     "correct": "Misty Mountains",
+     "wrong": [
+      "White Mountains",
+      "Ash Mountains",
+      "Iron Hills"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht die Abkürzung „LGTM“ in Code-Reviews?",
+     "correct": "Looks Good To Me",
+     "wrong": [
+      "Let's Get This Merged",
+      "Last Good Tested Master",
+      "Logic Gate Test Mode"
+     ]
+    },
+    "en": {
+     "text": "What does “LGTM” stand for in code reviews?",
+     "correct": "Looks Good To Me",
+     "wrong": [
+      "Let's Get This Merged",
+      "Last Good Tested Master",
+      "Logic Gate Test Mode"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf „Sailor Moon“?",
+     "correct": "Naoko Takeuchi",
+     "wrong": [
+      "Rumiko Takahashi",
+      "Hiromu Arakawa",
+      "CLAMP"
+     ]
+    },
+    "en": {
+     "text": "Who created “Sailor Moon”?",
+     "correct": "Naoko Takeuchi",
+     "wrong": [
+      "Rumiko Takahashi",
+      "Hiromu Arakawa",
+      "CLAMP"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Lichtpistole, die für „Duck Hunt“ auf dem NES verwendet wird?",
+     "correct": "NES Zapper",
+     "wrong": [
+      "Light Phaser",
+      "Super Scope",
+      "Menacer"
+     ]
+    },
+    "en": {
+     "text": "What is the light gun used for “Duck Hunt” on the NES called?",
+     "correct": "NES Zapper",
+     "wrong": [
+      "Light Phaser",
+      "Super Scope",
+      "Menacer"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Konzern, der in „Alien“ die Besatzung der Nostromo ausnutzt?",
+     "correct": "Weyland-Yutani",
+     "wrong": [
+      "Cyberdyne Systems",
+      "Tyrell Corporation",
+      "Omni Consumer Products"
+     ]
+    },
+    "en": {
+     "text": "What is the corporation that exploits the crew of the Nostromo in “Alien”?",
+     "correct": "Weyland-Yutani",
+     "wrong": [
+      "Cyberdyne Systems",
+      "Tyrell Corporation",
+      "Omni Consumer Products"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was gibt der Ausdruck 2 ** 3 in Python aus?",
+     "correct": "8",
+     "wrong": [
+      "6",
+      "9",
+      "5"
+     ]
+    },
+    "en": {
+     "text": "What does the expression 2 ** 3 evaluate to in Python?",
+     "correct": "8",
+     "wrong": [
+      "6",
+      "9",
+      "5"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Ghibli-Film handelt von einem Goldfischmädchen, das ein Mensch werden will?",
+     "correct": "Ponyo – Das große Abenteuer am Meer",
+     "wrong": [
+      "Mein Nachbar Totoro",
+      "Arrietty",
+      "Das Königreich der Katzen"
+     ]
+    },
+    "en": {
+     "text": "Which Ghibli film is about a goldfish girl who wants to become human?",
+     "correct": "Ponyo",
+     "wrong": [
+      "My Neighbor Totoro",
+      "Arrietty",
+      "The Cat Returns"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Firma entwickelte „Metroid“ und „Kid Icarus“?",
+     "correct": "Nintendo",
+     "wrong": [
+      "Capcom",
+      "Konami",
+      "Sega"
+     ]
+    },
+    "en": {
+     "text": "Which company developed “Metroid” and “Kid Icarus”?",
+     "correct": "Nintendo",
+     "wrong": [
+      "Capcom",
+      "Konami",
+      "Sega"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Bordcomputer in „2001: Odyssee im Weltraum“?",
+     "correct": "HAL 9000",
+     "wrong": [
+      "KITT",
+      "SkyNet",
+      "Mother"
+     ]
+    },
+    "en": {
+     "text": "What is the ship's computer in “2001: A Space Odyssey” called?",
+     "correct": "HAL 9000",
+     "wrong": [
+      "KITT",
+      "SkyNet",
+      "Mother"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches agile Vorgehensmodell arbeitet mit Sprints?",
+     "correct": "Scrum",
+     "wrong": [
+      "Wasserfall",
+      "V-Modell",
+      "Spiralmodell"
+     ]
+    },
+    "en": {
+     "text": "Which agile framework works with sprints?",
+     "correct": "Scrum",
+     "wrong": [
+      "Waterfall",
+      "V-model",
+      "Spiral model"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Held von „One Punch Man“, der Gegner mit einem Schlag besiegt?",
+     "correct": "Saitama",
+     "wrong": [
+      "Genos",
+      "Garou",
+      "Mumen Rider"
+     ]
+    },
+    "en": {
+     "text": "What is the name of the hero of “One Punch Man” who defeats enemies with one punch?",
+     "correct": "Saitama",
+     "wrong": [
+      "Genos",
+      "Garou",
+      "Mumen Rider"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Spiel von 1993 ist ein Rätsel-Adventure auf einer geheimnisvollen Insel mit Büchern?",
+     "correct": "Myst",
+     "wrong": [
+      "The 7th Guest",
+      "Riven",
+      "Grim Fandango"
+     ]
+    },
+    "en": {
+     "text": "Which 1993 game is a puzzle adventure on a mysterious island with books?",
+     "correct": "Myst",
+     "wrong": [
+      "The 7th Guest",
+      "Riven",
+      "Grim Fandango"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Katniss' Partner aus Distrikt 12 bei den 74. Hungerspielen?",
+     "correct": "Peeta Mellark",
+     "wrong": [
+      "Gale Hawthorne",
+      "Finnick Odair",
+      "Haymitch Abernathy"
+     ]
+    },
+    "en": {
+     "text": "What is the name of Katniss' fellow tribute from District 12 in the 74th Hunger Games?",
+     "correct": "Peeta Mellark",
+     "wrong": [
+      "Gale Hawthorne",
+      "Finnick Odair",
+      "Haymitch Abernathy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Sprache nutzt Einrückung zur Strukturierung von Codeblöcken?",
+     "correct": "Python",
+     "wrong": [
+      "C",
+      "Java",
+      "PHP"
+     ]
+    },
+    "en": {
+     "text": "Which language uses indentation to structure code blocks?",
+     "correct": "Python",
+     "wrong": [
+      "C",
+      "Java",
+      "PHP"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Taichis Partner-Digimon in „Digimon Adventure“?",
+     "correct": "Agumon",
+     "wrong": [
+      "Gabumon",
+      "Patamon",
+      "Palmon"
+     ]
+    },
+    "en": {
+     "text": "What is Tai's partner Digimon in “Digimon Adventure” called?",
+     "correct": "Agumon",
+     "wrong": [
+      "Gabumon",
+      "Patamon",
+      "Palmon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe hat der 1-Up-Pilz in „Super Mario“?",
+     "correct": "Grün",
+     "wrong": [
+      "Rot",
+      "Gelb",
+      "Blau"
+     ]
+    },
+    "en": {
+     "text": "What colour is the 1-Up mushroom in “Super Mario”?",
+     "correct": "Green",
+     "wrong": [
+      "Red",
+      "Yellow",
+      "Blue"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Neo in „Matrix“ mit bürgerlichem Namen?",
+     "correct": "Thomas Anderson",
+     "wrong": [
+      "John Smith",
+      "Nicholas Cage",
+      "Mark Neo"
+     ]
+    },
+    "en": {
+     "text": "What is Neo's real name in “The Matrix”?",
+     "correct": "Thomas Anderson",
+     "wrong": [
+      "John Smith",
+      "Nicholas Cage",
+      "Mark Neo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welchem Unternehmen gehört GitHub?",
+     "correct": "Microsoft",
+     "wrong": [
+      "Google",
+      "Amazon",
+      "Meta"
+     ]
+    },
+    "en": {
+     "text": "Which company owns GitHub?",
+     "correct": "Microsoft",
+     "wrong": [
+      "Google",
+      "Amazon",
+      "Meta"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer führte Regie bei „Die letzten Glühwürmchen“ (1988)?",
+     "correct": "Isao Takahata",
+     "wrong": [
+      "Hayao Miyazaki",
+      "Mamoru Oshii",
+      "Satoshi Kon"
+     ]
+    },
+    "en": {
+     "text": "Who directed “Grave of the Fireflies” (1988)?",
+     "correct": "Isao Takahata",
+     "wrong": [
+      "Hayao Miyazaki",
+      "Mamoru Oshii",
+      "Satoshi Kon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer programmierte maßgeblich das erste „Sonic the Hedgehog“ (1991)?",
+     "correct": "Yuji Naka",
+     "wrong": [
+      "Shigeru Miyamoto",
+      "Hideo Kojima",
+      "Yu Suzuki"
+     ]
+    },
+    "en": {
+     "text": "Who was the lead programmer of the first “Sonic the Hedgehog” (1991)?",
+     "correct": "Yuji Naka",
+     "wrong": [
+      "Shigeru Miyamoto",
+      "Hideo Kojima",
+      "Yu Suzuki"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb die „Erdsee“-Romane?",
+     "correct": "Ursula K. Le Guin",
+     "wrong": [
+      "Marion Zimmer Bradley",
+      "Anne McCaffrey",
+      "Octavia Butler"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the “Earthsea” novels?",
+     "correct": "Ursula K. Le Guin",
+     "wrong": [
+      "Marion Zimmer Bradley",
+      "Anne McCaffrey",
+      "Octavia Butler"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Format ist die Datei package.json bei Node.js geschrieben?",
+     "correct": "JSON",
+     "wrong": [
+      "YAML",
+      "XML",
+      "TOML"
+     ]
+    },
+    "en": {
+     "text": "In which format is the package.json file of Node.js written?",
+     "correct": "JSON",
+     "wrong": [
+      "YAML",
+      "XML",
+      "TOML"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Hauptfigur von „Chainsaw Man“?",
+     "correct": "Denji",
+     "wrong": [
+      "Aki Hayakawa",
+      "Power",
+      "Makima"
+     ]
+    },
+    "en": {
+     "text": "What is the main character of “Chainsaw Man” called?",
+     "correct": "Denji",
+     "wrong": [
+      "Aki Hayakawa",
+      "Power",
+      "Makima"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Ego-Shooter von 1996 führte echtes 3D mit Polygonen und Online-Deathmatch populär ein?",
+     "correct": "Quake",
+     "wrong": [
+      "Duke Nukem 3D",
+      "Marathon",
+      "Descent"
+     ]
+    },
+    "en": {
+     "text": "Which 1996 first-person shooter popularised true polygonal 3D and online deathmatch?",
+     "correct": "Quake",
+     "wrong": [
+      "Duke Nukem 3D",
+      "Marathon",
+      "Descent"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Hexer in Andrzej Sapkowskis Romanen?",
+     "correct": "Geralt von Riva",
+     "wrong": [
+      "Aragorn",
+      "Rand al'Thor",
+      "Kvothe"
+     ]
+    },
+    "en": {
+     "text": "What is the name of the witcher in Andrzej Sapkowski's novels?",
+     "correct": "Geralt of Rivia",
+     "wrong": [
+      "Aragorn",
+      "Rand al'Thor",
+      "Kvothe"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Was bedeutet das griechische Wort „Kubernetes“?",
+     "correct": "Steuermann",
+     "wrong": [
+      "Schiff",
+      "Behälter",
+      "Wolke"
+     ]
+    },
+    "en": {
+     "text": "What does the Greek word “Kubernetes” mean?",
+     "correct": "Helmsman",
+     "wrong": [
+      "Ship",
+      "Container",
+      "Cloud"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Meisterdieb aus Monkey Punchs Manga?",
+     "correct": "Lupin III",
+     "wrong": [
+      "Kaito Kid",
+      "Goemon",
+      "Jigen"
+     ]
+    },
+    "en": {
+     "text": "What is the master thief from Monkey Punch's manga called?",
+     "correct": "Lupin III",
+     "wrong": [
+      "Kaito Kid",
+      "Goemon",
+      "Jigen"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Sega-Rennspiel von 1986 ist für seinen Ferrari und die wählbare Musik bekannt?",
+     "correct": "Out Run",
+     "wrong": [
+      "Pole Position",
+      "Daytona USA",
+      "Virtua Racing"
+     ]
+    },
+    "en": {
+     "text": "Which 1986 Sega racing game is known for its Ferrari and selectable music?",
+     "correct": "Out Run",
+     "wrong": [
+      "Pole Position",
+      "Daytona USA",
+      "Virtua Racing"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Autor schrieb die „Chroniken von Narnia“?",
+     "correct": "C. S. Lewis",
+     "wrong": [
+      "J. R. R. Tolkien",
+      "Roald Dahl",
+      "Philip Pullman"
+     ]
+    },
+    "en": {
+     "text": "Which author wrote “The Chronicles of Narnia”?",
+     "correct": "C. S. Lewis",
+     "wrong": [
+      "J. R. R. Tolkien",
+      "Roald Dahl",
+      "Philip Pullman"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Operator prüft in JavaScript auf strikte Gleichheit (ohne Typumwandlung)?",
+     "correct": "Dreifaches Gleichheitszeichen (===)",
+     "wrong": [
+      "Doppeltes Gleichheitszeichen (==)",
+      "Einfaches Gleichheitszeichen (=)",
+      "Ungleich (!=)"
+     ]
+    },
+    "en": {
+     "text": "Which operator checks for strict equality (without type coercion) in JavaScript?",
+     "correct": "Triple equals (===)",
+     "wrong": [
+      "Double equals (==)",
+      "Single equals (=)",
+      "Not equal (!=)"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Held von „Yu-Gi-Oh!“?",
+     "correct": "Yugi Muto",
+     "wrong": [
+      "Seto Kaiba",
+      "Joey Wheeler",
+      "Marik Ishtar"
+     ]
+    },
+    "en": {
+     "text": "What is the hero of “Yu-Gi-Oh!” called?",
+     "correct": "Yugi Muto",
+     "wrong": [
+      "Seto Kaiba",
+      "Joey Wheeler",
+      "Marik Ishtar"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Held der Spielhallen-Reihe „Bomberman“?",
+     "correct": "Bomberman",
+     "wrong": [
+      "Dig Dug",
+      "Pac-Man",
+      "Q*bert"
+     ]
+    },
+    "en": {
+     "text": "What is the hero of the arcade series “Bomberman” called?",
+     "correct": "Bomberman",
+     "wrong": [
+      "Dig Dug",
+      "Pac-Man",
+      "Q*bert"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was besagt die Oberste Direktive in „Star Trek“?",
+     "correct": "Keine Einmischung in die Entwicklung fremder Zivilisationen",
+     "wrong": [
+      "Das Schiff darf nie verlassen werden",
+      "Jeder Befehl des Captains ist zu befolgen",
+      "Feindliche Schiffe sind sofort zu zerstören"
+     ]
+    },
+    "en": {
+     "text": "What does the Prime Directive in “Star Trek” say?",
+     "correct": "No interference in the development of other civilisations",
+     "wrong": [
+      "The ship must never be abandoned",
+      "Every order of the captain must be obeyed",
+      "Hostile ships must be destroyed at once"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht „POSIX“?",
+     "correct": "Portable Operating System Interface",
+     "wrong": [
+      "Primary Operating System Index",
+      "Programmable Open Source Interface X",
+      "Process Output Stream Index"
+     ]
+    },
+    "en": {
+     "text": "What does “POSIX” stand for?",
+     "correct": "Portable Operating System Interface",
+     "wrong": [
+      "Primary Operating System Index",
+      "Programmable Open Source Interface X",
+      "Process Output Stream Index"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die telepathische Tochter in „Spy x Family“?",
+     "correct": "Anya Forger",
+     "wrong": [
+      "Yor Forger",
+      "Becky Blackbell",
+      "Fiona Frost"
+     ]
+    },
+    "en": {
+     "text": "What is the telepathic daughter in “Spy x Family” called?",
+     "correct": "Anya Forger",
+     "wrong": [
+      "Yor Forger",
+      "Becky Blackbell",
+      "Fiona Frost"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Firma veröffentlichte 1972 das Spiel „Pong“?",
+     "correct": "Atari",
+     "wrong": [
+      "Nintendo",
+      "Sega",
+      "Magnavox"
+     ]
+    },
+    "en": {
+     "text": "Which company released the game “Pong” in 1972?",
+     "correct": "Atari",
+     "wrong": [
+      "Nintendo",
+      "Sega",
+      "Magnavox"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Planeten lebt Yoda im Exil?",
+     "correct": "Dagobah",
+     "wrong": [
+      "Ahch-To",
+      "Mustafar",
+      "Kamino"
+     ]
+    },
+    "en": {
+     "text": "On which planet does Yoda live in exile?",
+     "correct": "Dagobah",
+     "wrong": [
+      "Ahch-To",
+      "Mustafar",
+      "Kamino"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer entwarf die Programmiersprache Ruby?",
+     "correct": "Yukihiro Matsumoto",
+     "wrong": [
+      "Rasmus Lerdorf",
+      "Larry Wall",
+      "Brendan Eich"
+     ]
+    },
+    "en": {
+     "text": "Who designed the Ruby programming language?",
+     "correct": "Yukihiro Matsumoto",
+     "wrong": [
+      "Rasmus Lerdorf",
+      "Larry Wall",
+      "Brendan Eich"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man japanische Synchronsprecher?",
+     "correct": "Seiyū",
+     "wrong": [
+      "Mangaka",
+      "Sensei",
+      "Idol"
+     ]
+    },
+    "en": {
+     "text": "What are Japanese voice actors called?",
+     "correct": "Seiyū",
+     "wrong": [
+      "Mangaka",
+      "Sensei",
+      "Idol"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Junge mit der roten Baseballkappe, der Held von „EarthBound“?",
+     "correct": "Ness",
+     "wrong": [
+      "Lucas",
+      "Ninten",
+      "Paula"
+     ]
+    },
+    "en": {
+     "text": "What is the boy with the red baseball cap who stars in “EarthBound” called?",
+     "correct": "Ness",
+     "wrong": [
+      "Lucas",
+      "Ninten",
+      "Paula"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Heimatwelt der Wookiees?",
+     "correct": "Kashyyyk",
+     "wrong": [
+      "Endor",
+      "Jakku",
+      "Geonosis"
+     ]
+    },
+    "en": {
+     "text": "What is the home world of the Wookiees called?",
+     "correct": "Kashyyyk",
+     "wrong": [
+      "Endor",
+      "Jakku",
+      "Geonosis"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Nach wem ist die Programmiersprache Ada benannt?",
+     "correct": "Ada Lovelace",
+     "wrong": [
+      "Ada Yonath",
+      "Adele Goldberg",
+      "Grace Hopper"
+     ]
+    },
+    "en": {
+     "text": "After whom is the programming language Ada named?",
+     "correct": "Ada Lovelace",
+     "wrong": [
+      "Ada Yonath",
+      "Adele Goldberg",
+      "Grace Hopper"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Dragon Balls braucht man, um den Drachen Shenlong zu rufen?",
+     "correct": "7",
+     "wrong": [
+      "5",
+      "9",
+      "12"
+     ]
+    },
+    "en": {
+     "text": "How many Dragon Balls do you need to summon the dragon Shenron?",
+     "correct": "7",
+     "wrong": [
+      "5",
+      "9",
+      "12"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien das erste „Sonic the Hedgehog“?",
+     "correct": "1991",
+     "wrong": [
+      "1988",
+      "1994",
+      "1996"
+     ]
+    },
+    "en": {
+     "text": "In which year was the first “Sonic the Hedgehog” released?",
+     "correct": "1991",
+     "wrong": [
+      "1988",
+      "1994",
+      "1996"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Wüstenvolk auf Arrakis?",
+     "correct": "Fremen",
+     "wrong": [
+      "Harkonnen",
+      "Sardaukar",
+      "Bene Gesserit"
+     ]
+    },
+    "en": {
+     "text": "What is the desert people of Arrakis called?",
+     "correct": "Fremen",
+     "wrong": [
+      "Harkonnen",
+      "Sardaukar",
+      "Bene Gesserit"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Nach wem ist die Programmiersprache Pascal benannt?",
+     "correct": "Blaise Pascal",
+     "wrong": [
+      "Pascal Gamand",
+      "Pascal Obispo",
+      "Blaise Cendrars"
+     ]
+    },
+    "en": {
+     "text": "After whom is the Pascal programming language named?",
+     "correct": "Blaise Pascal",
+     "wrong": [
+      "Pascal Gamand",
+      "Pascal Obispo",
+      "Blaise Cendrars"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Tyrann, gegen den Son Goku auf dem Planeten Namek kämpft?",
+     "correct": "Freezer",
+     "wrong": [
+      "Cell",
+      "Boo",
+      "Raditz"
+     ]
+    },
+    "en": {
+     "text": "What is the tyrant Goku fights on planet Namek called?",
+     "correct": "Frieza",
+     "wrong": [
+      "Cell",
+      "Buu",
+      "Raditz"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte die Musik zu den frühen „Final Fantasy“-Spielen?",
+     "correct": "Nobuo Uematsu",
+     "wrong": [
+      "Koji Kondo",
+      "Yasunori Mitsuda",
+      "Yuzo Koshiro"
+     ]
+    },
+    "en": {
+     "text": "Who composed the music for the early “Final Fantasy” games?",
+     "correct": "Nobuo Uematsu",
+     "wrong": [
+      "Koji Kondo",
+      "Yasunori Mitsuda",
+      "Yuzo Koshiro"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Tolkiens Werk über die Entstehung Mittelerdes?",
+     "correct": "Das Silmarillion",
+     "wrong": [
+      "Der Hobbit",
+      "Die Kinder Húrins",
+      "Nachrichten aus Mittelerde"
+     ]
+    },
+    "en": {
+     "text": "What is the name of Tolkien's work about the creation of Middle-earth?",
+     "correct": "The Silmarillion",
+     "wrong": [
+      "The Hobbit",
+      "The Children of Húrin",
+      "Unfinished Tales"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer entwarf C# und TypeScript?",
+     "correct": "Anders Hejlsberg",
+     "wrong": [
+      "Bjarne Stroustrup",
+      "James Gosling",
+      "Mads Torgersen"
+     ]
+    },
+    "en": {
+     "text": "Who designed C# and TypeScript?",
+     "correct": "Anders Hejlsberg",
+     "wrong": [
+      "Bjarne Stroustrup",
+      "James Gosling",
+      "Mads Torgersen"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Gons bester Freund, der aus einer Attentäterfamilie stammt?",
+     "correct": "Killua Zoldyck",
+     "wrong": [
+      "Kurapika",
+      "Hisoka",
+      "Kite"
+     ]
+    },
+    "en": {
+     "text": "What is the name of Gon's best friend from a family of assassins?",
+     "correct": "Killua Zoldyck",
+     "wrong": [
+      "Kurapika",
+      "Hisoka",
+      "Kite"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Instrument spielt Link in „Ocarina of Time“, um Zauberlieder zu erzeugen?",
+     "correct": "Die Okarina",
+     "wrong": [
+      "Die Harfe",
+      "Die Panflöte",
+      "Die Laute"
+     ]
+    },
+    "en": {
+     "text": "Which instrument does Link play in “Ocarina of Time” to cast songs?",
+     "correct": "The ocarina",
+     "wrong": [
+      "The harp",
+      "The pan flute",
+      "The lute"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Hyperion“ (1989)?",
+     "correct": "Dan Simmons",
+     "wrong": [
+      "Iain M. Banks",
+      "Vernor Vinge",
+      "Alastair Reynolds"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “Hyperion” (1989)?",
+     "correct": "Dan Simmons",
+     "wrong": [
+      "Iain M. Banks",
+      "Vernor Vinge",
+      "Alastair Reynolds"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das von Google gestartete System zur Container-Orchestrierung?",
+     "correct": "Kubernetes",
+     "wrong": [
+      "Swarm",
+      "Nomad",
+      "Mesos"
+     ]
+    },
+    "en": {
+     "text": "What is the container orchestration system started by Google called?",
+     "correct": "Kubernetes",
+     "wrong": [
+      "Swarm",
+      "Nomad",
+      "Mesos"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Fluchkönig, der in Yuji Itadori versiegelt ist?",
+     "correct": "Sukuna",
+     "wrong": [
+      "Mahito",
+      "Geto",
+      "Toji"
+     ]
+    },
+    "en": {
+     "text": "What is the King of Curses sealed inside Yuji Itadori called?",
+     "correct": "Sukuna",
+     "wrong": [
+      "Mahito",
+      "Geto",
+      "Toji"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Strategiespielreihe von Sid Meier startete 1991?",
+     "correct": "Civilization",
+     "wrong": [
+      "Age of Empires",
+      "Command & Conquer",
+      "Warcraft"
+     ]
+    },
+    "en": {
+     "text": "Which strategy series by Sid Meier started in 1991?",
+     "correct": "Civilization",
+     "wrong": [
+      "Age of Empires",
+      "Command & Conquer",
+      "Warcraft"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Von welchem Planeten stammen die Daleks?",
+     "correct": "Skaro",
+     "wrong": [
+      "Gallifrey",
+      "Mondas",
+      "Telos"
+     ]
+    },
+    "en": {
+     "text": "Which planet do the Daleks come from?",
+     "correct": "Skaro",
+     "wrong": [
+      "Gallifrey",
+      "Mondas",
+      "Telos"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Texteditor wurde von Richard Stallman geschrieben?",
+     "correct": "Emacs",
+     "wrong": [
+      "Vim",
+      "Nano",
+      "Notepad++"
+     ]
+    },
+    "en": {
+     "text": "Which text editor was written by Richard Stallman?",
+     "correct": "Emacs",
+     "wrong": [
+      "Vim",
+      "Nano",
+      "Notepad++"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf „JoJo's Bizarre Adventure“?",
+     "correct": "Hirohiko Araki",
+     "wrong": [
+      "Eiichiro Oda",
+      "Yoshihiro Togashi",
+      "Tite Kubo"
+     ]
+    },
+    "en": {
+     "text": "Who created “JoJo's Bizarre Adventure”?",
+     "correct": "Hirohiko Araki",
+     "wrong": [
+      "Eiichiro Oda",
+      "Yoshihiro Togashi",
+      "Tite Kubo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Was für ein Tier ist die Spielfigur Spyro?",
+     "correct": "Ein Drache",
+     "wrong": [
+      "Ein Fuchs",
+      "Ein Igel",
+      "Ein Beuteltier"
+     ]
+    },
+    "en": {
+     "text": "What kind of creature is the video game character Spyro?",
+     "correct": "A dragon",
+     "wrong": [
+      "A fox",
+      "A hedgehog",
+      "A marsupial"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Der Name des Windes“?",
+     "correct": "Patrick Rothfuss",
+     "wrong": [
+      "Brandon Sanderson",
+      "Joe Abercrombie",
+      "Robin Hobb"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Name of the Wind”?",
+     "correct": "Patrick Rothfuss",
+     "wrong": [
+      "Brandon Sanderson",
+      "Joe Abercrombie",
+      "Robin Hobb"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche In-Memory-Datenbank ist als schneller Key-Value-Speicher bekannt?",
+     "correct": "Redis",
+     "wrong": [
+      "PostgreSQL",
+      "SQLite",
+      "MariaDB"
+     ]
+    },
+    "en": {
+     "text": "Which in-memory database is known as a fast key-value store?",
+     "correct": "Redis",
+     "wrong": [
+      "PostgreSQL",
+      "SQLite",
+      "MariaDB"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Schwertkämpfer mit der Narbe in „Rurouni Kenshin“?",
+     "correct": "Kenshin Himura",
+     "wrong": [
+      "Sanosuke Sagara",
+      "Hiko Seijuro",
+      "Saitō Hajime"
+     ]
+    },
+    "en": {
+     "text": "What is the scarred swordsman in “Rurouni Kenshin” called?",
+     "correct": "Kenshin Himura",
+     "wrong": [
+      "Sanosuke Sagara",
+      "Hiko Seijuro",
+      "Saitō Hajime"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien das Super Famicom (SNES) in Japan?",
+     "correct": "1990",
+     "wrong": [
+      "1988",
+      "1992",
+      "1994"
+     ]
+    },
+    "en": {
+     "text": "In which year was the Super Famicom (SNES) released in Japan?",
+     "correct": "1990",
+     "wrong": [
+      "1988",
+      "1992",
+      "1994"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Isaac Asimovs Zyklus über den Niedergang eines galaktischen Imperiums?",
+     "correct": "Foundation (Die Foundation-Trilogie)",
+     "wrong": [
+      "Die Mars-Chroniken",
+      "Ewigkeit",
+      "Der Wüstenplanet"
+     ]
+    },
+    "en": {
+     "text": "What is Isaac Asimov's cycle about the fall of a galactic empire called?",
+     "correct": "Foundation",
+     "wrong": [
+      "The Martian Chronicles",
+      "The End of Eternity",
+      "Dune"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht „CRUD“ bei Datenbankoperationen?",
+     "correct": "Create, Read, Update, Delete",
+     "wrong": [
+      "Copy, Run, Undo, Deploy",
+      "Connect, Retrieve, Upload, Download",
+      "Compile, Release, Update, Debug"
+     ]
+    },
+    "en": {
+     "text": "What does “CRUD” stand for in database operations?",
+     "correct": "Create, Read, Update, Delete",
+     "wrong": [
+      "Copy, Run, Undo, Deploy",
+      "Connect, Retrieve, Upload, Download",
+      "Compile, Release, Update, Debug"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Heldin von „Cardcaptor Sakura“?",
+     "correct": "Sakura Kinomoto",
+     "wrong": [
+      "Tomoyo Daidouji",
+      "Madison Taylor",
+      "Usagi Tsukino"
+     ]
+    },
+    "en": {
+     "text": "What is the heroine of “Cardcaptor Sakura” called?",
+     "correct": "Sakura Kinomoto",
+     "wrong": [
+      "Tomoyo Daidouji",
+      "Madison Taylor",
+      "Usagi Tsukino"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte die Musik von „Super Mario Bros.“ und „Zelda“?",
+     "correct": "Koji Kondo",
+     "wrong": [
+      "Nobuo Uematsu",
+      "Yuji Naka",
+      "Hirokazu Tanaka"
+     ]
+    },
+    "en": {
+     "text": "Who composed the music of “Super Mario Bros.” and “Zelda”?",
+     "correct": "Koji Kondo",
+     "wrong": [
+      "Nobuo Uematsu",
+      "Yuji Naka",
+      "Hirokazu Tanaka"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Die unendliche Geschichte“?",
+     "correct": "Michael Ende",
+     "wrong": [
+      "Otfried Preußler",
+      "Cornelia Funke",
+      "Astrid Lindgren"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Neverending Story”?",
+     "correct": "Michael Ende",
+     "wrong": [
+      "Otfried Preußler",
+      "Cornelia Funke",
+      "Astrid Lindgren"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf das Framework Vue.js?",
+     "correct": "Evan You",
+     "wrong": [
+      "Dan Abramov",
+      "Jordan Walke",
+      "Misko Hevery"
+     ]
+    },
+    "en": {
+     "text": "Who created the Vue.js framework?",
+     "correct": "Evan You",
+     "wrong": [
+      "Dan Abramov",
+      "Jordan Walke",
+      "Misko Hevery"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf „Attack on Titan“?",
+     "correct": "Hajime Isayama",
+     "wrong": [
+      "Tite Kubo",
+      "Kohei Horikoshi",
+      "Gege Akutami"
+     ]
+    },
+    "en": {
+     "text": "Who created “Attack on Titan”?",
+     "correct": "Hajime Isayama",
+     "wrong": [
+      "Tite Kubo",
+      "Kohei Horikoshi",
+      "Gege Akutami"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Auf welcher Konsole erschien „Pitfall!“ (1982)?",
+     "correct": "Atari 2600",
+     "wrong": [
+      "NES",
+      "ColecoVision",
+      "Commodore 64"
+     ]
+    },
+    "en": {
+     "text": "On which console was “Pitfall!” released (1982)?",
+     "correct": "Atari 2600",
+     "wrong": [
+      "NES",
+      "ColecoVision",
+      "Commodore 64"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Spezies betreibt in „Star Trek: Deep Space Nine“ die Bar auf der Station?",
+     "correct": "Ferengi",
+     "wrong": [
+      "Bajoraner",
+      "Cardassianer",
+      "Trill"
+     ]
+    },
+    "en": {
+     "text": "Which species runs the bar on the station in “Star Trek: Deep Space Nine”?",
+     "correct": "Ferengi",
+     "wrong": [
+      "Bajorans",
+      "Cardassians",
+      "Trill"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was ist ein Branch in Git?",
+     "correct": "Eine eigene Entwicklungslinie",
+     "wrong": [
+      "Eine Sicherungskopie auf CD",
+      "Ein Benutzerkonto",
+      "Ein Fehlerbericht"
+     ]
+    },
+    "en": {
+     "text": "What is a branch in Git?",
+     "correct": "A separate line of development",
+     "wrong": [
+      "A backup copy on CD",
+      "A user account",
+      "A bug report"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Für welche Zielgruppe sind „Shōjo“-Manga ursprünglich gedacht?",
+     "correct": "Jugendliche Mädchen",
+     "wrong": [
+      "Kleine Kinder",
+      "Junge Männer",
+      "Erwachsene Frauen"
+     ]
+    },
+    "en": {
+     "text": "Who are “shōjo” manga originally aimed at?",
+     "correct": "Teenage girls",
+     "wrong": [
+      "Small children",
+      "Young men",
+      "Adult women"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien „The Legend of Zelda“ in Japan?",
+     "correct": "1986",
+     "wrong": [
+      "1983",
+      "1989",
+      "1991"
+     ]
+    },
+    "en": {
+     "text": "In which year was “The Legend of Zelda” released in Japan?",
+     "correct": "1986",
+     "wrong": [
+      "1983",
+      "1989",
+      "1991"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Tod in Terry Pratchetts Scheibenwelt, der in Großbuchstaben spricht?",
+     "correct": "Tod",
+     "wrong": [
+      "Rincewind",
+      "Samuel Mumm",
+      "Ankh"
+     ]
+    },
+    "en": {
+     "text": "What is the name of the Death character in Terry Pratchett's Discworld who speaks in capital letters?",
+     "correct": "Death",
+     "wrong": [
+      "Rincewind",
+      "Sam Vimes",
+      "Ankh"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Trio entwarf die Programmiersprache Go bei Google?",
+     "correct": "Griesemer, Pike und Thompson",
+     "wrong": [
+      "Ritchie, Kernighan und Thompson",
+      "Gosling, Joy und Steele",
+      "Lerdorf, Wall und Matsumoto"
+     ]
+    },
+    "en": {
+     "text": "Which trio designed the Go programming language at Google?",
+     "correct": "Griesemer, Pike and Thompson",
+     "wrong": [
+      "Ritchie, Kernighan and Thompson",
+      "Gosling, Joy and Steele",
+      "Lerdorf, Wall and Matsumoto"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Ghibli-Film ist der Held ein Pilot, der wie ein Schwein aussieht?",
+     "correct": "Porco Rosso",
+     "wrong": [
+      "Das Schloss im Himmel",
+      "Ponyo",
+      "Wie der Wind sich hebt"
+     ]
+    },
+    "en": {
+     "text": "In which Ghibli film is the hero a pilot who looks like a pig?",
+     "correct": "Porco Rosso",
+     "wrong": [
+      "Castle in the Sky",
+      "Ponyo",
+      "The Wind Rises"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer entwickelte den Game Boy?",
+     "correct": "Gunpei Yokoi",
+     "wrong": [
+      "Shigeru Miyamoto",
+      "Satoru Iwata",
+      "Masayuki Uemura"
+     ]
+    },
+    "en": {
+     "text": "Who developed the Game Boy?",
+     "correct": "Gunpei Yokoi",
+     "wrong": [
+      "Shigeru Miyamoto",
+      "Satoru Iwata",
+      "Masayuki Uemura"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr spielt der Film „Blade Runner“ (1982)?",
+     "correct": "2019",
+     "wrong": [
+      "2049",
+      "1999",
+      "2087"
+     ]
+    },
+    "en": {
+     "text": "In which year is the film “Blade Runner” (1982) set?",
+     "correct": "2019",
+     "wrong": [
+      "2049",
+      "1999",
+      "2087"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf die Skriptsprache PHP?",
+     "correct": "Rasmus Lerdorf",
+     "wrong": [
+      "Larry Wall",
+      "Guido van Rossum",
+      "Yukihiro Matsumoto"
+     ]
+    },
+    "en": {
+     "text": "Who created the scripting language PHP?",
+     "correct": "Rasmus Lerdorf",
+     "wrong": [
+      "Larry Wall",
+      "Guido van Rossum",
+      "Yukihiro Matsumoto"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Mecha-Anime begründete das „Real Robot“-Genre?",
+     "correct": "Mobile Suit Gundam",
+     "wrong": [
+      "Mazinger Z",
+      "Neon Genesis Evangelion",
+      "Voltron"
+     ]
+    },
+    "en": {
+     "text": "Which mecha anime founded the “real robot” genre?",
+     "correct": "Mobile Suit Gundam",
+     "wrong": [
+      "Mazinger Z",
+      "Neon Genesis Evangelion",
+      "Voltron"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer ist der Sohn von Donkey Kong in dem Spiel von 1982?",
+     "correct": "Donkey Kong Jr.",
+     "wrong": [
+      "Diddy Kong",
+      "Cranky Kong",
+      "Funky Kong"
+     ]
+    },
+    "en": {
+     "text": "Who is Donkey Kong's son in the 1982 game?",
+     "correct": "Donkey Kong Jr.",
+     "wrong": [
+      "Diddy Kong",
+      "Cranky Kong",
+      "Funky Kong"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man einen Jedi-Schüler?",
+     "correct": "Padawan",
+     "wrong": [
+      "Youngling",
+      "Sith-Lord",
+      "Mandalorianer"
+     ]
+    },
+    "en": {
+     "text": "What is a Jedi apprentice called?",
+     "correct": "Padawan",
+     "wrong": [
+      "Youngling",
+      "Sith Lord",
+      "Mandalorian"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer entwickelte die Programmiersprache Pascal?",
+     "correct": "Niklaus Wirth",
+     "wrong": [
+      "Dennis Ritchie",
+      "John Backus",
+      "Edsger Dijkstra"
+     ]
+    },
+    "en": {
+     "text": "Who developed the Pascal programming language?",
+     "correct": "Niklaus Wirth",
+     "wrong": [
+      "Dennis Ritchie",
+      "John Backus",
+      "Edsger Dijkstra"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer ist der Protagonist des Basketball-Mangas „Slam Dunk“?",
+     "correct": "Hanamichi Sakuragi",
+     "wrong": [
+      "Kaede Rukawa",
+      "Takeshi Kaneda",
+      "Daichi Sawamura"
+     ]
+    },
+    "en": {
+     "text": "Who is the protagonist of the basketball manga “Slam Dunk”?",
+     "correct": "Hanamichi Sakuragi",
+     "wrong": [
+      "Kaede Rukawa",
+      "Takeshi Kaneda",
+      "Daichi Sawamura"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der erste Gegner-Boss in „Sonic the Hedgehog“ (1991)?",
+     "correct": "Dr. Robotnik (Dr. Eggman)",
+     "wrong": [
+      "Metal Sonic",
+      "Knuckles",
+      "Shadow"
+     ]
+    },
+    "en": {
+     "text": "Who is the first boss in “Sonic the Hedgehog” (1991)?",
+     "correct": "Dr. Robotnik (Dr. Eggman)",
+     "wrong": [
+      "Metal Sonic",
+      "Knuckles",
+      "Shadow"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißen die künstlichen Gegner in „Battlestar Galactica“?",
+     "correct": "Zylonen",
+     "wrong": [
+      "Borg",
+      "Daleks",
+      "Replikanten"
+     ]
+    },
+    "en": {
+     "text": "What are the artificial enemies in “Battlestar Galactica” called?",
+     "correct": "Cylons",
+     "wrong": [
+      "Borg",
+      "Daleks",
+      "Replicants"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was versteht man unter „Rubber Duck Debugging“?",
+     "correct": "Dem Problem laut einer Gummiente erklären, um den Fehler zu finden",
+     "wrong": [
+      "Fehler mit Wasser testen",
+      "Ein spezielles Debugging-Tool",
+      "Code von einem Kollegen prüfen lassen"
+     ]
+    },
+    "en": {
+     "text": "What is “rubber duck debugging”?",
+     "correct": "Explaining the problem aloud to a rubber duck to find the bug",
+     "wrong": [
+      "Testing bugs with water",
+      "A special debugging tool",
+      "Having a colleague review the code"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Protagonist von „Sword Art Online“?",
+     "correct": "Kirito",
+     "wrong": [
+      "Asuna",
+      "Klein",
+      "Eugeo"
+     ]
+    },
+    "en": {
+     "text": "What is the protagonist of “Sword Art Online” called?",
+     "correct": "Kirito",
+     "wrong": [
+      "Asuna",
+      "Klein",
+      "Eugeo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Firma veröffentlichte „Prince of Persia“ (1989) von Jordan Mechner?",
+     "correct": "Brøderbund",
+     "wrong": [
+      "LucasArts",
+      "Sierra",
+      "Infocom"
+     ]
+    },
+    "en": {
+     "text": "Which company published “Prince of Persia” (1989) by Jordan Mechner?",
+     "correct": "Brøderbund",
+     "wrong": [
+      "LucasArts",
+      "Sierra",
+      "Infocom"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der chronisch deprimierte Roboter in „Per Anhalter durch die Galaxis“?",
+     "correct": "Marvin",
+     "wrong": [
+      "Robby",
+      "Bender",
+      "Data"
+     ]
+    },
+    "en": {
+     "text": "What is the chronically depressed robot in “The Hitchhiker's Guide to the Galaxy” called?",
+     "correct": "Marvin",
+     "wrong": [
+      "Robby",
+      "Bender",
+      "Data"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht „IDE“?",
+     "correct": "Integrated Development Environment",
+     "wrong": [
+      "Internal Debug Engine",
+      "Interactive Data Exchange",
+      "Instant Deployment Entity"
+     ]
+    },
+    "en": {
+     "text": "What does “IDE” stand for?",
+     "correct": "Integrated Development Environment",
+     "wrong": [
+      "Internal Debug Engine",
+      "Interactive Data Exchange",
+      "Instant Deployment Entity"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf den Dark-Fantasy-Manga „Berserk“?",
+     "correct": "Kentaro Miura",
+     "wrong": [
+      "Hajime Isayama",
+      "Sui Ishida",
+      "Buichi Terasawa"
+     ]
+    },
+    "en": {
+     "text": "Who created the dark fantasy manga “Berserk”?",
+     "correct": "Kentaro Miura",
+     "wrong": [
+      "Hajime Isayama",
+      "Sui Ishida",
+      "Buichi Terasawa"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was sagt der alte Mann im ersten „Zelda“ („Es ist gefährlich, allein zu gehen!“)?",
+     "correct": "„Nimm das hier!“",
+     "wrong": [
+      "„Viel Glück!“",
+      "„Kehre um!“",
+      "„Suche das Triforce!“"
+     ]
+    },
+    "en": {
+     "text": "What does the old man in the first “Zelda” say after “It's dangerous to go alone!”?",
+     "correct": "“Take this!”",
+     "wrong": [
+      "“Good luck!”",
+      "“Turn back!”",
+      "“Find the Triforce!”"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Heimatwelt der Klingonen?",
+     "correct": "Qo'noS",
+     "wrong": [
+      "Romulus",
+      "Vulkan",
+      "Cardassia Prime"
+     ]
+    },
+    "en": {
+     "text": "What is the Klingon home world called?",
+     "correct": "Qo'noS",
+     "wrong": [
+      "Romulus",
+      "Vulkan",
+      "Cardassia Prime"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Zeichen schließt in C und Java meist eine Anweisung ab?",
+     "correct": "Semikolon",
+     "wrong": [
+      "Doppelpunkt",
+      "Punkt",
+      "Komma"
+     ]
+    },
+    "en": {
+     "text": "Which character usually ends a statement in C and Java?",
+     "correct": "Semicolon",
+     "wrong": [
+      "Colon",
+      "Full stop",
+      "Comma"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Anime dreht sich um Zeitreisen per umgebauter Mikrowelle?",
+     "correct": "Steins;Gate",
+     "wrong": [
+      "Erased",
+      "Re:Zero",
+      "Tokyo Revengers"
+     ]
+    },
+    "en": {
+     "text": "Which anime revolves around time travel with a modified microwave?",
+     "correct": "Steins;Gate",
+     "wrong": [
+      "Erased",
+      "Re:Zero",
+      "Tokyo Revengers"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die sieben Kinder von Bowser in „Super Mario Bros. 3“?",
+     "correct": "Koopalinge",
+     "wrong": [
+      "Goombas",
+      "Piranha-Pflanzen",
+      "Bob-ombs"
+     ]
+    },
+    "en": {
+     "text": "What are Bowser's seven children in “Super Mario Bros. 3” called?",
+     "correct": "Koopalings",
+     "wrong": [
+      "Goombas",
+      "Piranha Plants",
+      "Bob-ombs"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Solaris“?",
+     "correct": "Stanisław Lem",
+     "wrong": [
+      "Arkadi Strugazki",
+      "Isaac Asimov",
+      "Ray Bradbury"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “Solaris”?",
+     "correct": "Stanisław Lem",
+     "wrong": [
+      "Arkadi Strugazki",
+      "Isaac Asimov",
+      "Ray Bradbury"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Was passiert bei „rm -rf /“ auf einem Unix-System ohne Schutz?",
+     "correct": "Es wird rekursiv und ohne Nachfrage ab dem Wurzelverzeichnis gelöscht",
+     "wrong": [
+      "Es werden nur temporäre Dateien gelöscht",
+      "Der Papierkorb wird geleert",
+      "Es wird eine Sicherung angelegt"
+     ]
+    },
+    "en": {
+     "text": "What does “rm -rf /” do on an unprotected Unix system?",
+     "correct": "It recursively deletes everything from the root directory without asking",
+     "wrong": [
+      "It only deletes temporary files",
+      "It empties the trash",
+      "It creates a backup"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf „Fullmetal Alchemist“?",
+     "correct": "Hiromu Arakawa",
+     "wrong": [
+      "Naoko Takeuchi",
+      "Rumiko Takahashi",
+      "Masashi Kishimoto"
+     ]
+    },
+    "en": {
+     "text": "Who created “Fullmetal Alchemist”?",
+     "correct": "Hiromu Arakawa",
+     "wrong": [
+      "Naoko Takeuchi",
+      "Rumiko Takahashi",
+      "Masashi Kishimoto"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Spielreihe erschien 1986 erstmals mit dem Vampirjäger Simon Belmont?",
+     "correct": "Castlevania",
+     "wrong": [
+      "Contra",
+      "Ghosts 'n Goblins",
+      "Bloodstained"
+     ]
+    },
+    "en": {
+     "text": "Which series first appeared in 1986 with the vampire hunter Simon Belmont?",
+     "correct": "Castlevania",
+     "wrong": [
+      "Contra",
+      "Ghosts 'n Goblins",
+      "Bloodstained"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Hauptfigur des Romans „Dune“?",
+     "correct": "Paul Atreides",
+     "wrong": [
+      "Duncan Idaho",
+      "Baron Harkonnen",
+      "Stilgar"
+     ]
+    },
+    "en": {
+     "text": "What is the name of the protagonist of the novel “Dune”?",
+     "correct": "Paul Atreides",
+     "wrong": [
+      "Duncan Idaho",
+      "Baron Harkonnen",
+      "Stilgar"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Zeichen „|“ in der Shell, das Ausgaben weiterreicht?",
+     "correct": "Pipe",
+     "wrong": [
+      "Slash",
+      "Tilde",
+      "Caret"
+     ]
+    },
+    "en": {
+     "text": "What is the “|” character in the shell, which passes output on, called?",
+     "correct": "Pipe",
+     "wrong": [
+      "Slash",
+      "Tilde",
+      "Caret"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Hauptfigur von „Mob Psycho 100“?",
+     "correct": "Shigeo „Mob“ Kageyama",
+     "wrong": [
+      "Arataka Reigen",
+      "Ritsu Kageyama",
+      "Teruki Hanazawa"
+     ]
+    },
+    "en": {
+     "text": "What is the main character of “Mob Psycho 100” called?",
+     "correct": "Shigeo “Mob” Kageyama",
+     "wrong": [
+      "Arataka Reigen",
+      "Ritsu Kageyama",
+      "Teruki Hanazawa"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Namco-Klassiker von 1981 lässt Raumschiffe per Traktorstrahl einfangen?",
+     "correct": "Galaga",
+     "wrong": [
+      "Xevious",
+      "Phoenix",
+      "Gradius"
+     ]
+    },
+    "en": {
+     "text": "Which 1981 Namco classic lets your ship be captured by a tractor beam?",
+     "correct": "Galaga",
+     "wrong": [
+      "Xevious",
+      "Phoenix",
+      "Gradius"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Zyklus „Das Rad der Zeit“?",
+     "correct": "Robert Jordan",
+     "wrong": [
+      "George R. R. Martin",
+      "Terry Brooks",
+      "David Eddings"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the cycle “The Wheel of Time”?",
+     "correct": "Robert Jordan",
+     "wrong": [
+      "George R. R. Martin",
+      "Terry Brooks",
+      "David Eddings"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer startete 2006 das Projekt der Programmiersprache Rust?",
+     "correct": "Graydon Hoare",
+     "wrong": [
+      "Rob Pike",
+      "Ryan Dahl",
+      "Bjarne Stroustrup"
+     ]
+    },
+    "en": {
+     "text": "Who started the Rust programming language project in 2006?",
+     "correct": "Graydon Hoare",
+     "wrong": [
+      "Rob Pike",
+      "Ryan Dahl",
+      "Bjarne Stroustrup"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf den Manga „Ghost in the Shell“?",
+     "correct": "Masamune Shirow",
+     "wrong": [
+      "Katsuhiro Otomo",
+      "Mamoru Oshii",
+      "Satoshi Kon"
+     ]
+    },
+    "en": {
+     "text": "Who created the manga “Ghost in the Shell”?",
+     "correct": "Masamune Shirow",
+     "wrong": [
+      "Katsuhiro Otomo",
+      "Mamoru Oshii",
+      "Satoshi Kon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Studio schuf „Warcraft“ und „Diablo“?",
+     "correct": "Blizzard Entertainment",
+     "wrong": [
+      "Westwood Studios",
+      "Maxis",
+      "Bullfrog"
+     ]
+    },
+    "en": {
+     "text": "Which studio created “Warcraft” and “Diablo”?",
+     "correct": "Blizzard Entertainment",
+     "wrong": [
+      "Westwood Studios",
+      "Maxis",
+      "Bullfrog"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Zauberer-Bank in „Harry Potter“?",
+     "correct": "Gringotts",
+     "wrong": [
+      "Borgin & Burkes",
+      "Flourish & Blotts",
+      "Ollivanders"
+     ]
+    },
+    "en": {
+     "text": "What is the wizarding bank in “Harry Potter” called?",
+     "correct": "Gringotts",
+     "wrong": [
+      "Borgin & Burkes",
+      "Flourish & Blotts",
+      "Ollivanders"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht die Abkürzung „MVP“ in der Produktentwicklung?",
+     "correct": "Minimum Viable Product",
+     "wrong": [
+      "Most Valuable Programmer",
+      "Maximum Version Package",
+      "Managed Virtual Platform"
+     ]
+    },
+    "en": {
+     "text": "What does “MVP” stand for in product development?",
+     "correct": "Minimum Viable Product",
+     "wrong": [
+      "Most Valuable Programmer",
+      "Maximum Version Package",
+      "Managed Virtual Platform"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Duo schuf „Death Note“?",
+     "correct": "Tsugumi Ohba und Takeshi Obata",
+     "wrong": [
+      "Hiromu Arakawa und Eiichiro Oda",
+      "Naoki Urasawa und Osamu Tezuka",
+      "CLAMP"
+     ]
+    },
+    "en": {
+     "text": "Which duo created “Death Note”?",
+     "correct": "Tsugumi Ohba und Takeshi Obata",
+     "wrong": [
+      "Hiromu Arakawa und Eiichiro Oda",
+      "Naoki Urasawa und Osamu Tezuka",
+      "CLAMP"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt SNKs Konsole mit Arcade-Qualität von 1990?",
+     "correct": "Neo Geo",
+     "wrong": [
+      "PC Engine",
+      "Mega Drive",
+      "Atari Jaguar"
+     ]
+    },
+    "en": {
+     "text": "What is SNK's 1990 console with arcade-quality graphics called?",
+     "correct": "Neo Geo",
+     "wrong": [
+      "PC Engine",
+      "Mega Drive",
+      "Atari Jaguar"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Raumschiff in Joss Whedons Serie „Firefly“?",
+     "correct": "Serenity",
+     "wrong": [
+      "Nostromo",
+      "Rocinante",
+      "Bebop"
+     ]
+    },
+    "en": {
+     "text": "What is the ship called in Joss Whedon's series “Firefly”?",
+     "correct": "Serenity",
+     "wrong": [
+      "Nostromo",
+      "Rocinante",
+      "Bebop"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was ergibt 7 // 2 in Python?",
+     "correct": "3",
+     "wrong": [
+      "3.5",
+      "4",
+      "2"
+     ]
+    },
+    "en": {
+     "text": "What does 7 // 2 evaluate to in Python?",
+     "correct": "3",
+     "wrong": [
+      "3.5",
+      "4",
+      "2"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Anime-Film wurde 2020 in Japan zum bis dahin erfolgreichsten Kinofilm aller Zeiten?",
+     "correct": "Demon Slayer – Mugen Train",
+     "wrong": [
+      "Your Name.",
+      "Chihiros Reise ins Zauberland",
+      "One Piece Film: Red"
+     ]
+    },
+    "en": {
+     "text": "Which anime film became the highest-grossing film of all time in Japan in 2020?",
+     "correct": "Demon Slayer: Mugen Train",
+     "wrong": [
+      "Your Name.",
+      "Spirited Away",
+      "One Piece Film: Red"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Atari-Spiel gilt als Symbol für den Videospielcrash von 1983?",
+     "correct": "E.T. the Extra-Terrestrial",
+     "wrong": [
+      "Pac-Man (Atari 2600)",
+      "Adventure",
+      "Pitfall!"
+     ]
+    },
+    "en": {
+     "text": "Which Atari game is regarded as a symbol of the 1983 video game crash?",
+     "correct": "E.T. the Extra-Terrestrial",
+     "wrong": [
+      "Pac-Man (Atari 2600)",
+      "Adventure",
+      "Pitfall!"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Ender's Game“?",
+     "correct": "Orson Scott Card",
+     "wrong": [
+      "Robert A. Heinlein",
+      "Frank Herbert",
+      "Larry Niven"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Ender's Game”?",
+     "correct": "Orson Scott Card",
+     "wrong": [
+      "Robert A. Heinlein",
+      "Frank Herbert",
+      "Larry Niven"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was ist ein Merge-Konflikt?",
+     "correct": "Widersprüchliche Änderungen lassen sich nicht automatisch zusammenführen",
+     "wrong": [
+      "Ein Netzwerkfehler beim Push",
+      "Ein Fehler im Compiler",
+      "Ein Passwortproblem"
+     ]
+    },
+    "en": {
+     "text": "What is a merge conflict?",
+     "correct": "Contradicting changes cannot be merged automatically",
+     "wrong": [
+      "A network error when pushing",
+      "A compiler error",
+      "A password problem"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Um welche Sportart geht es in „Captain Tsubasa“?",
+     "correct": "Fußball",
+     "wrong": [
+      "Baseball",
+      "Basketball",
+      "Volleyball"
+     ]
+    },
+    "en": {
+     "text": "Which sport is “Captain Tsubasa” about?",
+     "correct": "Football (soccer)",
+     "wrong": [
+      "Baseball",
+      "Basketball",
+      "Volleyball"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißen die beiden Brüder in „Double Dragon“?",
+     "correct": "Billy und Jimmy Lee",
+     "wrong": [
+      "Ryu und Ken",
+      "Mario und Luigi",
+      "Axel und Adam"
+     ]
+    },
+    "en": {
+     "text": "What are the two brothers in “Double Dragon” called?",
+     "correct": "Billy and Jimmy Lee",
+     "wrong": [
+      "Ryu and Ken",
+      "Mario and Luigi",
+      "Axel and Adam"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Harry Potters Eule?",
+     "correct": "Hedwig",
+     "wrong": [
+      "Errol",
+      "Pigwidgeon",
+      "Krätze"
+     ]
+    },
+    "en": {
+     "text": "What is the name of Harry Potter's owl?",
+     "correct": "Hedwig",
+     "wrong": [
+      "Errol",
+      "Pigwidgeon",
+      "Scabbers"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer entwickelte Perl?",
+     "correct": "Larry Wall",
+     "wrong": [
+      "Rasmus Lerdorf",
+      "Dennis Ritchie",
+      "Brian Kernighan"
+     ]
+    },
+    "en": {
+     "text": "Who developed Perl?",
+     "correct": "Larry Wall",
+     "wrong": [
+      "Rasmus Lerdorf",
+      "Dennis Ritchie",
+      "Brian Kernighan"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Schülerin, die in „Inuyasha“ in die Vergangenheit fällt?",
+     "correct": "Kagome Higurashi",
+     "wrong": [
+      "Kikyō",
+      "Sango",
+      "Rin"
+     ]
+    },
+    "en": {
+     "text": "What is the schoolgirl who falls into the past in “Inuyasha” called?",
+     "correct": "Kagome Higurashi",
+     "wrong": [
+      "Kikyō",
+      "Sango",
+      "Rin"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche beiden Völker kämpfen im ersten „Warcraft“ (1994)?",
+     "correct": "Orks und Menschen",
+     "wrong": [
+      "Elfen und Zwerge",
+      "Terraner und Zerg",
+      "Untote und Nachtelfen"
+     ]
+    },
+    "en": {
+     "text": "Which two peoples fight in the first “Warcraft” (1994)?",
+     "correct": "Orcs and humans",
+     "wrong": [
+      "Elves and dwarves",
+      "Terrans and Zerg",
+      "Undead and night elves"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Fisch-Admiral, der „Es ist eine Falle!“ ruft?",
+     "correct": "Admiral Ackbar",
+     "wrong": [
+      "Mon Mothma",
+      "Lando Calrissian",
+      "General Veers"
+     ]
+    },
+    "en": {
+     "text": "What is the name of the fish-faced admiral who shouts “It's a trap!”?",
+     "correct": "Admiral Ackbar",
+     "wrong": [
+      "Mon Mothma",
+      "Lando Calrissian",
+      "General Veers"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Was liefert typeof null in JavaScript?",
+     "correct": "\"object\"",
+     "wrong": [
+      "\"null\"",
+      "\"undefined\"",
+      "\"number\""
+     ]
+    },
+    "en": {
+     "text": "What does typeof null return in JavaScript?",
+     "correct": "\"object\"",
+     "wrong": [
+      "\"null\"",
+      "\"undefined\"",
+      "\"number\""
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Protagonist von „Code Geass“?",
+     "correct": "Lelouch vi Britannia",
+     "wrong": [
+      "Suzaku Kururugi",
+      "Light Yagami",
+      "Kaname Chidori"
+     ]
+    },
+    "en": {
+     "text": "What is the protagonist of “Code Geass” called?",
+     "correct": "Lelouch vi Britannia",
+     "wrong": [
+      "Suzaku Kururugi",
+      "Light Yagami",
+      "Kaname Chidori"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Welten hat das erste „Super Mario Bros.“?",
+     "correct": "8",
+     "wrong": [
+      "6",
+      "10",
+      "12"
+     ]
+    },
+    "en": {
+     "text": "How many worlds does the original “Super Mario Bros.” have?",
+     "correct": "8",
+     "wrong": [
+      "6",
+      "10",
+      "12"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer ist die Kapitänin der USS Voyager?",
+     "correct": "Kathryn Janeway",
+     "wrong": [
+      "Beverly Crusher",
+      "Nyota Uhura",
+      "Michael Burnham"
+     ]
+    },
+    "en": {
+     "text": "Who is the captain of the USS Voyager?",
+     "correct": "Kathryn Janeway",
+     "wrong": [
+      "Beverly Crusher",
+      "Nyota Uhura",
+      "Michael Burnham"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche SQL-Klausel filtert Gruppen nach einer Aggregatfunktion?",
+     "correct": "HAVING",
+     "wrong": [
+      "WHERE",
+      "GROUP BY",
+      "ORDER BY"
+     ]
+    },
+    "en": {
+     "text": "Which SQL clause filters groups by an aggregate function?",
+     "correct": "HAVING",
+     "wrong": [
+      "WHERE",
+      "GROUP BY",
+      "ORDER BY"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Für welche Zielgruppe sind „Seinen“-Manga gedacht?",
+     "correct": "Junge Männer",
+     "wrong": [
+      "Jugendliche Mädchen",
+      "Kleine Kinder",
+      "Senioren"
+     ]
+    },
+    "en": {
+     "text": "Who are “seinen” manga aimed at?",
+     "correct": "Young men",
+     "wrong": [
+      "Teenage girls",
+      "Small children",
+      "Seniors"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Hauptschurke der „Zelda“-Reihe?",
+     "correct": "Ganon (Ganondorf)",
+     "wrong": [
+      "Bowser",
+      "Dr. Wily",
+      "Sephiroth"
+     ]
+    },
+    "en": {
+     "text": "Who is the main villain of the “Zelda” series?",
+     "correct": "Ganon (Ganondorf)",
+     "wrong": [
+      "Bowser",
+      "Dr. Wily",
+      "Sephiroth"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Voldemorts Schlange?",
+     "correct": "Nagini",
+     "wrong": [
+      "Basilisk",
+      "Fawkes",
+      "Seraphina"
+     ]
+    },
+    "en": {
+     "text": "What is the name of Voldemort's snake?",
+     "correct": "Nagini",
+     "wrong": [
+      "Basilisk",
+      "Fawkes",
+      "Serpentina"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Zeichen leitet in Python einen Kommentar ein?",
+     "correct": "Raute (#)",
+     "wrong": [
+      "Doppelter Schrägstrich (//)",
+      "Doppelter Bindestrich (--)",
+      "Schrägstrich-Stern (/*)"
+     ]
+    },
+    "en": {
+     "text": "Which character starts a comment in Python?",
+     "correct": "Hash (#)",
+     "wrong": [
+      "Double slash (//)",
+      "Double hyphen (--)",
+      "Slash-star (/*)"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man einen Charaktertyp, der anfangs schroff und abweisend ist, aber im Kern liebevoll?",
+     "correct": "Tsundere",
+     "wrong": [
+      "Yandere",
+      "Kuudere",
+      "Genki"
+     ]
+    },
+    "en": {
+     "text": "What do you call a character type who is harsh at first but caring at heart?",
+     "correct": "Tsundere",
+     "wrong": [
+      "Yandere",
+      "Kuudere",
+      "Genki"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißen die pilzartigen Standardgegner in „Super Mario Bros.“?",
+     "correct": "Goombas",
+     "wrong": [
+      "Koopas",
+      "Boos",
+      "Shy Guys"
+     ]
+    },
+    "en": {
+     "text": "What are the mushroom-like standard enemies in “Super Mario Bros.” called?",
+     "correct": "Goombas",
+     "wrong": [
+      "Koopas",
+      "Boos",
+      "Shy Guys"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Supercomputer, der in „Per Anhalter“ die Antwort auf die ultimative Frage berechnet?",
+     "correct": "Deep Thought",
+     "wrong": [
+      "Hal",
+      "Skynet",
+      "Multivac"
+     ]
+    },
+    "en": {
+     "text": "What is the supercomputer called that calculates the answer to the ultimate question in “The Hitchhiker's Guide”?",
+     "correct": "Deep Thought",
+     "wrong": [
+      "Hal",
+      "Skynet",
+      "Multivac"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Was bezeichnet man als „Spaghetti-Code“?",
+     "correct": "Unübersichtlichen, verworrenen Code",
+     "wrong": [
+      "Besonders schnellen Code",
+      "Sehr kurzen Code",
+      "Automatisch erzeugten Code"
+     ]
+    },
+    "en": {
+     "text": "What is meant by “spaghetti code”?",
+     "correct": "Tangled, hard-to-follow code",
+     "wrong": [
+      "Particularly fast code",
+      "Very short code",
+      "Automatically generated code"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Narutos Lehrer mit der Maske vor dem Gesicht?",
+     "correct": "Kakashi Hatake",
+     "wrong": [
+      "Iruka Umino",
+      "Jiraiya",
+      "Might Guy"
+     ]
+    },
+    "en": {
+     "text": "What is Naruto's masked teacher called?",
+     "correct": "Kakashi Hatake",
+     "wrong": [
+      "Iruka Umino",
+      "Jiraiya",
+      "Might Guy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Heimcomputer von Atari erschien 1985 mit 16/32-Bit-Prozessor und MIDI-Schnittstellen?",
+     "correct": "Atari ST",
+     "wrong": [
+      "Atari 800XL",
+      "Atari Lynx",
+      "Atari Jaguar"
+     ]
+    },
+    "en": {
+     "text": "Which Atari home computer appeared in 1985 with a 16/32-bit processor and MIDI ports?",
+     "correct": "Atari ST",
+     "wrong": [
+      "Atari 800XL",
+      "Atari Lynx",
+      "Atari Jaguar"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Autor schuf die Reihe „Mistborn“?",
+     "correct": "Brandon Sanderson",
+     "wrong": [
+      "Patrick Rothfuss",
+      "Robert Jordan",
+      "Scott Lynch"
+     ]
+    },
+    "en": {
+     "text": "Which author created the “Mistborn” series?",
+     "correct": "Brandon Sanderson",
+     "wrong": [
+      "Patrick Rothfuss",
+      "Robert Jordan",
+      "Scott Lynch"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht „XML“?",
+     "correct": "Extensible Markup Language",
+     "wrong": [
+      "Extra Modern Language",
+      "Executable Machine Language",
+      "Extended Module Library"
+     ]
+    },
+    "en": {
+     "text": "What does “XML” stand for?",
+     "correct": "Extensible Markup Language",
+     "wrong": [
+      "Extra Modern Language",
+      "Executable Machine Language",
+      "Extended Module Library"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Hauptfigur von „Hunter x Hunter“?",
+     "correct": "Gon Freecss",
+     "wrong": [
+      "Killua Zoldyck",
+      "Kurapika",
+      "Leorio"
+     ]
+    },
+    "en": {
+     "text": "What is the name of the main character of “Hunter x Hunter”?",
+     "correct": "Gon Freecss",
+     "wrong": [
+      "Killua Zoldyck",
+      "Kurapika",
+      "Leorio"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche drei Eigenschaften verkörpern die Teile des Triforce?",
+     "correct": "Kraft, Weisheit und Mut",
+     "wrong": [
+      "Liebe, Hass und Neid",
+      "Feuer, Wasser und Erde",
+      "Zeit, Raum und Macht"
+     ]
+    },
+    "en": {
+     "text": "Which three qualities do the pieces of the Triforce embody?",
+     "correct": "Power, Wisdom and Courage",
+     "wrong": [
+      "Love, Hate and Envy",
+      "Fire, Water and Earth",
+      "Time, Space and Might"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie hieß Morgoth, der erste Dunkle Herrscher, ursprünglich?",
+     "correct": "Melkor",
+     "wrong": [
+      "Sauron",
+      "Gothmog",
+      "Ancalagon"
+     ]
+    },
+    "en": {
+     "text": "What was Morgoth, the first Dark Lord, originally called?",
+     "correct": "Melkor",
+     "wrong": [
+      "Sauron",
+      "Gothmog",
+      "Ancalagon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Von welchem Unternehmen stammt die JavaScript-Bibliothek React?",
+     "correct": "Meta (Facebook)",
+     "wrong": [
+      "Google",
+      "Microsoft",
+      "Apple"
+     ]
+    },
+    "en": {
+     "text": "Which company created the JavaScript library React?",
+     "correct": "Meta (Facebook)",
+     "wrong": [
+      "Google",
+      "Microsoft",
+      "Apple"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Heldin von „Fruits Basket“?",
+     "correct": "Tohru Honda",
+     "wrong": [
+      "Kyo Sohma",
+      "Arisa Uotani",
+      "Yuki Sohma"
+     ]
+    },
+    "en": {
+     "text": "What is the heroine of “Fruits Basket” called?",
+     "correct": "Tohru Honda",
+     "wrong": [
+      "Kyo Sohma",
+      "Arisa Uotani",
+      "Yuki Sohma"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißen die Hauptfiguren im Artillerie-Spiel „Worms“?",
+     "correct": "Würmer",
+     "wrong": [
+      "Maulwürfe",
+      "Ameisen",
+      "Schnecken"
+     ]
+    },
+    "en": {
+     "text": "What are the characters in the artillery game “Worms”?",
+     "correct": "Worms",
+     "wrong": [
+      "Moles",
+      "Ants",
+      "Snails"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier ist das Wappentier des Hauses Lannister?",
+     "correct": "Löwe",
+     "wrong": [
+      "Hirsch",
+      "Wolf",
+      "Drache"
+     ]
+    },
+    "en": {
+     "text": "Which animal is the sigil of House Lannister?",
+     "correct": "Lion",
+     "wrong": [
+      "Stag",
+      "Wolf",
+      "Dragon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Bits hat ein „Nibble“?",
+     "correct": "4",
+     "wrong": [
+      "2",
+      "8",
+      "16"
+     ]
+    },
+    "en": {
+     "text": "How many bits does a “nibble” have?",
+     "correct": "4",
+     "wrong": [
+      "2",
+      "8",
+      "16"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Saitamas cyborgischer Schüler in „One Punch Man“?",
+     "correct": "Genos",
+     "wrong": [
+      "Sonic",
+      "Tatsumaki",
+      "Bang"
+     ]
+    },
+    "en": {
+     "text": "What is the name of Saitama's cyborg disciple in “One Punch Man”?",
+     "correct": "Genos",
+     "wrong": [
+      "Sonic",
+      "Tatsumaki",
+      "Bang"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Cheat für den Gottmodus in „Doom“?",
+     "correct": "iddqd",
+     "wrong": [
+      "idkfa",
+      "idclip",
+      "iddt"
+     ]
+    },
+    "en": {
+     "text": "What is the god mode cheat in “Doom” called?",
+     "correct": "iddqd",
+     "wrong": [
+      "idkfa",
+      "idclip",
+      "iddt"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Cyberpunk-Roman „Neuromancer“ (1984)?",
+     "correct": "William Gibson",
+     "wrong": [
+      "Philip K. Dick",
+      "Neal Stephenson",
+      "Bruce Sterling"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the cyberpunk novel “Neuromancer” (1984)?",
+     "correct": "William Gibson",
+     "wrong": [
+      "Philip K. Dick",
+      "Neal Stephenson",
+      "Bruce Sterling"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht „YAML“ ursprünglich?",
+     "correct": "YAML Ain't Markup Language",
+     "wrong": [
+      "Yet Another Markup Language",
+      "Your Application Markup Layer",
+      "Yield And Merge Language"
+     ]
+    },
+    "en": {
+     "text": "What does “YAML” originally stand for?",
+     "correct": "YAML Ain't Markup Language",
+     "wrong": [
+      "Yet Another Markup Language",
+      "Your Application Markup Layer",
+      "Yield And Merge Language"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer ist die Heldin von „Nausicaä aus dem Tal der Winde“?",
+     "correct": "Nausicaä",
+     "wrong": [
+      "Sophie",
+      "Ashitaka",
+      "Kiki"
+     ]
+    },
+    "en": {
+     "text": "Who is the heroine of “Nausicaä of the Valley of the Wind”?",
+     "correct": "Nausicaä",
+     "wrong": [
+      "Sophie",
+      "Ashitaka",
+      "Kiki"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Held von „Half-Life“ (1998)?",
+     "correct": "Gordon Freeman",
+     "wrong": [
+      "Adrian Shephard",
+      "Barney Calhoun",
+      "Alyx Vance"
+     ]
+    },
+    "en": {
+     "text": "What is the hero of “Half-Life” (1998) called?",
+     "correct": "Gordon Freeman",
+     "wrong": [
+      "Adrian Shephard",
+      "Barney Calhoun",
+      "Alyx Vance"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Jon Schnees Schwert aus valyrischem Stahl?",
+     "correct": "Langklaue",
+     "wrong": [
+      "Eis",
+      "Nadel",
+      "Witwenwehklage"
+     ]
+    },
+    "en": {
+     "text": "What is Jon Snow's Valyrian steel sword called?",
+     "correct": "Longclaw",
+     "wrong": [
+      "Ice",
+      "Needle",
+      "Widow's Wail"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Programmiersprache steckt hinter der Java Edition von Minecraft?",
+     "correct": "Java",
+     "wrong": [
+      "C++",
+      "Python",
+      "Rust"
+     ]
+    },
+    "en": {
+     "text": "Which programming language is the Java Edition of Minecraft written in?",
+     "correct": "Java",
+     "wrong": [
+      "C++",
+      "Python",
+      "Rust"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Ghibli-Film spielt auf einer Schwebeinsel?",
+     "correct": "Das Schloss im Himmel",
+     "wrong": [
+      "Prinzessin Mononoke",
+      "Das wandelnde Schloss",
+      "Pom Poko"
+     ]
+    },
+    "en": {
+     "text": "Which Ghibli film takes place on a floating island?",
+     "correct": "Castle in the Sky",
+     "wrong": [
+      "Princess Mononoke",
+      "Howl's Moving Castle",
+      "Pom Poko"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer sind die beiden Helden des ersten „Resident Evil“?",
+     "correct": "Jill Valentine und Chris Redfield",
+     "wrong": [
+      "Leon Kennedy und Claire Redfield",
+      "Ada Wong und Albert Wesker",
+      "Ethan Winters und Rose"
+     ]
+    },
+    "en": {
+     "text": "Who are the two heroes of the first “Resident Evil”?",
+     "correct": "Jill Valentine und Chris Redfield",
+     "wrong": [
+      "Leon Kennedy und Claire Redfield",
+      "Ada Wong und Albert Wesker",
+      "Ethan Winters und Rose"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Fahrenheit 451“?",
+     "correct": "Ray Bradbury",
+     "wrong": [
+      "Aldous Huxley",
+      "George Orwell",
+      "Arthur C. Clarke"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Fahrenheit 451”?",
+     "correct": "Ray Bradbury",
+     "wrong": [
+      "Aldous Huxley",
+      "George Orwell",
+      "Arthur C. Clarke"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht „CLI“?",
+     "correct": "Command Line Interface",
+     "wrong": [
+      "Computer Language Interpreter",
+      "Core Library Index",
+      "Code Loop Iterator"
+     ]
+    },
+    "en": {
+     "text": "What does “CLI” stand for?",
+     "correct": "Command Line Interface",
+     "wrong": [
+      "Computer Language Interpreter",
+      "Core Library Index",
+      "Code Loop Iterator"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Held von „Jujutsu Kaisen“?",
+     "correct": "Yuji Itadori",
+     "wrong": [
+      "Megumi Fushiguro",
+      "Satoru Gojo",
+      "Nobara Kugisaki"
+     ]
+    },
+    "en": {
+     "text": "What is the hero of “Jujutsu Kaisen” called?",
+     "correct": "Yuji Itadori",
+     "wrong": [
+      "Megumi Fushiguro",
+      "Satoru Gojo",
+      "Nobara Kugisaki"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Segas Prügelspiel von 1991 mit Axel und Blaze?",
+     "correct": "Streets of Rage",
+     "wrong": [
+      "Final Fight",
+      "Golden Axe",
+      "Double Dragon"
+     ]
+    },
+    "en": {
+     "text": "What is Sega's 1991 beat 'em up with Axel and Blaze called?",
+     "correct": "Streets of Rage",
+     "wrong": [
+      "Final Fight",
+      "Golden Axe",
+      "Double Dragon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "scifi_fantasy",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „American Gods“?",
+     "correct": "Neil Gaiman",
+     "wrong": [
+      "Terry Pratchett",
+      "China Miéville",
+      "Stephen King"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “American Gods”?",
+     "correct": "Neil Gaiman",
+     "wrong": [
+      "Terry Pratchett",
+      "China Miéville",
+      "Stephen King"
+     ]
+    }
+   }
+  },
+  {
+   "category": "coding",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Was ist ein „Heisenbug“?",
+     "correct": "Ein Fehler, der verschwindet, sobald man ihn untersucht",
+     "wrong": [
+      "Ein Fehler in Quantenrechnern",
+      "Ein Fehler in Datenbanken",
+      "Ein vorsätzlich eingebauter Fehler"
+     ]
+    },
+    "en": {
+     "text": "What is a “Heisenbug”?",
+     "correct": "A bug that disappears when you try to study it",
+     "wrong": [
+      "A bug in quantum computers",
+      "A bug in databases",
+      "A deliberately inserted bug"
+     ]
+    }
+   }
+  },
+  {
+   "category": "anime",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf „Detektiv Conan“?",
+     "correct": "Gosho Aoyama",
+     "wrong": [
+      "Eiichiro Oda",
+      "Takeshi Obata",
+      "Naoki Urasawa"
+     ]
+    },
+    "en": {
+     "text": "Who created “Detective Conan / Case Closed”?",
+     "correct": "Gosho Aoyama",
+     "wrong": [
+      "Eiichiro Oda",
+      "Takeshi Obata",
+      "Naoki Urasawa"
+     ]
+    }
+   }
+  },
+  {
+   "category": "retro_games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Held des Rollenspiels „Chrono Trigger“?",
+     "correct": "Crono",
+     "wrong": [
+      "Marle",
+      "Lucca",
+      "Frog"
+     ]
+    },
+    "en": {
+     "text": "What is the hero of the role-playing game “Chrono Trigger” called?",
+     "correct": "Crono",
+     "wrong": [
+      "Marle",
+      "Lucca",
+      "Frog"
+     ]
+    }
+   }
+  }
+ ]
+}
