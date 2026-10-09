@@ -370,6 +370,8 @@ const dict = {
     'game.resign': 'Aufgeben', 'game.resignConfirm': 'Wirklich aufgeben? Dein Gegner gewinnt.', 'game.rematch': 'Revanche', 'game.addContact': 'Als Kontakt speichern',
     'game.win': 'Du hast gewonnen!', 'game.lose': '{name} hat gewonnen.', 'game.draw': 'Unentschieden!', 'game.resigned': 'Aufgegeben', 'game.timeout': 'Zeit abgelaufen',
     'game.you': 'Du', 'game.round': 'Runde {n}', 'game.waitHint': 'Aktiviere im Profil Benachrichtigungen, dann sagen wir dir Bescheid.',
+    'welcome.title': 'Wie möchtest du heißen?', 'welcome.hint': 'Diesen Namen sehen deine Gegner. Du kannst ihn jederzeit im Profil ändern. Es ist keine Anmeldung nötig.',
+    'welcome.placeholder': 'Dein Name (2–24 Zeichen)', 'welcome.go': 'Los geht’s', 'welcome.random': 'Zufälligen Namen nehmen',
     'profile.reportBtn': 'Melde-Knopf ⚑ bei Fragen anzeigen', 'err.reports_disabled': 'Fragen melden ist auf diesem Server abgeschaltet.',
     'play.review': 'Zur Überarbeitung melden', 'review.part.question': 'Frage', 'review.part.answers': 'Antworten', 'review.kind.wrong': 'Falsch', 'review.kind.wording': 'Formulierung',
     'review.note': 'Hinweis (optional)', 'review.send': 'Melden', 'review.cancel': 'Abbrechen', 'review.sent': 'Gemeldet – danke!', 'profile.reviewer': 'Du bist Reviewer: Beim Spielen kannst du Fragen mit ✎ zur Überarbeitung melden.',
@@ -432,6 +434,8 @@ const dict = {
     'game.resign': 'Resign', 'game.resignConfirm': 'Really resign? Your opponent wins.', 'game.rematch': 'Rematch', 'game.addContact': 'Save as contact',
     'game.win': 'You won!', 'game.lose': '{name} won.', 'game.draw': "It's a draw!", 'game.resigned': 'Resigned', 'game.timeout': 'Timed out',
     'game.you': 'You', 'game.round': 'Round {n}', 'game.waitHint': 'Enable notifications in your profile and we will let you know.',
+    'welcome.title': 'What should we call you?', 'welcome.hint': 'Your opponents will see this name. You can change it any time in your profile. No sign-up needed.',
+    'welcome.placeholder': 'Your name (2–24 characters)', 'welcome.go': 'Let’s go', 'welcome.random': 'Use a random name',
     'profile.reportBtn': 'Show the report button ⚑ on questions', 'err.reports_disabled': 'Reporting questions is turned off on this server.',
     'play.review': 'Flag for revision', 'review.part.question': 'Question', 'review.part.answers': 'Answers', 'review.kind.wrong': 'Wrong', 'review.kind.wording': 'Wording',
     'review.note': 'Note (optional)', 'review.send': 'Flag', 'review.cancel': 'Cancel', 'review.sent': 'Flagged – thanks!', 'profile.reviewer': 'You are a reviewer: while playing you can flag questions for revision with ✎.',
@@ -653,12 +657,30 @@ function topbar(title, back = true, right) {
 async function boot() {
   if (!S.meta) S.meta = await api('GET', '/api/meta', undefined, { auth: false })
   if (!S.token) {
-    const r = await api('POST', '/api/players', { lang: getLang() }, { auth: false })
+    const name = await askName()
+    const r = await api('POST', '/api/players', { lang: getLang(), ...(name ? { name } : {}) }, { auth: false })
     S.token = r.token; store.set('rp.token', r.token)
   }
   try { await refreshMe(true) } catch (e) { if (e instanceof ApiError && e.status === 401) { sessionLost(); return false } throw e }
   resyncPush()
   return true
+}
+/** Erster Start: Anzeigenamen wählen (oder einen zufälligen nehmen). Ändern geht jederzeit im Profil. */
+function askName() {
+  return new Promise((resolve) => {
+    const input = h('input', { type: 'text', maxLength: 24, placeholder: t('welcome.placeholder'), autocomplete: 'nickname', 'aria-label': t('profile.name') })
+    const submit = () => {
+      const v = input.value.trim()
+      if (v.length < 2) return toast(t('err.bad_name'))
+      resolve(v)
+    }
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit() })
+    mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Rates', h('b', {}, 'paß'))),
+      h('div', { class: 'card stack' }, h('h3', {}, t('welcome.title')), h('p', { class: 'muted' }, t('welcome.hint')), input,
+        h('button', { class: 'btn primary block', onclick: submit }, t('welcome.go')),
+        h('button', { class: 'btn block', onclick: () => resolve('') }, t('welcome.random'))))
+    input.focus()
+  })
 }
 async function refreshMe(restore = false) {
   const r = await api('GET', '/api/me')

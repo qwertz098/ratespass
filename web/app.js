@@ -157,12 +157,30 @@ function topbar(title, back = true, right) {
 async function boot() {
   if (!S.meta) S.meta = await api('GET', '/api/meta', undefined, { auth: false })
   if (!S.token) {
-    const r = await api('POST', '/api/players', { lang: getLang() }, { auth: false })
+    const name = await askName()
+    const r = await api('POST', '/api/players', { lang: getLang(), ...(name ? { name } : {}) }, { auth: false })
     S.token = r.token; store.set('rp.token', r.token)
   }
   try { await refreshMe(true) } catch (e) { if (e instanceof ApiError && e.status === 401) { sessionLost(); return false } throw e }
   resyncPush()
   return true
+}
+/** Erster Start: Anzeigenamen wählen (oder einen zufälligen nehmen). Ändern geht jederzeit im Profil. */
+function askName() {
+  return new Promise((resolve) => {
+    const input = h('input', { type: 'text', maxLength: 24, placeholder: t('welcome.placeholder'), autocomplete: 'nickname', 'aria-label': t('profile.name') })
+    const submit = () => {
+      const v = input.value.trim()
+      if (v.length < 2) return toast(t('err.bad_name'))
+      resolve(v)
+    }
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit() })
+    mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Rates', h('b', {}, 'paß'))),
+      h('div', { class: 'card stack' }, h('h3', {}, t('welcome.title')), h('p', { class: 'muted' }, t('welcome.hint')), input,
+        h('button', { class: 'btn primary block', onclick: submit }, t('welcome.go')),
+        h('button', { class: 'btn block', onclick: () => resolve('') }, t('welcome.random'))))
+    input.focus()
+  })
 }
 async function refreshMe(restore = false) {
   const r = await api('GET', '/api/me')
