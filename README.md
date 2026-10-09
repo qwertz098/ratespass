@@ -77,6 +77,10 @@ Aktueller Bestand: **3178 Fragen** (davon 2986 auch auf Englisch spielbar) (`see
 
 Jeder Spieler wählt im Profil sein **Level** – Basis, Nerd (Sci-Fi & Fantasy, Programmieren & IT, Anime & Manga, Retro-Games) oder Experte (MINT & Ingenieurwesen, Geisteswissenschaften, Kunst & Literatur, Informatik) – und kann einzelne Extra-Kategorien abwählen. Im Duell zählt immer die **niedrigste Einstellung** beider Spieler (niedrigstes Level, Schnitt der aktiven Kategorien); beim Spielstart wird die Auswahl im Spiel festgehalten. Details in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
 
+### Millionen-Leiter (Solo)
+
+Quiz-Modus „Millionen-Leiter“ (Neues Spiel → Millionen-Leiter): 15 Fragen mit steigender Schwierigkeit (1–5 leicht, 6–10 mittel, 11–15 schwer), Beträge von 100 bis 1.000.000 „Ratetaler“, Sicherheitsstufen bei Frage 5 und 10, **Aussteigen** sichert den aktuellen Betrag, eine falsche Antwort wirft auf die letzte Sicherheitsstufe zurück. Zeit je Frage 30/45/60 s, vom Server überwacht; Joker gibt es bewusst (noch) nicht. Der Fragenpool folgt deiner Spielstufe und deinen Extra-Kategorien. Name und Währung sind eigene Wortschöpfungen – das Fernsehformat und seine Fragen sind geschützt und werden nicht verwendet. Code: `server/ladder.ts`, Tests: `test/ladder.test.ts`.
+
 ## Architektur
 
 ```

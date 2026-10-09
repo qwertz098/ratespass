@@ -134,3 +134,12 @@ input[type=checkbox] { width: 20px; height: 20px; margin-top: 2px; accent-color:
 
 .chipcheck { gap: 6px; padding: 6px 10px; border-radius: 999px; background: color-mix(in srgb, var(--c, #888) 14%, transparent); font-size: .85rem }
 .chipcheck input { margin: 0 }
+
+.ladder { display: flex; flex-direction: column; gap: 4px; padding: 10px }
+.lrow { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: 10px; font-weight: 600; font-variant-numeric: tabular-nums }
+.lrow .ln { width: 24px; color: var(--muted); font-size: .8rem }
+.lrow.safe { color: var(--accent) }
+.lrow.done { color: var(--muted); font-weight: 500 }
+.lrow.now { background: color-mix(in srgb, var(--accent) 16%, transparent); outline: 2px solid var(--accent) }
+.lresult { text-align: center }
+.lresult .big { font-size: 2rem; font-weight: 800 }

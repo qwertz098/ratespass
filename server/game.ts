@@ -4,6 +4,7 @@ import { createPlayer, type PlayerRow } from './auth.ts'
 import { config } from './config.ts'
 import { CATEGORIES, SERVABLE_SQL, tierOf, type Tier } from './categories.ts'
 import { effectiveFor } from './settings.ts'
+import { sweepLadders } from './ladder.ts'
 import { HttpError } from './http.ts'
 import { notifyPlayer, type PushKind } from './push.ts'
 import type { QRow } from './questions.ts'
@@ -391,6 +392,7 @@ export function listGames(me: PlayerRow) {
 
 /** Zeitüberschreitungen: Wartende Spiele verfallen, inaktive Spieler geben auf. */
 export function sweep() {
+  sweepLadders()
   tx(() => {
     const t = now()
     run("UPDATE games SET status='abandoned', turn=NULL, phase=NULL WHERE status='waiting' AND created_at<?", t - 86_400_000)

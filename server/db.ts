@@ -199,8 +199,37 @@ DROP TABLE unlock_codes;
 DROP TABLE unlocks;
 `
 
+// v6: Millionen-Leiter (Solo): 15 Stufen, Sicherheitsstufen, Aussteigen; Bestleistung je Spieler
+const SCHEMA_V6 = `
+ALTER TABLE players ADD COLUMN best_ladder INTEGER NOT NULL DEFAULT 0;
+CREATE TABLE ladders(
+  id INTEGER PRIMARY KEY,
+  player_id INTEGER NOT NULL REFERENCES players(id) ON DELETE CASCADE,
+  lang TEXT NOT NULL,
+  level TEXT NOT NULL,
+  cats TEXT NOT NULL,
+  step INTEGER NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'active',
+  prize INTEGER,
+  created_at INTEGER NOT NULL,
+  updated_at INTEGER NOT NULL
+);
+CREATE INDEX ladders_player ON ladders(player_id, status);
+CREATE TABLE ladder_steps(
+  ladder_id INTEGER NOT NULL REFERENCES ladders(id) ON DELETE CASCADE,
+  step INTEGER NOT NULL,
+  question_id INTEGER NOT NULL REFERENCES questions(id),
+  perm TEXT NOT NULL,
+  served_at INTEGER NOT NULL,
+  choice INTEGER,
+  correct INTEGER,
+  ms INTEGER,
+  PRIMARY KEY(ladder_id, step)
+);
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)

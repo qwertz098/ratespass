@@ -24,7 +24,7 @@ const DEMO = (() => {
 
   const pool = (lang) => QS.filter((q) => q[lang] && (q.r === 0 || lang === 'de'))
   const content = (q, lang) => ({ text: q[lang][0], answers: q[lang].slice(1) })
-  const profile = () => ({ ...st.me, has_account: false, username: null, reviewer: true, level: st.level ?? 'basic', disabled_cats: st.disabled ?? [] })
+  const profile = () => ({ ...st.me, has_account: false, username: null, reviewer: true, level: st.level ?? 'basic', disabled_cats: st.disabled ?? [], best_ladder: st.best ?? 0 })
   const err = (status, error, message) => ({ status, body: { error, message } })
 
   const used = (g) => new Set(g.rounds.flatMap((r) => r.qs.map((x) => x.i)))
@@ -117,6 +117,25 @@ const DEMO = (() => {
     if (g.status !== 'active' || g.turn !== 'me' || (play && g.phase !== 'play')) return err(409, 'not_your_turn')
     return null
   }
+  /* ---------- Millionen-Leiter ---------- */
+  const LPRIZES = [100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000]
+  const llimit = (step) => (step <= 5 ? 30000 : step <= 10 ? 45000 : 60000)
+  const lguar = (n) => (n >= 10 ? LPRIZES[9] : n >= 5 ? LPRIZES[4] : 0)
+  function lfinish(l, status, prize) { l.status = status; l.prize = prize; st.best = Math.max(st.best ?? 0, prize); save() }
+  function lanswer(l, step, choice) {
+    const s = l.steps[step - 1], correctIdx = s.perm.indexOf(0), correct = choice === correctIdx
+    s.choice = choice; s.correct = correct
+    if (!correct) lfinish(l, 'lost', lguar(l.answered))
+    else { l.answered = step; if (step >= 15) lfinish(l, 'won', LPRIZES[14]); else save() }
+    return { correct, correct_index: correctIdx }
+  }
+  const lview = (l) => ({
+    id: l.id, status: l.status, lang: l.lang, level: st.level ?? 'basic', answered: l.answered, current: l.status === 'active' ? l.answered + 1 : null,
+    prizes: LPRIZES, safe_steps: [5, 10], guaranteed: l.status === 'active' ? lguar(l.answered) : null,
+    banked: l.status === 'active' ? (LPRIZES[l.answered - 1] ?? 0) : null, prize: l.prize,
+    history: l.steps.filter((x) => x.choice !== undefined).map((x, i) => ({ step: i + 1, correct: !!x.correct })),
+  })
+
   function handle(method, path, body) {
     let m
     if (path === '/api/meta') return { body: { categories: ALL_CATS, tiers: Object.fromEntries(ALL_CATS.map((c) => [c, TIERS[c] ?? 'basic'])), levels: LEVELS, regions: ['global', 'dach'], reports: true, langs: [{ lang: 'de', n: pool('de').length }, { lang: 'en', n: pool('en').length }], time_limit_ms: LIMIT, rounds: 6, per_round: 3 } }
@@ -156,6 +175,43 @@ const DEMO = (() => {
     if (path.startsWith('/api/push/')) return err(400, 'bad_subscription')
     if (path === '/api/games' && method === 'GET') {
       return { body: { games: st.games.map((g) => { const v = view(g); return { id: v.id, status: v.status, lang: v.lang, round: v.round, turn: v.turn, phase: v.phase, opp: v.opp, score: v.score, winner: v.winner, updated_at: v.updated_at } }) } }
+    }
+    /* Millionen-Leiter (Solo): gleiche Regeln wie server/ladder.ts */
+    if (path === '/api/ladders' && method === 'POST') {
+      st.ladders ??= []
+      let l = st.ladders.find((x) => x.status === 'active')
+      if (!l) { l = { id: ++st.seq, status: 'active', answered: 0, prize: null, lang: body.lang === 'en' ? 'en' : 'de', steps: [] }; st.ladders.push(l); save() }
+      return { body: { id: l.id, ladder: lview(l) } }
+    }
+    if ((m = path.match(/^\/api\/ladders\/(\d+)(?:\/(\w+))?$/))) {
+      const l = (st.ladders ?? []).find((x) => x.id === Number(m[1])), act = m[2]
+      if (!l) return err(404, 'not_found')
+      if (!act) return { body: { ladder: lview(l) } }
+      if (act === 'report' || act === 'review') return { body: { ok: true } }
+      if (l.status !== 'active') return err(409, 'ladder_over')
+      const step = l.answered + 1
+      if (act === 'quit') { lfinish(l, 'quit', LPRIZES[l.answered - 1] ?? 0); return { body: { ladder: lview(l) } } }
+      if (act === 'question') {
+        let s = l.steps[step - 1]
+        if (!s) {
+          const rank = LEVELS.indexOf(st.level ?? 'basic')
+          const open = ALL_CATS.filter((c) => !TIERS[c] || (LEVELS.indexOf(TIERS[c]) <= rank && !(st.disabled ?? []).includes(c)))
+          const d = step <= 5 ? 1 : step <= 10 ? 2 : 3, used = new Set(l.steps.map((x) => x.i))
+          let c = pool(l.lang).filter((q) => open.includes(q.c) && q.d === d && !used.has(q.i))
+          if (!c.length) c = pool(l.lang).filter((q) => open.includes(q.c) && !used.has(q.i))
+          s = { i: shuffle(c)[0].i, perm: shuffle([0, 1, 2, 3]), served: Date.now() }; l.steps[step - 1] = s; save()
+        }
+        const lim = llimit(step)
+        if (Date.now() - s.served > lim + 4000) { lanswer(l, step, -1); return err(409, 'ladder_over') }
+        const q = QS[s.i], c = content(q, l.lang)
+        return { body: { step, total: 15, prize: LPRIZES[step - 1], category: q.c, text: c.text, options: s.perm.map((k) => c.answers[k]), limit_ms: lim, remaining_ms: Math.max(0, lim - (Date.now() - s.served)) } }
+      }
+      if (act === 'answer') {
+        if (body.step !== step || !l.steps[step - 1]) return err(409, 'wrong_question')
+        const s = l.steps[step - 1], choice = Date.now() - s.served > llimit(step) + 4000 ? -1 : body.choice
+        const res = lanswer(l, step, choice)
+        return { body: { ...res, explanation: null, ladder: lview(l) } }
+      }
     }
     if (path === '/api/games' && method === 'POST') return newGame(String(body.opponent || 'bot'), body.lang === 'en' ? 'en' : 'de')
     if ((m = path.match(/^\/api\/games\/(\d+)(?:\/(\w+))?$/))) {

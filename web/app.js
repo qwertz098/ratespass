@@ -136,7 +136,7 @@ async function route() {
   try {
     if (!S.me) { loading(); if (!(await boot())) return }
     if (my !== runId) return
-    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends }
+    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay }
     await (pages[page] ?? home)(arg, my)
   } catch (e) {
     if (my !== runId) return
@@ -240,6 +240,9 @@ async function newGame() {
       option(t('new.random'), t('new.randomSub'), '🎲', () => start('random')),
       option(t('new.bot'), t('new.botSub'), '🤖', () => start('bot')),
       option(t('friends.title'), t('new.inviteSub'), '🤝', () => go('#/friends'))),
+    h('h2', {}, t('ladder.title')),
+    h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
+      const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),
     h('h2', {}, t('new.questionLang')), h('div', { class: 'card' }, langSel),
     h('h2', {}, t('new.contacts')),
     S.contacts.length
@@ -367,6 +370,98 @@ async function play(id, my) {
     if (q.idx >= q.total - 1 || g.turn !== 'me' || g.status !== 'active' || g.phase !== 'play') return go('#/game/' + id)
     await sleep(50)
   }
+}
+
+/* ---------- Millionen-Leiter (Solo) ---------- */
+const money = (n) => t('ladder.money', { n: Number(n).toLocaleString(getLang()) })
+
+async function ladder(id) {
+  const { ladder: l } = await api('GET', `/api/ladders/${id}`)
+  const active = l.status === 'active'
+  const rows = [...l.prizes].map((p, i) => ({ n: i + 1, p })).reverse().map(({ n, p }) => h('div', {
+    class: 'lrow' + (active && n === l.current ? ' now' : '') + (n <= l.answered ? ' done' : '') + (l.safe_steps.includes(n) ? ' safe' : ''),
+  }, h('span', { class: 'ln' }, String(n)), h('span', { class: 'grow' }, money(p)), h('span', {}, l.safe_steps.includes(n) ? '🔒' : n <= l.answered ? '✓' : '')))
+  const result = !active ? h('div', { class: 'card stack lresult' },
+    h('h3', {}, t(l.status === 'quit' ? 'ladder.status_quit' : 'ladder.' + l.status)), h('div', { class: 'big' }, money(l.prize ?? 0)),
+    S.me.best_ladder ? h('p', { class: 'muted' }, t('ladder.best', { prize: money(Math.max(S.me.best_ladder, l.prize ?? 0)) })) : null,
+    h('button', { class: 'btn primary block', onclick: guard(async () => { const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }) }, t('ladder.again')),
+    h('button', { class: 'btn block', onclick: () => go('#/') }, t('ladder.home'))) : null
+  if (!active) await refreshMe()
+  mount(topbar(t('ladder.title'), true),
+    result,
+    active ? h('div', { class: 'card stack' },
+      h('p', { class: 'muted' }, t('ladder.rules')),
+      h('button', { class: 'btn primary block', onclick: () => go('#/lplay/' + id) }, t(l.answered ? 'ladder.continue' : 'ladder.begin', { n: l.current })),
+      l.answered ? h('button', { class: 'btn block danger', onclick: guard(async () => {
+        if (!confirm(t('ladder.quitConfirm', { prize: money(l.banked) }))) return
+        await api('POST', `/api/ladders/${id}/quit`, {}); route() }) }, t('ladder.quit', { prize: money(l.banked) })) : null) : null,
+    h('div', { class: 'card ladder' }, rows))
+}
+
+async function lplay(id, my) {
+  let raf = 0, keyHandler = null
+  const prev = cleanup
+  cleanup = () => { prev(); cancelAnimationFrame(raf); if (keyHandler) document.removeEventListener('keydown', keyHandler) }
+  const alive = () => my === runId
+  let q
+  try { q = await api('GET', `/api/ladders/${id}/question`) } catch (e) {
+    if (e.status === 409) return go('#/ladder/' + id)
+    throw e
+  }
+  if (!alive()) return
+  await new Promise((resolve) => {
+    let done = false
+    const bar = h('i')
+    const buttons = q.options.map((text, i) => h('button', { class: 'opt', onclick: () => submit(i) }, h('kbd', {}, String(i + 1)), h('span', {}, text)))
+    const feedback = h('div', { class: 'feedback' })
+    mount(
+      topbar(t('ladder.title'), true),
+      h('div', { class: 'card qcard', cat: q.category },
+        h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, t('ladder.step', { n: q.step, total: q.total }) + ' · ' + money(q.prize))),
+        h('div', { class: 'timer' }, bar), h('div', { class: 'question' }, q.text), h('div', { class: 'opts' }, buttons), feedback))
+    const deadline = performance.now() + q.remaining_ms
+    const tick = () => {
+      const left = deadline - performance.now()
+      bar.style.transform = `scaleX(${Math.max(0, left / q.limit_ms)})`
+      if (left <= 0) submit(-1); else raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    keyHandler = (e) => { const n = Number(e.key); if (n >= 1 && n <= 4) submit(n - 1) }
+    document.addEventListener('keydown', keyHandler)
+
+    async function submit(choice) {
+      if (done) return
+      done = true
+      cancelAnimationFrame(raf)
+      buttons.forEach((b) => (b.disabled = true))
+      let r
+      try { r = await api('POST', `/api/ladders/${id}/answer`, { step: q.step, choice }) } catch (e) { toast(errText(e)); return resolve() }
+      buttons[r.correct_index]?.classList.add('good')
+      if (choice >= 0 && !r.correct) buttons[choice].classList.add('bad')
+      const label = choice === -1 ? t('play.timeUp') : r.correct ? t('play.right') : t('play.wrong')
+      const showReport = S.meta?.reports !== false && store.get('rp.noReport') !== '1'
+      const report = h('button', { class: 'btn small', title: t('play.report'), 'aria-label': t('play.report'), onclick: guard(async () => {
+        await api('POST', `/api/ladders/${id}/report`, { step: q.step, reason: '' }); report.disabled = true; toast(t('play.reported')) }) }, '⚑')
+      const review = S.me?.reviewer ? h('button', { class: 'btn small', title: t('play.review'), 'aria-label': t('play.review'), onclick: () => {
+        const part = h('select', {}, ['question', 'answers'].map((v) => h('option', { value: v }, t('review.part.' + v))))
+        const kind = h('select', {}, ['wrong', 'wording'].map((v) => h('option', { value: v }, t('review.kind.' + v))))
+        const note = h('input', { type: 'text', maxLength: 300, placeholder: t('review.note') })
+        const form = h('div', { class: 'stack' }, h('div', { class: 'row' }, part, kind), note, h('div', { class: 'row' },
+          h('button', { class: 'btn small primary', onclick: guard(async () => {
+            await api('POST', `/api/ladders/${id}/review`, { step: q.step, part: part.value, kind: kind.value, note: note.value })
+            form.remove(); review.disabled = true; toast(t('review.sent')) }) }, t('review.send')),
+          h('button', { class: 'btn small', onclick: () => form.remove() }, t('review.cancel'))))
+        feedback.append(form); note.focus()
+      } }, '✎') : null
+      const over = r.ladder.status !== 'active'
+      feedback.append(h('strong', {}, label), h('span', { class: 'row' }, review, showReport ? report : null,
+        h('button', { class: 'btn small primary', onclick: () => resolve(r) }, over ? t('ladder.result') : t('play.next'))))
+      if (r.explanation) feedback.before(h('p', { class: 'muted' }, r.explanation))
+    }
+  })
+  if (keyHandler) document.removeEventListener('keydown', keyHandler)
+  if (!alive()) return
+  go('#/ladder/' + id)
 }
 
 /* ---------- Profil ---------- */

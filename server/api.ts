@@ -7,6 +7,7 @@ import {
   cleanName, createPlayer, createSession, hashPassword, randomCode, sha256, verifyPassword, type PlayerRow,
 } from './auth.ts'
 import * as game from './game.ts'
+import * as ladder from './ladder.ts'
 import {
   adminEnabled, clearFailures, closeSession, COOKIE, loginBlocked, openSession, parseCookie,
   recordFailure, sameOriginOk, sessionCookie, tokenOk, validSession,
@@ -35,7 +36,7 @@ function pickLang(want: unknown, fallback: string) {
 
 const profile = (p: PlayerRow) => ({
   ...pub(p), lang: p.lang, has_account: !!p.username, username: p.username, created_at: p.created_at, reviewer: !!p.reviewer,
-  level: p.level, disabled_cats: JSON.parse(p.disabled_cats) as string[],
+  level: p.level, disabled_cats: JSON.parse(p.disabled_cats) as string[], best_ladder: p.best_ladder,
 })
 
 /* ---------- Öffentliches ---------- */
@@ -105,6 +106,7 @@ router.delete('/api/me', (c) => {
     run('DELETE FROM transfer_codes WHERE player_id=?', p.id)
     run('DELETE FROM contacts WHERE player_id=? OR contact_id=?', p.id, p.id)
     run('DELETE FROM seen WHERE player_id=?', p.id)
+    run('DELETE FROM ladders WHERE player_id=?', p.id)
     run('DELETE FROM reports WHERE player_id=?', p.id)
     run('UPDATE reviews SET player_id=NULL WHERE player_id=?', p.id)
     run('UPDATE players SET reviewer=0 WHERE id=?', p.id)
@@ -249,6 +251,32 @@ router.post('/api/games/:id/review', (c) => {
   rateLimit(`review:${p.id}`, 120, 3_600_000)
   const questionId = game.answeredQuestionId(gid(c), p, c.body.round, c.body.idx)
   fileReview(questionId, p.id, c.body.part, c.body.kind, c.body.note)
+  return { ok: true }
+})
+
+/* ---------- Millionen-Leiter (Solo) ---------- */
+router.post('/api/ladders', (c) => {
+  const p = me(c)
+  rateLimit(`ladder:${p.id}`, 60, 3_600_000)
+  const id = ladder.startLadder(p, pickLang(c.body?.lang, p.lang))
+  return { id, ladder: ladder.getLadderView(id, p) }
+})
+router.get('/api/ladders/:id', (c) => ({ ladder: ladder.getLadderView(gid(c), me(c)) }))
+router.get('/api/ladders/:id/question', (c) => ladder.currentQuestion(gid(c), me(c)))
+router.post('/api/ladders/:id/answer', (c) => ladder.submitAnswer(gid(c), me(c), c.body.step, c.body.choice))
+router.post('/api/ladders/:id/quit', (c) => ({ ladder: ladder.quit(gid(c), me(c)) }))
+router.post('/api/ladders/:id/report', (c) => {
+  if (!config.playerReports) throw new HttpError(403, 'reports_disabled')
+  const qid = ladder.answeredQuestionId(gid(c), me(c), c.body.step)
+  run('INSERT OR IGNORE INTO reports(question_id,player_id,reason,created_at) VALUES(?,?,?,?)', qid, me(c).id, String(c.body.reason ?? '').slice(0, 200), now())
+  if (get<{ n: number }>('SELECT COUNT(*) n FROM reports WHERE question_id=?', qid)!.n >= 3) run("UPDATE questions SET status='disabled' WHERE id=? AND status='active'", qid)
+  return { ok: true }
+})
+router.post('/api/ladders/:id/review', (c) => {
+  const p = me(c)
+  if (!p.reviewer) throw new HttpError(403, 'not_reviewer')
+  rateLimit(`review:${p.id}`, 120, 3_600_000)
+  fileReview(ladder.answeredQuestionId(gid(c), p, c.body.step), p.id, c.body.part, c.body.kind, c.body.note)
   return { ok: true }
 })
 
