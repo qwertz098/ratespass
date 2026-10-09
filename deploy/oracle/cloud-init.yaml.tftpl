@@ -1,0 +1,142 @@
+#cloud-config
+# Richtet beim ersten Start ein: Docker, Ratespaß (Image aus ghcr.io) und Caddy (automatisches HTTPS), dazu tägliche Backups.
+# Wird von Terraform per templatefile() gerendert: Ausdrücke in geschweiften Klammern mit vorangestelltem Dollarzeichen füllt Terraform,
+# doppeltes Dollarzeichen davor bleibt als Platzhalter für Docker Compose stehen.
+package_update: true
+package_upgrade: true
+packages:
+  - docker.io
+  - docker-compose-v2
+  - unattended-upgrades
+
+write_files:
+  - path: /opt/ratespass/.env
+    owner: root:root
+    permissions: "0600"
+    content: |
+      DOMAIN=${domain}
+      ADMIN_TOKEN=${admin_token}
+      VAPID_SUBJECT=${vapid_subject}
+
+  - path: /opt/ratespass/docker-compose.yml
+    owner: root:root
+    permissions: "0644"
+    content: |
+      services:
+        ratespass:
+          image: ${image}
+          container_name: ratespass
+          restart: unless-stopped
+          environment:
+            ADMIN_TOKEN: $${ADMIN_TOKEN}
+            VAPID_SUBJECT: $${VAPID_SUBJECT}
+            TRUST_PROXY: "1"
+            PROXY_HOPS: "1"
+          volumes:
+            - ratespass-data:/data
+        caddy:
+          image: caddy:2
+          container_name: caddy
+          restart: unless-stopped
+          ports:
+            - "80:80"
+            - "443:443"
+          environment:
+            DOMAIN: $${DOMAIN}
+          volumes:
+            - ./Caddyfile:/etc/caddy/Caddyfile:ro
+            - caddy-data:/data
+          depends_on:
+            - ratespass
+      volumes:
+        ratespass-data:
+        caddy-data:
+
+  - path: /opt/ratespass/Caddyfile
+    owner: root:root
+    permissions: "0644"
+    content: |
+      {$DOMAIN} {
+      	encode zstd gzip
+      	reverse_proxy ratespass:3000
+      }
+
+  - path: /usr/local/bin/ratespass-backup
+    owner: root:root
+    permissions: "0755"
+    content: |
+      #!/bin/sh
+      # Konsistente Sicherung (Datenbank + Push-Schlüssel) nach /data/backup im Container-Volume; 14 Tage aufbewahren.
+      set -eu
+      docker exec ratespass node --disable-warning=ExperimentalWarning tools/backup.ts /data/backup
+      docker exec ratespass sh -c 'find /data/backup -type f -mtime +14 -delete'
+
+  - path: /usr/local/bin/ratespass-update
+    owner: root:root
+    permissions: "0755"
+    content: |
+      #!/bin/sh
+      # Neuestes Image ziehen und Container neu starten (Daten bleiben im Volume).
+      set -eu
+      cd /opt/ratespass
+      docker compose pull --quiet
+      docker compose up -d
+      docker image prune -f
+
+  - path: /etc/systemd/system/ratespass-backup.service
+    permissions: "0644"
+    content: |
+      [Unit]
+      Description=Ratespaß Backup
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/local/bin/ratespass-backup
+
+  - path: /etc/systemd/system/ratespass-backup.timer
+    permissions: "0644"
+    content: |
+      [Unit]
+      Description=Tägliches Ratespaß-Backup
+      [Timer]
+      OnCalendar=*-*-* 03:30:00
+      RandomizedDelaySec=900
+      Persistent=true
+      [Install]
+      WantedBy=timers.target
+
+  - path: /etc/systemd/system/ratespass-update.service
+    permissions: "0644"
+    content: |
+      [Unit]
+      Description=Ratespaß Update
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/local/bin/ratespass-update
+
+  - path: /etc/systemd/system/ratespass-update.timer
+    permissions: "0644"
+    content: |
+      [Unit]
+      Description=Wöchentliches Ratespaß-Update
+      [Timer]
+      OnCalendar=Sun *-*-* 04:30:00
+      RandomizedDelaySec=1800
+      Persistent=true
+      [Install]
+      WantedBy=timers.target
+
+runcmd:
+  # Die Ubuntu-Images von Oracle blockieren eingehenden Verkehr außer SSH auch in der Instanz-Firewall (iptables).
+  - [sh, -c, "iptables -C INPUT -p tcp -m multiport --dports 80,443 -j ACCEPT 2>/dev/null || iptables -I INPUT 1 -p tcp -m multiport --dports 80,443 -j ACCEPT"]
+  - [sh, -c, "if command -v netfilter-persistent >/dev/null 2>&1; then netfilter-persistent save; fi"]
+  - systemctl enable --now docker
+  - usermod -aG docker ubuntu
+%{ if ghcr_token != "" ~}
+  - [sh, -c, "echo '${ghcr_token}' | docker login ghcr.io -u '${ghcr_user}' --password-stdin"]
+%{ endif ~}
+  - [sh, -c, "cd /opt/ratespass && docker compose pull && docker compose up -d"]
+  - systemctl daemon-reload
+  - systemctl enable --now ratespass-backup.timer
+%{ if auto_update ~}
+  - systemctl enable --now ratespass-update.timer
+%{ endif ~}

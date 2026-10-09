@@ -33,7 +33,7 @@ npm run check        # Typprüfung
 
 ## Online stellen
 
-GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Varianten (eigener Rechner + Cloudflare Tunnel, Oracle-VM, Image in der GitHub Container Registry) steht in [`docs/DEPLOY.md`](docs/DEPLOY.md). Für **Nginx Proxy Manager** gibt es `docker-compose.npm.yml` (Abschnitt C).
+GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Varianten (eigener Rechner + Cloudflare Tunnel, Oracle-VM, Image in der GitHub Container Registry) steht in [`docs/DEPLOY.md`](docs/DEPLOY.md). Für **Nginx Proxy Manager** gibt es `docker-compose.npm.yml` (Abschnitt C). Für eine Gratis-VM bei **Oracle Cloud** gibt es ein Terraform-Paket in [`deploy/oracle/`](deploy/oracle/README.md).
 
 ## Absicherung des Admin-Bereichs (`/admin`)
 
