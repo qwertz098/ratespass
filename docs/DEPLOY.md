@@ -11,7 +11,7 @@
 | | |
 |---|---|
 | RAM | gemessen ca. 90 MB (Node 22, nach längeren Testläufen) |
-| Speicher | SQLite-Datei (aktuell ~1 MB mit 756 Fragen) + VAPID-Schlüssel in `/data` – **muss dauerhaft sein** |
+| Speicher | SQLite-Datei (aktuell ~1,5 MB mit 1156 Fragenzeilen) + VAPID-Schlüssel in `/data` – **muss dauerhaft sein** |
 | HTTPS | **Pflicht** für PWA-Installation, Push und Kamera-Scan (außer `localhost`) |
 | Netz | ausgehend HTTPS zu den Push-Diensten (FCM, Mozilla, Apple, Microsoft) |
 
