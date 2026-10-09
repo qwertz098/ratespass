@@ -1,6 +1,8 @@
 /* Demo-Server im Browser: bildet die API von Ratespaß nach (Spielregeln wie in server/game.ts, Bot als Gegner). */
 const DEMO = (() => {
   const CATS = ['general', 'geography', 'history', 'science', 'nature', 'sports', 'film_tv', 'music', 'literature', 'art', 'games', 'tech']
+  const TIERS = { scifi_fantasy: 'nerd', coding: 'nerd', anime: 'nerd', retro_games: 'nerd' } // alle anderen: basic
+  const ALL_CATS = [...CATS, ...Object.keys(TIERS)]
   const SKILL = { 1: 0.85, 2: 0.65, 3: 0.45 }
   const LIMIT = 20000
   const rnd = (n) => Math.floor(Math.random() * n)
@@ -21,15 +23,17 @@ const DEMO = (() => {
 
   const pool = (lang) => QS.filter((q) => q[lang] && (q.r === 0 || lang === 'de'))
   const content = (q, lang) => ({ text: q[lang][0], answers: q[lang].slice(1) })
-  const profile = () => ({ ...st.me, has_account: false, username: null, reviewer: true })
+  const profile = () => ({ ...st.me, has_account: false, username: null, reviewer: true, tiers: ['basic', ...(st.tiers ?? [])] })
   const err = (status, error, message) => ({ status, body: { error, message } })
 
   const used = (g) => new Set(g.rounds.flatMap((r) => r.qs.map((x) => x.i)))
   function categoryOptions(g) {
     const u = used(g), p = pool(g.lang)
-    let ok = CATS.filter((c) => p.filter((q) => q.c === c && !u.has(q.i)).length >= 3)
-    if (!ok.length) ok = CATS.filter((c) => p.filter((q) => q.c === c).length >= 3)
-    return shuffle(ok).slice(0, 3)
+    const open = ALL_CATS.filter((c) => !TIERS[c] || (st.tiers ?? []).includes(TIERS[c]))
+    let ok = open.filter((c) => p.filter((q) => q.c === c && !u.has(q.i)).length >= 3)
+    if (!ok.length) ok = open.filter((c) => p.filter((q) => q.c === c).length >= 3)
+    const sp = shuffle(ok.filter((c) => TIERS[c]))[0] // eine freigeschaltete Nerd-Kategorie wird immer mit angeboten
+    return shuffle([...(sp ? [sp] : []), ...shuffle(ok.filter((c) => c !== sp))].slice(0, 3))
   }
   function selectQuestions(g, cat) {
     const u = used(g), p = pool(g.lang).filter((q) => q.c === cat)
@@ -113,8 +117,12 @@ const DEMO = (() => {
   }
   function handle(method, path, body) {
     let m
-    if (path === '/api/meta') return { body: { categories: CATS, regions: ['global', 'dach'], reports: true, langs: [{ lang: 'de', n: pool('de').length }, { lang: 'en', n: pool('en').length }], time_limit_ms: LIMIT, rounds: 6, per_round: 3 } }
+    if (path === '/api/meta') return { body: { categories: ALL_CATS, tiers: Object.fromEntries(ALL_CATS.map((c) => [c, TIERS[c] ?? 'basic'])), regions: ['global', 'dach'], reports: true, langs: [{ lang: 'de', n: pool('de').length }, { lang: 'en', n: pool('en').length }], time_limit_ms: LIMIT, rounds: 6, per_round: 3 } }
     if (path === '/api/players' && method === 'POST') { if (body?.name) st.me.name = String(body.name).slice(0, 24); if (body?.lang) st.me.lang = body.lang; save(); return { body: { token: 'demo-token', player: profile() } } }
+    if (path === '/api/unlock' && method === 'POST') { // Demo: Code NERD schaltet die Nerd-Kategorien frei
+      if (String(body?.code ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '') !== 'NERD') return err(404, 'bad_unlock_code')
+      st.tiers = [...new Set([...(st.tiers ?? []), 'nerd'])]; save(); return { body: { tier: 'nerd', tiers: ['basic', ...st.tiers] } }
+    }
     if (path === '/api/me' && method === 'GET') return { body: { player: profile(), contacts: st.contacts } }
     if (path === '/api/me' && method === 'PATCH') {
       if (body.name !== undefined) { const n = String(body.name).trim(); if (n.length < 2 || n.length > 24) return err(400, 'bad_name'); st.me.name = n }

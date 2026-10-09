@@ -35,7 +35,7 @@ Nicht erlaubt: Fragen aus kommerziellen Quiz-Apps (auch dem Original-Quizduell),
 }
 ```
 
-- `category`: `general geography history science nature sports film_tv music literature art games tech`
+- `category`: Basis (für alle): `general geography history science nature sports film_tv music literature art games tech` · Nerd (freischaltbar): `scifi_fantasy coding anime retro_games`. Stufen und Kategorien stehen in `server/categories.ts` (`CATEGORY_TIERS`).
 - `difficulty`: 1 leicht, 2 mittel, 3 schwer
 - Sprachen = beliebige ISO-Codes in `i18n`; eine Frage kann in mehreren Sprachen auf einmal kommen. Übersetzungen existierender Fragen: Eintrag mit `group` (statt Kategorie/Lizenz – diese werden geerbt).
 - Prüfregeln: Fragetext 8–300 Zeichen; genau 1 richtige + 3 falsche Antworten, je ≤ 80 Zeichen, paarweise verschieden; keine Steuerzeichen. Duplikate (gleicher normalisierter Text pro Sprache) werden übersprungen.
@@ -45,6 +45,14 @@ Nicht erlaubt: Fragen aus kommerziellen Quiz-Apps (auch dem Original-Quizduell),
 npm run import -- batches/original-001.json --dry-run   # prüfen
 # danach Datei committen; beim nächsten Start importiert der Server sie automatisch
 ```
+
+## Nerd- und Experten-Kategorien (Freischaltung)
+
+- Jede Kategorie gehört zu einer Stufe: `basic` (für alle), `nerd`, `expert` (bisher ohne Kategorien; neue Experten-Kategorien = Eintrag in `CATEGORY_TIERS` + `cat.*`-Texte + Farbe in `web/style.css`).
+- Wer eine Stufe freigeschaltet hat, bekommt deren Kategorien bei der Rundenwahl angeboten (mindestens eine ist immer dabei); die Mitspielerin / der Mitspieler spielt die gewählte Kategorie auch ohne eigene Freischaltung mit.
+- Freischalten: **Code** (Admin → Tab „Freischaltung“ erzeugt Codes mit Einlösungen/Ablauf, auch als Link `/#/unlock/CODE`; Spieler geben ihn im Profil unter „Nerd- & Experten-Kategorien“ ein) oder **direkt** durch den Admin per Freundescode des Spielers.
+- Fragen für diese Kategorien: gleiche Regeln wie überall (Region, Lizenz, Prüfregeln). `test/batches.test.ts` verlangt je Sprache mindestens 40 ausspielbare Fragen pro Kategorie, auch für Nerd-Kategorien.
+- Quellenlage: Fragen aus „Wer wird Millionär?“ o. Ä. sind nicht frei lizenziert und tabu; geeignet sind eigene Fragen, Open Trivia DB (CC BY-SA 4.0) und Wikidata (CC0).
 
 ## Workflow „200er-Batch auf Abruf“
 

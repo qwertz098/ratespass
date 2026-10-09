@@ -2,6 +2,11 @@
 export const dict = {
   de: {
     'app.name': 'Ratespaß', 'lang.name': 'Deutsch',
+    'cat.scifi_fantasy': 'Sci-Fi & Fantasy', 'cat.coding': 'Programmieren & IT', 'cat.anime': 'Anime & Manga', 'cat.retro_games': 'Retro-Games',
+    'tier.nerd': 'Nerd', 'tier.expert': 'Experte', 'tier.basic': 'Basis',
+    'unlock.title': 'Nerd- & Experten-Kategorien', 'unlock.info': 'Spezialthemen sind gesperrt. Mit einem Freischalt-Code (oder Link) bekommst du sie als Kategorie-Auswahl, wenn du dran bist.',
+    'unlock.placeholder': 'Freischalt-Code', 'unlock.use': 'Einlösen', 'unlock.redeeming': 'Code wird eingelöst …', 'unlock.done': '{tier}-Kategorien freigeschaltet!',
+    'err.bad_unlock_code': 'Freischalt-Code ungültig, abgelaufen oder aufgebraucht.',
     'cat.general': 'Allgemeinwissen', 'cat.geography': 'Geografie', 'cat.history': 'Geschichte', 'cat.science': 'Wissenschaft',
     'cat.nature': 'Natur & Tiere', 'cat.sports': 'Sport', 'cat.film_tv': 'Film & TV', 'cat.music': 'Musik',
     'cat.literature': 'Literatur', 'cat.art': 'Kunst & Kultur', 'cat.games': 'Spiele', 'cat.tech': 'Technik',
@@ -66,6 +71,11 @@ export const dict = {
   },
   en: {
     'app.name': 'Ratespaß', 'lang.name': 'English',
+    'cat.scifi_fantasy': 'Sci-Fi & Fantasy', 'cat.coding': 'Coding & IT', 'cat.anime': 'Anime & Manga', 'cat.retro_games': 'Retro Games',
+    'tier.nerd': 'Nerd', 'tier.expert': 'Expert', 'tier.basic': 'Basic',
+    'unlock.title': 'Nerd & Expert categories', 'unlock.info': 'Special topics are locked. Enter an unlock code (or open its link) to get them as category choices when it is your turn.',
+    'unlock.placeholder': 'Unlock code', 'unlock.use': 'Redeem', 'unlock.redeeming': 'Redeeming code …', 'unlock.done': '{tier} categories unlocked!',
+    'err.bad_unlock_code': 'Unlock code invalid, expired or used up.',
     'cat.general': 'General Knowledge', 'cat.geography': 'Geography', 'cat.history': 'History', 'cat.science': 'Science',
     'cat.nature': 'Nature & Animals', 'cat.sports': 'Sports', 'cat.film_tv': 'Film & TV', 'cat.music': 'Music',
     'cat.literature': 'Literature', 'cat.art': 'Art & Culture', 'cat.games': 'Games', 'cat.tech': 'Technology',

@@ -41,6 +41,8 @@ async function load() {
       list.push(...questions.map((q) => editCard(q, { flag: true })))
     } else if (status === 'reviewers') {
       list.push(await reviewersCard())
+    } else if (status === 'unlocks') {
+      list.push(await unlocksCard())
     } else {
       const { questions } = await call('GET', `/api/admin/queue?status=${status}`)
       list.push(...questions.map(card))
@@ -114,6 +116,35 @@ async function reviewersCard() {
       el('button', { className: 'btn small danger', textContent: 'Entfernen', onclick: guarded(async () => {
         await call('DELETE', `/api/admin/reviewers/${r.public_id}`); toast('Entfernt'); load() }) }))),
     reviewers.length ? null : el('div', { className: 'empty', textContent: 'Noch keine Reviewer' }))
+}
+
+const TIER_LABEL = { nerd: 'Nerd', expert: 'Experte' }
+async function unlocksCard() {
+  const { codes } = await call('GET', '/api/admin/unlock-codes')
+  const tier = el('select', {}, Object.entries(TIER_LABEL).map(([v, l]) => el('option', { value: v }, l)))
+  const max = el('input', { type: 'number', min: 1, max: 10000, value: 1, title: 'Wie oft einlösbar' })
+  const days = el('input', { type: 'number', min: 0, value: 0, title: 'Gültig für Tage (0 = unbegrenzt)' })
+  const note = el('input', { type: 'text', placeholder: 'Notiz (wer / wofür)', maxLength: 80 })
+  const pid = el('input', { type: 'text', placeholder: 'Freundescode des Spielers', maxLength: 12, autocapitalize: 'characters' })
+  const ptier = el('select', {}, Object.entries(TIER_LABEL).map(([v, l]) => el('option', { value: v }, l)))
+  const link = (c) => `${location.origin}/#/unlock/${c}`
+  return el('div', { className: 'stack' },
+    el('div', { className: 'card stack' },
+      el('p', { className: 'hint', textContent: 'Freischalt-Codes für Nerd- bzw. Experten-Kategorien. Spieler lösen sie im Profil ein oder öffnen den Link. „Einlösungen“ = wie viele Personen den Code nutzen dürfen; „Tage“ 0 = unbegrenzt gültig.' }),
+      el('div', { className: 'row wrap' }, tier, el('label', {}, 'Einlösungen ', max), el('label', {}, 'Tage ', days)), note,
+      el('button', { className: 'btn small primary', textContent: 'Code erzeugen', onclick: guarded(async () => {
+        const r = await call('POST', '/api/admin/unlock-codes', { tier: tier.value, max_uses: Number(max.value), days: Number(days.value), note: note.value })
+        try { await navigator.clipboard.writeText(link(r.code)) } catch {}
+        toast('Code ' + r.code + ' erzeugt (Link kopiert)'); load() }) })),
+    el('div', { className: 'card stack' }, el('div', { className: 'hint', textContent: 'Direkt einem Spieler freischalten' }),
+      el('div', { className: 'row' }, pid, ptier, el('button', { className: 'btn small', textContent: 'Freischalten', onclick: guarded(async () => {
+        await call('POST', '/api/admin/unlocks', { public_id: pid.value, tier: ptier.value }); toast('Freigeschaltet'); pid.value = '' }) }))),
+    ...codes.map((c) => el('div', { className: 'card row wrap' },
+      el('span', { className: 'badge', textContent: TIER_LABEL[c.tier] ?? c.tier }),
+      el('code', { className: 'grow', textContent: `${c.code} · ${c.uses}/${c.max_uses}${c.expires_at ? ' · bis ' + new Date(c.expires_at).toLocaleDateString() : ''}${c.note ? ' · ' + c.note : ''}` }),
+      el('button', { className: 'btn small', textContent: 'Link kopieren', onclick: guarded(async () => { await navigator.clipboard.writeText(link(c.code)); toast('Link kopiert') }) }),
+      el('button', { className: 'btn small danger', textContent: 'Löschen', onclick: guarded(async () => { await call('DELETE', `/api/admin/unlock-codes/${c.code}`); load() }) }))),
+    codes.length ? null : el('div', { className: 'empty', textContent: 'Noch keine Codes' }))
 }
 
 function card(q) {

@@ -65,13 +65,17 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 
 ## Klickbare Demo
 
-`npm run build:demo` baut `demo/demo.html`: eine einzige Datei mit der echten Oberfläche (`web/`), allen Fragen und einem Mini-Server im Browser (`demo/mock.js`, Bot-Gegner, Daten nur im Browser). Sie lässt sich lokal im Browser öffnen oder als Claude-Artifact veröffentlichen. Nach Änderungen an `web/` oder den Batches neu bauen; der Mini-Server bildet die API nach und muss bei neuen Endpunkten ergänzt werden.
+`npm run build:demo` baut `demo/demo.html`: eine einzige Datei mit der echten Oberfläche (`web/`), allen Fragen und einem Mini-Server im Browser (`demo/mock.js`, Bot-Gegner, Daten nur im Browser). Sie lässt sich lokal im Browser öffnen oder als Claude-Artifact veröffentlichen. Nach Änderungen an `web/` oder den Batches neu bauen; der Mini-Server bildet die API nach und muss bei neuen Endpunkten ergänzt werden. In der Demo schaltet der Code `NERD` (Profil → „Nerd- & Experten-Kategorien“) die Nerd-Kategorien frei.
 
 ## Fragen
 
 Beim Start werden alle neuen Dateien aus `batches/` importiert (idempotent, dedupliziert, Lizenz geprüft). Neue Batches = Datei ablegen, Container neu starten. Freigegebene Community-Fragen lassen sich per `npm run export:community` (oder `/admin` → „Batch exportieren“) als Batch ins Repo zurückschreiben. Details, Workflow für „200er-Batches auf Abruf“ und die **Lizenzregeln** stehen in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
 
-Aktueller Bestand: **2578 Fragen** (davon 2386 auch auf Englisch spielbar) (`seed-000` 72, `original-001` 200, `original-002` 106, `original-003` 200, `original-004` 200, `original-005` 200, `original-006` 200, `original-007` 200, `original-008` 200, `original-009` 200, `original-010` 200, `original-011` 200, `original-012` 200, `original-013` 200), selbst formuliert, CC BY-SA 4.0, über alle 12 Kategorien und Schwierigkeitsgrade verteilt; Englisch bekommt nur *globale* Fragen, rein deutschsprachig relevante (`region: dach`) laufen nur auf Deutsch. Zielbestand 4000 folgt in weiteren Batches; `test/batches.test.ts` prüft bei jedem Lauf alle Dateien auf Format, Lizenz und Dubletten.
+Aktueller Bestand: **2778 Fragen** (davon 2586 auch auf Englisch spielbar) (`seed-000` 72, `original-001` 200, `original-002` 106, `original-003` 200, `original-004` 200, `original-005` 200, `original-006` 200, `original-007` 200, `original-008` 200, `original-009` 200, `original-010` 200, `original-011` 200, `original-012` 200, `original-013` 200, `original-014` 200 Nerd-Fragen), selbst formuliert, CC BY-SA 4.0, über 12 Basis- und 4 Nerd-Kategorien und alle Schwierigkeitsgrade verteilt; Englisch bekommt nur *globale* Fragen, rein deutschsprachig relevante (`region: dach`) laufen nur auf Deutsch. Zielbestand 4000 folgt in weiteren Batches; `test/batches.test.ts` prüft bei jedem Lauf alle Dateien auf Format, Lizenz und Dubletten.
+
+### Nerd- und Experten-Kategorien
+
+Spezialthemen (Sci-Fi & Fantasy, Programmieren & IT, Anime & Manga, Retro-Games) sind gesperrt, bis ein Spieler sie freischaltet: per Code/Link (`/#/unlock/CODE`, erzeugt im Admin-Tab „Freischaltung“) oder direkt durch den Admin. Details in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
 
 ## Architektur
 

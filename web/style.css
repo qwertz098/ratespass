@@ -11,6 +11,7 @@
 [data-cat="general"] { --c: #6366f1 } [data-cat="geography"] { --c: #0ea5a4 } [data-cat="history"] { --c: #b45309 }
 [data-cat="science"] { --c: #2563eb } [data-cat="nature"] { --c: #16a34a } [data-cat="sports"] { --c: #ea580c }
 [data-cat="film_tv"] { --c: #db2777 } [data-cat="music"] { --c: #9333ea } [data-cat="literature"] { --c: #a16207 }
+[data-cat="scifi_fantasy"] { --c: #7c3aed } [data-cat="coding"] { --c: #059669 } [data-cat="anime"] { --c: #f43f5e } [data-cat="retro_games"] { --c: #d97706 }
 [data-cat="art"] { --c: #e11d48 } [data-cat="games"] { --c: #0891b2 } [data-cat="tech"] { --c: #475569 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }

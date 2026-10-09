@@ -167,8 +167,28 @@ CREATE TABLE edits(
 );
 `
 
+// v4: freischaltbare Kategorie-Stufen (Nerd/Experte): Codes und pro Spieler freigeschaltete Stufen
+const SCHEMA_V4 = `
+CREATE TABLE unlock_codes(
+  code TEXT PRIMARY KEY,
+  tier TEXT NOT NULL,
+  max_uses INTEGER NOT NULL DEFAULT 1,
+  uses INTEGER NOT NULL DEFAULT 0,
+  note TEXT NOT NULL DEFAULT '',
+  created_at INTEGER NOT NULL,
+  expires_at INTEGER
+);
+CREATE TABLE unlocks(
+  player_id INTEGER NOT NULL REFERENCES players(id) ON DELETE CASCADE,
+  tier TEXT NOT NULL,
+  via TEXT NOT NULL,
+  created_at INTEGER NOT NULL,
+  PRIMARY KEY(player_id, tier)
+);
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)

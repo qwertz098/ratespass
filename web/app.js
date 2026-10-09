@@ -136,7 +136,7 @@ async function route() {
   try {
     if (!S.me) { loading(); if (!(await boot())) return }
     if (my !== runId) return
-    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends }
+    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, unlock }
     await (pages[page] ?? home)(arg, my)
   } catch (e) {
     if (my !== runId) return
@@ -393,6 +393,15 @@ async function adoptToken(token) {
   toast(t('profile.saved')); go('#/')
 }
 
+function unlockCard() {
+  const input = h('input', { type: 'text', maxLength: 12, autocapitalize: 'characters', placeholder: t('unlock.placeholder') })
+  const open = (S.me.tiers ?? []).filter((x) => x !== 'basic')
+  return [h('h2', {}, t('unlock.title')),
+    h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('unlock.info')),
+      open.length ? h('div', { class: 'row wrap' }, open.map((x) => h('span', { class: 'badge good' }, '✓ ' + t('tier.' + x)))) : null,
+      h('div', { class: 'row' }, input, h('button', { class: 'btn', onclick: guard(async () => { await redeemUnlock(input.value); route() }) }, t('unlock.use'))))]
+}
+
 async function profile() {
   const p = S.me
   const name = h('input', { type: 'text', value: p.name, maxLength: 24 })
@@ -424,6 +433,7 @@ async function profile() {
     S.meta?.reports !== false ? h('label', { class: 'row' }, h('input', { type: 'checkbox', checked: store.get('rp.noReport') !== '1',
       onchange: (e) => { e.target.checked ? store.del('rp.noReport') : store.set('rp.noReport', '1') } }), h('span', { class: 'hint' }, t('profile.reportBtn'))) : null,
     p.reviewer ? h('p', { class: 'hint' }, t('profile.reviewer')) : null,
+    unlockCard(),
     h('h2', {}, t('profile.code')),
     h('div', { class: 'card stack' }, h('div', { class: 'code' }, p.public_id), h('button', { class: 'btn block', onclick: () => share(inviteUrl(), t('app.name')) }, '🔗 ' + t('profile.share'))),
     h('h2', {}, t('profile.contacts')), contacts,
@@ -569,6 +579,18 @@ async function invite(code) {
     who.public_id === S.me.public_id ? null : h('button', { class: 'btn primary block', onclick: guard(async () => {
       await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe()
       const r = await api('POST', '/api/games', { opponent: who.public_id, lang: gameLang() }); go('#/game/' + r.id) }) }, t('invite.accept'))))
+}
+
+/* ---------- Nerd-/Experten-Kategorien freischalten ---------- */
+async function redeemUnlock(code) {
+  const r = await api('POST', '/api/unlock', { code })
+  S.me.tiers = r.tiers
+  toast(t('unlock.done', { tier: t('tier.' + r.tier) }))
+}
+async function unlock(code) {
+  mount(topbar(t('unlock.title')), h('div', { class: 'card stack' }, h('p', {}, t('unlock.redeeming'))))
+  await redeemUnlock(code || '')
+  go('#/')
 }
 
 /* ---------- Frage einreichen ---------- */

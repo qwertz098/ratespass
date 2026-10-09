@@ -2,7 +2,8 @@ import crypto from 'node:crypto'
 import { all, get, run, tx, now } from './db.ts'
 import { createPlayer, type PlayerRow } from './auth.ts'
 import { config } from './config.ts'
-import { SERVABLE_SQL } from './categories.ts'
+import { SERVABLE_SQL, tierOf } from './categories.ts'
+import { openCategories } from './unlocks.ts'
 import { HttpError } from './http.ts'
 import { notifyPlayer, type PushKind } from './push.ts'
 import type { QRow } from './questions.ts'
@@ -47,7 +48,11 @@ export function ensureBot(): number {
 }
 
 /** Kategorien mit genug noch nicht in diesem Spiel verwendeten Fragen; sonst (kleiner Pool) alle mit genug Fragen. */
-function categoriesFor(g: GameRow): string[] {
+function categoriesFor(g: GameRow, picker: number): string[] {
+  const open = openCategories(picker)
+  return categoriesPool(g).filter((c) => open.has(c))
+}
+function categoriesPool(g: GameRow): string[] {
   const fresh = all<{ category: string }>(
     `SELECT category FROM questions WHERE lang=? AND status='active' AND ${SERVABLE_SQL}
        AND group_id NOT IN (SELECT q.group_id FROM round_questions rq JOIN questions q ON q.id=rq.question_id WHERE rq.game_id=?)
@@ -57,11 +62,19 @@ function categoriesFor(g: GameRow): string[] {
     `SELECT category FROM questions WHERE lang=? AND status='active' AND ${SERVABLE_SQL} GROUP BY category HAVING COUNT(*)>=?`, g.lang, PER_ROUND).map((r) => r.category)
 }
 
+/** Drei zufällige Kategorien; ist eine freigeschaltete Nerd-/Experten-Kategorie dabei, ist mindestens eine davon im Angebot. */
+function pickOptions(cats: string[]): string[] {
+  const mixed = shuffle(cats)
+  const special = mixed.find((c) => tierOf(c) !== 'basic')
+  const rest = mixed.filter((c) => c !== special)
+  return shuffle([...(special ? [special] : []), ...rest].slice(0, 3))
+}
+
 function startRound(g: GameRow, n: number) {
-  const cats = categoriesFor(g)
-  if (!cats.length) throw new HttpError(503, 'no_questions')
   const picker = n % 2 === 1 ? g.p1 : g.p2!
-  run('INSERT INTO rounds(game_id,n,picker,options) VALUES(?,?,?,?)', g.id, n, picker, JSON.stringify(shuffle(cats).slice(0, 3)))
+  const cats = categoriesFor(g, picker)
+  if (!cats.length) throw new HttpError(503, 'no_questions')
+  run('INSERT INTO rounds(game_id,n,picker,options) VALUES(?,?,?,?)', g.id, n, picker, JSON.stringify(pickOptions(cats)))
   run("UPDATE games SET round=?, turn=?, phase='pick', updated_at=? WHERE id=?", n, picker, now(), g.id)
 }
 
