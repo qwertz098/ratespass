@@ -146,11 +146,6 @@ input[type=checkbox] { width: 20px; height: 20px; margin-top: 2px; accent-color:
 
 .rank { font-weight: 800; color: var(--accent); min-width: 28px }
 
-details.more { margin-top: 18px }
-details.more > summary { cursor: pointer; color: var(--muted); font-weight: 600; padding: 10px 2px; list-style-position: inside }
-details.more[open] > summary { color: var(--text) }
-details.more .stack { margin-top: 4px }
-
 table.stat { border-collapse: collapse; width: 100%; font-size: .85rem; font-variant-numeric: tabular-nums }
 table.stat th, table.stat td { padding: 6px 8px; text-align: right; border-bottom: 1px solid var(--line) }
 table.stat th:first-child, table.stat td:first-child { text-align: left }

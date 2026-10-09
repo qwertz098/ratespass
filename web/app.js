@@ -244,18 +244,16 @@ async function newGame() {
       option(t('new.random'), t('new.randomSub'), '🎲', () => start('random')),
       option(t('new.bot'), t('new.botSub'), '🤖', () => start('bot')),
       option(t('friends.title'), t('new.inviteSub'), '🤝', () => go('#/friends'))),
-    h('h2', {}, t('new.questionLang')), h('div', { class: 'card' }, langSel),
-    // Zusatzmodi bleiben sichtbar, treten aber hinter das Duell zurück
-    h('details', { class: 'more' }, h('summary', {}, t('new.moreModes')),
-      h('div', { class: 'stack' },
-        h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
-          const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),
-        h('h2', {}, t('room.multi')),
-        h('div', { class: 'list' },
-          ['quiz', 'ladder'].map((m) => option(modeName(m), t('room.sub.' + m), m === 'ladder' ? '💎' : '👥', guard(async () => {
-            const r = await api('POST', '/api/rooms', { mode: m, lang: gameLang() }); go('#/room/' + r.id) })))),
-        h('div', { class: 'card' }, h('label', { class: 'field' }, t('room.codeLabel'), h('div', { class: 'row' }, roomCode,
-          h('button', { class: 'btn', onclick: guard(async () => joinRoom(roomCode.value)) }, t('room.join'))))))))
+    h('h2', {}, t('ladder.title')),
+    h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
+      const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),
+    h('h2', {}, t('room.multi')),
+    h('div', { class: 'list' },
+      ['quiz', 'ladder'].map((m) => option(modeName(m), t('room.sub.' + m), m === 'ladder' ? '💎' : '👥', guard(async () => {
+        const r = await api('POST', '/api/rooms', { mode: m, lang: gameLang() }); go('#/room/' + r.id) })))),
+    h('div', { class: 'card' }, h('label', { class: 'field' }, t('room.codeLabel'), h('div', { class: 'row' }, roomCode,
+      h('button', { class: 'btn', onclick: guard(async () => joinRoom(roomCode.value)) }, t('room.join'))))),
+    h('h2', {}, t('new.questionLang')), h('div', { class: 'card' }, langSel))
 }
 const langName = (code) => { try { return new Intl.DisplayNames([getLang()], { type: 'language' }).of(code) } catch { return code } }
 
