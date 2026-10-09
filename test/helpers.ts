@@ -1,7 +1,5 @@
 process.env.DB_PATH = ':memory:'
 process.env.ADMIN_TOKEN = 'test-admin-token'
-process.env.ADMIN_USER = 'moderator'
-process.env.ADMIN_PASSWORD = 'correct horse battery'
 process.env.PUSH_ALLOW_INSECURE = '1' // erlaubt nur http://127.0.0.1 für den Fake-Push-Dienst im Test
 
 export const { createApp } = await import('../server/app.ts')

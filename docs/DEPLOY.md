@@ -40,10 +40,10 @@ Quellen der Recherche: [Vergleich kostenloser Docker-Hoster 2026](https://flywp.
 4. Image-Sichtbarkeit: In GitHub unter *Packages → ratespass → Package settings* auf **Public** stellen (sonst `docker login ghcr.io` mit einem Token).
 5. Starten:
    ```bash
-   export DOMAIN=quiz.example.org ADMIN_USER=moderator ADMIN_PASSWORD=$(openssl rand -base64 18) VAPID_SUBJECT=mailto:du@example.org
+   export DOMAIN=quiz.example.org ADMIN_TOKEN=$(openssl rand -hex 16) VAPID_SUBJECT=mailto:du@example.org
    docker compose -f docker-compose.prod.yml up -d
    ```
-   Caddy holt das Zertifikat automatisch. `ADMIN_PASSWORD` notieren (Moderations-Login unter `/admin`).
+   Caddy holt das Zertifikat automatisch. `ADMIN_TOKEN` notieren (Anmeldung unter `/admin`).
 6. Updates: `docker compose -f docker-compose.prod.yml pull && docker compose -f docker-compose.prod.yml up -d`.
 
 ## B) Zuhause + Cloudflare Tunnel
@@ -64,7 +64,7 @@ Quellen der Recherche: [Vergleich kostenloser Docker-Hoster 2026](https://flywp.
 Für alle, die NPM schon im Homelab/auf dem Server haben: `docker-compose.npm.yml` startet Ratespaß **ohne veröffentlichten Port** im selben Docker-Netzwerk wie NPM; HTTPS und Zertifikate übernimmt NPM.
 
 1. **Netzwerk finden:** `docker network ls` – das Netzwerk, in dem der NPM-Container hängt (häufig `npm_default` oder `<ordner>_default`).
-2. **`.env` anlegen** (Vorlage `.env.example`): `NPM_NETWORK`, `ADMIN_USER` und `ADMIN_PASSWORD` (mind. 12 Zeichen, z. B. `openssl rand -base64 18`), `VAPID_SUBJECT` (echte Mailadresse). Bei Cloudflare-Proxy vor NPM `PROXY_HOPS=2`.
+2. **`.env` anlegen** (Vorlage `.env.example`): `NPM_NETWORK`, `ADMIN_TOKEN` (mind. 16 Zeichen, `openssl rand -hex 16`), `VAPID_SUBJECT` (echte Mailadresse). Bei Cloudflare-Proxy vor NPM `PROXY_HOPS=2`.
 3. **Starten:** `docker compose -f docker-compose.npm.yml up -d --build`
    (Alternativ ohne lokalen Build das Image aus `ghcr.io` verwenden, sobald `publish.yml` gelaufen und das Paket öffentlich ist: `docker compose -f docker-compose.npm.yml pull && … up -d`.)
 4. **In NPM → Hosts → Proxy Hosts → Add Proxy Host:**
@@ -78,6 +78,7 @@ Für alle, die NPM schon im Homelab/auf dem Server haben: `docker-compose.npm.ym
    | Websockets Support | egal (wird nicht benötigt) |
    | **Cache Assets** | **aus** – sonst bleiben alte `app.js`/`sw.js` im Cache und Updates kommen nicht an |
    | Tab SSL | *Request a new SSL Certificate*, **Force SSL** an, HTTP/2 an (HSTS optional) |
+   **Port:** Zusätzlich zum internen Port 3000 veröffentlicht die Compose-Datei den Host-Port **3007** (`HOST_PORT` in der `.env` ändert ihn, `BIND_ADDRESS=127.0.0.1` macht ihn nur lokal erreichbar). Hängt NPM *nicht* im selben Docker-Netzwerk, trägst du bei „Forward Hostname“ die IP des Hosts und Port `3007` ein. Direkt testen: `http://<host>:3007`. Soll der Port gar nicht veröffentlicht werden, die `ports:`-Zeile in `docker-compose.npm.yml` löschen.
 5. Aufrufen: `https://quiz.deinedomain.de` – Test: *Profil → Benachrichtigungen → Test senden*.
 
 Hinweise:

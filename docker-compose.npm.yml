@@ -1,7 +1,9 @@
-# Ratespaß hinter Nginx Proxy Manager (NPM). Der Container veröffentlicht KEINEN Port – nur NPM erreicht ihn über ein gemeinsames Docker-Netzwerk.
+# Ratespaß hinter Nginx Proxy Manager (NPM). NPM erreicht den Container über ein gemeinsames Docker-Netzwerk (Forward Hostname „ratespass“, Port 3000).
+# Zusätzlich wird der Port auf dem Host veröffentlicht (Standard 3007, änderbar per HOST_PORT) – nützlich, wenn NPM nicht im selben Netzwerk hängt
+# oder zum direkten Testen. Nur lokal erreichbar: BIND_ADDRESS=127.0.0.1. Gar nicht veröffentlichen: die Zeile `ports:` samt Eintrag löschen.
 #
 #   1. Netzwerkname von NPM herausfinden:   docker network ls      (oft „npm_default“ oder „<ordner>_default“)
-#   2. .env anlegen (Vorlage: .env.example) und NPM_NETWORK, ADMIN_USER, ADMIN_PASSWORD (mind. 12 Zeichen), VAPID_SUBJECT setzen
+#   2. .env anlegen (Vorlage: .env.example) und NPM_NETWORK, ADMIN_TOKEN (mind. 16 Zeichen), VAPID_SUBJECT setzen (optional HOST_PORT, BIND_ADDRESS)
 #   3. Start:                               docker compose -f docker-compose.npm.yml up -d --build
 #   4. In NPM einen Proxy Host anlegen: Forward Hostname „ratespass“, Port 3000, Scheme http (siehe docs/DEPLOY.md, Abschnitt C)
 services:
@@ -10,11 +12,10 @@ services:
     image: ${RATESPASS_IMAGE:-ghcr.io/qwertz098/ratespass:latest}
     container_name: ratespass                                     # fester Name = „Forward Hostname“ in NPM
     restart: unless-stopped
-    expose:
-      - "3000"
+    ports:
+      - "${BIND_ADDRESS:-0.0.0.0}:${HOST_PORT:-3007}:3000"
     environment:
-      ADMIN_USER: ${ADMIN_USER:?bitte in .env setzen (Moderations-Login unter /admin)}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?bitte in .env setzen (mind. 12 Zeichen, sonst bleibt der Login aus)}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?bitte in .env setzen (mind. 16 Zeichen, z. B. openssl rand -hex 16)}
       VAPID_SUBJECT: ${VAPID_SUBJECT:?bitte in .env setzen (mailto:… oder https://…)}
       TRUST_PROXY: "1"                                            # Client-IP aus X-Forwarded-For (für Rate-Limits)
       PROXY_HOPS: ${PROXY_HOPS:-1}                                # 1 = nur NPM; 2 = Cloudflare-Proxy (orange Wolke) → NPM

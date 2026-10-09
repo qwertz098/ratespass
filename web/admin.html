@@ -12,8 +12,7 @@
     <div class="top"><h1>Moderation</h1><button class="btn small" id="logout" hidden>Abmelden</button></div>
 
     <form id="login" class="card stack" hidden autocomplete="on">
-      <label class="field">Benutzername<input id="user" name="username" type="text" autocomplete="username" required></label>
-      <label class="field">Passwort<input id="pass" name="password" type="password" autocomplete="current-password" required></label>
+      <label class="field">Admin-Token<input id="token" name="token" type="password" autocomplete="current-password" spellcheck="false" required></label>
       <button class="btn primary block" type="submit">Anmelden</button>
       <p class="hint" id="login-msg" role="alert"></p>
     </form>

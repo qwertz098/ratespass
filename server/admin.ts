@@ -1,37 +1,26 @@
-// Admin-Zugang: fester Login aus der Umgebung (ADMIN_USER/ADMIN_PASSWORD) → Session-Cookie; optional ADMIN_TOKEN für Skripte.
+// Admin-Zugang: ein Token aus der Umgebung (ADMIN_TOKEN, mind. 16 Zeichen) → Login per Session-Cookie; für Skripte auch als Header X-Admin-Token.
 import crypto from 'node:crypto'
 import type { IncomingMessage } from 'node:http'
 import { config } from './config.ts'
 import { newToken, sha256 } from './auth.ts'
 
-export const MIN_PASSWORD = 12
+export const MIN_TOKEN = 16
 export const COOKIE = 'rp_admin'
 
 /** Konstantzeit-Vergleich (über Hashes gleicher Länge, daher kein Längen-Leak). */
 export const safeEqual = (a: string, b: string) => crypto.timingSafeEqual(Buffer.from(sha256(a)), Buffer.from(sha256(b)))
 
-export const loginEnabled = () => !!config.adminUser && config.adminPassword.length >= MIN_PASSWORD
-export const adminEnabled = () => loginEnabled() || !!config.adminToken
+/** Der Admin-Zugang gilt nur mit einem ausreichend langen Token (fail-closed). */
+export const adminEnabled = () => config.adminToken.length >= MIN_TOKEN
 
 /** Beschreibt die Konfiguration für das Startlog (und deckt unsichere Einstellungen auf). */
 export function adminStatus(): string {
-  const parts: string[] = []
-  if (config.adminUser || config.adminPassword) {
-    if (!config.adminUser) parts.push('ADMIN_USER fehlt → Login AUS')
-    else if (config.adminPassword.length < MIN_PASSWORD) parts.push(`ADMIN_PASSWORD kürzer als ${MIN_PASSWORD} Zeichen → Login AUS`)
-    else parts.push('Login an')
-  }
-  if (config.adminToken) parts.push('Token-Zugang an (Skripte)')
-  return parts.length ? parts.join(', ') : 'aus'
+  if (!config.adminToken) return 'aus'
+  if (!adminEnabled()) return `ADMIN_TOKEN kürzer als ${MIN_TOKEN} Zeichen → Admin AUS (z. B. mit \`openssl rand -hex 16\` erzeugen)`
+  return 'an (Token)'
 }
 
-/** Beide Felder werden immer verglichen (kein früher Abbruch, der verrät, welches Feld stimmt). */
-export function credentialsOk(user: string, password: string): boolean {
-  if (!loginEnabled()) return false
-  const u = safeEqual(user, config.adminUser)
-  const p = safeEqual(password, config.adminPassword)
-  return u && p
-}
+export const tokenOk = (token: string) => adminEnabled() && safeEqual(token, config.adminToken)
 
 /* ---------- Sitzungen (im Speicher; ein Neustart meldet ab) ---------- */
 const sessions = new Map<string, number>() // sha256(token) → Ablaufzeit

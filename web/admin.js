@@ -4,7 +4,7 @@ let status = 'pending'
 const toast = (m) => { $('toast').textContent = m; $('toast').classList.add('show'); setTimeout(() => $('toast').classList.remove('show'), 2800) }
 const el = (tag, props = {}, ...kids) => { const e = Object.assign(document.createElement(tag), props); e.append(...kids.flat().filter((k) => k != null)); return e }
 
-/** Alle Anfragen laufen über das HttpOnly-Session-Cookie – das Passwort wird nirgends gespeichert. */
+/** Alle Anfragen laufen über das HttpOnly-Session-Cookie – das Token wird nirgends im Browser gespeichert. */
 class Unauthorized extends Error {}
 const call = async (method, path, body) => {
   const res = await fetch(path, { method, headers: body ? { 'content-type': 'application/json' } : {}, body: body ? JSON.stringify(body) : undefined })
@@ -20,8 +20,8 @@ const call = async (method, path, body) => {
 function showLogin(msg = '') {
   $('login').hidden = false; $('panel').hidden = true; $('logout').hidden = true
   $('login-msg').textContent = msg
-  $('pass').value = ''
-  ;(($('user').value ? $('pass') : $('user'))).focus()
+  $('token').value = ''
+  $('token').focus()
 }
 function showPanel() { $('login').hidden = true; $('panel').hidden = false; $('logout').hidden = false; load() }
 
@@ -55,12 +55,12 @@ $('login').addEventListener('submit', async (e) => {
   e.preventDefault()
   const btn = $('login').querySelector('button'); btn.disabled = true
   try {
-    await call('POST', '/api/admin/login', { username: $('user').value, password: $('pass').value })
-    $('pass').value = ''; showPanel()
+    await call('POST', '/api/admin/login', { token: $('token').value.trim() })
+    $('token').value = ''; showPanel()
   } catch (err) {
     $('login-msg').textContent = err.status === 429 ? 'Zu viele Fehlversuche – bitte in einigen Minuten erneut versuchen.'
-      : err.status === 404 ? 'Login ist auf dem Server nicht aktiviert (ADMIN_USER/ADMIN_PASSWORD, mind. 12 Zeichen).' : 'Benutzername oder Passwort falsch.'
-    $('pass').value = ''
+      : err.status === 404 ? 'Admin ist auf dem Server nicht aktiviert (ADMIN_TOKEN, mind. 16 Zeichen).' : 'Token falsch.'
+    $('token').value = ''
   } finally { btn.disabled = false }
 })
 $('logout').onclick = async () => { await fetch('/api/admin/logout', { method: 'POST' }).catch(() => {}); showLogin('Abgemeldet.') }

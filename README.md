@@ -15,8 +15,8 @@ Minimalistischer Quizduell-Clon als **PWA**, betrieben als **ein Docker-Containe
 ## Schnellstart
 
 ```bash
-ADMIN_USER=moderator ADMIN_PASSWORD=$(openssl rand -base64 18) docker compose up -d --build
-# → http://localhost:3000   Moderation: http://localhost:3000/admin
+ADMIN_TOKEN=$(openssl rand -hex 16) docker compose up -d --build
+# → http://localhost:3007   Moderation: http://localhost:3007/admin   (anderer Port: HOST_PORT=8080 …)
 ```
 
 Daten liegen im Volume `ratespass-data` (SQLite). Hinter einem Reverse-Proxy (TLS ist für PWA/Service Worker außerhalb von localhost Pflicht) `TRUST_PROXY=1` setzen.
@@ -37,12 +37,12 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 
 ## Absicherung des Admin-Bereichs (`/admin`)
 
-- **Fester Login aus der Umgebung** (`ADMIN_USER`, `ADMIN_PASSWORD`); das Passwort muss mindestens 12 Zeichen haben, sonst bleibt der Login aus (fail-closed, das Startlog sagt es). Ohne Konfiguration ist der Bereich komplett abgeschaltet (404).
-- Nach dem Login gibt es ein **Session-Cookie**: `HttpOnly` (für JavaScript unlesbar), `SameSite=Strict`, nur für den Pfad `/api/admin`, `Secure` sobald HTTPS erkannt wird, Laufzeit `ADMIN_SESSION_HOURS` (8 h). Die Sitzung liegt serverseitig im Speicher; Abmelden oder Neustart macht sie ungültig. Das Passwort wird nirgends im Browser gespeichert.
-- **Brute-Force-Schutz:** Vergleich in konstanter Zeit, 400 ms Verzögerung je Fehlversuch, **Sperre nach 5 Fehlversuchen je IP für 15 Minuten** (auch mit richtigem Passwort; mit `TRUST_PROXY`/`PROXY_HOPS` korrekt eingestellt, damit die echte Client-IP zählt).
+- **Ein Token aus der Umgebung** (`ADMIN_TOKEN`), mindestens 16 Zeichen, sonst bleibt der Bereich aus (fail-closed, das Startlog sagt es). Ohne Token ist `/admin` komplett abgeschaltet (404). Auf der Seite gibst du das Token einmal ein.
+- Danach gibt es ein **Session-Cookie** statt des Tokens im Browser: `HttpOnly` (für JavaScript unlesbar), `SameSite=Strict`, nur für den Pfad `/api/admin`, `Secure` sobald HTTPS erkannt wird, Laufzeit `ADMIN_SESSION_HOURS` (8 h). Die Sitzung liegt serverseitig im Speicher; Abmelden oder Neustart macht sie ungültig. Das Token wird nirgends im Browser gespeichert.
+- **Brute-Force-Schutz:** Vergleich in konstanter Zeit, 400 ms Verzögerung je Fehlversuch, **Sperre nach 5 Fehlversuchen je IP für 15 Minuten** (auch mit richtigem Token; zählt für Login *und* Header-Zugriffe). Dafür müssen `TRUST_PROXY`/`PROXY_HOPS` hinter einem Reverse-Proxy stimmen, damit die echte Client-IP zählt.
 - **CSRF:** zusätzlich zu `SameSite=Strict` müssen ändernde Anfragen mit Cookie einen passenden `Origin` (oder `Sec-Fetch-Site: same-origin`) mitbringen.
-- Die statische Seite `/admin` ist öffentlich erreichbar, enthält aber keine Daten; alles Sensible steckt hinter der API.
-- Empfehlung zusätzlich: HTTPS erzwingen und `/admin` bei Bedarf im Reverse-Proxy auf bekannte IPs beschränken (NPM: *Access List*).
+- **Skripte:** dasselbe Token geht auch als Header `X-Admin-Token` (z. B. `curl -H "X-Admin-Token: …" …/api/admin/stats`).
+- Die statische Seite `/admin` ist öffentlich erreichbar, enthält aber keine Daten; alles Sensible steckt hinter der API. Empfehlung zusätzlich: HTTPS erzwingen und `/admin` bei Bedarf im Reverse-Proxy auf bekannte IPs beschränken (NPM: *Access List*).
 
 ## Konfiguration (Umgebungsvariablen)
 
@@ -50,9 +50,9 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 |---|---|---|
 | `PORT` | 3000 | HTTP-Port |
 | `DATA_DIR` | `./data` (Docker: `/data`) | SQLite-Datenbank |
-| `ADMIN_USER` / `ADMIN_PASSWORD` | – | fester Moderations-Login unter `/admin` (Passwort **mind. 12 Zeichen**, sonst bleibt der Login aus) |
-| `ADMIN_SESSION_HOURS` | 8 | Laufzeit der Admin-Sitzung |
-| `ADMIN_TOKEN` | – | optional: Zugang für Skripte per Header `X-Admin-Token` |
+| `ADMIN_TOKEN` | – | Zugang zu `/admin` und `/api/admin/*` (**mind. 16 Zeichen**, z. B. `openssl rand -hex 16`; leer oder kürzer = abgeschaltet) |
+| `ADMIN_SESSION_HOURS` | 8 | Laufzeit der Admin-Sitzung nach dem Login |
+| `HOST_PORT` / `BIND_ADDRESS` | 3007 / 0.0.0.0 | nur Compose: veröffentlichter Host-Port bzw. Bindeadresse (der Container hört intern auf 3000) |
 | `TRUST_PROXY` | 0 | `1`: Client-IP aus `X-Forwarded-For` (Rate-Limits) |
 | `PROXY_HOPS` | 1 | Anzahl Proxys vor der App (NPM/Caddy: 1, Cloudflare davor: 2); gezählt von rechts, damit gefälschte Header nichts bringen |
 | `BATCH_DIR` | `./batches` | Fragen-Batches, die beim Start automatisch importiert werden |

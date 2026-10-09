@@ -60,7 +60,7 @@ Gleiche Pipeline, nur automatisiert: Generator (strukturierte Ausgabe im Batch-F
 ## Community & Moderation
 
 - Einreichen: Profil → „Frage einreichen“ (max. 10/Tag), landet als `pending` – nie direkt im Spiel.
-- Moderation unter `/admin` (Login mit `ADMIN_USER`/`ADMIN_PASSWORD`; Skripte können alternativ den Header `X-Admin-Token` mit `ADMIN_TOKEN` nutzen): freigeben (mit Korrekturen), ablehnen.
+- Moderation unter `/admin` (Anmeldung mit dem `ADMIN_TOKEN`; Skripte nutzen den Header `X-Admin-Token`): freigeben (mit Korrekturen), ablehnen.
 - Spieler können beantwortete Fragen melden; ab **3 Meldungen verschiedener Spieler** wird die Frage automatisch deaktiviert und erscheint in der Moderationsliste „Gemeldet/deaktiviert“.
 
 ### Community-Fragen zurück ins Repo (Single Source of Truth)

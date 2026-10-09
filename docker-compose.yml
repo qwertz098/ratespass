@@ -2,13 +2,17 @@ services:
   ratespass:
     build: .
     ports:
-      - "3000:3000"
+      # Host-Port per HOST_PORT änderbar (Standard 3007). BIND_ADDRESS=127.0.0.1 → nur vom Host selbst erreichbar
+      # (z. B. wenn ein Reverse-Proxy auf demselben Rechner davor läuft).
+      - "${BIND_ADDRESS:-0.0.0.0}:${HOST_PORT:-3007}:3000"
     environment:
-      # Moderations-Login unter /admin (fester Benutzer + Passwort); ohne beides ist sie abgeschaltet.
-      ADMIN_USER: ${ADMIN_USER:-}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}   # mind. 12 Zeichen; ohne beides ist /admin abgeschaltet
-      # Auf 1 setzen, wenn ein Reverse-Proxy (Caddy/nginx/Traefik) davor steht.
+      # Moderation unter /admin: Token mind. 16 Zeichen (z. B. `openssl rand -hex 16`); leer/kürzer = abgeschaltet.
+      ADMIN_TOKEN: ${ADMIN_TOKEN:-}
+      # Kontakt für Push-Dienste (mailto:… oder https://…)
+      VAPID_SUBJECT: ${VAPID_SUBJECT:-https://github.com/qwertz098/ratespass}
+      # Auf 1 setzen, wenn ein Reverse-Proxy (Caddy/nginx/NPM/Traefik) davor steht; PROXY_HOPS = Anzahl der Proxys.
       TRUST_PROXY: ${TRUST_PROXY:-0}
+      PROXY_HOPS: ${PROXY_HOPS:-1}
     volumes:
       - ratespass-data:/data
       # Neue Fragen-Batches: Datei hier ablegen und Container neu starten -> wird automatisch importiert.
