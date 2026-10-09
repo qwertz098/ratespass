@@ -84,7 +84,7 @@
    "difficulty": 2,
    "i18n": {
     "de": {
-     "text": "Wie viele Kammern hat das menschliche Herz?",
+     "text": "Aus wie vielen Hohlräumen (Vorhöfen und Kammern zusammen) besteht das menschliche Herz?",
      "correct": "4",
      "wrong": [
       "2",
@@ -93,7 +93,7 @@
      ]
     },
     "en": {
-     "text": "How many chambers does the human heart have?",
+     "text": "How many chambers (atria and ventricles together) does the human heart have?",
      "correct": "4",
      "wrong": [
       "2",
