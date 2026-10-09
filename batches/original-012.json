@@ -1,0 +1,4810 @@
+{
+ "format": "ratespass-batch",
+ "version": 1,
+ "batch": "original-012",
+ "source": "original",
+ "license": "CC-BY-SA-4.0",
+ "attribution": "Ratespaß-Projekt (eigene Formulierungen, Faktenwissen)",
+ "questions": [
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land wurde der Hamburger als Fast-Food-Klassiker besonders populär?",
+     "correct": "USA",
+     "wrong": [
+      "Deutschland",
+      "Kanada",
+      "Australien"
+     ]
+    },
+    "en": {
+     "text": "In which country did the hamburger become especially popular as a fast-food classic?",
+     "correct": "USA",
+     "wrong": [
+      "Germany",
+      "Canada",
+      "Australia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Was ist die größte Stadt der USA?",
+     "correct": "New York",
+     "wrong": [
+      "Los Angeles",
+      "Chicago",
+      "Houston"
+     ]
+    },
+    "en": {
+     "text": "What is the largest city in the USA?",
+     "correct": "New York",
+     "wrong": [
+      "Los Angeles",
+      "Chicago",
+      "Houston"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Ehefrauen hatte der englische König Heinrich VIII.?",
+     "correct": "6",
+     "wrong": [
+      "2",
+      "4",
+      "8"
+     ]
+    },
+    "en": {
+     "text": "How many wives did the English king Henry VIII have?",
+     "correct": "6",
+     "wrong": [
+      "2",
+      "4",
+      "8"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Form hat das Erbgut-Molekül DNA?",
+     "correct": "Doppelhelix",
+     "wrong": [
+      "Kugel",
+      "Würfel",
+      "Einzelring"
+     ]
+    },
+    "en": {
+     "text": "What shape does the DNA molecule have?",
+     "correct": "Double helix",
+     "wrong": [
+      "Sphere",
+      "Cube",
+      "Single ring"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welcher Pflanze wird in den Tropen hauptsächlich Rohrzucker gewonnen?",
+     "correct": "Zuckerrohr",
+     "wrong": [
+      "Zuckerrübe",
+      "Mais",
+      "Bambus"
+     ]
+    },
+    "en": {
+     "text": "Which plant is mainly used in the tropics to obtain cane sugar?",
+     "correct": "Sugar cane",
+     "wrong": [
+      "Sugar beet",
+      "Maize",
+      "Bamboo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welcher Sportart gibt es den Spezialisten „Libero“?",
+     "correct": "Volleyball",
+     "wrong": [
+      "Eishockey",
+      "Basketball",
+      "Golf"
+     ]
+    },
+    "en": {
+     "text": "In which sport is there a specialist called a “libero”?",
+     "correct": "Volleyball",
+     "wrong": [
+      "Ice hockey",
+      "Basketball",
+      "Golf"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf „Star Wars“?",
+     "correct": "George Lucas",
+     "wrong": [
+      "Steven Spielberg",
+      "James Cameron",
+      "Gene Roddenberry"
+     ]
+    },
+    "en": {
+     "text": "Who created “Star Wars”?",
+     "correct": "George Lucas",
+     "wrong": [
+      "Steven Spielberg",
+      "James Cameron",
+      "Gene Roddenberry"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt das Saiteninstrument Sitar?",
+     "correct": "Indien",
+     "wrong": [
+      "China",
+      "Japan",
+      "Iran"
+     ]
+    },
+    "en": {
+     "text": "Which country does the string instrument sitar come from?",
+     "correct": "India",
+     "wrong": [
+      "China",
+      "Japan",
+      "Iran"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe hat die Straße, der Dorothy nach Oz folgt?",
+     "correct": "Gelb",
+     "wrong": [
+      "Rot",
+      "Grün",
+      "Silber"
+     ]
+    },
+    "en": {
+     "text": "What colour is the road Dorothy follows to Oz?",
+     "correct": "Yellow",
+     "wrong": [
+      "Red",
+      "Green",
+      "Silver"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie hieß der erste abendfüllende Zeichentrickfilm von Walt Disney?",
+     "correct": "Schneewittchen und die sieben Zwerge",
+     "wrong": [
+      "Pinocchio",
+      "Bambi",
+      "Dumbo"
+     ]
+    },
+    "en": {
+     "text": "What was Walt Disney's first full-length animated film?",
+     "correct": "Snow White and the Seven Dwarfs",
+     "wrong": [
+      "Pinocchio",
+      "Bambi",
+      "Dumbo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man ein Computerspiel, das man ohne Mitspieler allein spielt?",
+     "correct": "Singleplayer",
+     "wrong": [
+      "Multiplayer",
+      "Koop",
+      "Demo"
+     ]
+    },
+    "en": {
+     "text": "What do you call a video game that you play alone without other players?",
+     "correct": "Single-player",
+     "wrong": [
+      "Multiplayer",
+      "Co-op",
+      "Demo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Konzern Huawei?",
+     "correct": "China",
+     "wrong": [
+      "Japan",
+      "Südkorea",
+      "Indien"
+     ]
+    },
+    "en": {
+     "text": "Which country does the company Huawei come from?",
+     "correct": "China",
+     "wrong": [
+      "Japan",
+      "South Korea",
+      "India"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt die Nudelsuppe Pho?",
+     "correct": "Vietnam",
+     "wrong": [
+      "Thailand",
+      "China",
+      "Kambodscha"
+     ]
+    },
+    "en": {
+     "text": "Which country does the noodle soup pho come from?",
+     "correct": "Vietnam",
+     "wrong": [
+      "Thailand",
+      "China",
+      "Cambodia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Zu welchem Land gehören die Galápagos-Inseln?",
+     "correct": "Ecuador",
+     "wrong": [
+      "Peru",
+      "Chile",
+      "Kolumbien"
+     ]
+    },
+    "en": {
+     "text": "Which country do the Galápagos Islands belong to?",
+     "correct": "Ecuador",
+     "wrong": [
+      "Peru",
+      "Chile",
+      "Kolumbien"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welcher Stadt stammte der Entdeckungsreisende Marco Polo?",
+     "correct": "Venedig",
+     "wrong": [
+      "Genua",
+      "Florenz",
+      "Rom"
+     ]
+    },
+    "en": {
+     "text": "Which city was the explorer Marco Polo from?",
+     "correct": "Venice",
+     "wrong": [
+      "Genoa",
+      "Florence",
+      "Rome"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welcher Knochen schützt das Gehirn?",
+     "correct": "Der Schädel",
+     "wrong": [
+      "Das Becken",
+      "Das Brustbein",
+      "Das Schulterblatt"
+     ]
+    },
+    "en": {
+     "text": "Which bone protects the brain?",
+     "correct": "The skull",
+     "wrong": [
+      "The pelvis",
+      "The breastbone",
+      "The shoulder blade"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Beuteltier schläft bis zu 20 Stunden am Tag?",
+     "correct": "Koala",
+     "wrong": [
+      "Känguru",
+      "Wombat",
+      "Beutelteufel"
+     ]
+    },
+    "en": {
+     "text": "Which marsupial sleeps up to 20 hours a day?",
+     "correct": "Koala",
+     "wrong": [
+      "Kangaroo",
+      "Wombat",
+      "Tasmanian devil"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Sportart nutzt den Wind, um ein Boot über das Wasser zu bewegen?",
+     "correct": "Segeln",
+     "wrong": [
+      "Rudern",
+      "Kanu",
+      "Tauchen"
+     ]
+    },
+    "en": {
+     "text": "Which sport uses the wind to move a boat across the water?",
+     "correct": "Sailing",
+     "wrong": [
+      "Rowing",
+      "Canoeing",
+      "Diving"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Raumschiff von Han Solo in „Star Wars“?",
+     "correct": "Millennium Falke",
+     "wrong": [
+      "Enterprise",
+      "Nostromo",
+      "Serenity"
+     ]
+    },
+    "en": {
+     "text": "What is Han Solo's spaceship in “Star Wars” called?",
+     "correct": "Millennium Falcon",
+     "wrong": [
+      "Enterprise",
+      "Nostromo",
+      "Serenity"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt die Popmusik-Richtung K-Pop?",
+     "correct": "Südkorea",
+     "wrong": [
+      "Japan",
+      "China",
+      "Taiwan"
+     ]
+    },
+    "en": {
+     "text": "Which country does the pop music genre K-pop come from?",
+     "correct": "South Korea",
+     "wrong": [
+      "Japan",
+      "China",
+      "Taiwan"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf die Figur Peter Hase?",
+     "correct": "Beatrix Potter",
+     "wrong": [
+      "Enid Blyton",
+      "A. A. Milne",
+      "Roald Dahl"
+     ]
+    },
+    "en": {
+     "text": "Who created the character Peter Rabbit?",
+     "correct": "Beatrix Potter",
+     "wrong": [
+      "Enid Blyton",
+      "A. A. Milne",
+      "Roald Dahl"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die goldene Statue, die bei den Academy Awards verliehen wird?",
+     "correct": "Oscar",
+     "wrong": [
+      "Emmy",
+      "Grammy",
+      "Tony"
+     ]
+    },
+    "en": {
+     "text": "What is the golden statuette presented at the Academy Awards called?",
+     "correct": "Oscar",
+     "wrong": [
+      "Emmy",
+      "Grammy",
+      "Tony"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Shooter-Reihe von Activision ist besonders beliebt?",
+     "correct": "Call of Duty",
+     "wrong": [
+      "Doom",
+      "Halo",
+      "Overwatch"
+     ]
+    },
+    "en": {
+     "text": "Which Activision shooter series is especially popular?",
+     "correct": "Call of Duty",
+     "wrong": [
+      "Doom",
+      "Halo",
+      "Overwatch"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Webbrowser von Microsoft, der den Internet Explorer abgelöst hat?",
+     "correct": "Edge",
+     "wrong": [
+      "Chrome",
+      "Safari",
+      "Opera"
+     ]
+    },
+    "en": {
+     "text": "What is the web browser by Microsoft that replaced Internet Explorer called?",
+     "correct": "Edge",
+     "wrong": [
+      "Chrome",
+      "Safari",
+      "Opera"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt das Blätterteiggebäck Baklava (traditionell)?",
+     "correct": "Türkei",
+     "wrong": [
+      "Griechenland",
+      "Marokko",
+      "Iran"
+     ]
+    },
+    "en": {
+     "text": "Which country does the layered pastry baklava traditionally come from?",
+     "correct": "Turkey",
+     "wrong": [
+      "Greece",
+      "Morocco",
+      "Iran"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Fluss fließt durch Warschau?",
+     "correct": "Weichsel",
+     "wrong": [
+      "Oder",
+      "Donau",
+      "Memel"
+     ]
+    },
+    "en": {
+     "text": "Which river flows through Warsaw?",
+     "correct": "Vistula",
+     "wrong": [
+      "Oder",
+      "Danube",
+      "Neman"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nannte man die alte Handelsroute zwischen China und Europa?",
+     "correct": "Seidenstraße",
+     "wrong": [
+      "Bernsteinstraße",
+      "Gewürzstraße",
+      "Salzstraße"
+     ]
+    },
+    "en": {
+     "text": "What was the ancient trade route between China and Europe called?",
+     "correct": "The Silk Road",
+     "wrong": [
+      "The Amber Road",
+      "The Spice Road",
+      "The Salt Road"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Hormon steuert den Schlaf-Wach-Rhythmus?",
+     "correct": "Melatonin",
+     "wrong": [
+      "Adrenalin",
+      "Insulin",
+      "Testosteron"
+     ]
+    },
+    "en": {
+     "text": "Which hormone regulates the sleep-wake cycle?",
+     "correct": "Melatonin",
+     "wrong": [
+      "Adrenaline",
+      "Insulin",
+      "Testosterone"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie verständigen sich Honigbienen über den Weg zu Futterquellen?",
+     "correct": "Durch den Schwänzeltanz",
+     "wrong": [
+      "Durch Gesang",
+      "Durch Duftbriefe",
+      "Durch Klopfen"
+     ]
+    },
+    "en": {
+     "text": "How do honeybees communicate the way to food sources?",
+     "correct": "By the waggle dance",
+     "wrong": [
+      "By singing",
+      "By scent letters",
+      "By knocking"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Bei welcher Reitsportart zeigt das Pferd kunstvolle Schritte und Figuren?",
+     "correct": "Dressurreiten",
+     "wrong": [
+      "Springreiten",
+      "Rennreiten",
+      "Polo"
+     ]
+    },
+    "en": {
+     "text": "In which equestrian discipline does the horse perform artful steps and figures?",
+     "correct": "Dressage",
+     "wrong": [
+      "Show jumping",
+      "Horse racing",
+      "Polo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Rentier von Kristoff in „Die Eiskönigin“?",
+     "correct": "Sven",
+     "wrong": [
+      "Olaf",
+      "Hans",
+      "Marshmallow"
+     ]
+    },
+    "en": {
+     "text": "What is Kristoff's reindeer called in “Frozen”?",
+     "correct": "Sven",
+     "wrong": [
+      "Olaf",
+      "Hans",
+      "Marshmallow"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man den Sänger und Anführer einer Band, der meist im Vordergrund steht?",
+     "correct": "Frontmann",
+     "wrong": [
+      "Roadie",
+      "Dirigent",
+      "Solist-Chor"
+     ]
+    },
+    "en": {
+     "text": "What do you call the singer and leader of a band who is usually at the front?",
+     "correct": "Frontman",
+     "wrong": [
+      "Roadie",
+      "Conductor",
+      "Choirmaster"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb die Tarzan-Romane?",
+     "correct": "Edgar Rice Burroughs",
+     "wrong": [
+      "Rudyard Kipling",
+      "Jack London",
+      "Jules Verne"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the Tarzan novels?",
+     "correct": "Edgar Rice Burroughs",
+     "wrong": [
+      "Rudyard Kipling",
+      "Jack London",
+      "Jules Verne"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welcher französischen Stadt wird die Goldene Palme verliehen?",
+     "correct": "Cannes",
+     "wrong": [
+      "Nizza",
+      "Lyon",
+      "Marseille"
+     ]
+    },
+    "en": {
+     "text": "In which French city is the Palme d'Or awarded?",
+     "correct": "Cannes",
+     "wrong": [
+      "Nizza",
+      "Lyon",
+      "Marseille"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe hat die obere Hälfte eines Pokéballs?",
+     "correct": "Rot",
+     "wrong": [
+      "Blau",
+      "Gelb",
+      "Grün"
+     ]
+    },
+    "en": {
+     "text": "What colour is the top half of a Poké Ball?",
+     "correct": "Red",
+     "wrong": [
+      "Blue",
+      "Yellow",
+      "Green"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt Nintendo?",
+     "correct": "Japan",
+     "wrong": [
+      "USA",
+      "Südkorea",
+      "Taiwan"
+     ]
+    },
+    "en": {
+     "text": "Which country does Nintendo come from?",
+     "correct": "Japan",
+     "wrong": [
+      "USA",
+      "South Korea",
+      "Taiwan"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Schaumwein Champagner?",
+     "correct": "Frankreich",
+     "wrong": [
+      "Italien",
+      "Spanien",
+      "Portugal"
+     ]
+    },
+    "en": {
+     "text": "Which country does the sparkling wine Champagne come from?",
+     "correct": "France",
+     "wrong": [
+      "Italy",
+      "Spain",
+      "Portugal"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Kontinent liegt Neuseeland?",
+     "correct": "Ozeanien",
+     "wrong": [
+      "Asien",
+      "Südamerika",
+      "Afrika"
+     ]
+    },
+    "en": {
+     "text": "On which continent is New Zealand?",
+     "correct": "Oceania",
+     "wrong": [
+      "Asia",
+      "South America",
+      "Africa"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie hieß die Hauptstadt der Azteken?",
+     "correct": "Tenochtitlán",
+     "wrong": [
+      "Cusco",
+      "Chichén Itzá",
+      "Teotihuacán"
+     ]
+    },
+    "en": {
+     "text": "What was the capital of the Aztecs called?",
+     "correct": "Tenochtitlán",
+     "wrong": [
+      "Cusco",
+      "Chichén Itzá",
+      "Teotihuacán"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie hoch ist der Puls eines gesunden Erwachsenen in Ruhe etwa?",
+     "correct": "60 bis 80 pro Minute",
+     "wrong": [
+      "20 bis 30 pro Minute",
+      "120 bis 150 pro Minute",
+      "200 pro Minute"
+     ]
+    },
+    "en": {
+     "text": "About what is the resting pulse of a healthy adult?",
+     "correct": "60 to 80 per minute",
+     "wrong": [
+      "20 to 30 per minute",
+      "120 to 150 per minute",
+      "200 per minute"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Insekt hat vier lange Flügel und lebt oft am Wasser?",
+     "correct": "Libelle",
+     "wrong": [
+      "Ameise",
+      "Mistkäfer",
+      "Kellerassel"
+     ]
+    },
+    "en": {
+     "text": "Which insect has four long wings and often lives near water?",
+     "correct": "Dragonfly",
+     "wrong": [
+      "Ant",
+      "Dung beetle",
+      "Woodlouse"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man den besten Startplatz in der Formel 1?",
+     "correct": "Pole-Position",
+     "wrong": [
+      "Zielgerade",
+      "Boxengasse",
+      "Rennlinie"
+     ]
+    },
+    "en": {
+     "text": "What is the best starting position in Formula 1 called?",
+     "correct": "Pole position",
+     "wrong": [
+      "Home straight",
+      "Pit lane",
+      "Racing line"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Löwe im Animationsfilm „Madagascar“?",
+     "correct": "Alex",
+     "wrong": [
+      "Marty",
+      "Melman",
+      "Julien"
+     ]
+    },
+    "en": {
+     "text": "What is the lion in the animated film “Madagascar” called?",
+     "correct": "Alex",
+     "wrong": [
+      "Marty",
+      "Melman",
+      "Julien"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Saiten hat eine große Konzertharfe ungefähr?",
+     "correct": "47",
+     "wrong": [
+      "20",
+      "12",
+      "88"
+     ]
+    },
+    "en": {
+     "text": "Roughly how many strings does a large concert harp have?",
+     "correct": "47",
+     "wrong": [
+      "20",
+      "12",
+      "88"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Der Zauberer von Oz“?",
+     "correct": "L. Frank Baum",
+     "wrong": [
+      "Lewis Carroll",
+      "C. S. Lewis",
+      "J. M. Barrie"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Wonderful Wizard of Oz”?",
+     "correct": "L. Frank Baum",
+     "wrong": [
+      "Lewis Carroll",
+      "C. S. Lewis",
+      "J. M. Barrie"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die Kunst, mit einer Kamera Bilder festzuhalten?",
+     "correct": "Fotografie",
+     "wrong": [
+      "Bildhauerei",
+      "Töpferei",
+      "Kalligrafie"
+     ]
+    },
+    "en": {
+     "text": "What is the art of capturing images with a camera called?",
+     "correct": "Photography",
+     "wrong": [
+      "Sculpture",
+      "Pottery",
+      "Calligraphy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Bei welchem Spiel spielen Autos mit Raketenantrieb Fußball?",
+     "correct": "Rocket League",
+     "wrong": [
+      "FIFA",
+      "Gran Turismo",
+      "Mario Kart"
+     ]
+    },
+    "en": {
+     "text": "In which game do rocket-powered cars play football?",
+     "correct": "Rocket League",
+     "wrong": [
+      "FIFA",
+      "Gran Turismo",
+      "Mario Kart"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land sitzt der weltgrößte Chip-Auftragsfertiger TSMC?",
+     "correct": "Taiwan",
+     "wrong": [
+      "Südkorea",
+      "Japan",
+      "China"
+     ]
+    },
+    "en": {
+     "text": "In which country is the world's largest contract chip maker TSMC based?",
+     "correct": "Taiwan",
+     "wrong": [
+      "South Korea",
+      "Japan",
+      "China"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt das fermentierte Gemüse Kimchi?",
+     "correct": "Südkorea",
+     "wrong": [
+      "Japan",
+      "China",
+      "Vietnam"
+     ]
+    },
+    "en": {
+     "text": "Which country does the fermented vegetable dish kimchi come from?",
+     "correct": "South Korea",
+     "wrong": [
+      "Japan",
+      "China",
+      "Vietnam"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Fluss mündet bei New York in den Atlantik?",
+     "correct": "Hudson",
+     "wrong": [
+      "Mississippi",
+      "Potomac",
+      "Charles"
+     ]
+    },
+    "en": {
+     "text": "Which river flows into the Atlantic at New York?",
+     "correct": "Hudson",
+     "wrong": [
+      "Mississippi",
+      "Potomac",
+      "Charles"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nannte man die traditionellen Krieger Japans?",
+     "correct": "Samurai",
+     "wrong": [
+      "Ninja",
+      "Shogune",
+      "Mönche"
+     ]
+    },
+    "en": {
+     "text": "What were the traditional warriors of Japan called?",
+     "correct": "Samurai",
+     "wrong": [
+      "Ninja",
+      "Shoguns",
+      "Monks"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der einzige bewegliche Knochen des Kopfes?",
+     "correct": "Unterkiefer",
+     "wrong": [
+      "Nasenbein",
+      "Stirnbein",
+      "Jochbein"
+     ]
+    },
+    "en": {
+     "text": "What is the only movable bone of the head called?",
+     "correct": "Mandible (lower jaw)",
+     "wrong": [
+      "Nasal bone",
+      "Frontal bone",
+      "Cheekbone"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welcher Haltung schlafen Pferde oft?",
+     "correct": "Im Stehen",
+     "wrong": [
+      "Auf dem Rücken",
+      "Im Wasser",
+      "Kopfüber"
+     ]
+    },
+    "en": {
+     "text": "In which position do horses often sleep?",
+     "correct": "Standing up",
+     "wrong": [
+      "On their back",
+      "In water",
+      "Upside down"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land ist die Kontaktsportart Kabaddi besonders beliebt?",
+     "correct": "Indien",
+     "wrong": [
+      "Brasilien",
+      "Kanada",
+      "Australien"
+     ]
+    },
+    "en": {
+     "text": "In which country is the contact sport kabaddi especially popular?",
+     "correct": "India",
+     "wrong": [
+      "Brazil",
+      "Canada",
+      "Australia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche berühmte Filmfigur sagt „Ich bin dein Vater“?",
+     "correct": "Darth Vader",
+     "wrong": [
+      "Obi-Wan Kenobi",
+      "Yoda",
+      "Han Solo"
+     ]
+    },
+    "en": {
+     "text": "Which famous film character says “I am your father”?",
+     "correct": "Darth Vader",
+     "wrong": [
+      "Obi-Wan Kenobi",
+      "Yoda",
+      "Han Solo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der melancholische Musikstil Fado?",
+     "correct": "Portugal",
+     "wrong": [
+      "Spanien",
+      "Italien",
+      "Griechenland"
+     ]
+    },
+    "en": {
+     "text": "Which country does the melancholic music style fado come from?",
+     "correct": "Portugal",
+     "wrong": [
+      "Spain",
+      "Italy",
+      "Greece"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Was wünscht sich der feige Löwe im „Zauberer von Oz“?",
+     "correct": "Mut",
+     "wrong": [
+      "Ein Herz",
+      "Ein Gehirn",
+      "Eine Mähne"
+     ]
+    },
+    "en": {
+     "text": "What does the Cowardly Lion wish for in “The Wizard of Oz”?",
+     "correct": "Courage",
+     "wrong": [
+      "A heart",
+      "A brain",
+      "A mane"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der wichtigste amerikanische Fernsehpreis?",
+     "correct": "Emmy",
+     "wrong": [
+      "Grammy",
+      "Oscar",
+      "Tony"
+     ]
+    },
+    "en": {
+     "text": "What is the most important American television award called?",
+     "correct": "Emmy",
+     "wrong": [
+      "Grammy",
+      "Oscar",
+      "Tony"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Action-Rollenspiel von Blizzard spielt in der Welt von Sanktuario?",
+     "correct": "Diablo",
+     "wrong": [
+      "Overwatch",
+      "World of Warcraft",
+      "Hearthstone"
+     ]
+    },
+    "en": {
+     "text": "Which action role-playing game by Blizzard is set in the world of Sanctuary?",
+     "correct": "Diablo",
+     "wrong": [
+      "Overwatch",
+      "World of Warcraft",
+      "Hearthstone"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Firma entwickelt Prozessoren der Serie „Ryzen“?",
+     "correct": "AMD",
+     "wrong": [
+      "Intel",
+      "Nvidia",
+      "Apple"
+     ]
+    },
+    "en": {
+     "text": "Which company makes the “Ryzen” series of processors?",
+     "correct": "AMD",
+     "wrong": [
+      "Intel",
+      "Nvidia",
+      "Apple"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Reiswein Sake?",
+     "correct": "Japan",
+     "wrong": [
+      "China",
+      "Korea",
+      "Thailand"
+     ]
+    },
+    "en": {
+     "text": "Which country does the rice wine sake come from?",
+     "correct": "Japan",
+     "wrong": [
+      "China",
+      "Korea",
+      "Thailand"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Kontinent liegt Mexiko?",
+     "correct": "Nordamerika",
+     "wrong": [
+      "Südamerika",
+      "Europa",
+      "Asien"
+     ]
+    },
+    "en": {
+     "text": "On which continent is Mexico?",
+     "correct": "North America",
+     "wrong": [
+      "South America",
+      "Europe",
+      "Asia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die Ureinwohner Australiens?",
+     "correct": "Aborigines",
+     "wrong": [
+      "Maori",
+      "Inuit",
+      "Inka"
+     ]
+    },
+    "en": {
+     "text": "What are the indigenous people of Australia called?",
+     "correct": "Aboriginal Australians",
+     "wrong": [
+      "Maori",
+      "Inuit",
+      "Inca"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche beiden Forscher beschrieben 1953 die Struktur der DNA?",
+     "correct": "Watson und Crick",
+     "wrong": [
+      "Pasteur und Koch",
+      "Curie und Becquerel",
+      "Mendel und Darwin"
+     ]
+    },
+    "en": {
+     "text": "Which two researchers described the structure of DNA in 1953?",
+     "correct": "Watson and Crick",
+     "wrong": [
+      "Pasteur and Koch",
+      "Curie and Becquerel",
+      "Mendel and Darwin"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe hat das Blut von Hummern?",
+     "correct": "Bläulich",
+     "wrong": [
+      "Rot",
+      "Gelb",
+      "Grün"
+     ]
+    },
+    "en": {
+     "text": "What colour is the blood of lobsters?",
+     "correct": "Bluish",
+     "wrong": [
+      "Red",
+      "Yellow",
+      "Green"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man beim Golf zwei Schläge unter Par an einem Loch?",
+     "correct": "Eagle",
+     "wrong": [
+      "Birdie",
+      "Bogey",
+      "Albatross"
+     ]
+    },
+    "en": {
+     "text": "What is it called in golf when you play two strokes under par on a hole?",
+     "correct": "Eagle",
+     "wrong": [
+      "Birdie",
+      "Bogey",
+      "Albatross"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Panda, der in „Kung Fu Panda“ zum Drachenkrieger wird?",
+     "correct": "Po",
+     "wrong": [
+      "Ping",
+      "Tai Lung",
+      "Shifu"
+     ]
+    },
+    "en": {
+     "text": "What is the panda who becomes the Dragon Warrior in “Kung Fu Panda” called?",
+     "correct": "Po",
+     "wrong": [
+      "Ping",
+      "Tai Lung",
+      "Shifu"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Saiten hat eine Ukulele?",
+     "correct": "4",
+     "wrong": [
+      "6",
+      "3",
+      "8"
+     ]
+    },
+    "en": {
+     "text": "How many strings does a ukulele have?",
+     "correct": "4",
+     "wrong": [
+      "6",
+      "3",
+      "8"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Anne auf Green Gables“?",
+     "correct": "Lucy Maud Montgomery",
+     "wrong": [
+      "Louisa May Alcott",
+      "Jane Austen",
+      "Frances Hodgson Burnett"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Anne of Green Gables”?",
+     "correct": "Lucy Maud Montgomery",
+     "wrong": [
+      "Louisa May Alcott",
+      "Jane Austen",
+      "Frances Hodgson Burnett"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Maler wurde durch die Fernsehsendung „The Joy of Painting“ mit „happy little trees“ bekannt?",
+     "correct": "Bob Ross",
+     "wrong": [
+      "Norman Rockwell",
+      "Andy Warhol",
+      "Jackson Pollock"
+     ]
+    },
+    "en": {
+     "text": "Which painter became known through the TV show “The Joy of Painting” and his “happy little trees”?",
+     "correct": "Bob Ross",
+     "wrong": [
+      "Norman Rockwell",
+      "Andy Warhol",
+      "Jackson Pollock"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Bei welchem Spiel streicht man Zahlen auf Karten ab, die ausgerufen werden?",
+     "correct": "Bingo",
+     "wrong": [
+      "Skat",
+      "Mau-Mau",
+      "Mikado"
+     ]
+    },
+    "en": {
+     "text": "In which game do you cross off numbers on cards as they are called out?",
+     "correct": "Bingo",
+     "wrong": [
+      "Skat",
+      "Crazy Eights",
+      "Pick-up sticks"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der KI-Chatbot von Google?",
+     "correct": "Gemini",
+     "wrong": [
+      "Copilot",
+      "Alexa",
+      "Cortana"
+     ]
+    },
+    "en": {
+     "text": "What is Google's AI chatbot called?",
+     "correct": "Gemini",
+     "wrong": [
+      "Copilot",
+      "Alexa",
+      "Cortana"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Gericht ist ein Klassiker der englischen Küche: frittierter Fisch mit Pommes?",
+     "correct": "Fish and Chips",
+     "wrong": [
+      "Paella",
+      "Gulasch",
+      "Moussaka"
+     ]
+    },
+    "en": {
+     "text": "Which dish is a classic of English cuisine: fried fish with chips?",
+     "correct": "Fish and Chips",
+     "wrong": [
+      "Paella",
+      "Gulasch",
+      "Moussaka"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Insel ist die größte der Karibik?",
+     "correct": "Kuba",
+     "wrong": [
+      "Jamaika",
+      "Haiti",
+      "Puerto Rico"
+     ]
+    },
+    "en": {
+     "text": "Which island is the largest in the Caribbean?",
+     "correct": "Cuba",
+     "wrong": [
+      "Jamaica",
+      "Hispaniola",
+      "Puerto Rico"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Land verteidigte Jeanne d'Arc im Hundertjährigen Krieg?",
+     "correct": "Frankreich",
+     "wrong": [
+      "England",
+      "Burgund",
+      "Spanien"
+     ]
+    },
+    "en": {
+     "text": "Which country did Joan of Arc defend in the Hundred Years' War?",
+     "correct": "France",
+     "wrong": [
+      "England",
+      "Burgundy",
+      "Spain"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der bekannte Muskel an der Vorderseite des Oberarms?",
+     "correct": "Bizeps",
+     "wrong": [
+      "Trizeps",
+      "Deltamuskel",
+      "Wadenmuskel"
+     ]
+    },
+    "en": {
+     "text": "What is the well-known muscle on the front of the upper arm called?",
+     "correct": "Biceps",
+     "wrong": [
+      "Triceps",
+      "Deltoid",
+      "Calf muscle"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Aus den Narben welcher Blume gewinnt man das teure Gewürz Safran?",
+     "correct": "Krokus",
+     "wrong": [
+      "Tulpe",
+      "Mohn",
+      "Lavendel"
+     ]
+    },
+    "en": {
+     "text": "From the stigmas of which flower is the expensive spice saffron obtained?",
+     "correct": "Crocus",
+     "wrong": [
+      "Tulip",
+      "Poppy",
+      "Lavender"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man im Rugby das Gedränge, bei dem die Stürmer ineinander verhakt sind?",
+     "correct": "Scrum",
+     "wrong": [
+      "Maul",
+      "Ruck",
+      "Lineout"
+     ]
+    },
+    "en": {
+     "text": "What is the formation in rugby called in which the forwards bind together?",
+     "correct": "Scrum",
+     "wrong": [
+      "Maul",
+      "Ruck",
+      "Lineout"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der böse Wesir in Disneys „Aladdin“?",
+     "correct": "Dschafar",
+     "wrong": [
+      "Gaston",
+      "Hades",
+      "Scar"
+     ]
+    },
+    "en": {
+     "text": "What is the evil vizier in Disney's “Aladdin” called?",
+     "correct": "Jafar",
+     "wrong": [
+      "Gaston",
+      "Hades",
+      "Scar"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Lied wird weltweit zum Geburtstag gesungen?",
+     "correct": "Happy Birthday",
+     "wrong": [
+      "Jingle Bells",
+      "Alle meine Entchen",
+      "Oh Susanna"
+     ]
+    },
+    "en": {
+     "text": "Which song is sung around the world for birthdays?",
+     "correct": "Happy Birthday",
+     "wrong": [
+      "Jingle Bells",
+      "Frère Jacques",
+      "Oh Susanna"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Erzählerin der Geschichten aus „Tausendundeiner Nacht“?",
+     "correct": "Scheherazade",
+     "wrong": [
+      "Zobeide",
+      "Jasmin",
+      "Aischa"
+     ]
+    },
+    "en": {
+     "text": "What is the storyteller of “One Thousand and One Nights” called?",
+     "correct": "Scheherazade",
+     "wrong": [
+      "Zubaida",
+      "Jasmine",
+      "Aisha"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt liegt das Zentrum der amerikanischen Filmindustrie „Hollywood“?",
+     "correct": "Los Angeles",
+     "wrong": [
+      "New York",
+      "Las Vegas",
+      "San Francisco"
+     ]
+    },
+    "en": {
+     "text": "In which city is the centre of the American film industry “Hollywood”?",
+     "correct": "Los Angeles",
+     "wrong": [
+      "New York",
+      "Las Vegas",
+      "San Francisco"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Strategiespiel von Sid Meier lässt dich Zivilisationen von der Steinzeit bis in die Zukunft führen?",
+     "correct": "Civilization",
+     "wrong": [
+      "Anno 1800",
+      "Age of Empires",
+      "Total War"
+     ]
+    },
+    "en": {
+     "text": "Which strategy game by Sid Meier lets you lead civilisations from the Stone Age to the future?",
+     "correct": "Civilization",
+     "wrong": [
+      "Anno 1800",
+      "Age of Empires",
+      "Total War"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Smartphone-Hersteller Xiaomi?",
+     "correct": "China",
+     "wrong": [
+      "Japan",
+      "Indien",
+      "Taiwan"
+     ]
+    },
+    "en": {
+     "text": "Which country does the smartphone maker Xiaomi come from?",
+     "correct": "China",
+     "wrong": [
+      "Japan",
+      "India",
+      "Taiwan"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land wird der Agavenschnaps Tequila hergestellt?",
+     "correct": "Mexiko",
+     "wrong": [
+      "Spanien",
+      "Kuba",
+      "Brasilien"
+     ]
+    },
+    "en": {
+     "text": "In which country is the agave spirit tequila made?",
+     "correct": "Mexico",
+     "wrong": [
+      "Spain",
+      "Cuba",
+      "Brazil"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Fluss fließt durch Prag?",
+     "correct": "Moldau",
+     "wrong": [
+      "Donau",
+      "Elbe",
+      "Oder"
+     ]
+    },
+    "en": {
+     "text": "Which river flows through Prague?",
+     "correct": "Vltava (Moldau)",
+     "wrong": [
+      "Danube",
+      "Elbe",
+      "Oder"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammen die Ninja der Legende nach?",
+     "correct": "Japan",
+     "wrong": [
+      "China",
+      "Korea",
+      "Thailand"
+     ]
+    },
+    "en": {
+     "text": "Which country do ninjas come from according to legend?",
+     "correct": "Japan",
+     "wrong": [
+      "China",
+      "Korea",
+      "Thailand"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Hauptblutgruppen gibt es im AB0-System?",
+     "correct": "4",
+     "wrong": [
+      "2",
+      "6",
+      "8"
+     ]
+    },
+    "en": {
+     "text": "How many main blood groups are there in the ABO system?",
+     "correct": "4",
+     "wrong": [
+      "2",
+      "6",
+      "8"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher kleine Frosch aus Mittel- und Südamerika gehört zu den giftigsten Tieren der Welt?",
+     "correct": "Pfeilgiftfrosch",
+     "wrong": [
+      "Laubfrosch",
+      "Erdkröte",
+      "Ochsenfrosch"
+     ]
+    },
+    "en": {
+     "text": "Which small frog from Central and South America is among the most poisonous animals in the world?",
+     "correct": "Poison dart frog",
+     "wrong": [
+      "Tree frog",
+      "Common toad",
+      "Bullfrog"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land ist die schnelle Schlägersportart Hurling zu Hause?",
+     "correct": "Irland",
+     "wrong": [
+      "Schottland",
+      "Wales",
+      "Neuseeland"
+     ]
+    },
+    "en": {
+     "text": "In which country is the fast stick sport of hurling at home?",
+     "correct": "Ireland",
+     "wrong": [
+      "Scotland",
+      "Wales",
+      "New Zealand"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Schurkin in „101 Dalmatiner“, die Welpenfelle will?",
+     "correct": "Cruella de Vil",
+     "wrong": [
+      "Maleficent",
+      "Ursula",
+      "Mutter Gothel"
+     ]
+    },
+    "en": {
+     "text": "What is the villain in “101 Dalmatians” who wants puppy fur called?",
+     "correct": "Cruella de Vil",
+     "wrong": [
+      "Maleficent",
+      "Ursula",
+      "Mutter Gothel"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Musikstil Bossa Nova?",
+     "correct": "Brasilien",
+     "wrong": [
+      "Argentinien",
+      "Kuba",
+      "Spanien"
+     ]
+    },
+    "en": {
+     "text": "Which country does the music style bossa nova come from?",
+     "correct": "Brazil",
+     "wrong": [
+      "Argentina",
+      "Cuba",
+      "Spain"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Was wünscht sich die Vogelscheuche im „Zauberer von Oz“?",
+     "correct": "Ein Gehirn",
+     "wrong": [
+      "Ein Herz",
+      "Mut",
+      "Eine Krone"
+     ]
+    },
+    "en": {
+     "text": "What does the Scarecrow wish for in “The Wizard of Oz”?",
+     "correct": "A brain",
+     "wrong": [
+      "A heart",
+      "Courage",
+      "A crown"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Preis wird bei den Filmfestspielen von Venedig verliehen?",
+     "correct": "Goldener Löwe",
+     "wrong": [
+      "Goldene Palme",
+      "Goldener Bär",
+      "Goldene Kamera"
+     ]
+    },
+    "en": {
+     "text": "Which prize is awarded at the Venice Film Festival?",
+     "correct": "Golden Lion",
+     "wrong": [
+      "Palme d'Or",
+      "Golden Bear",
+      "Golden Camera"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Taktik-Shooter-Spiel von Valve wird oft im E-Sport gespielt?",
+     "correct": "Counter-Strike",
+     "wrong": [
+      "Fortnite",
+      "Tetris",
+      "Minecraft"
+     ]
+    },
+    "en": {
+     "text": "Which tactical shooter by Valve is often played in esports?",
+     "correct": "Counter-Strike",
+     "wrong": [
+      "Fortnite",
+      "Tetris",
+      "Minecraft"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Telekommunikationskonzern Ericsson?",
+     "correct": "Schweden",
+     "wrong": [
+      "Finnland",
+      "Dänemark",
+      "Norwegen"
+     ]
+    },
+    "en": {
+     "text": "Which country does the telecommunications company Ericsson come from?",
+     "correct": "Sweden",
+     "wrong": [
+      "Finland",
+      "Denmark",
+      "Norway"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt das Nudelgericht Pad Thai?",
+     "correct": "Thailand",
+     "wrong": [
+      "Vietnam",
+      "Indonesien",
+      "Malaysia"
+     ]
+    },
+    "en": {
+     "text": "Which country does the noodle dish pad thai come from?",
+     "correct": "Thailand",
+     "wrong": [
+      "Vietnam",
+      "Indonesia",
+      "Malaysia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Insel ist die größte Europas?",
+     "correct": "Großbritannien",
+     "wrong": [
+      "Island",
+      "Irland",
+      "Sizilien"
+     ]
+    },
+    "en": {
+     "text": "Which island is the largest in Europe?",
+     "correct": "Great Britain",
+     "wrong": [
+      "Iceland",
+      "Ireland",
+      "Sicily"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die Ureinwohner Neuseelands?",
+     "correct": "Maori",
+     "wrong": [
+      "Aborigines",
+      "Inuit",
+      "Azteken"
+     ]
+    },
+    "en": {
+     "text": "What are the indigenous people of New Zealand called?",
+     "correct": "Maori",
+     "wrong": [
+      "Aboriginal Australians",
+      "Inuit",
+      "Aztecs"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die Blutzellen, die Krankheitserreger bekämpfen?",
+     "correct": "Weiße Blutkörperchen",
+     "wrong": [
+      "Rote Blutkörperchen",
+      "Blutplättchen",
+      "Blutplasma"
+     ]
+    },
+    "en": {
+     "text": "What are the blood cells called that fight pathogens?",
+     "correct": "White blood cells",
+     "wrong": [
+      "Red blood cells",
+      "Platelets",
+      "Plasma"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Insekt kann ein Vielfaches seines eigenen Gewichts tragen?",
+     "correct": "Ameise",
+     "wrong": [
+      "Schmetterling",
+      "Libelle",
+      "Mücke"
+     ]
+    },
+    "en": {
+     "text": "Which insect can carry many times its own weight?",
+     "correct": "Ant",
+     "wrong": [
+      "Butterfly",
+      "Dragonfly",
+      "Mosquito"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Bei welcher Reitsportart spielen Teams mit Schlägern und einer Kugel auf dem Rasen?",
+     "correct": "Polo",
+     "wrong": [
+      "Springreiten",
+      "Dressur",
+      "Vielseitigkeit"
+     ]
+    },
+    "en": {
+     "text": "In which equestrian sport do teams play with mallets and a ball on grass?",
+     "correct": "Polo",
+     "wrong": [
+      "Show jumping",
+      "Dressage",
+      "Eventing"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf die Serie „Star Trek“?",
+     "correct": "Gene Roddenberry",
+     "wrong": [
+      "George Lucas",
+      "Rod Serling",
+      "Stan Lee"
+     ]
+    },
+    "en": {
+     "text": "Who created the series “Star Trek”?",
+     "correct": "Gene Roddenberry",
+     "wrong": [
+      "George Lucas",
+      "Rod Serling",
+      "Stan Lee"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt entstand der Grunge-Rock von Bands wie Nirvana?",
+     "correct": "Seattle",
+     "wrong": [
+      "Los Angeles",
+      "Boston",
+      "Portland"
+     ]
+    },
+    "en": {
+     "text": "In which city did the grunge rock of bands such as Nirvana emerge?",
+     "correct": "Seattle",
+     "wrong": [
+      "Los Angeles",
+      "Boston",
+      "Portland"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb die Geschichten über Mary Poppins?",
+     "correct": "P. L. Travers",
+     "wrong": [
+      "Enid Blyton",
+      "Roald Dahl",
+      "J. K. Rowling"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the stories about Mary Poppins?",
+     "correct": "P. L. Travers",
+     "wrong": [
+      "Enid Blyton",
+      "Roald Dahl",
+      "J. K. Rowling"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Nationaltheater-Gebäude in London ist besonders für Shakespeare-Aufführungen bekannt?",
+     "correct": "Shakespeare's Globe",
+     "wrong": [
+      "Royal Albert Hall",
+      "Palladium",
+      "O2 Arena"
+     ]
+    },
+    "en": {
+     "text": "Which London theatre building is especially known for Shakespeare performances?",
+     "correct": "Shakespeare's Globe",
+     "wrong": [
+      "Royal Albert Hall",
+      "Palladium",
+      "O2 Arena"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Bei welchem Brettspiel baut man Landschaft aus Plättchen, darunter Städte und Straßen, und setzt Gefolgsleute?",
+     "correct": "Carcassonne",
+     "wrong": [
+      "Risiko",
+      "Cluedo",
+      "Backgammon"
+     ]
+    },
+    "en": {
+     "text": "In which board game do you build a landscape from tiles with cities and roads and place followers?",
+     "correct": "Carcassonne",
+     "wrong": [
+      "Risiko",
+      "Cluedo",
+      "Backgammon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Firma entwickelt die Grafikkarten der Serie GeForce?",
+     "correct": "Nvidia",
+     "wrong": [
+      "AMD",
+      "Intel",
+      "Qualcomm"
+     ]
+    },
+    "en": {
+     "text": "Which company makes the GeForce series of graphics cards?",
+     "correct": "Nvidia",
+     "wrong": [
+      "AMD",
+      "Intel",
+      "Qualcomm"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Taco?",
+     "correct": "Mexiko",
+     "wrong": [
+      "Spanien",
+      "Argentinien",
+      "Peru"
+     ]
+    },
+    "en": {
+     "text": "Which country does the taco come from?",
+     "correct": "Mexico",
+     "wrong": [
+      "Spain",
+      "Argentina",
+      "Peru"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Kontinent liegt Island?",
+     "correct": "Europa",
+     "wrong": [
+      "Nordamerika",
+      "Asien",
+      "Ozeanien"
+     ]
+    },
+    "en": {
+     "text": "On which continent is Iceland?",
+     "correct": "Europe",
+     "wrong": [
+      "North America",
+      "Asia",
+      "Oceania"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher römische Feldherr war der Geliebte der Kleopatra nach Caesars Tod?",
+     "correct": "Marcus Antonius",
+     "wrong": [
+      "Brutus",
+      "Octavian",
+      "Pompeius"
+     ]
+    },
+    "en": {
+     "text": "Which Roman general was Cleopatra's lover after Caesar's death?",
+     "correct": "Mark Antony",
+     "wrong": [
+      "Brutus",
+      "Octavian",
+      "Pompey"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Womit sind Knochen untereinander an den Gelenken verbunden?",
+     "correct": "Mit Bändern",
+     "wrong": [
+      "Mit Sehnen",
+      "Mit Adern",
+      "Mit Knorpelkleber"
+     ]
+    },
+    "en": {
+     "text": "What connects bones to one another at the joints?",
+     "correct": "Ligaments",
+     "wrong": [
+      "Tendons",
+      "Veins",
+      "Cartilage glue"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier zieht im Märchen den Schlitten des Weihnachtsmanns?",
+     "correct": "Rentier",
+     "wrong": [
+      "Pferd",
+      "Esel",
+      "Hund"
+     ]
+    },
+    "en": {
+     "text": "Which animal pulls Santa Claus's sleigh in the story?",
+     "correct": "Reindeer",
+     "wrong": [
+      "Horse",
+      "Donkey",
+      "Dog"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man den Boxenstopp zum Reifenwechsel in der Formel 1?",
+     "correct": "Pit Stop",
+     "wrong": [
+      "Time-out",
+      "Check-in",
+      "Break"
+     ]
+    },
+    "en": {
+     "text": "What is the stop for changing tyres in Formula 1 called?",
+     "correct": "Pit stop",
+     "wrong": [
+      "Time-out",
+      "Check-in",
+      "Break"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Shreks Ehefrau?",
+     "correct": "Fiona",
+     "wrong": [
+      "Elsa",
+      "Belle",
+      "Jasmin"
+     ]
+    },
+    "en": {
+     "text": "What is Shrek's wife called?",
+     "correct": "Fiona",
+     "wrong": [
+      "Elsa",
+      "Belle",
+      "Jasmine"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt wurde das Plattenlabel Motown gegründet?",
+     "correct": "Detroit",
+     "wrong": [
+      "Memphis",
+      "Nashville",
+      "Chicago"
+     ]
+    },
+    "en": {
+     "text": "In which city was the record label Motown founded?",
+     "correct": "Detroit",
+     "wrong": [
+      "Memphis",
+      "Nashville",
+      "Chicago"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Dorothys Hund in „Der Zauberer von Oz“?",
+     "correct": "Toto",
+     "wrong": [
+      "Lassie",
+      "Rex",
+      "Pluto"
+     ]
+    },
+    "en": {
+     "text": "What is Dorothy's dog called in “The Wizard of Oz”?",
+     "correct": "Toto",
+     "wrong": [
+      "Lassie",
+      "Rex",
+      "Pluto"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der wichtigste internationale Architekturpreis?",
+     "correct": "Pritzker-Preis",
+     "wrong": [
+      "Nobelpreis",
+      "Turner-Preis",
+      "Pulitzer-Preis"
+     ]
+    },
+    "en": {
+     "text": "What is the most important international architecture prize called?",
+     "correct": "Pritzker Prize",
+     "wrong": [
+      "Nobel Prize",
+      "Turner Prize",
+      "Pulitzer Prize"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Bei welchem Spiel müssen Hände und Füße auf farbige Kreise einer Matte gesetzt werden?",
+     "correct": "Twister",
+     "wrong": [
+      "Mikado",
+      "Monopoly",
+      "Memory"
+     ]
+    },
+    "en": {
+     "text": "In which game must hands and feet be placed on coloured circles on a mat?",
+     "correct": "Twister",
+     "wrong": [
+      "Pick-up sticks",
+      "Monopoly",
+      "Memory"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der KI-Assistent von Microsoft?",
+     "correct": "Copilot",
+     "wrong": [
+      "Gemini",
+      "Siri",
+      "Bixby"
+     ]
+    },
+    "en": {
+     "text": "What is Microsoft's AI assistant called?",
+     "correct": "Copilot",
+     "wrong": [
+      "Gemini",
+      "Siri",
+      "Bixby"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt Sushi?",
+     "correct": "Japan",
+     "wrong": [
+      "China",
+      "Korea",
+      "Thailand"
+     ]
+    },
+    "en": {
+     "text": "Which country does sushi come from?",
+     "correct": "Japan",
+     "wrong": [
+      "China",
+      "Korea",
+      "Thailand"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Fluss fließt durch Bagdad?",
+     "correct": "Tigris",
+     "wrong": [
+      "Euphrat",
+      "Jordan",
+      "Nil"
+     ]
+    },
+    "en": {
+     "text": "Which river flows through Baghdad?",
+     "correct": "Tigris",
+     "wrong": [
+      "Euphrates",
+      "Jordan",
+      "Nile"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie hieß Buddha mit bürgerlichem Namen?",
+     "correct": "Siddhartha Gautama",
+     "wrong": [
+      "Ashoka",
+      "Mahavira",
+      "Rama"
+     ]
+    },
+    "en": {
+     "text": "What was the Buddha's given name?",
+     "correct": "Siddhartha Gautama",
+     "wrong": [
+      "Ashoka",
+      "Mahavira",
+      "Rama"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher große Muskel unter der Lunge ist der wichtigste Atemmuskel?",
+     "correct": "Zwerchfell",
+     "wrong": [
+      "Bizeps",
+      "Herzmuskel",
+      "Magen"
+     ]
+    },
+    "en": {
+     "text": "Which large muscle below the lungs is the most important breathing muscle?",
+     "correct": "Diaphragm",
+     "wrong": [
+      "Biceps",
+      "Heart muscle",
+      "Stomach"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Zu welcher Pflanzenfamilie gehört die Vanille?",
+     "correct": "Orchideen",
+     "wrong": [
+      "Hülsenfrüchte",
+      "Palmen",
+      "Kakteen"
+     ]
+    },
+    "en": {
+     "text": "To which plant family does vanilla belong?",
+     "correct": "Orchids",
+     "wrong": [
+      "Legumes",
+      "Palms",
+      "Cacti"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man im Tennis die Entscheidung bei 6:6 im Satz?",
+     "correct": "Tie-Break",
+     "wrong": [
+      "Matchball",
+      "Deuce",
+      "Netzball"
+     ]
+    },
+    "en": {
+     "text": "What is the decider at 6–6 in a set called in tennis?",
+     "correct": "Tiebreak",
+     "wrong": [
+      "Match point",
+      "Deuce",
+      "Let"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der eitle Bösewicht in Disneys „Die Schöne und das Biest“?",
+     "correct": "Gaston",
+     "wrong": [
+      "Lumiere",
+      "Maurice",
+      "Cogsworth"
+     ]
+    },
+    "en": {
+     "text": "What is the vain villain in Disney's “Beauty and the Beast” called?",
+     "correct": "Gaston",
+     "wrong": [
+      "Lumiere",
+      "Maurice",
+      "Cogsworth"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Tanz und Musikstil Salsa ursprünglich?",
+     "correct": "Kuba",
+     "wrong": [
+      "Mexiko",
+      "Spanien",
+      "Brasilien"
+     ]
+    },
+    "en": {
+     "text": "Which country does the dance and music style salsa originally come from?",
+     "correct": "Cuba",
+     "wrong": [
+      "Mexico",
+      "Spain",
+      "Brazil"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Seefahrer aus „Tausendundeiner Nacht“, der sieben Reisen unternimmt?",
+     "correct": "Sindbad",
+     "wrong": [
+      "Aladin",
+      "Ali Baba",
+      "Harun"
+     ]
+    },
+    "en": {
+     "text": "What is the sailor from “One Thousand and One Nights” who makes seven voyages called?",
+     "correct": "Sinbad",
+     "wrong": [
+      "Aladdin",
+      "Ali Baba",
+      "Harun"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der wichtigste amerikanische Theaterpreis?",
+     "correct": "Tony Award",
+     "wrong": [
+      "Emmy",
+      "Oscar",
+      "Grammy"
+     ]
+    },
+    "en": {
+     "text": "What is the most important American theatre award called?",
+     "correct": "Tony Award",
+     "wrong": [
+      "Emmy",
+      "Oscar",
+      "Grammy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Action-Rollenspiel von FromSoftware erschien 2022 und stammt mit Autor George R. R. Martin?",
+     "correct": "Elden Ring",
+     "wrong": [
+      "Dark Souls",
+      "Sekiro",
+      "Bloodborne"
+     ]
+    },
+    "en": {
+     "text": "Which action role-playing game by FromSoftware, released in 2022, was co-created with author George R. R. Martin?",
+     "correct": "Elden Ring",
+     "wrong": [
+      "Dark Souls",
+      "Sekiro",
+      "Bloodborne"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Elektronikkonzern Philips?",
+     "correct": "Niederlande",
+     "wrong": [
+      "Belgien",
+      "Schweiz",
+      "Dänemark"
+     ]
+    },
+    "en": {
+     "text": "Which country does the electronics company Philips come from?",
+     "correct": "The Netherlands",
+     "wrong": [
+      "Belgium",
+      "Switzerland",
+      "Denmark"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt das Reisgericht Paella?",
+     "correct": "Spanien",
+     "wrong": [
+      "Italien",
+      "Portugal",
+      "Mexiko"
+     ]
+    },
+    "en": {
+     "text": "Which country does the rice dish paella come from?",
+     "correct": "Spain",
+     "wrong": [
+      "Italy",
+      "Portugal",
+      "Mexico"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was ist die größte Stadt Brasiliens?",
+     "correct": "São Paulo",
+     "wrong": [
+      "Rio de Janeiro",
+      "Brasília",
+      "Salvador"
+     ]
+    },
+    "en": {
+     "text": "What is the largest city in Brazil?",
+     "correct": "São Paulo",
+     "wrong": [
+      "Rio de Janeiro",
+      "Brasília",
+      "Salvador"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche französische Königin wurde 1793 während der Revolution hingerichtet?",
+     "correct": "Marie Antoinette",
+     "wrong": [
+      "Katharina von Medici",
+      "Joséphine",
+      "Eleonore von Aquitanien"
+     ]
+    },
+    "en": {
+     "text": "Which French queen was executed in 1793 during the Revolution?",
+     "correct": "Marie Antoinette",
+     "wrong": [
+      "Katharina von Medici",
+      "Joséphine",
+      "Eleonore von Aquitanien"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie hoch ist die normale Körpertemperatur eines gesunden Menschen ungefähr?",
+     "correct": "37 °C",
+     "wrong": [
+      "30 °C",
+      "42 °C",
+      "35 °C"
+     ]
+    },
+    "en": {
+     "text": "What is the normal body temperature of a healthy person, roughly?",
+     "correct": "37 °C",
+     "wrong": [
+      "30 °C",
+      "42 °C",
+      "35 °C"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Meerestier legt seine Eier nachts am Strand im Sand ab?",
+     "correct": "Meeresschildkröte",
+     "wrong": [
+      "Seestern",
+      "Tintenfisch",
+      "Hai"
+     ]
+    },
+    "en": {
+     "text": "Which sea creature lays its eggs in the sand on the beach at night?",
+     "correct": "Sea turtle",
+     "wrong": [
+      "Starfish",
+      "Squid",
+      "Shark"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Bei welcher Sportart arbeiten die Athletinnen mit Reifen, Band und Keulen?",
+     "correct": "Rhythmische Sportgymnastik",
+     "wrong": [
+      "Eiskunstlauf",
+      "Wasserspringen",
+      "Rudern"
+     ]
+    },
+    "en": {
+     "text": "In which sport do athletes work with hoop, ribbon and clubs?",
+     "correct": "Rhythmic gymnastics",
+     "wrong": [
+      "Figure skating",
+      "Diving",
+      "Rowing"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Planeten wächst Luke Skywalker auf?",
+     "correct": "Tatooine",
+     "wrong": [
+      "Hoth",
+      "Naboo",
+      "Endor"
+     ]
+    },
+    "en": {
+     "text": "On which planet does Luke Skywalker grow up?",
+     "correct": "Tatooine",
+     "wrong": [
+      "Hoth",
+      "Naboo",
+      "Endor"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt das dreieckige Zupfinstrument Balalaika?",
+     "correct": "Russland",
+     "wrong": [
+      "Griechenland",
+      "Schweden",
+      "Spanien"
+     ]
+    },
+    "en": {
+     "text": "Which country does the triangular plucked instrument balalaika come from?",
+     "correct": "Russia",
+     "wrong": [
+      "Greece",
+      "Sweden",
+      "Spain"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Zauberformel öffnet Ali Babas Räuberhöhle?",
+     "correct": "Sesam, öffne dich",
+     "wrong": [
+      "Abrakadabra",
+      "Simsalabim",
+      "Hokuspokus"
+     ]
+    },
+    "en": {
+     "text": "Which magic words open Ali Baba's robbers' cave?",
+     "correct": "Open Sesame",
+     "wrong": [
+      "Abracadabra",
+      "Alakazam",
+      "Hocus pocus"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Architekt entwarf die Glaspyramide vor dem Louvre?",
+     "correct": "I. M. Pei",
+     "wrong": [
+      "Norman Foster",
+      "Renzo Piano",
+      "Frank Gehry"
+     ]
+    },
+    "en": {
+     "text": "Which architect designed the glass pyramid in front of the Louvre?",
+     "correct": "I. M. Pei",
+     "wrong": [
+      "Norman Foster",
+      "Renzo Piano",
+      "Frank Gehry"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Bei welchem Spiel kämpfen bunte Bohnenfiguren in Hindernisparcours?",
+     "correct": "Fall Guys",
+     "wrong": [
+      "Among Us",
+      "Minecraft",
+      "Tetris"
+     ]
+    },
+    "en": {
+     "text": "In which game do colourful bean characters compete in obstacle courses?",
+     "correct": "Fall Guys",
+     "wrong": [
+      "Among Us",
+      "Minecraft",
+      "Tetris"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Handyhersteller Nokia?",
+     "correct": "Finnland",
+     "wrong": [
+      "Schweden",
+      "Norwegen",
+      "Dänemark"
+     ]
+    },
+    "en": {
+     "text": "Which country does the phone maker Nokia come from?",
+     "correct": "Finland",
+     "wrong": [
+      "Sweden",
+      "Norway",
+      "Denmark"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammen die gefüllten Teigtaschen Pierogi?",
+     "correct": "Polen",
+     "wrong": [
+      "Russland",
+      "Ungarn",
+      "Tschechien"
+     ]
+    },
+    "en": {
+     "text": "Which country do the filled dumplings pierogi come from?",
+     "correct": "Poland",
+     "wrong": [
+      "Russia",
+      "Hungary",
+      "Czechia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Meer trennt Afrika von der Arabischen Halbinsel?",
+     "correct": "Rotes Meer",
+     "wrong": [
+      "Schwarzes Meer",
+      "Kaspisches Meer",
+      "Gelbes Meer"
+     ]
+    },
+    "en": {
+     "text": "Which sea separates Africa from the Arabian Peninsula?",
+     "correct": "Red Sea",
+     "wrong": [
+      "Black Sea",
+      "Caspian Sea",
+      "Yellow Sea"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher chinesische Philosoph lehrte um 500 v. Chr. Tugend und gutes Verhalten?",
+     "correct": "Konfuzius",
+     "wrong": [
+      "Laozi",
+      "Sun Tzu",
+      "Mao Zedong"
+     ]
+    },
+    "en": {
+     "text": "Which Chinese philosopher taught virtue and good conduct around 500 BC?",
+     "correct": "Confucius",
+     "wrong": [
+      "Laozi",
+      "Sun Tzu",
+      "Mao Zedong"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Hormon wird bei Stress und Gefahr ausgeschüttet?",
+     "correct": "Adrenalin",
+     "wrong": [
+      "Insulin",
+      "Melatonin",
+      "Östrogen"
+     ]
+    },
+    "en": {
+     "text": "Which hormone is released during stress and danger?",
+     "correct": "Adrenaline",
+     "wrong": [
+      "Insulin",
+      "Melatonin",
+      "Oestrogen"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier verteidigt sich mit übel riechendem Sekret?",
+     "correct": "Stinktier",
+     "wrong": [
+      "Eichhörnchen",
+      "Hase",
+      "Reh"
+     ]
+    },
+    "en": {
+     "text": "Which animal defends itself with a foul-smelling spray?",
+     "correct": "Skunk",
+     "wrong": [
+      "Squirrel",
+      "Hare",
+      "Deer"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Bei welcher Sportart steigt man mit Seil und Haken an einer Felswand hoch?",
+     "correct": "Klettern",
+     "wrong": [
+      "Rudern",
+      "Schwimmen",
+      "Golf"
+     ]
+    },
+    "en": {
+     "text": "In which sport do you climb a rock wall using ropes and hooks?",
+     "correct": "Climbing",
+     "wrong": [
+      "Rowing",
+      "Swimming",
+      "Golf"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Schauspieler sprach im Original die Stimme von Darth Vader?",
+     "correct": "James Earl Jones",
+     "wrong": [
+      "David Prowse",
+      "Harrison Ford",
+      "Alec Guinness"
+     ]
+    },
+    "en": {
+     "text": "Which actor voiced Darth Vader in the original?",
+     "correct": "James Earl Jones",
+     "wrong": [
+      "David Prowse",
+      "Harrison Ford",
+      "Alec Guinness"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man ein Musikstück, das nur für ein einzelnes Instrument geschrieben ist?",
+     "correct": "Solostück",
+     "wrong": [
+      "Sinfonie",
+      "Oper",
+      "Chorsatz"
+     ]
+    },
+    "en": {
+     "text": "What do you call a piece of music written for a single instrument?",
+     "correct": "Solo piece",
+     "wrong": [
+      "Symphony",
+      "Opera",
+      "Choral piece"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Was wünscht sich der Blechmann im „Zauberer von Oz“?",
+     "correct": "Ein Herz",
+     "wrong": [
+      "Ein Gehirn",
+      "Mut",
+      "Einen Hut"
+     ]
+    },
+    "en": {
+     "text": "What does the Tin Man wish for in “The Wizard of Oz”?",
+     "correct": "A heart",
+     "wrong": [
+      "A brain",
+      "Courage",
+      "A hat"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der wichtigste amerikanische Musikpreis mit dem Grammophon als Statue?",
+     "correct": "Grammy",
+     "wrong": [
+      "Emmy",
+      "Oscar",
+      "Tony"
+     ]
+    },
+    "en": {
+     "text": "What is the most important American music award with a gramophone statuette called?",
+     "correct": "Grammy",
+     "wrong": [
+      "Emmy",
+      "Oscar",
+      "Tony"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches bekannte Wissensspiel fragt Spieler Fragen aus sechs Kategorien ab?",
+     "correct": "Trivial Pursuit",
+     "wrong": [
+      "Cluedo",
+      "Risiko",
+      "Twister"
+     ]
+    },
+    "en": {
+     "text": "Which well-known board game asks players questions from six categories?",
+     "correct": "Trivial Pursuit",
+     "wrong": [
+      "Cluedo",
+      "Risk",
+      "Twister"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land wurde das Prozessor-Design-Unternehmen ARM gegründet?",
+     "correct": "Großbritannien",
+     "wrong": [
+      "USA",
+      "Japan",
+      "Israel"
+     ]
+    },
+    "en": {
+     "text": "In which country was the processor design company ARM founded?",
+     "correct": "United Kingdom",
+     "wrong": [
+      "USA",
+      "Japan",
+      "Israel"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt das Gericht Poutine (Pommes mit Käse und Sauce)?",
+     "correct": "Kanada",
+     "wrong": [
+      "USA",
+      "Frankreich",
+      "Belgien"
+     ]
+    },
+    "en": {
+     "text": "Which country does the dish poutine (fries with cheese curds and gravy) come from?",
+     "correct": "Canada",
+     "wrong": [
+      "USA",
+      "France",
+      "Belgium"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Fluss fließt durch Lissabon?",
+     "correct": "Tejo",
+     "wrong": [
+      "Douro",
+      "Ebro",
+      "Guadalquivir"
+     ]
+    },
+    "en": {
+     "text": "Which river flows through Lisbon?",
+     "correct": "Tagus",
+     "wrong": [
+      "Douro",
+      "Ebro",
+      "Guadalquivir"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Florentiner Bankiersfamilie förderte Künstler wie Michelangelo?",
+     "correct": "Medici",
+     "wrong": [
+      "Borgia",
+      "Sforza",
+      "Visconti"
+     ]
+    },
+    "en": {
+     "text": "Which Florentine banking family supported artists such as Michelangelo?",
+     "correct": "Medici",
+     "wrong": [
+      "Borgia",
+      "Sforza",
+      "Visconti"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Womit sind Muskeln mit den Knochen verbunden?",
+     "correct": "Mit Sehnen",
+     "wrong": [
+      "Mit Bändern",
+      "Mit Adern",
+      "Mit Nerven"
+     ]
+    },
+    "en": {
+     "text": "What connects muscles to bones?",
+     "correct": "Tendons",
+     "wrong": [
+      "Ligaments",
+      "Veins",
+      "Nerves"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Pflanze ist das Nationalsymbol Indiens und steht für Reinheit?",
+     "correct": "Lotus",
+     "wrong": [
+      "Rose",
+      "Orchidee",
+      "Lilie"
+     ]
+    },
+    "en": {
+     "text": "Which plant is the national symbol of India and stands for purity?",
+     "correct": "Lotus",
+     "wrong": [
+      "Rose",
+      "Orchid",
+      "Lily"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Auf was für einem Tisch wird Snooker gespielt?",
+     "correct": "Auf einem Billardtisch",
+     "wrong": [
+      "Auf einem Tischtennistisch",
+      "Auf einem Kickertisch",
+      "Auf einem Spieltisch mit Würfeln"
+     ]
+    },
+    "en": {
+     "text": "What kind of table is snooker played on?",
+     "correct": "A billiard table",
+     "wrong": [
+      "A table tennis table",
+      "A foosball table",
+      "A dice table"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der sprechende Schneemann in „Die Eiskönigin“?",
+     "correct": "Olaf",
+     "wrong": [
+      "Sven",
+      "Kristoff",
+      "Hans"
+     ]
+    },
+    "en": {
+     "text": "What is the talking snowman in “Frozen” called?",
+     "correct": "Olaf",
+     "wrong": [
+      "Sven",
+      "Kristoff",
+      "Hans"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Instrument ist typisch für Country- und Bluegrass-Musik und hat einen runden Resonanzkörper?",
+     "correct": "Banjo",
+     "wrong": [
+      "Cello",
+      "Harfe",
+      "Trompete"
+     ]
+    },
+    "en": {
+     "text": "Which instrument is typical of country and bluegrass music and has a round body?",
+     "correct": "Banjo",
+     "wrong": [
+      "Cello",
+      "Harp",
+      "Trumpet"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Der Wind in den Weiden“?",
+     "correct": "Kenneth Grahame",
+     "wrong": [
+      "A. A. Milne",
+      "Lewis Carroll",
+      "Rudyard Kipling"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Wind in the Willows”?",
+     "correct": "Kenneth Grahame",
+     "wrong": [
+      "A. A. Milne",
+      "Lewis Carroll",
+      "Rudyard Kipling"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf die Figur Micky Maus?",
+     "correct": "Walt Disney",
+     "wrong": [
+      "Walt Whitman",
+      "Tex Avery",
+      "Hanna-Barbera"
+     ]
+    },
+    "en": {
+     "text": "Who created the character Mickey Mouse?",
+     "correct": "Walt Disney",
+     "wrong": [
+      "Walt Whitman",
+      "Tex Avery",
+      "Hanna-Barbera"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Online-Plattform, auf der Spieler eigene Spielwelten bauen, vor allem bei Kindern beliebt?",
+     "correct": "Roblox",
+     "wrong": [
+      "Steam",
+      "Twitch",
+      "Netflix"
+     ]
+    },
+    "en": {
+     "text": "What is the online platform where players build their own game worlds, popular with children?",
+     "correct": "Roblox",
+     "wrong": [
+      "Steam",
+      "Twitch",
+      "Netflix"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Konzern Samsung?",
+     "correct": "Südkorea",
+     "wrong": [
+      "Japan",
+      "China",
+      "Taiwan"
+     ]
+    },
+    "en": {
+     "text": "Which country does the company Samsung come from?",
+     "correct": "South Korea",
+     "wrong": [
+      "Japan",
+      "China",
+      "Taiwan"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Käse Feta?",
+     "correct": "Griechenland",
+     "wrong": [
+      "Italien",
+      "Türkei",
+      "Bulgarien"
+     ]
+    },
+    "en": {
+     "text": "Which country does feta cheese come from?",
+     "correct": "Greece",
+     "wrong": [
+      "Italy",
+      "Turkey",
+      "Bulgaria"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was ist die größte Stadt der Türkei?",
+     "correct": "Istanbul",
+     "wrong": [
+      "Ankara",
+      "Izmir",
+      "Antalya"
+     ]
+    },
+    "en": {
+     "text": "What is the largest city in Turkey?",
+     "correct": "Istanbul",
+     "wrong": [
+      "Ankara",
+      "Izmir",
+      "Antalya"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher portugiesische Seefahrer umsegelte 1488 als Erster das Kap der Guten Hoffnung?",
+     "correct": "Bartolomeu Dias",
+     "wrong": [
+      "Vasco da Gama",
+      "Fernando de Magellan",
+      "Heinrich der Seefahrer"
+     ]
+    },
+    "en": {
+     "text": "Which Portuguese navigator was the first to round the Cape of Good Hope in 1488?",
+     "correct": "Bartolomeu Dias",
+     "wrong": [
+      "Vasco da Gama",
+      "Fernando de Magellan",
+      "Heinrich der Seefahrer"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Liter Blut hat ein erwachsener Mensch ungefähr?",
+     "correct": "5",
+     "wrong": [
+      "2",
+      "10",
+      "15"
+     ]
+    },
+    "en": {
+     "text": "Roughly how many litres of blood does an adult have?",
+     "correct": "5",
+     "wrong": [
+      "2",
+      "10",
+      "15"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier ist als „Flipper“ aus Film und Fernsehen bekannt?",
+     "correct": "Delfin",
+     "wrong": [
+      "Hai",
+      "Seelöwe",
+      "Pinguin"
+     ]
+    },
+    "en": {
+     "text": "Which animal is known as “Flipper” from film and television?",
+     "correct": "Dolphin",
+     "wrong": [
+      "Shark",
+      "Sea lion",
+      "Penguin"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Sportart wurde ursprünglich von nordamerikanischen Ureinwohnern gespielt und nutzt einen Schläger mit Netz?",
+     "correct": "Lacrosse",
+     "wrong": [
+      "Squash",
+      "Badminton",
+      "Hockey"
+     ]
+    },
+    "en": {
+     "text": "Which sport was originally played by Native Americans and uses a stick with a net?",
+     "correct": "Lacrosse",
+     "wrong": [
+      "Squash",
+      "Badminton",
+      "Hockey"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Simbas Vater in „Der König der Löwen“?",
+     "correct": "Mufasa",
+     "wrong": [
+      "Scar",
+      "Nala",
+      "Rafiki"
+     ]
+    },
+    "en": {
+     "text": "What is Simba's father called in “The Lion King”?",
+     "correct": "Mufasa",
+     "wrong": [
+      "Scar",
+      "Nala",
+      "Rafiki"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Stadtteil von New York entstand der Hip-Hop?",
+     "correct": "Bronx",
+     "wrong": [
+      "Manhattan",
+      "Queens",
+      "Staten Island"
+     ]
+    },
+    "en": {
+     "text": "In which borough of New York did hip-hop originate?",
+     "correct": "The Bronx",
+     "wrong": [
+      "Manhattan",
+      "Queens",
+      "Staten Island"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Herr der Fliegen“?",
+     "correct": "William Golding",
+     "wrong": [
+      "George Orwell",
+      "Aldous Huxley",
+      "Graham Greene"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “Lord of the Flies”?",
+     "correct": "William Golding",
+     "wrong": [
+      "George Orwell",
+      "Aldous Huxley",
+      "Graham Greene"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die Malweise mit starken Hell-Dunkel-Kontrasten, etwa bei Caravaggio?",
+     "correct": "Chiaroscuro",
+     "wrong": [
+      "Pointillismus",
+      "Sfumato",
+      "Kubismus"
+     ]
+    },
+    "en": {
+     "text": "What is the painting technique with strong light-dark contrasts, as in Caravaggio, called?",
+     "correct": "Chiaroscuro",
+     "wrong": [
+      "Pointillism",
+      "Sfumato",
+      "Cubism"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Bei welchem Konsolenspiel tanzt man vor dem Bildschirm Choreografien nach?",
+     "correct": "Just Dance",
+     "wrong": [
+      "Gran Turismo",
+      "Animal Crossing",
+      "Tetris"
+     ]
+    },
+    "en": {
+     "text": "In which console game do you copy dance routines in front of the screen?",
+     "correct": "Just Dance",
+     "wrong": [
+      "Gran Turismo",
+      "Animal Crossing",
+      "Tetris"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das soziale Netzwerk von Elon Musk, früher Twitter?",
+     "correct": "X",
+     "wrong": [
+      "Y",
+      "Z",
+      "Threads"
+     ]
+    },
+    "en": {
+     "text": "What is Elon Musk's social network, formerly Twitter, now called?",
+     "correct": "X",
+     "wrong": [
+      "Y",
+      "Z",
+      "Threads"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt die Pizza?",
+     "correct": "Italien",
+     "wrong": [
+      "Griechenland",
+      "Frankreich",
+      "Spanien"
+     ]
+    },
+    "en": {
+     "text": "Which country does pizza come from?",
+     "correct": "Italy",
+     "wrong": [
+      "Greece",
+      "France",
+      "Spain"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Kontinent liegt Peru?",
+     "correct": "Südamerika",
+     "wrong": [
+      "Nordamerika",
+      "Afrika",
+      "Asien"
+     ]
+    },
+    "en": {
+     "text": "On which continent is Peru?",
+     "correct": "South America",
+     "wrong": [
+      "North America",
+      "Africa",
+      "Asia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land liegt das Tal der Könige, in dem Pharaonen begraben wurden?",
+     "correct": "Ägypten",
+     "wrong": [
+      "Jordanien",
+      "Irak",
+      "Mexiko"
+     ]
+    },
+    "en": {
+     "text": "In which country is the Valley of the Kings where pharaohs were buried?",
+     "correct": "Egypt",
+     "wrong": [
+      "Jordan",
+      "Iraq",
+      "Mexico"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Muskel ist der größte im menschlichen Körper?",
+     "correct": "Großer Gesäßmuskel",
+     "wrong": [
+      "Bizeps",
+      "Herzmuskel",
+      "Oberschenkelbeuger"
+     ]
+    },
+    "en": {
+     "text": "Which muscle is the largest in the human body?",
+     "correct": "Gluteus maximus",
+     "wrong": [
+      "Biceps",
+      "Heart muscle",
+      "Hamstring"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche giftige Spinne trägt oft eine rote Sanduhr auf dem Hinterleib?",
+     "correct": "Schwarze Witwe",
+     "wrong": [
+      "Kreuzspinne",
+      "Vogelspinne",
+      "Wolfsspinne"
+     ]
+    },
+    "en": {
+     "text": "Which venomous spider often has a red hourglass on its abdomen?",
+     "correct": "Black widow",
+     "wrong": [
+      "Garden spider",
+      "Tarantula",
+      "Wolf spider"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Regel verbietet es Fußballspielern, bei einem Pass vor dem letzten Abwehrspieler zu stehen?",
+     "correct": "Abseits",
+     "wrong": [
+      "Elfmeter",
+      "Handspiel",
+      "Eckball"
+     ]
+    },
+    "en": {
+     "text": "Which rule forbids football players from being ahead of the last defender when a pass is played?",
+     "correct": "Offside",
+     "wrong": [
+      "Penalty",
+      "Handball",
+      "Corner"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der böse Onkel in „Der König der Löwen“?",
+     "correct": "Scar",
+     "wrong": [
+      "Mufasa",
+      "Zazu",
+      "Rafiki"
+     ]
+    },
+    "en": {
+     "text": "What is the evil uncle in “The Lion King” called?",
+     "correct": "Scar",
+     "wrong": [
+      "Mufasa",
+      "Zazu",
+      "Rafiki"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Saiten hat eine übliche Bassgitarre?",
+     "correct": "4",
+     "wrong": [
+      "6",
+      "8",
+      "12"
+     ]
+    },
+    "en": {
+     "text": "How many strings does a typical bass guitar have?",
+     "correct": "4",
+     "wrong": [
+      "6",
+      "8",
+      "12"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Little Women“ („Betty und ihre Schwestern“)?",
+     "correct": "Louisa May Alcott",
+     "wrong": [
+      "Lucy Maud Montgomery",
+      "Charlotte Brontë",
+      "Harper Lee"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “Little Women”?",
+     "correct": "Louisa May Alcott",
+     "wrong": [
+      "Lucy Maud Montgomery",
+      "Charlotte Brontë",
+      "Harper Lee"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche dieser Farben ist eine Grundfarbe in der Malerei?",
+     "correct": "Gelb",
+     "wrong": [
+      "Grün",
+      "Orange",
+      "Violett"
+     ]
+    },
+    "en": {
+     "text": "Which of these colours is a primary colour in painting?",
+     "correct": "Yellow",
+     "wrong": [
+      "Green",
+      "Orange",
+      "Purple"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das populäre Strategiespiel von Valve, das 5 gegen 5 gespielt wird?",
+     "correct": "Dota 2",
+     "wrong": [
+      "StarCraft",
+      "Warcraft",
+      "Age of Empires"
+     ]
+    },
+    "en": {
+     "text": "What is Valve's popular strategy game played five against five called?",
+     "correct": "Dota 2",
+     "wrong": [
+      "StarCraft",
+      "Warcraft",
+      "Age of Empires"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Elektronikkonzern Sony?",
+     "correct": "Japan",
+     "wrong": [
+      "Südkorea",
+      "China",
+      "USA"
+     ]
+    },
+    "en": {
+     "text": "Which country does the electronics company Sony come from?",
+     "correct": "Japan",
+     "wrong": [
+      "South Korea",
+      "China",
+      "USA"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher große Meeressäuger wird auch „Schwertwal“ genannt?",
+     "correct": "Orca",
+     "wrong": [
+      "Blauwal",
+      "Narwal",
+      "Pottwal"
+     ]
+    },
+    "en": {
+     "text": "Which large marine mammal is also called the “killer whale”?",
+     "correct": "Orca",
+     "wrong": [
+      "Blue whale",
+      "Narwhal",
+      "Sperm whale"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Sportgerät fährt man in einem Skatepark?",
+     "correct": "Auf einem Skateboard",
+     "wrong": [
+      "Auf einem Surfboard",
+      "Auf einem Ruderboot",
+      "Auf einem Pferd"
+     ]
+    },
+    "en": {
+     "text": "What do you ride in a skatepark?",
+     "correct": "A skateboard",
+     "wrong": [
+      "A surfboard",
+      "A rowing boat",
+      "A horse"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Han Solos pelziger Freund in „Star Wars“?",
+     "correct": "Chewbacca",
+     "wrong": [
+      "Yoda",
+      "Jabba",
+      "Wicket"
+     ]
+    },
+    "en": {
+     "text": "What is Han Solo's furry friend in “Star Wars” called?",
+     "correct": "Chewbacca",
+     "wrong": [
+      "Yoda",
+      "Jabba",
+      "Wicket"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt das Blasinstrument Didgeridoo?",
+     "correct": "Australien",
+     "wrong": [
+      "Neuseeland",
+      "Südafrika",
+      "Kanada"
+     ]
+    },
+    "en": {
+     "text": "Which country does the wind instrument didgeridoo come from?",
+     "correct": "Australia",
+     "wrong": [
+      "New Zealand",
+      "South Africa",
+      "Canada"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus wie vielen Nächten besteht der Titel der arabischen Märchensammlung?",
+     "correct": "1001",
+     "wrong": [
+      "100",
+      "365",
+      "1000"
+     ]
+    },
+    "en": {
+     "text": "How many nights are in the title of the Arabic collection of tales?",
+     "correct": "1001",
+     "wrong": [
+      "100",
+      "365",
+      "1000"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher amerikanische Fotograf ist für seine Schwarz-Weiß-Landschaften des Yosemite-Nationalparks bekannt?",
+     "correct": "Ansel Adams",
+     "wrong": [
+      "Robert Capa",
+      "Richard Avedon",
+      "Annie Leibovitz"
+     ]
+    },
+    "en": {
+     "text": "Which American photographer is known for his black-and-white landscapes of Yosemite National Park?",
+     "correct": "Ansel Adams",
+     "wrong": [
+      "Robert Capa",
+      "Richard Avedon",
+      "Annie Leibovitz"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Bei welchem Spiel würfelt man und zieht seine Figuren über ein Brett nach Hause?",
+     "correct": "Mensch ärgere dich nicht",
+     "wrong": [
+      "Skat",
+      "Poker",
+      "Sudoku"
+     ]
+    },
+    "en": {
+     "text": "In which game do you roll a die and move pieces around a board to get home?",
+     "correct": "Ludo",
+     "wrong": [
+      "Skat",
+      "Poker",
+      "Sudoku"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Smartwatch von Apple?",
+     "correct": "Apple Watch",
+     "wrong": [
+      "Galaxy Watch",
+      "Pixel Band",
+      "Fitbit Sense"
+     ]
+    },
+    "en": {
+     "text": "What is Apple's smartwatch called?",
+     "correct": "Apple Watch",
+     "wrong": [
+      "Galaxy Watch",
+      "Pixel Band",
+      "Fitbit Sense"
+     ]
+    }
+   }
+  }
+ ]
+}
