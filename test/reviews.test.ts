@@ -148,3 +148,17 @@ test('tools/apply-edits.ts überträgt Admin-Korrekturen in Batch-Dateien (idemp
   assert.equal(out.category, 'history'); assert.equal(out.difficulty, 2); assert.equal(out.region, 'dach')
   assert.match(run1(), /0 übernommen, 1 bereits enthalten/)
 })
+
+test('PLAYER_REPORTS=0 schaltet den Melde-Knopf für alle Spieler ab (Reviewer-Meldungen bleiben)', async () => {
+  const { config } = await import('../server/config.ts')
+  assert.equal((await call('GET', '/api/meta')).json.reports, true)
+  config.playerReports = false
+  try {
+    assert.equal((await call('GET', '/api/meta')).json.reports, false)
+    const p = await newPlayer('Neugierig')
+    const gid = await answeredGame(p.token)
+    assert.equal((await call('POST', `/api/games/${gid}/report`, { round: 1, idx: 0 }, p.token)).status, 403)
+    run('UPDATE players SET reviewer=1 WHERE public_id=?', p.player.public_id)
+    assert.equal((await call('POST', `/api/games/${gid}/review`, { round: 1, idx: 0, part: 'question', kind: 'wording' }, p.token)).status, 200)
+  } finally { config.playerReports = true }
+})

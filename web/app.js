@@ -336,7 +336,8 @@ async function play(id, my) {
             h('button', { class: 'btn small', onclick: () => form.remove() }, t('review.cancel'))))
           feedback.append(form); note.focus()
         } }, '✎') : null
-        feedback.append(h('strong', {}, label), h('span', { class: 'row' }, review, report, next))
+        const showReport = S.meta?.reports !== false && store.get('rp.noReport') !== '1'
+        feedback.append(h('strong', {}, label), h('span', { class: 'row' }, review, showReport ? report : null, next))
         if (r.explanation) feedback.before(h('p', { class: 'muted' }, r.explanation))
         autoNext = setTimeout(() => resolve({ r }), r.explanation ? 3500 : 1600)
       }
@@ -402,6 +403,8 @@ async function profile() {
       h('div', { class: 'row' }, avatar(p), h('div', { class: 'grow' }, h('label', { class: 'field' }, t('profile.name'), name))),
       h('button', { class: 'btn block', onclick: guard(async () => { await api('PATCH', '/api/me', { name: name.value }); await refreshMe(); toast(t('profile.saved')) }) }, t('profile.save')),
       h('label', { class: 'field' }, t('profile.uiLang'), uiLang)),
+    S.meta?.reports !== false ? h('label', { class: 'row' }, h('input', { type: 'checkbox', checked: store.get('rp.noReport') !== '1',
+      onchange: (e) => { e.target.checked ? store.del('rp.noReport') : store.set('rp.noReport', '1') } }), h('span', { class: 'hint' }, t('profile.reportBtn'))) : null,
     p.reviewer ? h('p', { class: 'hint' }, t('profile.reviewer')) : null,
     h('h2', {}, t('profile.code')),
     h('div', { class: 'card stack' }, h('div', { class: 'code' }, p.public_id), h('button', { class: 'btn block', onclick: () => share(inviteUrl(), t('app.name')) }, '🔗 ' + t('profile.share'))),

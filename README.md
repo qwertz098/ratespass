@@ -52,6 +52,7 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 | `DATA_DIR` | `./data` (Docker: `/data`) | SQLite-Datenbank |
 | `ADMIN_TOKEN` | – | Zugang zu `/admin` und `/api/admin/*` (**mind. 16 Zeichen**, z. B. `openssl rand -hex 16`; leer oder kürzer = abgeschaltet) |
 | `ADMIN_SESSION_HOURS` | 8 | Laufzeit der Admin-Sitzung nach dem Login |
+| `PLAYER_REPORTS` | 1 | `0` schaltet den Melde-Knopf ⚑ für alle Spieler ab (Reviewer-Meldungen und Admin bleiben); jede Person kann ihn zusätzlich im Profil ausblenden |
 | `PLAYER_CREATE_LIMIT_PER_HOUR` | 60 | neue anonyme Profile pro IP und Stunde (Missbrauchsschutz; hinter NAT/Schul-WLAN teilen sich viele Nutzer eine IP) |
 | `HOST_PORT` / `BIND_ADDRESS` | 3007 / 0.0.0.0 | nur Compose: veröffentlichter Host-Port bzw. Bindeadresse (der Container hört intern auf 3000) |
 | `TRUST_PROXY` | 0 | `1`: Client-IP aus `X-Forwarded-For` (Rate-Limits) |

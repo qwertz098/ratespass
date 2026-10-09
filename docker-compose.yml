@@ -12,6 +12,7 @@ services:
       VAPID_SUBJECT: ${VAPID_SUBJECT:-https://github.com/qwertz098/ratespass}
       # Auf 1 setzen, wenn ein Reverse-Proxy (Caddy/nginx/NPM/Traefik) davor steht; PROXY_HOPS = Anzahl der Proxys.
       PLAYER_CREATE_LIMIT_PER_HOUR: ${PLAYER_CREATE_LIMIT_PER_HOUR:-60}   # neue Profile pro IP und Stunde
+      PLAYER_REPORTS: ${PLAYER_REPORTS:-1}   # 0 = Melde-Knopf für alle Spieler aus
       TRUST_PROXY: ${TRUST_PROXY:-0}
       PROXY_HOPS: ${PROXY_HOPS:-1}
     volumes:

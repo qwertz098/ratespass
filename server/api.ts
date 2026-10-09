@@ -38,7 +38,7 @@ const profile = (p: PlayerRow) => ({
 
 /* ---------- Öffentliches ---------- */
 router.get('/api/meta', () => ({
-  categories: CATEGORIES, regions: REGIONS,
+  categories: CATEGORIES, regions: REGIONS, reports: config.playerReports,
   langs: supportedLangs(),
   time_limit_ms: game.TIME_LIMIT_MS, rounds: game.ROUNDS, per_round: game.PER_ROUND,
 }), { auth: false })
@@ -231,6 +231,7 @@ router.post('/api/games/:id/resign', (c) => {
   return { game: game.getGameView(gid(c), me(c)) }
 })
 router.post('/api/games/:id/report', (c) => {
+  if (!config.playerReports) throw new HttpError(403, 'reports_disabled')
   game.reportQuestion(gid(c), me(c), c.body.round, c.body.idx, c.body.reason)
   return { ok: true }
 })

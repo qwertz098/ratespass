@@ -30,5 +30,7 @@ export const config = {
   pushAllowInsecure: env.PUSH_ALLOW_INSECURE === '1',
   /** Zusätzlich erlaubte Push-Dienst-Hosts (kommagetrennt), z. B. für selbst gehostetes UnifiedPush. */
   pushExtraHosts: (env.PUSH_EXTRA_HOSTS ?? '').split(',').map((h) => h.trim().toLowerCase()).filter(Boolean),
+  /** Melde-Knopf (⚑) für alle Spieler; mit PLAYER_REPORTS=0 abschaltbar (Reviewer und Admin bleiben unberührt). */
+  playerReports: env.PLAYER_REPORTS !== '0',
   inactiveDaysForfeit: 7,
 }
