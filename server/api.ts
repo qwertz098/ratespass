@@ -10,6 +10,8 @@ import * as game from './game.ts'
 import * as ladder from './ladder.ts'
 import * as rooms from './rooms.ts'
 import * as ai from './ai.ts'
+import { consentState, consentStats, currentPrivacy, recordConsent } from './privacy.ts'
+import { erasePlayer } from './erase.ts'
 import {
   adminEnabled, clearFailures, closeSession, COOKIE, loginBlocked, openSession, parseCookie,
   recordFailure, sameOriginOk, sessionCookie, tokenOk, validSession,
@@ -74,13 +76,29 @@ router.post('/api/players', (c) => {
   const name = c.body.name ? cleanName(c.body.name) : `Spieler-${crypto.randomInt(1000, 10000)}`
   const lang = typeof c.body.lang === 'string' && LANG_RE.test(c.body.lang) ? c.body.lang : 'de'
   return tx(() => {
+    if (config.requireConsent) { // Zustimmung zur aktuellen Datenschutzerklärung ist Voraussetzung für das Anlegen eines Profils
+      const cur = currentPrivacy().version
+      if (c.body.consent?.version !== cur) throw new HttpError(409, 'privacy_changed')
+      if (c.body.consent?.age_ok !== true) throw new HttpError(400, 'consent_required')
+    }
     const p = createPlayer(name, lang)
+    if (config.requireConsent) recordConsent(p.id, c.body.consent.version, true, lang)
     return { token: createSession(p.id, 'anonymous'), player: profile(p) }
   })
 }, { auth: false })
 
+/* ---------- Datenschutz & Zustimmung ---------- */
+router.get('/api/privacy', () => { const p = currentPrivacy(); return { version: p.version, de: p.de, en: p.en, missing: p.missing } }, { auth: false })
+
+router.post('/api/consent', (c) => {
+  const r = recordConsent(me(c).id, c.body?.version, c.body?.age_ok, me(c).lang)
+  if (r === 'changed') throw new HttpError(409, 'privacy_changed')
+  if (r === 'age') throw new HttpError(400, 'consent_required')
+  return { consent: consentState(me(c).id) }
+})
+
 router.get('/api/me', (c) => ({
-  player: profile(me(c)),
+  player: profile(me(c)), consent: consentState(me(c).id),
   contacts: all<PlayerRow>(
     'SELECT p.* FROM contacts c JOIN players p ON p.id=c.contact_id WHERE c.player_id=? AND p.deleted=0 ORDER BY p.name', me(c).id).map(pub),
 }))
@@ -101,23 +119,7 @@ router.patch('/api/me', (c) => {
 })
 
 router.delete('/api/me', (c) => {
-  tx(() => {
-    const p = me(c)
-    for (const g of all<{ id: number }>("SELECT id FROM games WHERE (p1=? OR p2=?) AND status IN ('waiting','active')", p.id, p.id)) game.resign(g.id, p)
-    run("UPDATE players SET deleted=1, name='—', username=NULL, pw_hash=NULL WHERE id=?", p.id)
-    run('DELETE FROM sessions WHERE player_id=?', p.id)
-    run('DELETE FROM push_subs WHERE player_id=?', p.id)
-    run('DELETE FROM transfer_codes WHERE player_id=?', p.id)
-    run('DELETE FROM contacts WHERE player_id=? OR contact_id=?', p.id, p.id)
-    run('DELETE FROM seen WHERE player_id=?', p.id)
-    run('DELETE FROM ladders WHERE player_id=?', p.id)
-    run('UPDATE players SET birth_year=NULL WHERE id=?', p.id)
-    rooms.forgetPlayer(p.id)
-    run('DELETE FROM reports WHERE player_id=?', p.id)
-    run('UPDATE reviews SET player_id=NULL WHERE player_id=?', p.id)
-    run('UPDATE players SET reviewer=0 WHERE id=?', p.id)
-    run('UPDATE questions SET submitted_by=NULL WHERE submitted_by=?', p.id)
-  })
+  erasePlayer(me(c))
   return { ok: true }
 })
 
@@ -614,5 +616,6 @@ router.get('/api/admin/stats', (c) => {
     players: get('SELECT COUNT(*) n FROM players WHERE is_bot=0 AND deleted=0'),
     games: all('SELECT status, COUNT(*) n FROM games GROUP BY status'),
     batches: all('SELECT * FROM batches ORDER BY imported_at'),
+    consents: consentStats(), privacy_missing: currentPrivacy().missing,
   }
 }, { auth: false })

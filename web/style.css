@@ -149,3 +149,8 @@ input[type=checkbox] { width: 20px; height: 20px; margin-top: 2px; accent-color:
 table.stat { border-collapse: collapse; width: 100%; font-size: .85rem; font-variant-numeric: tabular-nums }
 table.stat th, table.stat td { padding: 6px 8px; text-align: right; border-bottom: 1px solid var(--line) }
 table.stat th:first-child, table.stat td:first-child { text-align: left }
+
+.consent-row { align-items: flex-start; gap: 10px; font-size: .9rem }
+.consent-row input { margin-top: 3px; width: 20px; height: 20px }
+.doc h4 { margin: 10px 0 2px }
+.doc ul, .card ul { padding-left: 20px; margin: 4px 0 }

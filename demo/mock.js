@@ -164,8 +164,16 @@ const DEMO = (() => {
   function handle(method, path, body) {
     let m
     if (path === '/api/meta') return { body: { categories: ALL_CATS, tiers: Object.fromEntries(ALL_CATS.map((c) => [c, TIERS[c] ?? 'basic'])), levels: LEVELS, regions: ['global', 'dach'], reports: true, langs: [{ lang: 'de', n: pool('de').length }, { lang: 'en', n: pool('en').length }], time_limit_ms: LIMIT, rounds: 6, per_round: 3 } }
-    if (path === '/api/players' && method === 'POST') { if (body?.name) st.me.name = String(body.name).slice(0, 24); if (body?.lang) st.me.lang = body.lang; save(); return { body: { token: 'demo-token', player: profile() } } }
-    if (path === '/api/me' && method === 'GET') return { body: { player: profile(), contacts: st.contacts } }
+    if (path === '/api/privacy') {
+      const doc = (l) => ({ title: l === 'de' ? 'Impressum & Datenschutz (Demo)' : 'Legal notice & privacy (demo)',
+        summary: l === 'de' ? ['Demo: Alle Daten bleiben in deinem Browser (localStorage), es wird nichts an einen Server gesendet.', 'In der echten App: anonymes Profil, kein Tracking, Widerruf jederzeit.'] : ['Demo: all data stays in your browser (localStorage); nothing is sent to a server.', 'In the real app: anonymous profile, no tracking, withdrawal at any time.'],
+        sections: [{ title: l === 'de' ? 'Demo' : 'Demo', paras: [l === 'de' ? 'Dies ist eine klickbare Demo ohne Server. Die echte Datenschutzerklärung wird vom Betreiber über Umgebungsvariablen konfiguriert.' : 'This is a clickable demo without a server. The real privacy policy is configured by the operator via environment variables.'] }] })
+      return { body: { version: 'demo-version', de: doc('de'), en: doc('en'), missing: [] } }
+    }
+    if (path === '/api/consent' && method === 'POST') { st.consent = Date.now(); save(); return { body: { consent: { current: 'demo-version', accepted: 'demo-version', at: st.consent } } } }
+    if (path === '/api/players' && method === 'POST') {
+      if (body?.consent) st.consent = Date.now() if (body?.name) st.me.name = String(body.name).slice(0, 24); if (body?.lang) st.me.lang = body.lang; save(); return { body: { token: 'demo-token', player: profile() } } }
+    if (path === '/api/me' && method === 'GET') return { body: { player: profile(), contacts: st.contacts, consent: { current: 'demo-version', accepted: st.consent ? 'demo-version' : null, at: st.consent ?? null } } }
     if (path === '/api/me' && method === 'PATCH') {
       if (body.name !== undefined) { const n = String(body.name).trim(); if (n.length < 2 || n.length > 24) return err(400, 'bad_name'); st.me.name = n }
       if (body.lang) st.me.lang = body.lang

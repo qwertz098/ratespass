@@ -1,5 +1,6 @@
 process.env.DB_PATH = ':memory:'
 process.env.ADMIN_TOKEN = 'test-admin-token'
+process.env.CONSENT_REQUIRED ??= '0' // Zustimmung testet test/privacy.test.ts gezielt
 process.env.PUSH_ALLOW_INSECURE = '1' // erlaubt nur http://127.0.0.1 für den Fake-Push-Dienst im Test
 
 export const { createApp } = await import('../server/app.ts')

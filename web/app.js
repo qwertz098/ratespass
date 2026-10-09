@@ -156,15 +156,59 @@ function topbar(title, back = true, right) {
 /* ---------- Start / Sitzung ---------- */
 async function boot() {
   if (!S.meta) S.meta = await api('GET', '/api/meta', undefined, { auth: false })
+  if (!S.priv) S.priv = await api('GET', '/api/privacy', undefined, { auth: false })
   if (!S.token) {
+    // Erster Aufruf: erst Zustimmung zur Datenschutzerklärung (dokumentiert), dann Namenswahl
+    let version = await askConsent(S.priv, false)
     const name = await askName()
-    const r = await api('POST', '/api/players', { lang: getLang(), ...(name ? { name } : {}) }, { auth: false })
-    S.token = r.token; store.set('rp.token', r.token)
+    for (let tries = 0; ; tries++) {
+      try {
+        const r = await api('POST', '/api/players', { lang: getLang(), ...(name ? { name } : {}), consent: { version, age_ok: true } }, { auth: false })
+        S.token = r.token; store.set('rp.token', r.token)
+        break
+      } catch (e) {
+        if (!(e instanceof ApiError && e.code === 'privacy_changed') || tries > 2) throw e
+        S.priv = await api('GET', '/api/privacy', undefined, { auth: false }); version = await askConsent(S.priv, true) // Text hat sich währenddessen geändert
+      }
+    }
   }
   try { await refreshMe(true) } catch (e) { if (e instanceof ApiError && e.status === 401) { sessionLost(); return false } throw e }
+  // Geänderte Datenschutzerklärung: genau einmal erneut zustimmen
+  while (S.consent && S.consent.accepted !== S.consent.current) {
+    S.priv = await api('GET', '/api/privacy', undefined, { auth: false })
+    const version = await askConsent(S.priv, S.consent.accepted != null)
+    try { await api('POST', '/api/consent', { version, age_ok: true }) } catch (e) { if (!(e instanceof ApiError && e.code === 'privacy_changed')) throw e }
+    await refreshMe()
+  }
   resyncPush()
   return true
 }
+const renderDoc = (doc) => h('div', { class: 'doc stack' }, doc.sections.map((s) => h('div', { class: 'stack' }, h('h4', {}, s.title),
+  (s.paras ?? []).map((p) => h('p', { class: 'muted' }, p)), s.items ? h('ul', {}, s.items.map((i) => h('li', {}, i))) : null)))
+
+/** Zustimmung zur Datenschutzerklärung (nicht vorangekreuzt, ab 16). Löst mit der zugestimmten Version auf. */
+function askConsent(priv, changed) {
+  return new Promise((resolve) => {
+    const view = (declined = false) => {
+      const doc = priv[getLang()] ?? priv.de
+      const box = h('input', { type: 'checkbox', id: 'consent-box' })
+      const ok = h('button', { class: 'btn primary block', disabled: true, onclick: () => resolve(priv.version) }, t('consent.accept'))
+      box.addEventListener('change', () => { ok.disabled = !box.checked })
+      const langs = h('div', { class: 'seg' }, Object.keys(dict).map((l) => h('button', { 'aria-pressed': String(l === getLang()), onclick: () => { store.set('rp.lang', l); setLang(l); view(declined) } }, dict[l]['lang.name'])))
+      mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Rates', h('b', {}, 'paß')), langs),
+        declined
+          ? h('div', { class: 'card stack' }, h('h3', {}, t('consent.declinedTitle')), h('p', { class: 'muted' }, t('consent.declinedInfo')), h('button', { class: 'btn primary block', onclick: () => view(false) }, t('consent.back')))
+          : h('div', { class: 'card stack' }, h('h3', {}, t(changed ? 'consent.changedTitle' : 'consent.title')),
+            changed ? h('p', { class: 'muted' }, t('consent.changedInfo')) : null,
+            h('ul', {}, doc.summary.map((s) => h('li', {}, s))),
+            h('details', {}, h('summary', { class: 'muted' }, t('consent.read')), renderDoc(doc)),
+            h('label', { class: 'row consent-row' }, box, h('span', {}, t('consent.check'))),
+            ok, h('button', { class: 'btn block', onclick: () => view(true) }, t('consent.decline'))))
+    }
+    view()
+  })
+}
+
 /** Erster Start: Anzeigenamen wählen (oder einen zufälligen nehmen). Ändern geht jederzeit im Profil. */
 function askName() {
   return new Promise((resolve) => {
@@ -184,7 +228,7 @@ function askName() {
 }
 async function refreshMe(restore = false) {
   const r = await api('GET', '/api/me')
-  S.me = r.player; S.contacts = r.contacts
+  S.me = r.player; S.contacts = r.contacts; S.consent = r.consent
   await syncContacts(restore)
 }
 function sessionLost() {
@@ -615,6 +659,12 @@ async function profile() {
     h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend')),
     h('p', { class: 'hint' }, t('friends.localNote')),
     h('h2', {}, t('push.title')), h('div', { class: 'card' }, pushCard()),
+    h('h2', {}, t('privacy.title')),
+    h('div', { class: 'card stack' }, h('p', { class: 'muted' }, S.consent?.at ? t('privacy.accepted', { date: new Date(S.consent.at).toLocaleDateString(getLang()), v: String(S.consent.accepted).slice(0, 8) }) : t('privacy.none')),
+      h('a', { class: 'btn block', href: '/legal.html' }, t('privacy.read')),
+      h('button', { class: 'btn block danger', onclick: guard(async () => {
+        if (!confirm(t('privacy.revokeConfirm'))) return
+        await api('DELETE', '/api/me'); await disablePush().catch(() => {}); forgetIdentity(); go('#/') }) }, t('privacy.revoke'))),
     h('h2', {}, t('profile.account')), h('div', { class: 'card' }, account),
     h('h2', {}, t('profile.move')),
     h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('profile.moveInfo')),

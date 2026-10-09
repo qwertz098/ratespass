@@ -149,14 +149,14 @@ input[type=checkbox] { width: 20px; height: 20px; margin-top: 2px; accent-color:
 
 .rank { font-weight: 800; color: var(--accent); min-width: 28px }
 
-details.more { margin-top: 18px }
-details.more > summary { cursor: pointer; color: var(--muted); font-weight: 600; padding: 10px 2px; list-style-position: inside }
-details.more[open] > summary { color: var(--text) }
-details.more .stack { margin-top: 4px }
-
 table.stat { border-collapse: collapse; width: 100%; font-size: .85rem; font-variant-numeric: tabular-nums }
 table.stat th, table.stat td { padding: 6px 8px; text-align: right; border-bottom: 1px solid var(--line) }
 table.stat th:first-child, table.stat td:first-child { text-align: left }
+
+.consent-row { align-items: flex-start; gap: 10px; font-size: .9rem }
+.consent-row input { margin-top: 3px; width: 20px; height: 20px }
+.doc h4 { margin: 10px 0 2px }
+.doc ul, .card ul { padding-left: 20px; margin: 4px 0 }
 
 .demo-bar{max-width:520px;margin:0 auto;padding:12px 16px 0;display:grid;gap:10px}
 .demo-bar .row{justify-content:space-between}
@@ -352,8 +352,16 @@ const DEMO = (() => {
   function handle(method, path, body) {
     let m
     if (path === '/api/meta') return { body: { categories: ALL_CATS, tiers: Object.fromEntries(ALL_CATS.map((c) => [c, TIERS[c] ?? 'basic'])), levels: LEVELS, regions: ['global', 'dach'], reports: true, langs: [{ lang: 'de', n: pool('de').length }, { lang: 'en', n: pool('en').length }], time_limit_ms: LIMIT, rounds: 6, per_round: 3 } }
-    if (path === '/api/players' && method === 'POST') { if (body?.name) st.me.name = String(body.name).slice(0, 24); if (body?.lang) st.me.lang = body.lang; save(); return { body: { token: 'demo-token', player: profile() } } }
-    if (path === '/api/me' && method === 'GET') return { body: { player: profile(), contacts: st.contacts } }
+    if (path === '/api/privacy') {
+      const doc = (l) => ({ title: l === 'de' ? 'Impressum & Datenschutz (Demo)' : 'Legal notice & privacy (demo)',
+        summary: l === 'de' ? ['Demo: Alle Daten bleiben in deinem Browser (localStorage), es wird nichts an einen Server gesendet.', 'In der echten App: anonymes Profil, kein Tracking, Widerruf jederzeit.'] : ['Demo: all data stays in your browser (localStorage); nothing is sent to a server.', 'In the real app: anonymous profile, no tracking, withdrawal at any time.'],
+        sections: [{ title: l === 'de' ? 'Demo' : 'Demo', paras: [l === 'de' ? 'Dies ist eine klickbare Demo ohne Server. Die echte Datenschutzerklärung wird vom Betreiber über Umgebungsvariablen konfiguriert.' : 'This is a clickable demo without a server. The real privacy policy is configured by the operator via environment variables.'] }] })
+      return { body: { version: 'demo-version', de: doc('de'), en: doc('en'), missing: [] } }
+    }
+    if (path === '/api/consent' && method === 'POST') { st.consent = Date.now(); save(); return { body: { consent: { current: 'demo-version', accepted: 'demo-version', at: st.consent } } } }
+    if (path === '/api/players' && method === 'POST') {
+      if (body?.consent) st.consent = Date.now() if (body?.name) st.me.name = String(body.name).slice(0, 24); if (body?.lang) st.me.lang = body.lang; save(); return { body: { token: 'demo-token', player: profile() } } }
+    if (path === '/api/me' && method === 'GET') return { body: { player: profile(), contacts: st.contacts, consent: { current: 'demo-version', accepted: st.consent ? 'demo-version' : null, at: st.consent ?? null } } }
     if (path === '/api/me' && method === 'PATCH') {
       if (body.name !== undefined) { const n = String(body.name).trim(); if (n.length < 2 || n.length > 24) return err(400, 'bad_name'); st.me.name = n }
       if (body.lang) st.me.lang = body.lang
@@ -545,7 +553,7 @@ const dict = {
     'ladder.begin': 'Los mit Frage {n}', 'ladder.continue': 'Weiter mit Frage {n}', 'ladder.quit': 'Aussteigen mit {prize}', 'ladder.quitConfirm': 'Jetzt aussteigen und {prize} mitnehmen?',
     'ladder.step': 'Frage {n}/{total}', 'ladder.result': 'Ergebnis', 'ladder.again': 'Neue Leiter', 'ladder.home': 'Zur Startseite', 'ladder.best': 'Deine Bestleistung: {prize}',
     'ladder.won': 'Geschafft – Millionär!', 'ladder.lost': 'Leider verloren – du nimmst mit:', 'ladder.abandoned': 'Leiter abgelaufen – gesichert:', 'ladder.status_quit': 'Ausgestiegen – du nimmst mit:',
-    'new.challengeKnown': 'Bekannte herausfordern', 'new.duel': 'Duell', 'new.moreModes': 'Weitere Spielmodi: Millionen-Leiter & Mehrspieler',
+    'new.challengeKnown': 'Bekannte herausfordern', 'new.duel': 'Duell',
     'room.title': 'Runde', 'room.multi': 'Mehrspieler', 'room.rounds': 'Runden', 'room.mode.quiz': 'Quiz-Runde', 'room.mode.ladder': 'Leiter-Wettkampf',
     'room.sub.quiz': '2–6 Spieler, gleiche 12 Fragen – wer ist am besten?', 'room.sub.ladder': '2–6 Spieler steigen dieselbe Millionen-Leiter hoch',
     'room.info.quiz': 'Alle beantworten dieselben {n} Fragen, jeder in seinem Tempo. Die Rangliste siehst du, sobald alle fertig sind (spätestens nach 48 Stunden).',
@@ -555,6 +563,11 @@ const dict = {
     'room.lobby': 'Lobby', 'room.finishedRank': 'Beendet – Platz {rank}', 'room.playersN': '{n} Spieler', 'room.codeLabel': 'Raumcode eingeben', 'room.join': 'Beitreten', 'room.joining': 'Du trittst bei …',
     'err.room_over': 'Für dich ist diese Runde beendet.', 'err.unknown_room': 'Raumcode unbekannt.', 'err.room_started': 'Die Runde läuft bereits.', 'err.room_full': 'Der Raum ist voll.',
     'err.room_too_small': 'Zum Starten braucht es mindestens 2 Spieler.', 'err.not_host': 'Nur der Gastgeber kann starten.', 'err.too_many_rooms': 'Zu viele offene Runden.',
+    'consent.title': 'Bevor es losgeht', 'consent.changedTitle': 'Datenschutzerklärung aktualisiert', 'consent.changedInfo': 'Der Text hat sich geändert. Bitte lies ihn und stimme erneut zu – danach fragen wir erst wieder bei der nächsten Änderung.',
+    'consent.read': 'Datenschutzerklärung & Impressum lesen', 'consent.check': 'Ich habe die Datenschutzerklärung gelesen, stimme der Verarbeitung meiner Daten wie beschrieben zu und bin mindestens 16 Jahre alt (oder habe die Zustimmung meiner Sorgeberechtigten).',
+    'consent.accept': 'Zustimmen und weiter', 'consent.decline': 'Ablehnen', 'consent.declinedTitle': 'Ohne Zustimmung geht es nicht', 'consent.declinedInfo': 'Ratespaß braucht ein (anonymes) Profil, um Spielstände zu speichern und gegen andere zu spielen. Ohne deine Zustimmung können wir es leider nicht anlegen – es werden keine Daten gespeichert.', 'consent.back': 'Zurück',
+    'privacy.title': 'Datenschutz', 'privacy.accepted': 'Zugestimmt am {date} (Version {v}).', 'privacy.none': 'Noch keine Zustimmung gespeichert.', 'privacy.read': 'Datenschutzerklärung & Impressum', 'privacy.revoke': 'Zustimmung widerrufen und Profil löschen', 'privacy.revokeConfirm': 'Zustimmung widerrufen? Dein Profil und alle Daten werden gelöscht.',
+    'err.consent_required': 'Bitte bestätige zuerst Datenschutzerklärung und Mindestalter.',
     'play.question': 'Frage {n}/{total}', 'play.report': 'Frage melden', 'play.reported': 'Danke, wir prüfen die Frage.', 'play.next': 'Weiter',
     'play.right': 'Richtig!', 'play.wrong': 'Leider falsch', 'play.timeUp': 'Zeit abgelaufen',
     'profile.birthYear': 'Geburtsjahr (freiwillig)', 'profile.birthHint': 'Nur das Jahr, nur für anonyme Auswertungen, wie schwer Fragen für verschiedene Altersgruppen sind. Leer lassen ist völlig in Ordnung; du kannst es jederzeit löschen.',
@@ -632,7 +645,7 @@ const dict = {
     'ladder.begin': 'Start with question {n}', 'ladder.continue': 'Continue with question {n}', 'ladder.quit': 'Quit with {prize}', 'ladder.quitConfirm': 'Quit now and take {prize}?',
     'ladder.step': 'Question {n}/{total}', 'ladder.result': 'Result', 'ladder.again': 'New ladder', 'ladder.home': 'Back home', 'ladder.best': 'Your best: {prize}',
     'ladder.won': 'You did it – millionaire!', 'ladder.lost': 'Too bad – you take home:', 'ladder.abandoned': 'Ladder expired – secured:', 'ladder.status_quit': 'You quit – you take home:',
-    'new.challengeKnown': 'Challenge friends', 'new.duel': 'Duel', 'new.moreModes': 'More game modes: million ladder & multiplayer',
+    'new.challengeKnown': 'Challenge friends', 'new.duel': 'Duel',
     'room.title': 'Round', 'room.multi': 'Multiplayer', 'room.rounds': 'Rounds', 'room.mode.quiz': 'Quiz round', 'room.mode.ladder': 'Ladder contest',
     'room.sub.quiz': '2–6 players, same 12 questions – who is best?', 'room.sub.ladder': '2–6 players climb the same million ladder',
     'room.info.quiz': 'Everyone answers the same {n} questions at their own pace. You see the ranking once everyone has finished (after 48 hours at the latest).',
@@ -642,6 +655,11 @@ const dict = {
     'room.lobby': 'Lobby', 'room.finishedRank': 'Finished – place {rank}', 'room.playersN': '{n} players', 'room.codeLabel': 'Enter room code', 'room.join': 'Join', 'room.joining': 'Joining …',
     'err.room_over': 'This round is over for you.', 'err.unknown_room': 'Unknown room code.', 'err.room_started': 'The round is already running.', 'err.room_full': 'The room is full.',
     'err.room_too_small': 'At least 2 players are needed to start.', 'err.not_host': 'Only the host can start.', 'err.too_many_rooms': 'Too many open rounds.',
+    'consent.title': 'Before you start', 'consent.changedTitle': 'Privacy policy updated', 'consent.changedInfo': 'The text has changed. Please read it and agree again – we will only ask again when it changes next.',
+    'consent.read': 'Read privacy policy & legal notice', 'consent.check': 'I have read the privacy policy, agree to the processing of my data as described and am at least 16 years old (or have my guardians’ consent).',
+    'consent.accept': 'Agree and continue', 'consent.decline': 'Decline', 'consent.declinedTitle': 'We need your consent', 'consent.declinedInfo': 'Ratespaß needs an (anonymous) profile to save progress and play against others. Without your consent we cannot create one – no data is stored.', 'consent.back': 'Back',
+    'privacy.title': 'Privacy', 'privacy.accepted': 'Agreed on {date} (version {v}).', 'privacy.none': 'No consent stored yet.', 'privacy.read': 'Privacy policy & legal notice', 'privacy.revoke': 'Withdraw consent and delete profile', 'privacy.revokeConfirm': 'Withdraw consent? Your profile and all data will be deleted.',
+    'err.consent_required': 'Please confirm the privacy policy and minimum age first.',
     'play.question': 'Question {n}/{total}', 'play.report': 'Report question', 'play.reported': "Thanks, we'll review it.", 'play.next': 'Next',
     'play.right': 'Correct!', 'play.wrong': 'Not quite', 'play.timeUp': "Time's up",
     'profile.birthYear': 'Birth year (optional)', 'profile.birthHint': 'Year only, used only for anonymous statistics on how hard questions are for different age groups. Leaving it empty is perfectly fine; you can delete it at any time.',
@@ -859,15 +877,59 @@ function topbar(title, back = true, right) {
 /* ---------- Start / Sitzung ---------- */
 async function boot() {
   if (!S.meta) S.meta = await api('GET', '/api/meta', undefined, { auth: false })
+  if (!S.priv) S.priv = await api('GET', '/api/privacy', undefined, { auth: false })
   if (!S.token) {
+    // Erster Aufruf: erst Zustimmung zur Datenschutzerklärung (dokumentiert), dann Namenswahl
+    let version = await askConsent(S.priv, false)
     const name = await askName()
-    const r = await api('POST', '/api/players', { lang: getLang(), ...(name ? { name } : {}) }, { auth: false })
-    S.token = r.token; store.set('rp.token', r.token)
+    for (let tries = 0; ; tries++) {
+      try {
+        const r = await api('POST', '/api/players', { lang: getLang(), ...(name ? { name } : {}), consent: { version, age_ok: true } }, { auth: false })
+        S.token = r.token; store.set('rp.token', r.token)
+        break
+      } catch (e) {
+        if (!(e instanceof ApiError && e.code === 'privacy_changed') || tries > 2) throw e
+        S.priv = await api('GET', '/api/privacy', undefined, { auth: false }); version = await askConsent(S.priv, true) // Text hat sich währenddessen geändert
+      }
+    }
   }
   try { await refreshMe(true) } catch (e) { if (e instanceof ApiError && e.status === 401) { sessionLost(); return false } throw e }
+  // Geänderte Datenschutzerklärung: genau einmal erneut zustimmen
+  while (S.consent && S.consent.accepted !== S.consent.current) {
+    S.priv = await api('GET', '/api/privacy', undefined, { auth: false })
+    const version = await askConsent(S.priv, S.consent.accepted != null)
+    try { await api('POST', '/api/consent', { version, age_ok: true }) } catch (e) { if (!(e instanceof ApiError && e.code === 'privacy_changed')) throw e }
+    await refreshMe()
+  }
   resyncPush()
   return true
 }
+const renderDoc = (doc) => h('div', { class: 'doc stack' }, doc.sections.map((s) => h('div', { class: 'stack' }, h('h4', {}, s.title),
+  (s.paras ?? []).map((p) => h('p', { class: 'muted' }, p)), s.items ? h('ul', {}, s.items.map((i) => h('li', {}, i))) : null)))
+
+/** Zustimmung zur Datenschutzerklärung (nicht vorangekreuzt, ab 16). Löst mit der zugestimmten Version auf. */
+function askConsent(priv, changed) {
+  return new Promise((resolve) => {
+    const view = (declined = false) => {
+      const doc = priv[getLang()] ?? priv.de
+      const box = h('input', { type: 'checkbox', id: 'consent-box' })
+      const ok = h('button', { class: 'btn primary block', disabled: true, onclick: () => resolve(priv.version) }, t('consent.accept'))
+      box.addEventListener('change', () => { ok.disabled = !box.checked })
+      const langs = h('div', { class: 'seg' }, Object.keys(dict).map((l) => h('button', { 'aria-pressed': String(l === getLang()), onclick: () => { store.set('rp.lang', l); setLang(l); view(declined) } }, dict[l]['lang.name'])))
+      mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Rates', h('b', {}, 'paß')), langs),
+        declined
+          ? h('div', { class: 'card stack' }, h('h3', {}, t('consent.declinedTitle')), h('p', { class: 'muted' }, t('consent.declinedInfo')), h('button', { class: 'btn primary block', onclick: () => view(false) }, t('consent.back')))
+          : h('div', { class: 'card stack' }, h('h3', {}, t(changed ? 'consent.changedTitle' : 'consent.title')),
+            changed ? h('p', { class: 'muted' }, t('consent.changedInfo')) : null,
+            h('ul', {}, doc.summary.map((s) => h('li', {}, s))),
+            h('details', {}, h('summary', { class: 'muted' }, t('consent.read')), renderDoc(doc)),
+            h('label', { class: 'row consent-row' }, box, h('span', {}, t('consent.check'))),
+            ok, h('button', { class: 'btn block', onclick: () => view(true) }, t('consent.decline'))))
+    }
+    view()
+  })
+}
+
 /** Erster Start: Anzeigenamen wählen (oder einen zufälligen nehmen). Ändern geht jederzeit im Profil. */
 function askName() {
   return new Promise((resolve) => {
@@ -887,7 +949,7 @@ function askName() {
 }
 async function refreshMe(restore = false) {
   const r = await api('GET', '/api/me')
-  S.me = r.player; S.contacts = r.contacts
+  S.me = r.player; S.contacts = r.contacts; S.consent = r.consent
   await syncContacts(restore)
 }
 function sessionLost() {
@@ -947,18 +1009,16 @@ async function newGame() {
       option(t('new.random'), t('new.randomSub'), '🎲', () => start('random')),
       option(t('new.bot'), t('new.botSub'), '🤖', () => start('bot')),
       option(t('friends.title'), t('new.inviteSub'), '🤝', () => go('#/friends'))),
-    h('h2', {}, t('new.questionLang')), h('div', { class: 'card' }, langSel),
-    // Zusatzmodi bleiben sichtbar, treten aber hinter das Duell zurück
-    h('details', { class: 'more' }, h('summary', {}, t('new.moreModes')),
-      h('div', { class: 'stack' },
-        h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
-          const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),
-        h('h2', {}, t('room.multi')),
-        h('div', { class: 'list' },
-          ['quiz', 'ladder'].map((m) => option(modeName(m), t('room.sub.' + m), m === 'ladder' ? '💎' : '👥', guard(async () => {
-            const r = await api('POST', '/api/rooms', { mode: m, lang: gameLang() }); go('#/room/' + r.id) })))),
-        h('div', { class: 'card' }, h('label', { class: 'field' }, t('room.codeLabel'), h('div', { class: 'row' }, roomCode,
-          h('button', { class: 'btn', onclick: guard(async () => joinRoom(roomCode.value)) }, t('room.join'))))))))
+    h('h2', {}, t('ladder.title')),
+    h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
+      const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),
+    h('h2', {}, t('room.multi')),
+    h('div', { class: 'list' },
+      ['quiz', 'ladder'].map((m) => option(modeName(m), t('room.sub.' + m), m === 'ladder' ? '💎' : '👥', guard(async () => {
+        const r = await api('POST', '/api/rooms', { mode: m, lang: gameLang() }); go('#/room/' + r.id) })))),
+    h('div', { class: 'card' }, h('label', { class: 'field' }, t('room.codeLabel'), h('div', { class: 'row' }, roomCode,
+      h('button', { class: 'btn', onclick: guard(async () => joinRoom(roomCode.value)) }, t('room.join'))))),
+    h('h2', {}, t('new.questionLang')), h('div', { class: 'card' }, langSel))
 }
 const langName = (code) => { try { return new Intl.DisplayNames([getLang()], { type: 'language' }).of(code) } catch { return code } }
 
@@ -1320,6 +1380,12 @@ async function profile() {
     h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend')),
     h('p', { class: 'hint' }, t('friends.localNote')),
     h('h2', {}, t('push.title')), h('div', { class: 'card' }, pushCard()),
+    h('h2', {}, t('privacy.title')),
+    h('div', { class: 'card stack' }, h('p', { class: 'muted' }, S.consent?.at ? t('privacy.accepted', { date: new Date(S.consent.at).toLocaleDateString(getLang()), v: String(S.consent.accepted).slice(0, 8) }) : t('privacy.none')),
+      h('a', { class: 'btn block', href: '/legal.html' }, t('privacy.read')),
+      h('button', { class: 'btn block danger', onclick: guard(async () => {
+        if (!(()=>true)(t('privacy.revokeConfirm'))) return
+        await api('DELETE', '/api/me'); await disablePush().catch(() => {}); forgetIdentity(); go('#/') }) }, t('privacy.revoke'))),
     h('h2', {}, t('profile.account')), h('div', { class: 'card' }, account),
     h('h2', {}, t('profile.move')),
     h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('profile.moveInfo')),

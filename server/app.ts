@@ -6,12 +6,15 @@ import { config } from './config.ts'
 import { get } from './db.ts'
 import { HttpError, readJson, sendJson, type Ctx } from './http.ts'
 import { router } from './api.ts'
+import { hasConsent } from './privacy.ts'
 
 const TYPES: Record<string, string> = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.svg': 'image/svg+xml',
   '.png': 'image/png', '.ico': 'image/x-icon', '.txt': 'text/plain; charset=utf-8',
 }
+
+const CONSENT_FREE = new Set(['GET /api/me', 'DELETE /api/me', 'POST /api/consent', 'GET /api/export', 'POST /api/logout'])
 
 const CSP = [
   "default-src 'self'", "img-src 'self' data:", "script-src 'self'", "style-src 'self'", "connect-src 'self'",
@@ -77,6 +80,8 @@ export function createApp() {
       if (m.route.auth) {
         ctx.player = authenticate(req.headers.authorization)
         if (!ctx.player) throw new HttpError(401, 'unauthorized')
+        // Ohne Zustimmung zur aktuellen Datenschutzerklärung nur Zustimmung, Profilabruf, Export und Löschen erlaubt
+        if (config.requireConsent && !CONSENT_FREE.has(`${method} ${url.pathname}`) && !hasConsent(ctx.player.id)) throw new HttpError(403, 'consent_required')
       }
       const out = await m.route.handler(ctx)
       if (!res.headersSent) sendJson(res, 200, out ?? { ok: true })

@@ -9,6 +9,14 @@ services:
       VAPID_SUBJECT: ${VAPID_SUBJECT:?bitte setzen (mailto:… oder https://…)}
       PLAYER_CREATE_LIMIT_PER_HOUR: ${PLAYER_CREATE_LIMIT_PER_HOUR:-60}   # neue Profile pro IP und Stunde
       PLAYER_REPORTS: ${PLAYER_REPORTS:-1}   # 0 = Melde-Knopf für alle Spieler aus
+      # Verantwortlicher für Impressum und Datenschutzerklärung (Pflicht: Name, Anschrift, E-Mail)
+      CONTROLLER_NAME: ${CONTROLLER_NAME:-}
+      CONTROLLER_ADDRESS: ${CONTROLLER_ADDRESS:-}
+      CONTROLLER_EMAIL: ${CONTROLLER_EMAIL:-}
+      CONTROLLER_PHONE: ${CONTROLLER_PHONE:-}
+      DPO_CONTACT: ${DPO_CONTACT:-}
+      HOSTING_PROVIDER: ${HOSTING_PROVIDER:-}
+      PRIVACY_RETENTION_DAYS: ${PRIVACY_RETENTION_DAYS:-730}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}   # KI-Schnittstelle (optional)
       AI_MODEL: ${AI_MODEL:-claude-sonnet-5-5}
       AI_DAILY_LIMIT: ${AI_DAILY_LIMIT:-100}

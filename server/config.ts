@@ -33,6 +33,19 @@ export const config = {
   /** Melde-Knopf (⚑) für alle Spieler; mit PLAYER_REPORTS=0 abschaltbar (Reviewer und Admin bleiben unberührt). */
   playerReports: env.PLAYER_REPORTS !== '0',
   inactiveDaysForfeit: 7,
+  /** Zustimmung zur Datenschutzerklärung serverseitig erzwingen (nur für lokale Entwicklung/Tests mit CONSENT_REQUIRED=0 abschaltbar). */
+  requireConsent: env.CONSENT_REQUIRED !== '0',
+  /** Verantwortlicher (Impressum und Datenschutzerklärung). Pflichtangaben: Name, Anschrift, E-Mail. */
+  privacy: {
+    controllerName: (env.CONTROLLER_NAME ?? '').trim(),
+    controllerAddress: (env.CONTROLLER_ADDRESS ?? '').trim(),
+    controllerEmail: (env.CONTROLLER_EMAIL ?? '').trim(),
+    controllerPhone: (env.CONTROLLER_PHONE ?? '').trim(),
+    dpoContact: (env.DPO_CONTACT ?? '').trim(),
+    hosting: (env.HOSTING_PROVIDER ?? '').trim(),
+    /** Anonyme Profile ohne Anmeldung werden nach so vielen Tagen ohne Aktivität gelöscht (Speicherbegrenzung). */
+    retentionDays: Math.max(30, Number(env.PRIVACY_RETENTION_DAYS ?? 730) || 730),
+  },
   /** KI-Schnittstelle (Anthropic Messages API): Fragen erzeugen, Schwierigkeit schätzen. Ohne ANTHROPIC_API_KEY deaktiviert. */
   ai: {
     key: env.ANTHROPIC_API_KEY ?? '',

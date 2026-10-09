@@ -295,8 +295,26 @@ CREATE TABLE ai_log(
 );
 `
 
+// v10: dokumentierte Zustimmung zur Datenschutzerklärung (Nachweis: Version = Prüfsumme des Textes + Textstand)
+const SCHEMA_V10 = `
+CREATE TABLE privacy_versions(
+  version TEXT PRIMARY KEY,
+  text_json TEXT NOT NULL,
+  first_seen INTEGER NOT NULL
+);
+CREATE TABLE consents(
+  id INTEGER PRIMARY KEY,
+  player_id INTEGER NOT NULL REFERENCES players(id) ON DELETE CASCADE,
+  version TEXT NOT NULL REFERENCES privacy_versions(version),
+  accepted_at INTEGER NOT NULL,
+  age_ok INTEGER NOT NULL,
+  lang TEXT
+);
+CREATE INDEX consents_player ON consents(player_id, id);
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)

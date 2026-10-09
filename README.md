@@ -52,6 +52,10 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 | `DATA_DIR` | `./data` (Docker: `/data`) | SQLite-Datenbank |
 | `ADMIN_TOKEN` | – | Zugang zu `/admin` und `/api/admin/*` (**mind. 16 Zeichen**, z. B. `openssl rand -hex 16`; leer oder kürzer = abgeschaltet) |
 | `ADMIN_SESSION_HOURS` | 8 | Laufzeit der Admin-Sitzung nach dem Login |
+| `CONTROLLER_NAME`, `CONTROLLER_ADDRESS`, `CONTROLLER_EMAIL` | – | **Pflicht** für Impressum und Datenschutzerklärung (Verantwortlicher); fehlen sie, zeigt die Erklärung „[nicht konfiguriert]“ und der Server warnt |
+| `CONTROLLER_PHONE`, `DPO_CONTACT`, `HOSTING_PROVIDER` | – | optionale Angaben für Impressum/Datenschutz (Telefon, Datenschutzbeauftragte/r, Hoster) |
+| `PRIVACY_RETENTION_DAYS` | 730 | anonyme Profile ohne Anmeldung werden nach so vielen Tagen ohne Aktivität gelöscht |
+| `CONSENT_REQUIRED` | 1 | `0` schaltet die Zustimmungspflicht nur für lokale Entwicklung/Tests ab |
 | `ANTHROPIC_API_KEY` | – | aktiviert die KI-Schnittstelle (Fragen erzeugen/prüfen, Schwierigkeit schätzen); nie ins Repo, nur als Umgebungsvariable |
 | `AI_MODEL` | `claude-sonnet-5-5` | Modell für die KI-Schnittstelle |
 | `AI_DAILY_LIMIT` | 100 | Kostenbremse: höchstens so viele neu erzeugte Fragen pro Tag |
@@ -80,6 +84,10 @@ Aktueller Bestand: **3378 Fragen** (davon 3186 auch auf Englisch spielbar) (`see
 ### Spielstufen und Extra-Kategorien
 
 Jeder Spieler wählt im Profil sein **Level** – Basis, Nerd (Sci-Fi & Fantasy, Programmieren & IT, Anime & Manga, Retro-Games) oder Experte (MINT & Ingenieurwesen, Geisteswissenschaften, Kunst & Literatur, Informatik) – und kann einzelne Extra-Kategorien abwählen. Im Duell zählt immer die **niedrigste Einstellung** beider Spieler (niedrigstes Level, Schnitt der aktiven Kategorien); beim Spielstart wird die Auswahl im Spiel festgehalten. Details in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
+
+### Datenschutz und Zustimmung
+
+Beim ersten Aufruf zeigt die App die Datenschutzerklärung (Kurzfassung + Volltext) und verlangt eine **nicht vorangekreuzte Zustimmung** inkl. Altersbestätigung (16 Jahre bzw. Sorgeberechtigte). Die Zustimmung wird mit Zeitpunkt und **Version** dokumentiert; die Version ist die Prüfsumme des gesamten Textes (de + en, inkl. der Verantwortlichen-Angaben aus den Umgebungsvariablen und der aktiven Funktionen). Der Wortlaut jeder Version wird archiviert. Gefragt wird nur beim ersten Mal und erneut, wenn sich der Text ändert; der Server sperrt die API bis zur Zustimmung. Widerruf = „Zustimmung widerrufen und Profil löschen“ im Profil. Details und Betreiberpflichten: [`docs/DATENSCHUTZ.md`](docs/DATENSCHUTZ.md). Code: `server/privacy.ts`, `server/erase.ts`, Tests: `test/privacy.test.ts`.
 
 ### KI-Schnittstelle (Fragen-Nachschub und Schwierigkeit)
 
