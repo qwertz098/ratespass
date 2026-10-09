@@ -1,0 +1,31 @@
+# Ratespaß hinter Nginx Proxy Manager (NPM). Der Container veröffentlicht KEINEN Port – nur NPM erreicht ihn über ein gemeinsames Docker-Netzwerk.
+#
+#   1. Netzwerkname von NPM herausfinden:   docker network ls      (oft „npm_default“ oder „<ordner>_default“)
+#   2. .env anlegen (Vorlage: .env.example) und NPM_NETWORK, ADMIN_TOKEN, VAPID_SUBJECT setzen
+#   3. Start:                               docker compose -f docker-compose.npm.yml up -d --build
+#   4. In NPM einen Proxy Host anlegen: Forward Hostname „ratespass“, Port 3000, Scheme http (siehe docs/DEPLOY.md, Abschnitt C)
+services:
+  ratespass:
+    build: .                                                      # lokal bauen (erster Start); alternativ fertiges Image aus ghcr.io ziehen
+    image: ${RATESPASS_IMAGE:-ghcr.io/qwertz098/ratespass:latest}
+    container_name: ratespass                                     # fester Name = „Forward Hostname“ in NPM
+    restart: unless-stopped
+    expose:
+      - "3000"
+    environment:
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?bitte in .env setzen (Moderation unter /admin)}
+      VAPID_SUBJECT: ${VAPID_SUBJECT:?bitte in .env setzen (mailto:… oder https://…)}
+      TRUST_PROXY: "1"                                            # Client-IP aus X-Forwarded-For (für Rate-Limits)
+      PROXY_HOPS: ${PROXY_HOPS:-1}                                # 1 = nur NPM; 2 = Cloudflare-Proxy (orange Wolke) → NPM
+    volumes:
+      - ratespass-data:/data                                      # Datenbank + VAPID-Schlüssel – regelmäßig sichern
+      - ./batches:/app/batches:ro                                 # neue Fragen-Batches (Neustart nötig)
+    networks: [proxy]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+networks:
+  proxy:
+    external: true
+    name: ${NPM_NETWORK:-npm_default}
+volumes:
+  ratespass-data:

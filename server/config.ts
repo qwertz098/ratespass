@@ -16,6 +16,8 @@ export const config = {
   adminToken: env.ADMIN_TOKEN ?? '',
   /** Hinter einem Reverse-Proxy: X-Forwarded-For für Rate-Limits auswerten. */
   trustProxy: env.TRUST_PROXY === '1',
+  /** Anzahl vertrauenswürdiger Proxys vor der App (z. B. Cloudflare → NPM = 2). Es zählt der n-te Eintrag von rechts in X-Forwarded-For. */
+  proxyHops: Math.max(1, Number(env.PROXY_HOPS ?? 1) || 1),
   /** Sprachen mit weniger aktiven Fragen werden nicht zum Spielen angeboten. */
   minLangQuestions: Number(env.MIN_LANG_QUESTIONS ?? 30),
   maxActiveGames: 25,

@@ -26,14 +26,14 @@ Entwicklung ohne Docker (Node ≥ 22.18):
 ```bash
 npm install          # nur typescript + @types/node für `npm run check`
 npm run dev          # http://localhost:3000, Seed-Fragen werden beim Start importiert
-npm test             # Server-, Spiel-, Import-, Push- und i18n-Tests (25)
+npm test             # Server-, Spiel-, Import-, Push- und i18n-Tests (29)
 npm run backup -- ./backup   # konsistente DB-Sicherung + VAPID-Schlüssel
 npm run check        # Typprüfung
 ```
 
 ## Online stellen
 
-GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Varianten (eigener Rechner + Cloudflare Tunnel, Oracle-VM, Image in der GitHub Container Registry) steht in [`docs/DEPLOY.md`](docs/DEPLOY.md).
+GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Varianten (eigener Rechner + Cloudflare Tunnel, Oracle-VM, Image in der GitHub Container Registry) steht in [`docs/DEPLOY.md`](docs/DEPLOY.md). Für **Nginx Proxy Manager** gibt es `docker-compose.npm.yml` (Abschnitt C).
 
 ## Konfiguration (Umgebungsvariablen)
 
@@ -43,6 +43,7 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 | `DATA_DIR` | `./data` (Docker: `/data`) | SQLite-Datenbank |
 | `ADMIN_TOKEN` | – | aktiviert Moderation (`/admin`, `/api/admin/*`) |
 | `TRUST_PROXY` | 0 | `1`: Client-IP aus `X-Forwarded-For` (Rate-Limits) |
+| `PROXY_HOPS` | 1 | Anzahl Proxys vor der App (NPM/Caddy: 1, Cloudflare davor: 2); gezählt von rechts, damit gefälschte Header nichts bringen |
 | `BATCH_DIR` | `./batches` | Fragen-Batches, die beim Start automatisch importiert werden |
 | `MIN_LANG_QUESTIONS` | 30 | Sprache wird erst ab so vielen aktiven Fragen angeboten |
 | `VAPID_SUBJECT` | Repo-URL | Kontakt für Push-Dienste (`mailto:…` oder `https://…`) – für den Betrieb setzen |

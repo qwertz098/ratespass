@@ -18,12 +18,17 @@ const CSP = [
   "manifest-src 'self'", "worker-src 'self'", "base-uri 'none'", "form-action 'self'", "frame-ancestors 'none'",
 ].join('; ')
 
-function clientIp(req: http.IncomingMessage) {
-  if (config.trustProxy) {
-    const xf = String(req.headers['x-forwarded-for'] ?? '').split(',')[0].trim()
-    if (xf) return xf
-  }
-  return req.socket.remoteAddress ?? 'unknown'
+/**
+ * Client-IP. Ohne TRUST_PROXY zählt nur die Socket-Adresse. Mit TRUST_PROXY wird `X-Forwarded-For` ausgewertet – aber von
+ * RECHTS: Jeder vertrauenswürdige Proxy hängt die Adresse seines Gegenübers hinten an, alles davor kann der Client frei erfinden.
+ * `hops` = Anzahl der Proxys vor der App (nginx/NPM/Caddy: 1; Cloudflare davor: 2).
+ */
+export function clientIp(req: Pick<http.IncomingMessage, 'headers' | 'socket'>, opts = { trust: config.trustProxy, hops: config.proxyHops }) {
+  const socketIp = req.socket.remoteAddress ?? 'unknown'
+  if (!opts.trust) return socketIp
+  const chain = String(req.headers['x-forwarded-for'] ?? '').split(',').map((x) => x.trim()).filter(Boolean)
+  const ip = chain.length >= opts.hops ? chain[chain.length - opts.hops] : undefined
+  return ip && ip.length <= 64 ? ip.replace(/^::ffff:/, '') : socketIp
 }
 
 function serveStatic(req: http.IncomingMessage, res: http.ServerResponse, pathname: string) {

@@ -26,6 +26,8 @@ Stand der Websuche vom Oktober 2026 – Anbieter ändern Bedingungen oft, die Qu
 | **Fly.io** | Gratis-Kontingent für Neukunden unklar | ja (Volumes) | Prüfen, ob für neue Konten noch kostenlos. |
 | **Render / Koyeb (Free)** | 0 € | **nein** (ohne persistente Platte) | Nur zum Ausprobieren: SQLite ginge bei jedem Neustart verloren; Render-Free schläft nach Inaktivität. |
 
+Läuft bei dir schon Nginx Proxy Manager, nimm Variante C.
+
 **Empfehlung:** Zum Testen mit Freunden: eigener Rechner + Cloudflare Tunnel. Für dauerhaften öffentlichen Betrieb ohne Kosten: Oracle-VM (mit Backups). Beides ist unten beschrieben – ich konnte hier keinen echten Anbieter-Account anlegen, die Schritte sind daher *nicht live getestet*, nur Compose/Caddy-Konfiguration ist statisch geprüft (siehe Hinweis am Ende).
 
 Quellen der Recherche: [Vergleich kostenloser Docker-Hoster 2026](https://flywp.com/blog/9769/best-free-docker-hosting-platforms/), [Free-Docker-Hosting-Vergleich (SnapDeploy)](https://snapdeploy.dev/blog/free-docker-hosting-2026-platforms-compared), [Oracle Cloud Free Tier FAQ](https://www.oracle.com/cloud/free/faq/), [Cloudflare Tunnel für den Heimserver](https://benjamintseng.com/?p=1925).
@@ -56,6 +58,32 @@ Quellen der Recherche: [Vergleich kostenloser Docker-Hoster 2026](https://flywp.
        restart: unless-stopped
    ```
 3. `TRUST_PROXY=1` setzen (Rate-Limits sollen die echte Client-IP sehen) und `VAPID_SUBJECT` setzen.
+
+## C) Hinter Nginx Proxy Manager (NPM)
+
+Für alle, die NPM schon im Homelab/auf dem Server haben: `docker-compose.npm.yml` startet Ratespaß **ohne veröffentlichten Port** im selben Docker-Netzwerk wie NPM; HTTPS und Zertifikate übernimmt NPM.
+
+1. **Netzwerk finden:** `docker network ls` – das Netzwerk, in dem der NPM-Container hängt (häufig `npm_default` oder `<ordner>_default`).
+2. **`.env` anlegen** (Vorlage `.env.example`): `NPM_NETWORK`, `ADMIN_TOKEN` (`openssl rand -hex 16`), `VAPID_SUBJECT` (echte Mailadresse). Bei Cloudflare-Proxy vor NPM `PROXY_HOPS=2`.
+3. **Starten:** `docker compose -f docker-compose.npm.yml up -d --build`
+   (Alternativ ohne lokalen Build das Image aus `ghcr.io` verwenden, sobald `publish.yml` gelaufen und das Paket öffentlich ist: `docker compose -f docker-compose.npm.yml pull && … up -d`.)
+4. **In NPM → Hosts → Proxy Hosts → Add Proxy Host:**
+   | Feld | Wert |
+   |---|---|
+   | Domain Names | `quiz.deinedomain.de` |
+   | Scheme | `http` |
+   | Forward Hostname / IP | `ratespass` (Container-Name) |
+   | Forward Port | `3000` |
+   | Block Common Exploits | an |
+   | Websockets Support | egal (wird nicht benötigt) |
+   | **Cache Assets** | **aus** – sonst bleiben alte `app.js`/`sw.js` im Cache und Updates kommen nicht an |
+   | Tab SSL | *Request a new SSL Certificate*, **Force SSL** an, HTTP/2 an (HSTS optional) |
+5. Aufrufen: `https://quiz.deinedomain.de` – Test: *Profil → Benachrichtigungen → Test senden*.
+
+Hinweise:
+- **Echte Client-IP:** Die App wertet `X-Forwarded-For` von *rechts* aus (`PROXY_HOPS` = Anzahl der Proxys). Mit nur NPM ist `1` richtig; mit Cloudflare davor `2`. Stimmt der Wert nicht, teilen sich alle Nutzer ein Rate-Limit (zu klein) oder ein Angreifer könnte seine IP fälschen (zu groß).
+- **„502 Bad Gateway“:** Meist sind NPM und Ratespaß nicht im selben Netzwerk (`NPM_NETWORK` prüfen) oder der Container läuft nicht (`docker compose -f docker-compose.npm.yml logs ratespass`).
+- Backups und Updates wie in den anderen Varianten: `docker compose -f docker-compose.npm.yml exec ratespass node tools/backup.ts /data/backup`.
 
 ## Wichtig im Betrieb
 
