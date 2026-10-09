@@ -22,7 +22,7 @@
         <div class="row wrap">
           <div class="seg wrap" id="tabs">
             <button data-s="pending" aria-pressed="true">Eingereicht</button><button data-s="disabled" aria-pressed="false">Gemeldet</button>
-            <button data-s="review" aria-pressed="false">Überarbeiten <span id="review-count"></span></button><button data-s="search" aria-pressed="false">Suche</button><button data-s="reviewers" aria-pressed="false">Reviewer</button>
+            <button data-s="review" aria-pressed="false">Überarbeiten <span id="review-count"></span></button><button data-s="search" aria-pressed="false">Suche</button><button data-s="reviewers" aria-pressed="false">Reviewer</button><button data-s="stats" aria-pressed="false">Statistik</button>
           </div>
           <button class="btn small" id="load">Laden</button>
           <button class="btn small" id="export" title="Freigegebene Community-Fragen als Batch-Datei herunterladen und als exportiert markieren">Batch exportieren</button>
@@ -34,6 +34,13 @@
         <select id="slang"><option value="">alle Sprachen</option><option>de</option><option>en</option></select>
         <select id="sregion"><option value="">alle Regionen</option><option>global</option><option>dach</option></select>
         <button class="btn small primary" type="submit">Suchen</button>
+      </form>
+      <form id="statbar" class="card row wrap" hidden>
+        <select id="stcat"><option value="">alle Kategorien</option></select>
+        <select id="stdiff"><option value="">alle Stufen</option><option value="1">leicht</option><option value="2">mittel</option><option value="3">schwer</option></select>
+        <input id="stmin" type="number" min="1" value="30" title="Mindestanzahl Antworten" style="width:90px">
+        <select id="stsort"><option value="gap">größte Abweichung</option><option value="n">meiste Antworten</option><option value="rate">niedrigste Quote</option></select>
+        <button class="btn small primary" type="submit">Anzeigen</button>
       </form>
       <div id="list" class="stack"></div>
       <div id="stats" class="hint"></div>

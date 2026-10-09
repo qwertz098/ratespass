@@ -13,6 +13,7 @@ export interface PlayerRow {
   level: string
   disabled_cats: string
   best_ladder: number
+  birth_year: number | null
   deleted: number
   username: string | null
   pw_hash: string | null

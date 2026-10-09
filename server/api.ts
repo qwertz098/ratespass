@@ -16,6 +16,7 @@ import {
 import { deliver, validEndpoint, validKeys, vapidPublicKey } from './push.ts'
 import { applyPatch, datasetLines, exportCommunityBatch, insertQuestion, licenseSummary, questionUid, validateContent, type QContent, type QPatch, type QRow } from './questions.ts'
 import { cleanSettings } from './settings.ts'
+import { cleanBirthYear, overview, questionStats, suggestDifficulty } from './stats.ts'
 import { fileReview, listReviews, questionOut, resolveReview } from './reviews.ts'
 
 export const router = new Router()
@@ -37,7 +38,7 @@ function pickLang(want: unknown, fallback: string) {
 
 const profile = (p: PlayerRow) => ({
   ...pub(p), lang: p.lang, has_account: !!p.username, username: p.username, created_at: p.created_at, reviewer: !!p.reviewer,
-  level: p.level, disabled_cats: JSON.parse(p.disabled_cats) as string[], best_ladder: p.best_ladder,
+  level: p.level, disabled_cats: JSON.parse(p.disabled_cats) as string[], best_ladder: p.best_ladder, birth_year: p.birth_year,
 })
 
 /* ---------- Öffentliches ---------- */
@@ -90,6 +91,7 @@ router.patch('/api/me', (c) => {
     if (!LANG_RE.test(c.body.lang)) throw new HttpError(400, 'bad_lang')
     run('UPDATE players SET lang=? WHERE id=?', c.body.lang, p.id)
   }
+  if (c.body.birth_year !== undefined) run('UPDATE players SET birth_year=? WHERE id=?', cleanBirthYear(c.body.birth_year), p.id)
   if (c.body.level !== undefined || c.body.disabled_cats !== undefined) {
     const s = cleanSettings(c.body.level ?? p.level, c.body.disabled_cats ?? JSON.parse(p.disabled_cats))
     run('UPDATE players SET level=?, disabled_cats=? WHERE id=?', s.level, JSON.stringify(s.disabled), p.id)
@@ -108,6 +110,7 @@ router.delete('/api/me', (c) => {
     run('DELETE FROM contacts WHERE player_id=? OR contact_id=?', p.id, p.id)
     run('DELETE FROM seen WHERE player_id=?', p.id)
     run('DELETE FROM ladders WHERE player_id=?', p.id)
+    run('UPDATE players SET birth_year=NULL WHERE id=?', p.id)
     rooms.forgetPlayer(p.id)
     run('DELETE FROM reports WHERE player_id=?', p.id)
     run('UPDATE reviews SET player_id=NULL WHERE player_id=?', p.id)
@@ -539,6 +542,36 @@ router.get('/api/admin/edits', (c) => {
   const after = Number(c.url.searchParams.get('after') ?? 0) || 0
   return { edits: all<{ id: number; group_id: string; lang: string; batch: string | null; old: string; new: string; created_at: number }>(
     'SELECT * FROM edits WHERE id>? ORDER BY id', after).map((e) => ({ ...e, old: JSON.parse(e.old), new: JSON.parse(e.new) })) }
+}, { auth: false })
+
+/** Lösungen vs. Alter: Auswertung der Antworten aller Spieler (ohne Bots), Altersgruppen nur ab 5 Antworten. */
+router.get('/api/admin/stats/overview', (c) => {
+  admin(c)
+  return overview()
+}, { auth: false })
+
+router.get('/api/admin/stats/questions', (c) => {
+  admin(c)
+  const q = c.url.searchParams
+  return questionStats({
+    category: q.get('category') || undefined, lang: q.get('lang') || undefined, difficulty: Number(q.get('difficulty')) || undefined,
+    minN: Number(q.get('min_n')) || 1, sort: q.get('sort') || 'gap', limit: Math.min(200, Number(q.get('limit')) || 50),
+  })
+}, { auth: false })
+
+/** Schwierigkeit an die gemessene Lösungsquote angleichen (Einzelfrage per group_id oder alle Vorschläge ab `min_n` Antworten). Wird in `edits` protokolliert. */
+router.post('/api/admin/stats/apply-difficulty', (c) => {
+  admin(c)
+  const minN = Math.max(10, Number(c.body?.min_n) || 30)
+  const groups = c.body?.group_id ? [String(c.body.group_id)] : questionStats({ minN, sort: 'gap', limit: 5000 }).questions.filter((x) => x.suggested && x.suggested !== x.difficulty).map((x) => x.group_id)
+  let changed = 0
+  for (const g of groups) {
+    const row = get<QRow>('SELECT * FROM questions WHERE group_id=? ORDER BY lang LIMIT 1', g)
+    if (!row) continue
+    const s = suggestDifficulty(g, minN)
+    if (s && s !== row.difficulty) { applyPatch(row, { difficulty: s }); changed++ }
+  }
+  return { changed }
 }, { auth: false })
 
 router.get('/api/admin/stats', (c) => {

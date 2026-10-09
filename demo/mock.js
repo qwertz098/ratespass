@@ -24,7 +24,7 @@ const DEMO = (() => {
 
   const pool = (lang) => QS.filter((q) => q[lang] && (q.r === 0 || lang === 'de'))
   const content = (q, lang) => ({ text: q[lang][0], answers: q[lang].slice(1) })
-  const profile = () => ({ ...st.me, has_account: false, username: null, reviewer: true, level: st.level ?? 'basic', disabled_cats: st.disabled ?? [], best_ladder: st.best ?? 0 })
+  const profile = () => ({ ...st.me, has_account: false, username: null, reviewer: true, level: st.level ?? 'basic', disabled_cats: st.disabled ?? [], best_ladder: st.best ?? 0, birth_year: st.birth ?? null })
   const err = (status, error, message) => ({ status, body: { error, message } })
 
   const used = (g) => new Set(g.rounds.flatMap((r) => r.qs.map((x) => x.i)))
@@ -169,6 +169,7 @@ const DEMO = (() => {
     if (path === '/api/me' && method === 'PATCH') {
       if (body.name !== undefined) { const n = String(body.name).trim(); if (n.length < 2 || n.length > 24) return err(400, 'bad_name'); st.me.name = n }
       if (body.lang) st.me.lang = body.lang
+      if (body.birth_year !== undefined) st.birth = body.birth_year || null
       if (body.level !== undefined) { if (!LEVELS.includes(body.level)) return err(400, 'bad_level'); st.level = body.level }
       if (body.disabled_cats !== undefined) st.disabled = body.disabled_cats.filter((c) => TIERS[c])
       save(); return { body: { player: profile() } }

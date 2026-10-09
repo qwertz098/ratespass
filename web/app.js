@@ -238,24 +238,24 @@ async function newGame() {
   const option = (title, sub, icon, fn) => h('button', { class: 'item', onclick: fn },
     h('div', { class: 'avatar sm' }, icon), h('div', { class: 'grow' }, h('div', {}, title), h('div', { class: 'muted' }, sub)))
   mount(topbar(t('new.title')),
+    S.contacts.length ? [h('h2', {}, t('new.challengeKnown')), h('div', { class: 'list' }, S.contacts.map((c) => h('button', { class: 'item', onclick: () => start(c.public_id) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, t('profile.challenge')))))] : null,
+    h('h2', {}, t('new.duel')),
     h('div', { class: 'list' },
       option(t('new.random'), t('new.randomSub'), '🎲', () => start('random')),
       option(t('new.bot'), t('new.botSub'), '🤖', () => start('bot')),
       option(t('friends.title'), t('new.inviteSub'), '🤝', () => go('#/friends'))),
-    h('h2', {}, t('ladder.title')),
-    h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
-      const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),
-    h('h2', {}, t('room.multi')),
-    h('div', { class: 'list' },
-      ['quiz', 'ladder'].map((m) => option(modeName(m), t('room.sub.' + m), m === 'ladder' ? '💎' : '👥', guard(async () => {
-        const r = await api('POST', '/api/rooms', { mode: m, lang: gameLang() }); go('#/room/' + r.id) })))),
-    h('div', { class: 'card' }, h('label', { class: 'field' }, t('room.codeLabel'), h('div', { class: 'row' }, roomCode,
-      h('button', { class: 'btn', onclick: guard(async () => joinRoom(roomCode.value)) }, t('room.join'))))),
     h('h2', {}, t('new.questionLang')), h('div', { class: 'card' }, langSel),
-    h('h2', {}, t('new.contacts')),
-    S.contacts.length
-      ? h('div', { class: 'list' }, S.contacts.map((c) => h('button', { class: 'item', onclick: () => start(c.public_id) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, t('profile.challenge')))))
-      : h('div', { class: 'empty' }, t('new.noContacts')))
+    // Zusatzmodi bleiben sichtbar, treten aber hinter das Duell zurück
+    h('details', { class: 'more' }, h('summary', {}, t('new.moreModes')),
+      h('div', { class: 'stack' },
+        h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
+          const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),
+        h('h2', {}, t('room.multi')),
+        h('div', { class: 'list' },
+          ['quiz', 'ladder'].map((m) => option(modeName(m), t('room.sub.' + m), m === 'ladder' ? '💎' : '👥', guard(async () => {
+            const r = await api('POST', '/api/rooms', { mode: m, lang: gameLang() }); go('#/room/' + r.id) })))),
+        h('div', { class: 'card' }, h('label', { class: 'field' }, t('room.codeLabel'), h('div', { class: 'row' }, roomCode,
+          h('button', { class: 'btn', onclick: guard(async () => joinRoom(roomCode.value)) }, t('room.join'))))))))
 }
 const langName = (code) => { try { return new Intl.DisplayNames([getLang()], { type: 'language' }).of(code) } catch { return code } }
 
@@ -580,6 +580,7 @@ function levelCard() {
 async function profile() {
   const p = S.me
   const name = h('input', { type: 'text', value: p.name, maxLength: 24 })
+  const birth = h('input', { type: 'number', inputMode: 'numeric', min: 1900, max: new Date().getFullYear() - 5, placeholder: '—', value: p.birth_year ?? '' })
   const uname = h('input', { type: 'text', autocomplete: 'username', autocapitalize: 'none', maxLength: 24 })
   const pass = h('input', { type: 'password', autocomplete: 'new-password' })
   const uiLang = h('div', { class: 'seg', role: 'group' }, languages().map((l) => h('button', { 'aria-pressed': String(l === getLang()), onclick: () => {
@@ -603,7 +604,8 @@ async function profile() {
   mount(topbar(t('profile.title')),
     h('div', { class: 'card stack' },
       h('div', { class: 'row' }, avatar(p), h('div', { class: 'grow' }, h('label', { class: 'field' }, t('profile.name'), name))),
-      h('button', { class: 'btn block', onclick: guard(async () => { await api('PATCH', '/api/me', { name: name.value }); await refreshMe(); toast(t('profile.saved')) }) }, t('profile.save')),
+      h('label', { class: 'field' }, t('profile.birthYear'), birth), h('p', { class: 'hint' }, t('profile.birthHint')),
+      h('button', { class: 'btn block', onclick: guard(async () => { await api('PATCH', '/api/me', { name: name.value, birth_year: birth.value ? Number(birth.value) : null }); await refreshMe(); toast(t('profile.saved')) }) }, t('profile.save')),
       h('label', { class: 'field' }, t('profile.uiLang'), uiLang)),
     S.meta?.reports !== false ? h('label', { class: 'row' }, h('input', { type: 'checkbox', checked: store.get('rp.noReport') !== '1',
       onchange: (e) => { e.target.checked ? store.del('rp.noReport') : store.set('rp.noReport', '1') } }), h('span', { class: 'hint' }, t('profile.reportBtn'))) : null,

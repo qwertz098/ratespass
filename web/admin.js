@@ -23,7 +23,11 @@ function showLogin(msg = '') {
   $('token').value = ''
   $('token').focus()
 }
-function showPanel() { $('login').hidden = true; $('panel').hidden = false; $('logout').hidden = false; load() }
+function showPanel() {
+  $('login').hidden = true; $('panel').hidden = false; $('logout').hidden = false
+  fetch('/api/meta').then((r) => r.json()).then((m) => { for (const c of m.categories ?? []) $('stcat').append(el('option', { value: c, textContent: c })) }).catch(() => {})
+  load()
+}
 
 const KIND = { wrong: 'falsch', wording: 'Formulierung' }, PART = { question: 'Frage', answers: 'Antworten' }
 const REGIONS = ['global', 'dach']
@@ -31,6 +35,7 @@ const REGIONS = ['global', 'dach']
 async function load() {
   try {
     $('searchbar').hidden = status !== 'search'
+    $('statbar').hidden = status !== 'stats'
     const list = []
     if (status === 'review') {
       const { reviews } = await call('GET', '/api/admin/reviews')
@@ -41,6 +46,8 @@ async function load() {
       list.push(...questions.map((q) => editCard(q, { flag: true })))
     } else if (status === 'reviewers') {
       list.push(await reviewersCard())
+    } else if (status === 'stats') {
+      list.push(...(await statsCards()))
     } else {
       const { questions } = await call('GET', `/api/admin/queue?status=${status}`)
       list.push(...questions.map(card))
@@ -116,6 +123,37 @@ async function reviewersCard() {
     reviewers.length ? null : el('div', { className: 'empty', textContent: 'Noch keine Reviewer' }))
 }
 
+const pct = (r) => (r === null || r === undefined ? '–' : Math.round(r * 100) + ' %')
+const DIFF = { 1: 'leicht', 2: 'mittel', 3: 'schwer' }
+
+/** Lösungen vs. Alter: Überblick und Fragenliste mit Vorschlag zur Schwierigkeit. */
+async function statsCards() {
+  const ov = await call('GET', '/api/admin/stats/overview')
+  const p = new URLSearchParams({ category: $('stcat').value, difficulty: $('stdiff').value, min_n: $('stmin').value || '30', sort: $('stsort').value, limit: '50' })
+  const { questions, total } = await call('GET', `/api/admin/stats/questions?${p}`)
+  const bands = ov.bands
+  const cell = (d, b) => ov.by_difficulty_age.find((r) => r.difficulty === d && r.band === b)
+  const table = el('table', { className: 'stat' },
+    el('thead', {}, el('tr', {}, el('th', { textContent: 'Schwere' }), el('th', { textContent: 'Antworten' }), el('th', { textContent: 'Quote' }), ...bands.map((b) => el('th', { textContent: b === '?' ? 'k. A.' : b })))),
+    el('tbody', {}, ...[1, 2, 3].map((d) => { const r = ov.by_difficulty.find((x) => x.difficulty === d)
+      return el('tr', {}, el('td', { textContent: DIFF[d] }), el('td', { textContent: r ? r.n : 0 }), el('td', { textContent: pct(r?.rate) }), ...bands.map((b) => el('td', { textContent: pct(cell(d, b)?.rate), title: 'n=' + (cell(d, b)?.n ?? '–') }))) })))
+  const head = el('div', { className: 'card stack' },
+    el('div', { className: 'hint', textContent: `Lösungsquote nach Schwierigkeit und Altersgruppe (Gruppen unter ${ov.min_group} Antworten ausgeblendet). Spieler mit Geburtsjahr: ${ov.players.with_year} von ${ov.players.total}. Richtwerte: ab ${pct(ov.thresholds.easy)} leicht, ab ${pct(ov.thresholds.medium)} mittel, darunter schwer (Ratequote 25 %).` }),
+    el('div', { style: 'overflow-x:auto' }, table),
+    el('button', { className: 'btn small', textContent: 'Alle Vorschläge übernehmen', title: 'Setzt die Schwierigkeit aller Fragen mit genug Antworten auf den Vorschlag (wird in den Korrekturen protokolliert)', onclick: guarded(async () => {
+      if (!confirm(`Schwierigkeit aller Fragen mit mindestens ${$('stmin').value || 30} Antworten angleichen?`)) return
+      const r = await call('POST', '/api/admin/stats/apply-difficulty', { min_n: Number($('stmin').value) || 30 }); toast(r.changed + ' Fragen angepasst'); load() }) }))
+  const rows = questions.map((q) => el('div', { className: 'card stack' },
+    el('div', { className: 'row wrap' }, el('span', { className: 'badge', textContent: `${q.category} · ${DIFF[q.difficulty]}` }),
+      q.suggested && q.suggested !== q.difficulty ? el('span', { className: 'badge bad', textContent: 'Vorschlag: ' + DIFF[q.suggested] }) : q.suggested ? el('span', { className: 'badge good', textContent: 'passt' }) : null,
+      el('span', { className: 'muted grow', textContent: `${q.n} Antworten · ${pct(q.rate)} richtig · Ø ${(q.avg_ms / 1000).toFixed(1)} s` })),
+    el('div', { textContent: q.text }),
+    el('div', { className: 'hint', textContent: bands.filter((b) => q.by_age[b]?.n).map((b) => `${b === '?' ? 'k. A.' : b}: ${pct(q.by_age[b].rate)} (${q.by_age[b].n})`).join(' · ') || 'Keine Altersgruppe mit genug Antworten' }),
+    q.suggested && q.suggested !== q.difficulty ? el('button', { className: 'btn small primary', textContent: 'Schwierigkeit übernehmen', onclick: guarded(async () => {
+      await call('POST', '/api/admin/stats/apply-difficulty', { group_id: q.group_id, min_n: Number($('stmin').value) || 30 }); toast('Angepasst'); load() }) }) : null))
+  return [head, ...(rows.length ? rows : [el('div', { className: 'empty', textContent: 'Noch keine Frage mit genug Antworten' })]), el('div', { className: 'hint', textContent: `${questions.length} von ${total} Fragen` })]
+}
+
 function card(q) {
   const field = (v, rows) => (rows ? el('textarea', { value: v, rows }) : el('input', { type: 'text', value: v }))
   const text = field(q.text, 2), correct = field(q.correct), wrong = q.wrong.map((w) => field(w))
@@ -132,6 +170,7 @@ function card(q) {
     text, correct, wrong, el('div', { className: 'row' }, act('approve', 'Freigeben', 'primary'), act('reject', 'Ablehnen', 'danger')))
 }
 
+$('statbar').addEventListener('submit', (e) => { e.preventDefault(); load() })
 $('login').addEventListener('submit', async (e) => {
   e.preventDefault()
   const btn = $('login').querySelector('button'); btn.disabled = true

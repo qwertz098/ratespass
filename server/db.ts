@@ -274,8 +274,13 @@ CREATE TABLE room_answers(
 );
 `
 
+// v8: freiwilliges Geburtsjahr (nur das Jahr) für die anonyme Auswertung der Fragenschwierigkeit
+const SCHEMA_V8 = `
+ALTER TABLE players ADD COLUMN birth_year INTEGER;
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)
