@@ -1,0 +1,4810 @@
+{
+ "format": "ratespass-batch",
+ "version": 1,
+ "batch": "original-015",
+ "source": "original",
+ "license": "CC-BY-SA-4.0",
+ "attribution": "Ratespaß-Projekt (eigene Formulierungen, Faktenwissen)",
+ "questions": [
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Kennzahl für das Verhältnis von Trägheits- zu Zähigkeitskräften in einer Strömung?",
+     "correct": "Reynolds-Zahl",
+     "wrong": [
+      "Mach-Zahl",
+      "Froude-Zahl",
+      "Prandtl-Zahl"
+     ]
+    },
+    "en": {
+     "text": "What is the dimensionless number for the ratio of inertial to viscous forces in a flow?",
+     "correct": "Reynolds number",
+     "wrong": [
+      "Mach number",
+      "Froude number",
+      "Prandtl number"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Der Gesellschaftsvertrag“ (1762)?",
+     "correct": "Jean-Jacques Rousseau",
+     "wrong": [
+      "Voltaire",
+      "Montesquieu",
+      "Denis Diderot"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Social Contract” (1762)?",
+     "correct": "Jean-Jacques Rousseau",
+     "wrong": [
+      "Voltaire",
+      "Montesquieu",
+      "Denis Diderot"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Was bedeutet „Mimesis“ in der Poetik des Aristoteles?",
+     "correct": "Nachahmung",
+     "wrong": [
+      "Läuterung",
+      "Handlung",
+      "Erkenntnis"
+     ]
+    },
+    "en": {
+     "text": "What does “mimesis” mean in Aristotle's Poetics?",
+     "correct": "Imitation",
+     "wrong": [
+      "Catharsis",
+      "Plot",
+      "Recognition"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Schichten hat das OSI-Referenzmodell?",
+     "correct": "7",
+     "wrong": [
+      "4",
+      "5",
+      "9"
+     ]
+    },
+    "en": {
+     "text": "How many layers does the OSI reference model have?",
+     "correct": "7",
+     "wrong": [
+      "4",
+      "5",
+      "9"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Satz, wonach jede quadratische Matrix ihre eigene charakteristische Gleichung erfüllt?",
+     "correct": "Satz von Cayley-Hamilton",
+     "wrong": [
+      "Satz von Rolle",
+      "Satz von Bolzano-Weierstraß",
+      "Satz von Gauß-Jordan"
+     ]
+    },
+    "en": {
+     "text": "What is the theorem called that states every square matrix satisfies its own characteristic equation?",
+     "correct": "Cayley–Hamilton theorem",
+     "wrong": [
+      "Rolle's theorem",
+      "Bolzano–Weierstrass theorem",
+      "Gauss–Jordan theorem"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie endet Wittgensteins „Tractatus“: „Wovon man nicht sprechen kann, darüber muss man …“?",
+     "correct": "schweigen",
+     "wrong": [
+      "nachdenken",
+      "schreiben",
+      "streiten"
+     ]
+    },
+    "en": {
+     "text": "How does Wittgenstein's “Tractatus” end: “Whereof one cannot speak, thereof one must be …”?",
+     "correct": "silent",
+     "wrong": [
+      "think",
+      "write",
+      "argue"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer malte „Ein Sonntagnachmittag auf der Insel La Grande Jatte“?",
+     "correct": "Georges Seurat",
+     "wrong": [
+      "Paul Signac",
+      "Camille Pissarro",
+      "Paul Cézanne"
+     ]
+    },
+    "en": {
+     "text": "Who painted “A Sunday Afternoon on the Island of La Grande Jatte”?",
+     "correct": "Georges Seurat",
+     "wrong": [
+      "Paul Signac",
+      "Camille Pissarro",
+      "Paul Cézanne"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche durchschnittliche Zugriffszeit hat eine Hashtabelle?",
+     "correct": "O(1)",
+     "wrong": [
+      "O(log n)",
+      "O(n)",
+      "O(n²)"
+     ]
+    },
+    "en": {
+     "text": "What is the average lookup time of a hash table?",
+     "correct": "O(1)",
+     "wrong": [
+      "O(log n)",
+      "O(n)",
+      "O(n²)"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie lautet die Eulersche Identität?",
+     "correct": "e^(iπ) + 1 = 0",
+     "wrong": [
+      "e^(iπ) = 1",
+      "e^i + π = 0",
+      "e^(2πi) + 1 = 0"
+     ]
+    },
+    "en": {
+     "text": "What is Euler's identity?",
+     "correct": "e^(iπ) + 1 = 0",
+     "wrong": [
+      "e^(iπ) = 1",
+      "e^i + π = 0",
+      "e^(2πi) + 1 = 0"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Schriftsystem entzifferte Champollion 1822 mithilfe des Steins von Rosette?",
+     "correct": "Ägyptische Hieroglyphen",
+     "wrong": [
+      "Keilschrift",
+      "Linear B",
+      "Maya-Schrift"
+     ]
+    },
+    "en": {
+     "text": "Which script did Champollion decipher in 1822 with the help of the Rosetta Stone?",
+     "correct": "Egyptian hieroglyphs",
+     "wrong": [
+      "Cuneiform",
+      "Linear B",
+      "Maya script"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer erhielt 1913 als erster Nichteuropäer den Literaturnobelpreis?",
+     "correct": "Rabindranath Tagore",
+     "wrong": [
+      "Yasunari Kawabata",
+      "Naguib Mahfouz",
+      "Pablo Neruda"
+     ]
+    },
+    "en": {
+     "text": "Who won the 1913 Nobel Prize in Literature as the first non-European?",
+     "correct": "Rabindranath Tagore",
+     "wrong": [
+      "Yasunari Kawabata",
+      "Naguib Mahfouz",
+      "Pablo Neruda"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welchem Paradigma folgt Haskell?",
+     "correct": "Funktional",
+     "wrong": [
+      "Objektorientiert",
+      "Prozedural",
+      "Logisch"
+     ]
+    },
+    "en": {
+     "text": "Which paradigm does Haskell follow?",
+     "correct": "Functional",
+     "wrong": [
+      "Object-oriented",
+      "Procedural",
+      "Logic"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die SI-Einheit der magnetischen Flussdichte?",
+     "correct": "Tesla",
+     "wrong": [
+      "Weber",
+      "Henry",
+      "Gauß"
+     ]
+    },
+    "en": {
+     "text": "What is the SI unit of magnetic flux density?",
+     "correct": "Tesla",
+     "wrong": [
+      "Weber",
+      "Henry",
+      "Gauß"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer entzifferte 1952 die Schrift Linear B?",
+     "correct": "Michael Ventris",
+     "wrong": [
+      "Jean-François Champollion",
+      "Georg Friedrich Grotefend",
+      "Arthur Evans"
+     ]
+    },
+    "en": {
+     "text": "Who deciphered the Linear B script in 1952?",
+     "correct": "Michael Ventris",
+     "wrong": [
+      "Jean-François Champollion",
+      "Georg Friedrich Grotefend",
+      "Arthur Evans"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Die Pest“ (1947)?",
+     "correct": "Albert Camus",
+     "wrong": [
+      "Jean-Paul Sartre",
+      "André Malraux",
+      "Simone de Beauvoir"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Plague” (1947)?",
+     "correct": "Albert Camus",
+     "wrong": [
+      "Jean-Paul Sartre",
+      "André Malraux",
+      "Simone de Beauvoir"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche beiden Algorithmen berechnen minimale Spannbäume?",
+     "correct": "Prim und Kruskal",
+     "wrong": [
+      "Dijkstra und Bellman-Ford",
+      "Floyd und Warshall",
+      "Tarjan und Kosaraju"
+     ]
+    },
+    "en": {
+     "text": "Which two algorithms compute minimum spanning trees?",
+     "correct": "Prim and Kruskal",
+     "wrong": [
+      "Dijkstra and Bellman–Ford",
+      "Floyd and Warshall",
+      "Tarjan and Kosaraju"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche funktionelle Gruppe kennzeichnet Alkohole?",
+     "correct": "Hydroxygruppe (–OH)",
+     "wrong": [
+      "Carboxygruppe (–COOH)",
+      "Aminogruppe (–NH₂)",
+      "Carbonylgruppe (C=O)"
+     ]
+    },
+    "en": {
+     "text": "Which functional group characterises alcohols?",
+     "correct": "Hydroxyl group (–OH)",
+     "wrong": [
+      "Carboxyl group (–COOH)",
+      "Amino group (–NH₂)",
+      "Carbonyl group (C=O)"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb die „Kritik der reinen Vernunft“?",
+     "correct": "Immanuel Kant",
+     "wrong": [
+      "Georg Wilhelm Friedrich Hegel",
+      "Arthur Schopenhauer",
+      "Friedrich Nietzsche"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the “Critique of Pure Reason”?",
+     "correct": "Immanuel Kant",
+     "wrong": [
+      "Georg Wilhelm Friedrich Hegel",
+      "Arthur Schopenhauer",
+      "Friedrich Nietzsche"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb die „Göttliche Komödie“?",
+     "correct": "Dante Alighieri",
+     "wrong": [
+      "Giovanni Boccaccio",
+      "Francesco Petrarca",
+      "Ludovico Ariosto"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the “Divine Comedy”?",
+     "correct": "Dante Alighieri",
+     "wrong": [
+      "Giovanni Boccaccio",
+      "Francesco Petrarca",
+      "Ludovico Ariosto"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches klassische Problem gilt als unentscheidbar?",
+     "correct": "Das Halteproblem",
+     "wrong": [
+      "Das Sortierproblem",
+      "Das Rucksackproblem",
+      "Das Primzahlproblem"
+     ]
+    },
+    "en": {
+     "text": "Which classic problem is undecidable?",
+     "correct": "The halting problem",
+     "wrong": [
+      "The sorting problem",
+      "The knapsack problem",
+      "The primality problem"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche dieser Zahlen ist irrational?",
+     "correct": "√2",
+     "wrong": [
+      "0,75",
+      "1/3",
+      "22/7"
+     ]
+    },
+    "en": {
+     "text": "Which of these numbers is irrational?",
+     "correct": "√2",
+     "wrong": [
+      "0,75",
+      "1/3",
+      "22/7"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer gilt als Begründer der modernen Geschichtswissenschaft („wie es eigentlich gewesen“)?",
+     "correct": "Leopold von Ranke",
+     "wrong": [
+      "Jacob Burckhardt",
+      "Theodor Mommsen",
+      "Johann Gustav Droysen"
+     ]
+    },
+    "en": {
+     "text": "Who is regarded as the founder of modern historiography (“as it actually happened”)?",
+     "correct": "Leopold von Ranke",
+     "wrong": [
+      "Jacob Burckhardt",
+      "Theodor Mommsen",
+      "Johann Gustav Droysen"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb die „Aeneis“?",
+     "correct": "Vergil",
+     "wrong": [
+      "Ovid",
+      "Horaz",
+      "Homer"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the “Aeneid”?",
+     "correct": "Virgil",
+     "wrong": [
+      "Ovid",
+      "Horace",
+      "Homer"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht „BNF“ bei der Beschreibung von Grammatiken?",
+     "correct": "Backus-Naur-Form",
+     "wrong": [
+      "Binary Node Format",
+      "Basic Notation Framework",
+      "Block Name Function"
+     ]
+    },
+    "en": {
+     "text": "What does “BNF” stand for in grammar notation?",
+     "correct": "Backus–Naur form",
+     "wrong": [
+      "Binary node format",
+      "Basic notation framework",
+      "Block name function"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Brückentyp ist die Golden Gate Bridge?",
+     "correct": "Hängebrücke",
+     "wrong": [
+      "Bogenbrücke",
+      "Balkenbrücke",
+      "Schrägseilbrücke"
+     ]
+    },
+    "en": {
+     "text": "Which type of bridge is the Golden Gate Bridge?",
+     "correct": "Suspension bridge",
+     "wrong": [
+      "Arch bridge",
+      "Beam bridge",
+      "Cable-stayed bridge"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb die „Ethik, nach geometrischer Methode dargestellt“?",
+     "correct": "Baruch de Spinoza",
+     "wrong": [
+      "Gottfried Wilhelm Leibniz",
+      "René Descartes",
+      "Nicolas Malebranche"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the “Ethics, Demonstrated in Geometrical Order”?",
+     "correct": "Baruch de Spinoza",
+     "wrong": [
+      "Gottfried Wilhelm Leibniz",
+      "René Descartes",
+      "Nicolas Malebranche"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche antike Säulenordnung hat Kapitelle mit Akanthusblättern?",
+     "correct": "Korinthisch",
+     "wrong": [
+      "Dorisch",
+      "Ionisch",
+      "Toskanisch"
+     ]
+    },
+    "en": {
+     "text": "Which classical order has capitals decorated with acanthus leaves?",
+     "correct": "Corinthian",
+     "wrong": [
+      "Doric",
+      "Ionic",
+      "Tuscan"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die von Dijkstra eingeführte Synchronisationsvariable mit P- und V-Operation?",
+     "correct": "Semaphor",
+     "wrong": [
+      "Mutex-Lock",
+      "Monitor",
+      "Barriere"
+     ]
+    },
+    "en": {
+     "text": "What is the synchronisation primitive with P and V operations introduced by Dijkstra called?",
+     "correct": "Semaphore",
+     "wrong": [
+      "Mutex lock",
+      "Monitor",
+      "Barrier"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Metall hat die höchste elektrische Leitfähigkeit?",
+     "correct": "Silber",
+     "wrong": [
+      "Kupfer",
+      "Gold",
+      "Aluminium"
+     ]
+    },
+    "en": {
+     "text": "Which metal has the highest electrical conductivity?",
+     "correct": "Silber",
+     "wrong": [
+      "Kupfer",
+      "Gold",
+      "Aluminium"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Denkrichtung sieht Erfahrung als Quelle der Erkenntnis?",
+     "correct": "Empirismus",
+     "wrong": [
+      "Rationalismus",
+      "Idealismus",
+      "Skeptizismus"
+     ]
+    },
+    "en": {
+     "text": "Which school of thought sees experience as the source of knowledge?",
+     "correct": "Empiricism",
+     "wrong": [
+      "Rationalism",
+      "Idealism",
+      "Scepticism"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer führte Regie bei „Citizen Kane“ (1941)?",
+     "correct": "Orson Welles",
+     "wrong": [
+      "Alfred Hitchcock",
+      "John Ford",
+      "Billy Wilder"
+     ]
+    },
+    "en": {
+     "text": "Who directed “Citizen Kane” (1941)?",
+     "correct": "Orson Welles",
+     "wrong": [
+      "Alfred Hitchcock",
+      "John Ford",
+      "Billy Wilder"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Was bedeutet „Eventual Consistency“?",
+     "correct": "Alle Replikate konvergieren, wenn keine Änderungen mehr erfolgen",
+     "wrong": [
+      "Jede Leseoperation liefert immer den neuesten Wert",
+      "Daten werden nie repliziert",
+      "Schreibvorgänge sind garantiert atomar"
+     ]
+    },
+    "en": {
+     "text": "What does “eventual consistency” mean?",
+     "correct": "All replicas converge once no more updates occur",
+     "wrong": [
+      "Every read always returns the latest value",
+      "Data is never replicated",
+      "Writes are guaranteed to be atomic"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Verfahren zur Herstellung von Salpetersäure aus Ammoniak?",
+     "correct": "Ostwald-Verfahren",
+     "wrong": [
+      "Haber-Bosch-Verfahren",
+      "Solvay-Verfahren",
+      "Contact-Verfahren"
+     ]
+    },
+    "en": {
+     "text": "What is the process for producing nitric acid from ammonia called?",
+     "correct": "Ostwald process",
+     "wrong": [
+      "Haber–Bosch process",
+      "Solvay process",
+      "Contact process"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Kampf der Kulturen“?",
+     "correct": "Samuel Huntington",
+     "wrong": [
+      "Francis Fukuyama",
+      "Edward Said",
+      "Zbigniew Brzezinski"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Clash of Civilizations”?",
+     "correct": "Samuel Huntington",
+     "wrong": [
+      "Francis Fukuyama",
+      "Edward Said",
+      "Zbigniew Brzezinski"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Halbtonschritte umfasst eine Oktave?",
+     "correct": "12",
+     "wrong": [
+      "8",
+      "10",
+      "7"
+     ]
+    },
+    "en": {
+     "text": "How many semitones are in an octave?",
+     "correct": "12",
+     "wrong": [
+      "8",
+      "10",
+      "7"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches SQL-Schlüsselwort entfernt doppelte Zeilen aus dem Ergebnis?",
+     "correct": "DISTINCT",
+     "wrong": [
+      "UNIQUE",
+      "GROUP",
+      "FILTER"
+     ]
+    },
+    "en": {
+     "text": "Which SQL keyword removes duplicate rows from a result?",
+     "correct": "DISTINCT",
+     "wrong": [
+      "UNIQUE",
+      "GROUP",
+      "FILTER"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer formulierte 1927 die Unschärferelation?",
+     "correct": "Werner Heisenberg",
+     "wrong": [
+      "Erwin Schrödinger",
+      "Niels Bohr",
+      "Max Born"
+     ]
+    },
+    "en": {
+     "text": "Who formulated the uncertainty principle in 1927?",
+     "correct": "Werner Heisenberg",
+     "wrong": [
+      "Erwin Schrödinger",
+      "Niels Bohr",
+      "Max Born"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Vertrag beendete 1648 den Dreißigjährigen Krieg?",
+     "correct": "Westfälischer Friede",
+     "wrong": [
+      "Wiener Kongress",
+      "Augsburger Religionsfrieden",
+      "Friede von Utrecht"
+     ]
+    },
+    "en": {
+     "text": "Which treaty ended the Thirty Years' War in 1648?",
+     "correct": "Peace of Westphalia",
+     "wrong": [
+      "Congress of Vienna",
+      "Peace of Augsburg",
+      "Peace of Utrecht"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Madame Bovary“?",
+     "correct": "Gustave Flaubert",
+     "wrong": [
+      "Honoré de Balzac",
+      "Stendhal",
+      "Guy de Maupassant"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Madame Bovary”?",
+     "correct": "Gustave Flaubert",
+     "wrong": [
+      "Honoré de Balzac",
+      "Stendhal",
+      "Guy de Maupassant"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Algorithmus berechnet kürzeste Wege auch bei negativen Kantengewichten (ohne negative Zyklen)?",
+     "correct": "Bellman-Ford",
+     "wrong": [
+      "Dijkstra",
+      "Prim",
+      "Kruskal"
+     ]
+    },
+    "en": {
+     "text": "Which algorithm computes shortest paths even with negative edge weights (without negative cycles)?",
+     "correct": "Bellman–Ford",
+     "wrong": [
+      "Dijkstra",
+      "Prim",
+      "Kruskal"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Reglertyp besitzt Proportional-, Integral- und Differentialanteil?",
+     "correct": "PID-Regler",
+     "wrong": [
+      "PWM-Regler",
+      "PLL-Regler",
+      "FIR-Regler"
+     ]
+    },
+    "en": {
+     "text": "Which controller type has proportional, integral and derivative terms?",
+     "correct": "PID controller",
+     "wrong": [
+      "PWM controller",
+      "PLL controller",
+      "FIR controller"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche beiden Historiker gründeten die Annales-Schule?",
+     "correct": "Marc Bloch und Lucien Febvre",
+     "wrong": [
+      "Pierre Nora und Jacques Le Goff",
+      "Fernand Braudel und Michel Foucault",
+      "Leopold von Ranke und Johann Gustav Droysen"
+     ]
+    },
+    "en": {
+     "text": "Which two historians founded the Annales school?",
+     "correct": "Marc Bloch und Lucien Febvre",
+     "wrong": [
+      "Pierre Nora und Jacques Le Goff",
+      "Fernand Braudel und Michel Foucault",
+      "Leopold von Ranke und Johann Gustav Droysen"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer gilt mit „Komposition VII“ (1913) als Wegbereiter der abstrakten Malerei?",
+     "correct": "Wassily Kandinsky",
+     "wrong": [
+      "Kasimir Malewitsch",
+      "Piet Mondrian",
+      "Paul Klee"
+     ]
+    },
+    "en": {
+     "text": "Who is considered a pioneer of abstract painting with “Composition VII” (1913)?",
+     "correct": "Wassily Kandinsky",
+     "wrong": [
+      "Kasimir Malewitsch",
+      "Piet Mondrian",
+      "Paul Klee"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Von wem stammt der Konsensalgorithmus Paxos?",
+     "correct": "Leslie Lamport",
+     "wrong": [
+      "Edsger Dijkstra",
+      "Barbara Liskov",
+      "Diego Ongaro"
+     ]
+    },
+    "en": {
+     "text": "Who devised the consensus algorithm Paxos?",
+     "correct": "Leslie Lamport",
+     "wrong": [
+      "Edsger Dijkstra",
+      "Barbara Liskov",
+      "Diego Ongaro"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer veröffentlichte 1994/95 den Beweis des Großen Fermatschen Satzes?",
+     "correct": "Andrew Wiles",
+     "wrong": [
+      "Grigori Perelman",
+      "Terence Tao",
+      "Pierre de Fermat"
+     ]
+    },
+    "en": {
+     "text": "Who published the proof of Fermat's Last Theorem in 1994/95?",
+     "correct": "Andrew Wiles",
+     "wrong": [
+      "Grigori Perelman",
+      "Terence Tao",
+      "Pierre de Fermat"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den „Versuch über den menschlichen Verstand“ (1689)?",
+     "correct": "John Locke",
+     "wrong": [
+      "David Hume",
+      "George Berkeley",
+      "Francis Bacon"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “An Essay Concerning Human Understanding” (1689)?",
+     "correct": "John Locke",
+     "wrong": [
+      "David Hume",
+      "George Berkeley",
+      "Francis Bacon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Kunstrichtung begründeten Pablo Picasso und Georges Braque?",
+     "correct": "Kubismus",
+     "wrong": [
+      "Surrealismus",
+      "Futurismus",
+      "Dadaismus"
+     ]
+    },
+    "en": {
+     "text": "Which art movement did Pablo Picasso and Georges Braque found?",
+     "correct": "Cubism",
+     "wrong": [
+      "Surrealism",
+      "Futurism",
+      "Dada"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Entwurfsmuster stellt sicher, dass es von einer Klasse nur eine Instanz gibt?",
+     "correct": "Singleton",
+     "wrong": [
+      "Factory",
+      "Observer",
+      "Decorator"
+     ]
+    },
+    "en": {
+     "text": "Which design pattern ensures a class has only one instance?",
+     "correct": "Singleton",
+     "wrong": [
+      "Factory",
+      "Observer",
+      "Decorator"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Hybridisierung hat das Kohlenstoffatom in Ethen (C₂H₄)?",
+     "correct": "sp²",
+     "wrong": [
+      "sp³",
+      "sp",
+      "sp³d"
+     ]
+    },
+    "en": {
+     "text": "Which hybridisation do the carbon atoms in ethene (C₂H₄) have?",
+     "correct": "sp²",
+     "wrong": [
+      "sp³",
+      "sp",
+      "sp³d"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Die Welt als Wille und Vorstellung“?",
+     "correct": "Arthur Schopenhauer",
+     "wrong": [
+      "Friedrich Nietzsche",
+      "Immanuel Kant",
+      "Georg Wilhelm Friedrich Hegel"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The World as Will and Representation”?",
+     "correct": "Arthur Schopenhauer",
+     "wrong": [
+      "Friedrich Nietzsche",
+      "Immanuel Kant",
+      "Georg Wilhelm Friedrich Hegel"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Epoche betonte Gefühl, Natur und Individualität als Gegenbewegung zur Aufklärung?",
+     "correct": "Romantik",
+     "wrong": [
+      "Realismus",
+      "Klassizismus",
+      "Naturalismus"
+     ]
+    },
+    "en": {
+     "text": "Which period emphasised emotion, nature and individuality as a reaction to the Enlightenment?",
+     "correct": "Romanticism",
+     "wrong": [
+      "Realism",
+      "Classicism",
+      "Naturalism"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Worst-Case-Zeitkomplexität hat Quicksort bei ungünstiger Pivotwahl?",
+     "correct": "O(n²)",
+     "wrong": [
+      "O(n log n)",
+      "O(n)",
+      "O(2ⁿ)"
+     ]
+    },
+    "en": {
+     "text": "What is quicksort's worst-case time complexity with unlucky pivot choices?",
+     "correct": "O(n²)",
+     "wrong": [
+      "O(n log n)",
+      "O(n)",
+      "O(2ⁿ)"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Kreisprozess liegt dem klassischen Benzinmotor zugrunde?",
+     "correct": "Otto-Prozess",
+     "wrong": [
+      "Diesel-Prozess",
+      "Joule-Prozess",
+      "Clausius-Rankine-Prozess"
+     ]
+    },
+    "en": {
+     "text": "Which thermodynamic cycle underlies the classic petrol engine?",
+     "correct": "Otto cycle",
+     "wrong": [
+      "Diesel cycle",
+      "Joule cycle",
+      "Rankine cycle"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wer begründete die Psychoanalyse?",
+     "correct": "Sigmund Freud",
+     "wrong": [
+      "Carl Gustav Jung",
+      "Alfred Adler",
+      "Wilhelm Wundt"
+     ]
+    },
+    "en": {
+     "text": "Who founded psychoanalysis?",
+     "correct": "Sigmund Freud",
+     "wrong": [
+      "Carl Gustav Jung",
+      "Alfred Adler",
+      "Wilhelm Wundt"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Stück von Samuel Beckett handelt vom vergeblichen Warten zweier Männer?",
+     "correct": "Warten auf Godot",
+     "wrong": [
+      "Endspiel",
+      "Das letzte Band",
+      "Glückliche Tage"
+     ]
+    },
+    "en": {
+     "text": "Which Samuel Beckett play is about two men waiting in vain?",
+     "correct": "Waiting for Godot",
+     "wrong": [
+      "Endgame",
+      "Krapp's Last Tape",
+      "Happy Days"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Protokoll ordnet im lokalen Netz IP-Adressen MAC-Adressen zu?",
+     "correct": "ARP",
+     "wrong": [
+      "DHCP",
+      "DNS",
+      "ICMP"
+     ]
+    },
+    "en": {
+     "text": "Which protocol maps IP addresses to MAC addresses on a local network?",
+     "correct": "ARP",
+     "wrong": [
+      "DHCP",
+      "DNS",
+      "ICMP"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer erfand 1876 den Viertakt-Verbrennungsmotor?",
+     "correct": "Nikolaus Otto",
+     "wrong": [
+      "Rudolf Diesel",
+      "Gottlieb Daimler",
+      "Carl Benz"
+     ]
+    },
+    "en": {
+     "text": "Who invented the four-stroke internal combustion engine in 1876?",
+     "correct": "Nikolaus Otto",
+     "wrong": [
+      "Rudolf Diesel",
+      "Gottlieb Daimler",
+      "Carl Benz"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer begründete die generative Grammatik?",
+     "correct": "Noam Chomsky",
+     "wrong": [
+      "Roman Jakobson",
+      "Leonard Bloomfield",
+      "William Labov"
+     ]
+    },
+    "en": {
+     "text": "Who founded generative grammar?",
+     "correct": "Noam Chomsky",
+     "wrong": [
+      "Roman Jakobson",
+      "Leonard Bloomfield",
+      "William Labov"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer malte „Der Kuss“ (1907/08) mit Goldflächen?",
+     "correct": "Gustav Klimt",
+     "wrong": [
+      "Egon Schiele",
+      "Edvard Munch",
+      "Henri Matisse"
+     ]
+    },
+    "en": {
+     "text": "Who painted “The Kiss” (1907/08) with its gold surfaces?",
+     "correct": "Gustav Klimt",
+     "wrong": [
+      "Egon Schiele",
+      "Edvard Munch",
+      "Henri Matisse"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche durchschnittliche Zeitkomplexität hat Quicksort?",
+     "correct": "O(n log n)",
+     "wrong": [
+      "O(n²)",
+      "O(n)",
+      "O(log n)"
+     ]
+    },
+    "en": {
+     "text": "What is the average time complexity of quicksort?",
+     "correct": "O(n log n)",
+     "wrong": [
+      "O(n²)",
+      "O(n)",
+      "O(log n)"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Transformation zerlegt ein Signal in seine Frequenzanteile?",
+     "correct": "Fourier-Transformation",
+     "wrong": [
+      "Z-Transformation",
+      "Hilbert-Transformation",
+      "Lorentz-Transformation"
+     ]
+    },
+    "en": {
+     "text": "Which transform decomposes a signal into its frequency components?",
+     "correct": "Fourier transform",
+     "wrong": [
+      "Z-transform",
+      "Hilbert transform",
+      "Lorentz transformation"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb 1807 die „Phänomenologie des Geistes“?",
+     "correct": "Georg Wilhelm Friedrich Hegel",
+     "wrong": [
+      "Immanuel Kant",
+      "Friedrich Schelling",
+      "Johann Gottlieb Fichte"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the “Phenomenology of Spirit” in 1807?",
+     "correct": "Georg Wilhelm Friedrich Hegel",
+     "wrong": [
+      "Immanuel Kant",
+      "Friedrich Schelling",
+      "Johann Gottlieb Fichte"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Stilrichtung gehört „Das Cabinet des Dr. Caligari“ (1920) an?",
+     "correct": "Expressionismus",
+     "wrong": [
+      "Neorealismus",
+      "Nouvelle Vague",
+      "Dogma 95"
+     ]
+    },
+    "en": {
+     "text": "Which style does “The Cabinet of Dr. Caligari” (1920) belong to?",
+     "correct": "Expressionism",
+     "wrong": [
+      "Neorealism",
+      "French New Wave",
+      "Dogme 95"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Konsensalgorithmus wurde 2014 als verständlichere Alternative zu Paxos vorgestellt?",
+     "correct": "Raft",
+     "wrong": [
+      "Zab",
+      "PBFT",
+      "Gossip"
+     ]
+    },
+    "en": {
+     "text": "Which consensus algorithm was introduced in 2014 as an easier-to-understand alternative to Paxos?",
+     "correct": "Raft",
+     "wrong": [
+      "Zab",
+      "PBFT",
+      "Gossip"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Kreisprozess beschreibt Dampfkraftwerke?",
+     "correct": "Clausius-Rankine-Prozess",
+     "wrong": [
+      "Otto-Prozess",
+      "Diesel-Prozess",
+      "Carnot-Prozess"
+     ]
+    },
+    "en": {
+     "text": "Which thermodynamic cycle describes steam power plants?",
+     "correct": "Rankine cycle",
+     "wrong": [
+      "Otto cycle",
+      "Diesel cycle",
+      "Carnot cycle"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Das Zeitalter der Extreme“ über das 20. Jahrhundert?",
+     "correct": "Eric Hobsbawm",
+     "wrong": [
+      "Ian Kershaw",
+      "Fernand Braudel",
+      "E. H. Carr"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Age of Extremes” about the 20th century?",
+     "correct": "Eric Hobsbawm",
+     "wrong": [
+      "Ian Kershaw",
+      "Fernand Braudel",
+      "E. H. Carr"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer gilt als Erfinder des Mobiles als Kunstform?",
+     "correct": "Alexander Calder",
+     "wrong": [
+      "Henry Moore",
+      "Alberto Giacometti",
+      "Constantin Brâncuși"
+     ]
+    },
+    "en": {
+     "text": "Who is considered the inventor of the mobile as an art form?",
+     "correct": "Alexander Calder",
+     "wrong": [
+      "Henry Moore",
+      "Alberto Giacometti",
+      "Constantin Brâncuși"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Was besagt das CAP-Theorem?",
+     "correct": "Höchstens zwei von Konsistenz, Verfügbarkeit, Partitionstoleranz garantierbar",
+     "wrong": [
+      "Jedes verteilte System ist gleichzeitig konsistent und verfügbar",
+      "Netzwerkpartitionen treten in modernen Rechenzentren nie auf",
+      "Konsistenz ist immer günstiger zu erreichen als Verfügbarkeit"
+     ]
+    },
+    "en": {
+     "text": "What does the CAP theorem state?",
+     "correct": "At most two of consistency, availability, partition tolerance",
+     "wrong": [
+      "Every distributed system is both consistent and available",
+      "Network partitions never occur in modern data centres",
+      "Consistency is always cheaper to achieve than availability"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Quarksorten („Flavours“) kennt das Standardmodell?",
+     "correct": "6",
+     "wrong": [
+      "3",
+      "4",
+      "8"
+     ]
+    },
+    "en": {
+     "text": "How many quark flavours does the Standard Model have?",
+     "correct": "6",
+     "wrong": [
+      "3",
+      "4",
+      "8"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche europäische Sprache ist mit keiner lebenden Sprache nachweisbar verwandt (Sprachisolat)?",
+     "correct": "Baskisch",
+     "wrong": [
+      "Finnisch",
+      "Albanisch",
+      "Georgisch"
+     ]
+    },
+    "en": {
+     "text": "Which European language is a language isolate with no demonstrable living relatives?",
+     "correct": "Basque",
+     "wrong": [
+      "Finnish",
+      "Albanian",
+      "Georgian"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus wie vielen Sätzen besteht eine klassische Sinfonie typischerweise?",
+     "correct": "4",
+     "wrong": [
+      "3",
+      "5",
+      "2"
+     ]
+    },
+    "en": {
+     "text": "How many movements does a classical symphony typically have?",
+     "correct": "4",
+     "wrong": [
+      "3",
+      "5",
+      "2"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Mit welcher minimalen Schlüssellänge ist AES definiert?",
+     "correct": "128 Bit",
+     "wrong": [
+      "56 Bit",
+      "64 Bit",
+      "512 Bit"
+     ]
+    },
+    "en": {
+     "text": "What is the minimum key length defined for AES?",
+     "correct": "128 bits",
+     "wrong": [
+      "56 bits",
+      "64 bits",
+      "512 bits"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der idealisierte Kreisprozess mit dem höchstmöglichen Wirkungsgrad?",
+     "correct": "Carnot-Prozess",
+     "wrong": [
+      "Otto-Prozess",
+      "Diesel-Prozess",
+      "Stirling-Prozess"
+     ]
+    },
+    "en": {
+     "text": "What is the idealised thermodynamic cycle with the maximum possible efficiency called?",
+     "correct": "Carnot cycle",
+     "wrong": [
+      "Otto cycle",
+      "Diesel cycle",
+      "Stirling cycle"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer entdeckte die klassische Konditionierung?",
+     "correct": "Iwan Pawlow",
+     "wrong": [
+      "B. F. Skinner",
+      "John B. Watson",
+      "Albert Bandura"
+     ]
+    },
+    "en": {
+     "text": "Who discovered classical conditioning?",
+     "correct": "Ivan Pavlov",
+     "wrong": [
+      "B. F. Skinner",
+      "John B. Watson",
+      "Albert Bandura"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer entwarf das Guggenheim-Museum in Bilbao?",
+     "correct": "Frank Gehry",
+     "wrong": [
+      "Norman Foster",
+      "Renzo Piano",
+      "Zaha Hadid"
+     ]
+    },
+    "en": {
+     "text": "Who designed the Guggenheim Museum Bilbao?",
+     "correct": "Frank Gehry",
+     "wrong": [
+      "Norman Foster",
+      "Renzo Piano",
+      "Zaha Hadid"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie lautet −1 als 4-Bit-Zahl im Zweierkomplement?",
+     "correct": "1111",
+     "wrong": [
+      "1000",
+      "1001",
+      "0001"
+     ]
+    },
+    "en": {
+     "text": "What is −1 as a 4-bit two's-complement number?",
+     "correct": "1111",
+     "wrong": [
+      "1000",
+      "1001",
+      "0001"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Satz, wonach ein Signal mit mehr als der doppelten Maximalfrequenz abgetastet werden muss?",
+     "correct": "Abtasttheorem (Nyquist-Shannon)",
+     "wrong": [
+      "Satz von Bayes",
+      "Satz von Gauß",
+      "Parsevalsches Theorem"
+     ]
+    },
+    "en": {
+     "text": "What is the theorem called that requires sampling at more than twice the maximum frequency?",
+     "correct": "Nyquist–Shannon sampling theorem",
+     "wrong": [
+      "Bayes' theorem",
+      "Gauss's theorem",
+      "Parseval's theorem"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb 1897 die Studie „Der Selbstmord“?",
+     "correct": "Émile Durkheim",
+     "wrong": [
+      "Max Weber",
+      "Georg Simmel",
+      "Talcott Parsons"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the 1897 study “Suicide”?",
+     "correct": "Émile Durkheim",
+     "wrong": [
+      "Max Weber",
+      "Georg Simmel",
+      "Talcott Parsons"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer entwarf das Haus „Fallingwater“ (1935) über einem Wasserfall?",
+     "correct": "Frank Lloyd Wright",
+     "wrong": [
+      "Le Corbusier",
+      "Richard Neutra",
+      "Philip Johnson"
+     ]
+    },
+    "en": {
+     "text": "Who designed the house “Fallingwater” (1935) built over a waterfall?",
+     "correct": "Frank Lloyd Wright",
+     "wrong": [
+      "Le Corbusier",
+      "Richard Neutra",
+      "Philip Johnson"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Auf welcher Schicht des OSI-Modells arbeitet ein klassischer Switch?",
+     "correct": "Schicht 2 (Sicherungsschicht)",
+     "wrong": [
+      "Schicht 1 (Bitübertragung)",
+      "Schicht 3 (Vermittlung)",
+      "Schicht 4 (Transport)"
+     ]
+    },
+    "en": {
+     "text": "On which OSI layer does a classic switch operate?",
+     "correct": "Layer 2 (data link)",
+     "wrong": [
+      "Layer 1 (physical)",
+      "Layer 3 (network)",
+      "Layer 4 (transport)"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer bewies als Erster, dass es unendlich viele Primzahlen gibt?",
+     "correct": "Euklid",
+     "wrong": [
+      "Euler",
+      "Gauß",
+      "Fermat"
+     ]
+    },
+    "en": {
+     "text": "Who first proved that there are infinitely many primes?",
+     "correct": "Euclid",
+     "wrong": [
+      "Euler",
+      "Gauss",
+      "Fermat"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Die protestantische Ethik und der Geist des Kapitalismus“?",
+     "correct": "Max Weber",
+     "wrong": [
+      "Karl Marx",
+      "Émile Durkheim",
+      "Georg Simmel"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Protestant Ethic and the Spirit of Capitalism”?",
+     "correct": "Max Weber",
+     "wrong": [
+      "Karl Marx",
+      "Émile Durkheim",
+      "Georg Simmel"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer entwarf die Villa Savoye (1931) bei Paris?",
+     "correct": "Le Corbusier",
+     "wrong": [
+      "Ludwig Mies van der Rohe",
+      "Walter Gropius",
+      "Alvar Aalto"
+     ]
+    },
+    "en": {
+     "text": "Who designed the Villa Savoye (1931) near Paris?",
+     "correct": "Le Corbusier",
+     "wrong": [
+      "Ludwig Mies van der Rohe",
+      "Walter Gropius",
+      "Alvar Aalto"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Transportprotokoll arbeitet verbindungslos und ohne Zustellgarantie?",
+     "correct": "UDP",
+     "wrong": [
+      "TCP",
+      "SCTP",
+      "QUIC"
+     ]
+    },
+    "en": {
+     "text": "Which transport protocol is connectionless without delivery guarantee?",
+     "correct": "UDP",
+     "wrong": [
+      "TCP",
+      "SCTP",
+      "QUIC"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Prinzip, wonach ein Orbital höchstens zwei Elektronen mit entgegengesetztem Spin enthält?",
+     "correct": "Pauli-Prinzip",
+     "wrong": [
+      "Hundsche Regel",
+      "Aufbauprinzip",
+      "Heisenberg-Prinzip"
+     ]
+    },
+    "en": {
+     "text": "Which principle states that an orbital holds at most two electrons of opposite spin?",
+     "correct": "Pauli exclusion principle",
+     "wrong": [
+      "Hund's rule",
+      "Aufbau principle",
+      "Heisenberg principle"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Zu welcher Sprachfamilie gehört das Ungarische?",
+     "correct": "Uralische Sprachen",
+     "wrong": [
+      "Indogermanische Sprachen",
+      "Turksprachen",
+      "Slawische Sprachen"
+     ]
+    },
+    "en": {
+     "text": "Which language family does Hungarian belong to?",
+     "correct": "Uralic languages",
+     "wrong": [
+      "Indo-European languages",
+      "Turkic languages",
+      "Slavic languages"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Roman beginnt mit dem Satz „Call me Ishmael“?",
+     "correct": "Moby-Dick",
+     "wrong": [
+      "Die Schatzinsel",
+      "Robinson Crusoe",
+      "Der Seewolf"
+     ]
+    },
+    "en": {
+     "text": "Which novel begins with “Call me Ishmael”?",
+     "correct": "Moby-Dick",
+     "wrong": [
+      "Treasure Island",
+      "Robinson Crusoe",
+      "The Sea-Wolf"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Speicherebene eines Rechners ist am schnellsten?",
+     "correct": "Prozessorregister",
+     "wrong": [
+      "L2-Cache",
+      "Arbeitsspeicher (RAM)",
+      "SSD"
+     ]
+    },
+    "en": {
+     "text": "Which level of a computer's memory hierarchy is the fastest?",
+     "correct": "Processor registers",
+     "wrong": [
+      "L2 cache",
+      "Main memory (RAM)",
+      "SSD"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Woraus besteht der Kern eines Transformators typischerweise?",
+     "correct": "Weichmagnetischem Eisen (Elektroblech)",
+     "wrong": [
+      "Kupfer",
+      "Aluminium",
+      "Keramik"
+     ]
+    },
+    "en": {
+     "text": "What is the core of a transformer typically made of?",
+     "correct": "Soft magnetic iron (electrical steel)",
+     "wrong": [
+      "Copper",
+      "Aluminium",
+      "Ceramic"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer verfasste die „Dialektik der Aufklärung“ (1944/47)?",
+     "correct": "Max Horkheimer und Theodor W. Adorno",
+     "wrong": [
+      "Jürgen Habermas und Niklas Luhmann",
+      "Herbert Marcuse und Erich Fromm",
+      "Walter Benjamin und Ernst Bloch"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Dialectic of Enlightenment” (1944/47)?",
+     "correct": "Max Horkheimer and Theodor W. Adorno",
+     "wrong": [
+      "Jürgen Habermas and Niklas Luhmann",
+      "Herbert Marcuse and Erich Fromm",
+      "Walter Benjamin and Ernst Bloch"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus wie vielen Versen besteht ein klassisches Sonett?",
+     "correct": "14",
+     "wrong": [
+      "12",
+      "16",
+      "10"
+     ]
+    },
+    "en": {
+     "text": "How many lines does a classical sonnet have?",
+     "correct": "14",
+     "wrong": [
+      "12",
+      "16",
+      "10"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Verfahren wurde 1976 für den Schlüsselaustausch über unsichere Kanäle vorgestellt?",
+     "correct": "Diffie-Hellman",
+     "wrong": [
+      "RSA",
+      "AES",
+      "Kerberos"
+     ]
+    },
+    "en": {
+     "text": "Which method was introduced in 1976 for key exchange over insecure channels?",
+     "correct": "Diffie–Hellman",
+     "wrong": [
+      "RSA",
+      "AES",
+      "Kerberos"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie lautet die allgemeine Summenformel der Alkane?",
+     "correct": "CnH2n+2",
+     "wrong": [
+      "CnH2n",
+      "CnH(2n−2)",
+      "CnHn"
+     ]
+    },
+    "en": {
+     "text": "What is the general molecular formula of the alkanes?",
+     "correct": "CnH2n+2",
+     "wrong": [
+      "CnH2n",
+      "CnH(2n−2)",
+      "CnHn"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Womit befasst sich die Erkenntnistheorie (Epistemologie)?",
+     "correct": "Wesen und Grenzen des Wissens",
+     "wrong": [
+      "Dem Schönen",
+      "Dem moralisch Guten",
+      "Der Sprache"
+     ]
+    },
+    "en": {
+     "text": "What is epistemology concerned with?",
+     "correct": "The nature and limits of knowledge",
+     "wrong": [
+      "Beauty",
+      "Moral goodness",
+      "Language"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer malte „Der Turmbau zu Babel“ (1563)?",
+     "correct": "Pieter Bruegel der Ältere",
+     "wrong": [
+      "Hieronymus Bosch",
+      "Jan van Eyck",
+      "Albrecht Dürer"
+     ]
+    },
+    "en": {
+     "text": "Who painted “The Tower of Babel” (1563)?",
+     "correct": "Pieter Bruegel the Elder",
+     "wrong": [
+      "Hieronymus Bosch",
+      "Jan van Eyck",
+      "Albrecht Dürer"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Technik rät Prozessoren, welchen Zweig eines Sprungs sie als Nächstes ausführen werden?",
+     "correct": "Branch Prediction",
+     "wrong": [
+      "Pipelining",
+      "Hyper-Threading",
+      "Out-of-Order-Retirement"
+     ]
+    },
+    "en": {
+     "text": "Which CPU technique guesses which branch of a jump will be taken next?",
+     "correct": "Branch Prediction",
+     "wrong": [
+      "Pipelining",
+      "Hyper-Threading",
+      "Out-of-Order-Retirement"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man eine Matrix, die gleich ihrer Transponierten ist?",
+     "correct": "Symmetrische Matrix",
+     "wrong": [
+      "Orthogonale Matrix",
+      "Singuläre Matrix",
+      "Diagonalmatrix"
+     ]
+    },
+    "en": {
+     "text": "What is a matrix called that equals its transpose?",
+     "correct": "Symmetric matrix",
+     "wrong": [
+      "Orthogonal matrix",
+      "Singular matrix",
+      "Diagonal matrix"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Die Kultur der Renaissance in Italien“ (1860)?",
+     "correct": "Jacob Burckhardt",
+     "wrong": [
+      "Leopold von Ranke",
+      "Johan Huizinga",
+      "Jules Michelet"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Civilization of the Renaissance in Italy” (1860)?",
+     "correct": "Jacob Burckhardt",
+     "wrong": [
+      "Leopold von Ranke",
+      "Johan Huizinga",
+      "Jules Michelet"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer malte „Las Meninas“ (1656)?",
+     "correct": "Diego Velázquez",
+     "wrong": [
+      "Francisco de Goya",
+      "El Greco",
+      "Bartolomé Murillo"
+     ]
+    },
+    "en": {
+     "text": "Who painted “Las Meninas” (1656)?",
+     "correct": "Diego Velázquez",
+     "wrong": [
+      "Francisco de Goya",
+      "El Greco",
+      "Bartolomé Murillo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Sprache führte Klassen und Objekte ein (1967)?",
+     "correct": "Simula 67",
+     "wrong": [
+      "Smalltalk-80",
+      "C++",
+      "Java"
+     ]
+    },
+    "en": {
+     "text": "Which language introduced classes and objects (1967)?",
+     "correct": "Simula 67",
+     "wrong": [
+      "Smalltalk-80",
+      "C++",
+      "Java"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele reelle Lösungen hat eine quadratische Gleichung mit negativer Diskriminante?",
+     "correct": "Keine",
+     "wrong": [
+      "Eine",
+      "Zwei",
+      "Unendlich viele"
+     ]
+    },
+    "en": {
+     "text": "How many real solutions does a quadratic equation with a negative discriminant have?",
+     "correct": "None",
+     "wrong": [
+      "One",
+      "Two",
+      "Infinitely many"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Bücher umfasst die Tora (Pentateuch)?",
+     "correct": "5",
+     "wrong": [
+      "4",
+      "7",
+      "12"
+     ]
+    },
+    "en": {
+     "text": "How many books make up the Torah (Pentateuch)?",
+     "correct": "5",
+     "wrong": [
+      "4",
+      "7",
+      "12"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Ulysses“ (1922)?",
+     "correct": "James Joyce",
+     "wrong": [
+      "Virginia Woolf",
+      "Samuel Beckett",
+      "T. S. Eliot"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “Ulysses” (1922)?",
+     "correct": "James Joyce",
+     "wrong": [
+      "Virginia Woolf",
+      "Samuel Beckett",
+      "T. S. Eliot"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Standardwerk zum Compilerbau mit dem Drachen auf dem Umschlag?",
+     "correct": "Drachenbuch (Compilers: Principles, Techniques, and Tools)",
+     "wrong": [
+      "The Art of Computer Programming",
+      "Structure and Interpretation of Computer Programs",
+      "Design Patterns"
+     ]
+    },
+    "en": {
+     "text": "What is the standard compiler textbook with the dragon on its cover?",
+     "correct": "The Dragon Book (Compilers: Principles, Techniques, and Tools)",
+     "wrong": [
+      "The Art of Computer Programming",
+      "Structure and Interpretation of Computer Programs",
+      "Design Patterns"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Gesetz beschreibt, dass Spannung und Strom an einem Widerstand proportional sind?",
+     "correct": "Ohmsches Gesetz",
+     "wrong": [
+      "Faradaysches Gesetz",
+      "Coulombsches Gesetz",
+      "Kirchhoffsche Regel"
+     ]
+    },
+    "en": {
+     "text": "Which law states that voltage and current are proportional in a resistor?",
+     "correct": "Ohm's law",
+     "wrong": [
+      "Faraday's law",
+      "Coulomb's law",
+      "Kirchhoff's rule"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Also sprach Zarathustra“?",
+     "correct": "Friedrich Nietzsche",
+     "wrong": [
+      "Arthur Schopenhauer",
+      "Martin Heidegger",
+      "Karl Marx"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Thus Spoke Zarathustra”?",
+     "correct": "Friedrich Nietzsche",
+     "wrong": [
+      "Arthur Schopenhauer",
+      "Martin Heidegger",
+      "Karl Marx"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer drehte „Rashomon“ (1950)?",
+     "correct": "Akira Kurosawa",
+     "wrong": [
+      "Yasujirō Ozu",
+      "Kenji Mizoguchi",
+      "Hayao Miyazaki"
+     ]
+    },
+    "en": {
+     "text": "Who directed “Rashomon” (1950)?",
+     "correct": "Akira Kurosawa",
+     "wrong": [
+      "Yasujirō Ozu",
+      "Kenji Mizoguchi",
+      "Hayao Miyazaki"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Was fragt das P-NP-Problem im Kern?",
+     "correct": "Ob jedes effizient überprüfbare Problem auch effizient lösbar ist",
+     "wrong": [
+      "Ob jede Zahl eine Primfaktorzerlegung hat",
+      "Ob Quantencomputer schneller sind als klassische",
+      "Ob Hashkollisionen existieren"
+     ]
+    },
+    "en": {
+     "text": "What does the P versus NP problem ask in essence?",
+     "correct": "Whether every efficiently verifiable problem is also efficiently solvable",
+     "wrong": [
+      "Whether every number has a prime factorisation",
+      "Whether quantum computers are faster than classical ones",
+      "Whether hash collisions exist"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer bewies die Poincaré-Vermutung?",
+     "correct": "Grigori Perelman",
+     "wrong": [
+      "Andrew Wiles",
+      "Terence Tao",
+      "Maryam Mirzakhani"
+     ]
+    },
+    "en": {
+     "text": "Who proved the Poincaré conjecture?",
+     "correct": "Grigori Perelman",
+     "wrong": [
+      "Andrew Wiles",
+      "Terence Tao",
+      "Maryam Mirzakhani"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welcher Sprache wurde der größte Teil der Hebräischen Bibel verfasst?",
+     "correct": "Hebräisch",
+     "wrong": [
+      "Griechisch",
+      "Latein",
+      "Syrisch"
+     ]
+    },
+    "en": {
+     "text": "In which language was most of the Hebrew Bible written?",
+     "correct": "Hebrew",
+     "wrong": [
+      "Greek",
+      "Latin",
+      "Syriac"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Die Brüder Karamasow“?",
+     "correct": "Fjodor Dostojewski",
+     "wrong": [
+      "Leo Tolstoi",
+      "Iwan Turgenew",
+      "Anton Tschechow"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Brothers Karamazov”?",
+     "correct": "Fyodor Dostoevsky",
+     "wrong": [
+      "Leo Tolstoy",
+      "Ivan Turgenev",
+      "Anton Chekhov"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf 1969 bei Bell Labs das Betriebssystem Unix?",
+     "correct": "Ken Thompson und Dennis Ritchie",
+     "wrong": [
+      "Linus Torvalds und Richard Stallman",
+      "Bill Joy und Eric Schmidt",
+      "Brian Kernighan und Bjarne Stroustrup"
+     ]
+    },
+    "en": {
+     "text": "Who created the Unix operating system at Bell Labs in 1969?",
+     "correct": "Ken Thompson und Dennis Ritchie",
+     "wrong": [
+      "Linus Torvalds und Richard Stallman",
+      "Bill Joy und Eric Schmidt",
+      "Brian Kernighan und Bjarne Stroustrup"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Mit welchem Verfahren gewinnt man Aluminium durch Schmelzflusselektrolyse aus Aluminiumoxid?",
+     "correct": "Hall-Héroult-Verfahren",
+     "wrong": [
+      "Bayer-Verfahren",
+      "Kroll-Verfahren",
+      "Mond-Verfahren"
+     ]
+    },
+    "en": {
+     "text": "Which process extracts aluminium from alumina by molten-salt electrolysis?",
+     "correct": "Hall–Héroult process",
+     "wrong": [
+      "Bayer process",
+      "Kroll process",
+      "Mond process"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer entwickelte die Stufentheorie der kognitiven Entwicklung bei Kindern?",
+     "correct": "Jean Piaget",
+     "wrong": [
+      "Lew Wygotski",
+      "Erik Erikson",
+      "Jerome Bruner"
+     ]
+    },
+    "en": {
+     "text": "Who developed the stage theory of cognitive development in children?",
+     "correct": "Jean Piaget",
+     "wrong": [
+      "Lev Vygotsky",
+      "Erik Erikson",
+      "Jerome Bruner"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer malte „Die Anatomie des Dr. Tulp“ (1632)?",
+     "correct": "Rembrandt van Rijn",
+     "wrong": [
+      "Johannes Vermeer",
+      "Frans Hals",
+      "Jan Steen"
+     ]
+    },
+    "en": {
+     "text": "Who painted “The Anatomy Lesson of Dr. Nicolaes Tulp” (1632)?",
+     "correct": "Rembrandt van Rijn",
+     "wrong": [
+      "Johannes Vermeer",
+      "Frans Hals",
+      "Jan Steen"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Scheduling-Algorithmus gibt jedem Prozess reihum feste Zeitscheiben?",
+     "correct": "Round Robin",
+     "wrong": [
+      "Shortest Job First",
+      "First Come First Served",
+      "Rate Monotonic"
+     ]
+    },
+    "en": {
+     "text": "Which scheduling algorithm gives each process a fixed time slice in turn?",
+     "correct": "Round Robin",
+     "wrong": [
+      "Shortest Job First",
+      "First Come First Served",
+      "Rate Monotonic"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Gleichung verbindet Druck und Strömungsgeschwindigkeit in einer reibungsfreien Strömung?",
+     "correct": "Bernoulli-Gleichung",
+     "wrong": [
+      "Navier-Stokes-Gleichung",
+      "Euler-Lagrange-Gleichung",
+      "Laplace-Gleichung"
+     ]
+    },
+    "en": {
+     "text": "Which equation relates pressure and flow velocity in an inviscid flow?",
+     "correct": "Bernoulli's equation",
+     "wrong": [
+      "Navier–Stokes equation",
+      "Euler–Lagrange equation",
+      "Laplace's equation"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Experiment untersuchte 1961 den Gehorsam gegenüber Autorität mit vermeintlichen Elektroschocks?",
+     "correct": "Milgram-Experiment",
+     "wrong": [
+      "Stanford-Prison-Experiment",
+      "Asch-Experiment",
+      "Bobo-Doll-Experiment"
+     ]
+    },
+    "en": {
+     "text": "Which 1961 experiment studied obedience to authority using supposed electric shocks?",
+     "correct": "Milgram experiment",
+     "wrong": [
+      "Stanford prison experiment",
+      "Asch experiment",
+      "Bobo doll experiment"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb das Langgedicht „Das wüste Land“ (1922)?",
+     "correct": "T. S. Eliot",
+     "wrong": [
+      "Ezra Pound",
+      "W. B. Yeats",
+      "W. H. Auden"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the long poem “The Waste Land” (1922)?",
+     "correct": "T. S. Eliot",
+     "wrong": [
+      "Ezra Pound",
+      "W. B. Yeats",
+      "W. H. Auden"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Mechanismus bildet virtuelle auf physische Speicheradressen ab?",
+     "correct": "Paging mit MMU und Seitentabellen",
+     "wrong": [
+      "Swapping",
+      "Memory-Mapped I/O",
+      "Cache-Kohärenz"
+     ]
+    },
+    "en": {
+     "text": "Which mechanism maps virtual to physical memory addresses?",
+     "correct": "Paging with an MMU and page tables",
+     "wrong": [
+      "Swapping",
+      "Memory-mapped I/O",
+      "Cache coherence"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Bauteil besteht aus Emitter, Basis und Kollektor?",
+     "correct": "Bipolartransistor",
+     "wrong": [
+      "Diode",
+      "Thyristor",
+      "Kondensator"
+     ]
+    },
+    "en": {
+     "text": "Which component consists of emitter, base and collector?",
+     "correct": "Bipolar junction transistor",
+     "wrong": [
+      "Diode",
+      "Thyristor",
+      "Capacitor"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Was fordert der kategorische Imperativ im Kern?",
+     "correct": "Nur nach Maximen handeln, die zugleich allgemeines Gesetz sein könnten",
+     "wrong": [
+      "Das größte Glück der größten Zahl",
+      "Den eigenen Vorteil klug verfolgen",
+      "Dem Willen Gottes folgen"
+     ]
+    },
+    "en": {
+     "text": "What does the categorical imperative demand in essence?",
+     "correct": "Act only on maxims you could will to become universal law",
+     "wrong": [
+      "The greatest happiness of the greatest number",
+      "Pursue your own advantage wisely",
+      "Follow the will of God"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Der Name der Rose“?",
+     "correct": "Umberto Eco",
+     "wrong": [
+      "Italo Calvino",
+      "Primo Levi",
+      "Alberto Moravia"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “The Name of the Rose”?",
+     "correct": "Umberto Eco",
+     "wrong": [
+      "Italo Calvino",
+      "Primo Levi",
+      "Alberto Moravia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Eigenschaft kennzeichnet einen AVL-Baum?",
+     "correct": "Die Höhen der Teilbäume unterscheiden sich an jedem Knoten um höchstens 1",
+     "wrong": [
+      "Alle Blätter liegen auf derselben Ebene",
+      "Jeder Knoten hat genau zwei Kinder",
+      "Der Wurzelknoten ist immer der kleinste Wert"
+     ]
+    },
+    "en": {
+     "text": "What characterises an AVL tree?",
+     "correct": "The subtree heights differ by at most 1 at every node",
+     "wrong": [
+      "All leaves are on the same level",
+      "Every node has exactly two children",
+      "The root is always the smallest value"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welcher Machzahl entspricht die Schallgeschwindigkeit?",
+     "correct": "1",
+     "wrong": [
+      "0,5",
+      "3",
+      "10"
+     ]
+    },
+    "en": {
+     "text": "Which Mach number corresponds to the speed of sound?",
+     "correct": "1",
+     "wrong": [
+      "0,5",
+      "3",
+      "10"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer gründete 1879 in Leipzig das erste Labor für experimentelle Psychologie?",
+     "correct": "Wilhelm Wundt",
+     "wrong": [
+      "William James",
+      "Hermann Ebbinghaus",
+      "Iwan Pawlow"
+     ]
+    },
+    "en": {
+     "text": "Who founded the first laboratory for experimental psychology in Leipzig in 1879?",
+     "correct": "Wilhelm Wundt",
+     "wrong": [
+      "William James",
+      "Hermann Ebbinghaus",
+      "Iwan Pawlow"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer malte das „Schwarze Quadrat“ (1915)?",
+     "correct": "Kasimir Malewitsch",
+     "wrong": [
+      "Wassily Kandinsky",
+      "El Lissitzky",
+      "Piet Mondrian"
+     ]
+    },
+    "en": {
+     "text": "Who painted the “Black Square” (1915)?",
+     "correct": "Kazimir Malevich",
+     "wrong": [
+      "Wassily Kandinsky",
+      "El Lissitzky",
+      "Piet Mondrian"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was ist ein Deadlock?",
+     "correct": "Prozesse blockieren sich gegenseitig durch zyklisches Warten auf Ressourcen",
+     "wrong": [
+      "Ein Prozess nutzt dauerhaft 100 % CPU",
+      "Ein Speicherbereich wird zweimal freigegeben",
+      "Ein Prozess wird vom Scheduler nie berücksichtigt"
+     ]
+    },
+    "en": {
+     "text": "What is a deadlock?",
+     "correct": "Processes block each other by waiting cyclically for resources",
+     "wrong": [
+      "A process permanently uses 100% CPU",
+      "A memory region is freed twice",
+      "A process is never scheduled"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welchen Wert hat die universelle Gaskonstante R (gerundet)?",
+     "correct": "8,314 J/(mol·K)",
+     "wrong": [
+      "9,81 m/s²",
+      "1,38 · 10⁻²³ J/K",
+      "96.485 C/mol"
+     ]
+    },
+    "en": {
+     "text": "What is the value of the universal gas constant R (rounded)?",
+     "correct": "8.314 J/(mol·K)",
+     "wrong": [
+      "9.81 m/s²",
+      "1.38 × 10⁻²³ J/K",
+      "96,485 C/mol"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Überwachen und Strafen“?",
+     "correct": "Michel Foucault",
+     "wrong": [
+      "Jacques Derrida",
+      "Pierre Bourdieu",
+      "Jean Baudrillard"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Discipline and Punish”?",
+     "correct": "Michel Foucault",
+     "wrong": [
+      "Jacques Derrida",
+      "Pierre Bourdieu",
+      "Jean Baudrillard"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welchem Architekten wird der Satz „Weniger ist mehr“ zugeschrieben?",
+     "correct": "Ludwig Mies van der Rohe",
+     "wrong": [
+      "Le Corbusier",
+      "Frank Lloyd Wright",
+      "Adolf Loos"
+     ]
+    },
+    "en": {
+     "text": "To which architect is the phrase “Less is more” attributed?",
+     "correct": "Ludwig Mies van der Rohe",
+     "wrong": [
+      "Le Corbusier",
+      "Frank Lloyd Wright",
+      "Adolf Loos"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer zeigte 1936 die Unentscheidbarkeit des Halteproblems?",
+     "correct": "Alan Turing",
+     "wrong": [
+      "Kurt Gödel",
+      "John von Neumann",
+      "Claude Shannon"
+     ]
+    },
+    "en": {
+     "text": "Who showed the undecidability of the halting problem in 1936?",
+     "correct": "Alan Turing",
+     "wrong": [
+      "Kurt Gödel",
+      "John von Neumann",
+      "Claude Shannon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Verfahren zur Ammoniak-Synthese aus Stickstoff und Wasserstoff?",
+     "correct": "Haber-Bosch-Verfahren",
+     "wrong": [
+      "Ostwald-Verfahren",
+      "Solvay-Verfahren",
+      "Claus-Verfahren"
+     ]
+    },
+    "en": {
+     "text": "What is the process for synthesising ammonia from nitrogen and hydrogen called?",
+     "correct": "Haber–Bosch process",
+     "wrong": [
+      "Ostwald process",
+      "Solvay process",
+      "Claus process"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Philosoph vertrat, wir lebten in der „besten aller möglichen Welten“?",
+     "correct": "Gottfried Wilhelm Leibniz",
+     "wrong": [
+      "Voltaire",
+      "Arthur Schopenhauer",
+      "Blaise Pascal"
+     ]
+    },
+    "en": {
+     "text": "Which philosopher argued we live in the “best of all possible worlds”?",
+     "correct": "Gottfried Wilhelm Leibniz",
+     "wrong": [
+      "Voltaire",
+      "Arthur Schopenhauer",
+      "Blaise Pascal"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Sturmhöhe“ (Wuthering Heights)?",
+     "correct": "Emily Brontë",
+     "wrong": [
+      "Charlotte Brontë",
+      "Jane Austen",
+      "George Eliot"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Wuthering Heights”?",
+     "correct": "Emily Brontë",
+     "wrong": [
+      "Charlotte Brontë",
+      "Jane Austen",
+      "George Eliot"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher HTTP-Statuscode bedeutet „Too Many Requests“?",
+     "correct": "429",
+     "wrong": [
+      "418",
+      "451",
+      "503"
+     ]
+    },
+    "en": {
+     "text": "Which HTTP status code means “Too Many Requests”?",
+     "correct": "429",
+     "wrong": [
+      "418",
+      "451",
+      "503"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was besagt der zweite Hauptsatz der Thermodynamik im Kern?",
+     "correct": "Die Entropie eines abgeschlossenen Systems nimmt nie ab",
+     "wrong": [
+      "Energie kann weder erzeugt noch vernichtet werden",
+      "Am absoluten Nullpunkt ist die Entropie unendlich",
+      "Wärme fließt von selbst von kalt nach warm"
+     ]
+    },
+    "en": {
+     "text": "What does the second law of thermodynamics say in essence?",
+     "correct": "The entropy of an isolated system never decreases",
+     "wrong": [
+      "Energy can be neither created nor destroyed",
+      "Entropy is infinite at absolute zero",
+      "Heat flows spontaneously from cold to hot"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Text ist die Hauptquelle der „Bhagavad Gita“?",
+     "correct": "Das Mahabharata",
+     "wrong": [
+      "Das Ramayana",
+      "Der Rigveda",
+      "Die Upanishaden"
+     ]
+    },
+    "en": {
+     "text": "Which epic contains the Bhagavad Gita?",
+     "correct": "The Mahabharata",
+     "wrong": [
+      "The Ramayana",
+      "The Rigveda",
+      "The Upanishads"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welcher Strömung gab Monets Bild „Impression, soleil levant“ ihren Namen?",
+     "correct": "Impressionismus",
+     "wrong": [
+      "Expressionismus",
+      "Symbolismus",
+      "Fauvismus"
+     ]
+    },
+    "en": {
+     "text": "Which movement took its name from Monet's “Impression, Sunrise”?",
+     "correct": "Impressionism",
+     "wrong": [
+      "Expressionism",
+      "Symbolism",
+      "Fauvism"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht ACID bei Datenbanktransaktionen?",
+     "correct": "Atomicity, Consistency, Isolation, Durability",
+     "wrong": [
+      "Access, Control, Integrity, Data",
+      "Atomic, Concurrent, Indexed, Distributed",
+      "Authentication, Consistency, Integrity, Durability"
+     ]
+    },
+    "en": {
+     "text": "What does ACID stand for in database transactions?",
+     "correct": "Atomicity, Consistency, Isolation, Durability",
+     "wrong": [
+      "Access, Control, Integrity, Data",
+      "Atomic, Concurrent, Indexed, Distributed",
+      "Authentication, Consistency, Integrity, Durability"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Legierungselement macht Stahl ab etwa 10,5 % „rostfrei“?",
+     "correct": "Chrom",
+     "wrong": [
+      "Nickel",
+      "Kupfer",
+      "Zink"
+     ]
+    },
+    "en": {
+     "text": "Which alloying element makes steel “stainless” from about 10.5%?",
+     "correct": "Chromium",
+     "wrong": [
+      "Nickel",
+      "Copper",
+      "Zinc"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Bei welchem Prozess prägte Hannah Arendt den Begriff „Banalität des Bösen“?",
+     "correct": "Eichmann-Prozess in Jerusalem",
+     "wrong": [
+      "Nürnberger Prozess",
+      "Auschwitz-Prozess",
+      "Tokioter Prozess"
+     ]
+    },
+    "en": {
+     "text": "At which trial did Hannah Arendt coin the phrase “the banality of evil”?",
+     "correct": "Eichmann trial in Jerusalem",
+     "wrong": [
+      "Nuremberg trials",
+      "Auschwitz trials",
+      "Tokyo trials"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer begründete das „epische Theater“?",
+     "correct": "Bertolt Brecht",
+     "wrong": [
+      "Erwin Piscator",
+      "Max Reinhardt",
+      "Konstantin Stanislawski"
+     ]
+    },
+    "en": {
+     "text": "Who developed “epic theatre”?",
+     "correct": "Bertolt Brecht",
+     "wrong": [
+      "Erwin Piscator",
+      "Max Reinhardt",
+      "Konstantin Stanislavski"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Datenstruktur nutzt Dijkstras Algorithmus typischerweise, um den nächsten Knoten effizient zu wählen?",
+     "correct": "Prioritätswarteschlange (Heap)",
+     "wrong": [
+      "Stack",
+      "Einfache Queue",
+      "Hashtabelle"
+     ]
+    },
+    "en": {
+     "text": "Which data structure does Dijkstra's algorithm typically use to pick the next node efficiently?",
+     "correct": "Priority queue (heap)",
+     "wrong": [
+      "Stack",
+      "Plain queue",
+      "Hash table"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche funktionelle Gruppe kennzeichnet Carbonsäuren?",
+     "correct": "Carboxygruppe (–COOH)",
+     "wrong": [
+      "Hydroxygruppe (–OH)",
+      "Estergruppe",
+      "Ethergruppe"
+     ]
+    },
+    "en": {
+     "text": "Which functional group characterises carboxylic acids?",
+     "correct": "Carboxyl group (–COOH)",
+     "wrong": [
+      "Hydroxyl group (–OH)",
+      "Ester group",
+      "Ether group"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie definierte Kant Aufklärung?",
+     "correct": "Ausgang aus selbstverschuldeter Unmündigkeit",
+     "wrong": [
+      "Sieg der Vernunft über den Glauben",
+      "Rückkehr zur Natur",
+      "Herrschaft der Wissenschaft"
+     ]
+    },
+    "en": {
+     "text": "How did Kant define Enlightenment?",
+     "correct": "Emergence from self-incurred immaturity",
+     "wrong": [
+      "Victory of reason over faith",
+      "Return to nature",
+      "Rule of science"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Ereignis thematisiert Picassos „Guernica“?",
+     "correct": "Die Bombardierung der baskischen Stadt im Spanischen Bürgerkrieg",
+     "wrong": [
+      "Den Fall von Paris 1940",
+      "Die Schlacht von Waterloo",
+      "Den Atombombenabwurf auf Hiroshima"
+     ]
+    },
+    "en": {
+     "text": "Which event does Picasso's “Guernica” depict?",
+     "correct": "The bombing of the Basque town during the Spanish Civil War",
+     "wrong": [
+      "The fall of Paris in 1940",
+      "The Battle of Waterloo",
+      "The atomic bombing of Hiroshima"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche der folgenden HTTP-Methoden ist laut Spezifikation idempotent?",
+     "correct": "PUT",
+     "wrong": [
+      "POST",
+      "PATCH",
+      "CONNECT"
+     ]
+    },
+    "en": {
+     "text": "Which of the following HTTP methods is idempotent according to the specification?",
+     "correct": "PUT",
+     "wrong": [
+      "POST",
+      "PATCH",
+      "CONNECT"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Werkstoffkennwert beschreibt die Steifigkeit im elastischen Bereich (Spannung zu Dehnung)?",
+     "correct": "Elastizitätsmodul",
+     "wrong": [
+      "Poissonzahl",
+      "Streckgrenze",
+      "Bruchdehnung"
+     ]
+    },
+    "en": {
+     "text": "Which material property describes stiffness in the elastic range (stress divided by strain)?",
+     "correct": "Young's modulus",
+     "wrong": [
+      "Poisson's ratio",
+      "Yield strength",
+      "Elongation at break"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Sein und Zeit“ (1927)?",
+     "correct": "Martin Heidegger",
+     "wrong": [
+      "Edmund Husserl",
+      "Karl Jaspers",
+      "Hans-Georg Gadamer"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Being and Time” (1927)?",
+     "correct": "Martin Heidegger",
+     "wrong": [
+      "Edmund Husserl",
+      "Karl Jaspers",
+      "Hans-Georg Gadamer"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte „Le sacre du printemps“ (1913)?",
+     "correct": "Igor Strawinsky",
+     "wrong": [
+      "Claude Debussy",
+      "Maurice Ravel",
+      "Sergei Prokofjew"
+     ]
+    },
+    "en": {
+     "text": "Who composed “The Rite of Spring” (1913)?",
+     "correct": "Igor Stravinsky",
+     "wrong": [
+      "Claude Debussy",
+      "Maurice Ravel",
+      "Sergei Prokofiev"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Join liefert nur Zeilen, die in beiden Tabellen einen Treffer haben?",
+     "correct": "INNER JOIN",
+     "wrong": [
+      "LEFT JOIN",
+      "FULL OUTER JOIN",
+      "CROSS JOIN"
+     ]
+    },
+    "en": {
+     "text": "Which join returns only rows with a match in both tables?",
+     "correct": "INNER JOIN",
+     "wrong": [
+      "LEFT JOIN",
+      "FULL OUTER JOIN",
+      "CROSS JOIN"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Dimensionen hat die Raumzeit der Speziellen Relativitätstheorie?",
+     "correct": "4",
+     "wrong": [
+      "3",
+      "5",
+      "11"
+     ]
+    },
+    "en": {
+     "text": "How many dimensions does spacetime have in special relativity?",
+     "correct": "4",
+     "wrong": [
+      "3",
+      "5",
+      "11"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb das Höhlengleichnis im Dialog „Der Staat“?",
+     "correct": "Platon",
+     "wrong": [
+      "Aristoteles",
+      "Sokrates",
+      "Plotin"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the allegory of the cave in the dialogue “The Republic”?",
+     "correct": "Plato",
+     "wrong": [
+      "Aristotle",
+      "Socrates",
+      "Plotinus"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man Marcel Duchamps Kunstwerke aus ausgewählten Alltagsgegenständen wie „Fountain“?",
+     "correct": "Readymades",
+     "wrong": [
+      "Assemblagen",
+      "Collagen",
+      "Mobiles"
+     ]
+    },
+    "en": {
+     "text": "What are Marcel Duchamp's artworks made from chosen everyday objects, such as “Fountain”, called?",
+     "correct": "Readymades",
+     "wrong": [
+      "Assemblages",
+      "Collages",
+      "Mobiles"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Hashfunktion gilt wegen praktisch erzeugbarer Kollisionen als unsicher?",
+     "correct": "MD5",
+     "wrong": [
+      "SHA-256",
+      "SHA-3",
+      "BLAKE2"
+     ]
+    },
+    "en": {
+     "text": "Which hash function is considered insecure because collisions can be generated in practice?",
+     "correct": "MD5",
+     "wrong": [
+      "SHA-256",
+      "SHA-3",
+      "BLAKE2"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Ecken hat ein Ikosaeder?",
+     "correct": "12",
+     "wrong": [
+      "20",
+      "30",
+      "8"
+     ]
+    },
+    "en": {
+     "text": "How many vertices does an icosahedron have?",
+     "correct": "12",
+     "wrong": [
+      "20",
+      "30",
+      "8"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den „Leviathan“ (1651)?",
+     "correct": "Thomas Hobbes",
+     "wrong": [
+      "John Locke",
+      "Montesquieu",
+      "Jean-Jacques Rousseau"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Leviathan” (1651)?",
+     "correct": "Thomas Hobbes",
+     "wrong": [
+      "John Locke",
+      "Montesquieu",
+      "Jean-Jacques Rousseau"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die Erzähltechnik, die Gedanken ungefiltert und assoziativ wiedergibt?",
+     "correct": "Bewusstseinsstrom (Stream of Consciousness)",
+     "wrong": [
+      "Rahmenerzählung",
+      "Rückblende",
+      "Auktorialer Erzähler"
+     ]
+    },
+    "en": {
+     "text": "What is the narrative technique that renders thoughts unfiltered and associatively called?",
+     "correct": "Stream of consciousness",
+     "wrong": [
+      "Frame story",
+      "Flashback",
+      "Omniscient narrator"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das von Google populär gemachte Programmiermodell mit Map- und Reduce-Phase?",
+     "correct": "MapReduce",
+     "wrong": [
+      "Dataflow",
+      "Actor-Modell",
+      "Fork/Join"
+     ]
+    },
+    "en": {
+     "text": "What is the programming model with map and reduce phases popularised by Google?",
+     "correct": "MapReduce",
+     "wrong": [
+      "Dataflow",
+      "Actor model",
+      "Fork/Join"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Woraus besteht Bronze?",
+     "correct": "Kupfer und Zinn",
+     "wrong": [
+      "Kupfer und Zink",
+      "Eisen und Chrom",
+      "Zinn und Blei"
+     ]
+    },
+    "en": {
+     "text": "What is bronze made of?",
+     "correct": "Copper and tin",
+     "wrong": [
+      "Copper and zinc",
+      "Iron and chromium",
+      "Tin and lead"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer gilt als Begründer des klassischen Utilitarismus?",
+     "correct": "Jeremy Bentham",
+     "wrong": [
+      "John Locke",
+      "David Hume",
+      "Thomas Hobbes"
+     ]
+    },
+    "en": {
+     "text": "Who is considered the founder of classical utilitarianism?",
+     "correct": "Jeremy Bentham",
+     "wrong": [
+      "John Locke",
+      "David Hume",
+      "Thomas Hobbes"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte „Die Kunst der Fuge“?",
+     "correct": "Johann Sebastian Bach",
+     "wrong": [
+      "Georg Friedrich Händel",
+      "Wolfgang Amadeus Mozart",
+      "Joseph Haydn"
+     ]
+    },
+    "en": {
+     "text": "Who composed “The Art of Fugue”?",
+     "correct": "Johann Sebastian Bach",
+     "wrong": [
+      "Georg Friedrich Händel",
+      "Wolfgang Amadeus Mozart",
+      "Joseph Haydn"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Zeitkomplexität hat die binäre Suche in einem sortierten Array?",
+     "correct": "O(log n)",
+     "wrong": [
+      "O(n)",
+      "O(n log n)",
+      "O(1)"
+     ]
+    },
+    "en": {
+     "text": "What is the time complexity of binary search in a sorted array?",
+     "correct": "O(log n)",
+     "wrong": [
+      "O(n)",
+      "O(n log n)",
+      "O(1)"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die SI-Einheit der Induktivität?",
+     "correct": "Henry",
+     "wrong": [
+      "Farad",
+      "Ohm",
+      "Siemens"
+     ]
+    },
+    "en": {
+     "text": "What is the SI unit of inductance?",
+     "correct": "Henry",
+     "wrong": [
+      "Farad",
+      "Ohm",
+      "Siemens"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer entwickelte in „Vom Geist der Gesetze“ die Lehre der Gewaltenteilung?",
+     "correct": "Montesquieu",
+     "wrong": [
+      "John Locke",
+      "Rousseau",
+      "Voltaire"
+     ]
+    },
+    "en": {
+     "text": "Who developed the doctrine of the separation of powers in “The Spirit of the Laws”?",
+     "correct": "Montesquieu",
+     "wrong": [
+      "John Locke",
+      "Rousseau",
+      "Voltaire"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer drehte „Panzerkreuzer Potemkin“ (1925)?",
+     "correct": "Sergei Eisenstein",
+     "wrong": [
+      "Dsiga Wertow",
+      "Andrei Tarkowski",
+      "Fritz Lang"
+     ]
+    },
+    "en": {
+     "text": "Who directed “Battleship Potemkin” (1925)?",
+     "correct": "Sergei Eisenstein",
+     "wrong": [
+      "Dziga Vertov",
+      "Andrei Tarkovsky",
+      "Fritz Lang"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was kennzeichnet die Von-Neumann-Architektur?",
+     "correct": "Gemeinsamer Speicher für Programme und Daten",
+     "wrong": [
+      "Getrennte Speicher für Programme und Daten",
+      "Ausschließlich parallele Verarbeitung",
+      "Kein Arbeitsspeicher"
+     ]
+    },
+    "en": {
+     "text": "What characterises the von Neumann architecture?",
+     "correct": "Shared memory for programs and data",
+     "wrong": [
+      "Separate memories for programs and data",
+      "Exclusively parallel processing",
+      "No main memory"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche ist die kleinste vollkommene Zahl größer als 6?",
+     "correct": "28",
+     "wrong": [
+      "12",
+      "36",
+      "496"
+     ]
+    },
+    "en": {
+     "text": "What is the smallest perfect number greater than 6?",
+     "correct": "28",
+     "wrong": [
+      "12",
+      "36",
+      "496"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer entwickelte die „Theorie des kommunikativen Handelns“?",
+     "correct": "Jürgen Habermas",
+     "wrong": [
+      "Niklas Luhmann",
+      "Michel Foucault",
+      "Pierre Bourdieu"
+     ]
+    },
+    "en": {
+     "text": "Who developed the “Theory of Communicative Action”?",
+     "correct": "Jürgen Habermas",
+     "wrong": [
+      "Niklas Luhmann",
+      "Michel Foucault",
+      "Pierre Bourdieu"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte die „Symphonie fantastique“ (1830)?",
+     "correct": "Hector Berlioz",
+     "wrong": [
+      "Franz Liszt",
+      "Robert Schumann",
+      "Felix Mendelssohn"
+     ]
+    },
+    "en": {
+     "text": "Who composed the “Symphonie fantastique” (1830)?",
+     "correct": "Hector Berlioz",
+     "wrong": [
+      "Franz Liszt",
+      "Robert Schumann",
+      "Felix Mendelssohn"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Sprachklasse erkennt ein endlicher Automat?",
+     "correct": "Reguläre Sprachen",
+     "wrong": [
+      "Kontextfreie Sprachen",
+      "Kontextsensitive Sprachen",
+      "Rekursiv aufzählbare Sprachen"
+     ]
+    },
+    "en": {
+     "text": "Which class of languages does a finite automaton recognise?",
+     "correct": "Regular languages",
+     "wrong": [
+      "Context-free languages",
+      "Context-sensitive languages",
+      "Recursively enumerable languages"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Stammfunktion hat 1/x für x > 0?",
+     "correct": "ln(x) + C",
+     "wrong": [
+      "x² + C",
+      "−1/x² + C",
+      "eˣ + C"
+     ]
+    },
+    "en": {
+     "text": "What is the antiderivative of 1/x for x > 0?",
+     "correct": "ln(x) + C",
+     "wrong": [
+      "x² + C",
+      "−1/x² + C",
+      "eˣ + C"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Mit welchem Denker ist die „Dekonstruktion“ verbunden?",
+     "correct": "Jacques Derrida",
+     "wrong": [
+      "Jean-Paul Sartre",
+      "Gilles Deleuze",
+      "Roland Barthes"
+     ]
+    },
+    "en": {
+     "text": "With which thinker is “deconstruction” associated?",
+     "correct": "Jacques Derrida",
+     "wrong": [
+      "Jean-Paul Sartre",
+      "Gilles Deleuze",
+      "Roland Barthes"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer entwarf die Kuppel des Florentiner Doms Santa Maria del Fiore?",
+     "correct": "Filippo Brunelleschi",
+     "wrong": [
+      "Leon Battista Alberti",
+      "Donato Bramante",
+      "Andrea Palladio"
+     ]
+    },
+    "en": {
+     "text": "Who designed the dome of Florence Cathedral?",
+     "correct": "Filippo Brunelleschi",
+     "wrong": [
+      "Leon Battista Alberti",
+      "Donato Bramante",
+      "Andrea Palladio"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht „REST“ bei Web-APIs?",
+     "correct": "Representational State Transfer",
+     "wrong": [
+      "Remote Execution Service Technology",
+      "Reliable Server Transport",
+      "Resource Exchange Standard Template"
+     ]
+    },
+    "en": {
+     "text": "What does “REST” stand for in web APIs?",
+     "correct": "Representational State Transfer",
+     "wrong": [
+      "Remote Execution Service Technology",
+      "Reliable Server Transport",
+      "Resource Exchange Standard Template"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welchen Wert hat die Avogadro-Konstante (gerundet)?",
+     "correct": "6,022 · 10²³ mol⁻¹",
+     "wrong": [
+      "6,626 · 10⁻³⁴ J·s",
+      "1,602 · 10⁻¹⁹ C",
+      "8,314 J/(mol·K)"
+     ]
+    },
+    "en": {
+     "text": "What is the value of the Avogadro constant (rounded)?",
+     "correct": "6.022 × 10²³ mol⁻¹",
+     "wrong": [
+      "6.626 × 10⁻³⁴ J·s",
+      "1.602 × 10⁻¹⁹ C",
+      "8.314 J/(mol·K)"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Unterscheidung stammt von Ferdinand de Saussure?",
+     "correct": "Langue und parole",
+     "wrong": [
+      "Kompetenz und Performanz",
+      "Tiefen- und Oberflächenstruktur",
+      "Sprechakt und Äußerung"
+     ]
+    },
+    "en": {
+     "text": "Which distinction comes from Ferdinand de Saussure?",
+     "correct": "Langue and parole",
+     "wrong": [
+      "Competence and performance",
+      "Deep and surface structure",
+      "Speech act and utterance"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche antike Säulenordnung ist die schlichteste?",
+     "correct": "Dorisch",
+     "wrong": [
+      "Ionisch",
+      "Korinthisch",
+      "Komposit"
+     ]
+    },
+    "en": {
+     "text": "Which classical order is the plainest?",
+     "correct": "Doric",
+     "wrong": [
+      "Ionic",
+      "Corinthian",
+      "Composite"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Prinzip, Teilprobleme nur einmal zu lösen und Ergebnisse zu speichern?",
+     "correct": "Dynamische Programmierung",
+     "wrong": [
+      "Divide and Conquer",
+      "Backtracking",
+      "Greedy-Verfahren"
+     ]
+    },
+    "en": {
+     "text": "What is the principle of solving subproblems only once and storing the results called?",
+     "correct": "Dynamic programming",
+     "wrong": [
+      "Divide and conquer",
+      "Backtracking",
+      "Greedy algorithm"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die SI-Einheit der Äquivalentdosis ionisierender Strahlung?",
+     "correct": "Sievert",
+     "wrong": [
+      "Gray",
+      "Becquerel",
+      "Curie"
+     ]
+    },
+    "en": {
+     "text": "What is the SI unit of the equivalent dose of ionising radiation?",
+     "correct": "Sievert",
+     "wrong": [
+      "Gray",
+      "Becquerel",
+      "Curie"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Von wem stammt der Satz „Ich denke, also bin ich“?",
+     "correct": "René Descartes",
+     "wrong": [
+      "Baruch de Spinoza",
+      "Immanuel Kant",
+      "Blaise Pascal"
+     ]
+    },
+    "en": {
+     "text": "Who said “I think, therefore I am”?",
+     "correct": "René Descartes",
+     "wrong": [
+      "Baruch de Spinoza",
+      "Immanuel Kant",
+      "Blaise Pascal"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Technik weicher, konturloser Übergänge, für die Leonardo da Vinci bekannt ist?",
+     "correct": "Sfumato",
+     "wrong": [
+      "Chiaroscuro",
+      "Pointillismus",
+      "Impasto"
+     ]
+    },
+    "en": {
+     "text": "What is the technique of soft, outline-free transitions that Leonardo da Vinci is known for?",
+     "correct": "Sfumato",
+     "wrong": [
+      "Chiaroscuro",
+      "Pointillism",
+      "Impasto"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht die Abkürzung TLB in der Rechnerarchitektur?",
+     "correct": "Translation Lookaside Buffer",
+     "wrong": [
+      "Thread Load Balancer",
+      "Type Length Block",
+      "Transfer Layer Bus"
+     ]
+    },
+    "en": {
+     "text": "What does TLB stand for in computer architecture?",
+     "correct": "Translation Lookaside Buffer",
+     "wrong": [
+      "Thread Load Balancer",
+      "Type Length Block",
+      "Transfer Layer Bus"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche ist die größte Primzahl unter 100?",
+     "correct": "97",
+     "wrong": [
+      "99",
+      "91",
+      "89"
+     ]
+    },
+    "en": {
+     "text": "What is the largest prime number below 100?",
+     "correct": "97",
+     "wrong": [
+      "99",
+      "91",
+      "89"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Orientalismus“ (1978)?",
+     "correct": "Edward Said",
+     "wrong": [
+      "Samuel Huntington",
+      "Francis Fukuyama",
+      "Frantz Fanon"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Orientalism” (1978)?",
+     "correct": "Edward Said",
+     "wrong": [
+      "Samuel Huntington",
+      "Francis Fukuyama",
+      "Frantz Fanon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Doktor Schiwago“?",
+     "correct": "Boris Pasternak",
+     "wrong": [
+      "Michail Bulgakow",
+      "Wladimir Nabokov",
+      "Alexander Solschenizyn"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “Doctor Zhivago”?",
+     "correct": "Boris Pasternak",
+     "wrong": [
+      "Mikhail Bulgakov",
+      "Vladimir Nabokov",
+      "Aleksandr Solzhenitsyn"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer entwickelte 1970 das relationale Datenmodell?",
+     "correct": "Edgar F. Codd",
+     "wrong": [
+      "Michael Stonebraker",
+      "Charles Bachman",
+      "Jim Gray"
+     ]
+    },
+    "en": {
+     "text": "Who developed the relational data model in 1970?",
+     "correct": "Edgar F. Codd",
+     "wrong": [
+      "Michael Stonebraker",
+      "Charles Bachman",
+      "Jim Gray"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Quantenzahl bestimmt die Form eines Orbitals?",
+     "correct": "Nebenquantenzahl",
+     "wrong": [
+      "Hauptquantenzahl",
+      "Magnetquantenzahl",
+      "Spinquantenzahl"
+     ]
+    },
+    "en": {
+     "text": "Which quantum number determines the shape of an orbital?",
+     "correct": "Azimuthal quantum number",
+     "wrong": [
+      "Principal quantum number",
+      "Magnetic quantum number",
+      "Spin quantum number"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die Prüfung historischer Quellen auf Herkunft und Echtheit?",
+     "correct": "Quellenkritik",
+     "wrong": [
+      "Hermeneutik",
+      "Dialektik",
+      "Heuristik"
+     ]
+    },
+    "en": {
+     "text": "What is the examination of historical sources for origin and authenticity called?",
+     "correct": "Source criticism",
+     "wrong": [
+      "Hermeneutics",
+      "Dialectics",
+      "Heuristics"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf den „Genter Altar“ (1432)?",
+     "correct": "Jan van Eyck",
+     "wrong": [
+      "Rogier van der Weyden",
+      "Hans Memling",
+      "Hugo van der Goes"
+     ]
+    },
+    "en": {
+     "text": "Who created the “Ghent Altarpiece” (1432)?",
+     "correct": "Jan van Eyck",
+     "wrong": [
+      "Rogier van der Weyden",
+      "Hans Memling",
+      "Hugo van der Goes"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Verbindungsaufbau bei TCP?",
+     "correct": "Drei-Wege-Handshake (SYN, SYN-ACK, ACK)",
+     "wrong": [
+      "Zwei-Wege-Handshake (HELLO, OK)",
+      "Vier-Wege-Handshake (FIN, ACK, FIN, ACK)",
+      "Challenge-Response (HELLO, KEY, DONE)"
+     ]
+    },
+    "en": {
+     "text": "What is the connection setup of TCP called?",
+     "correct": "Three-way handshake (SYN, SYN-ACK, ACK)",
+     "wrong": [
+      "Two-way handshake (HELLO, OK)",
+      "Four-way handshake (FIN, ACK, FIN, ACK)",
+      "Challenge-response (HELLO, KEY, DONE)"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie lautet die Ableitung von sin(x)?",
+     "correct": "cos(x)",
+     "wrong": [
+      "−sin(x)",
+      "tan(x)",
+      "1/cos(x)"
+     ]
+    },
+    "en": {
+     "text": "What is the derivative of sin(x)?",
+     "correct": "cos(x)",
+     "wrong": [
+      "−sin(x)",
+      "tan(x)",
+      "1/cos(x)"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer prägte den Begriff „Soziologie“?",
+     "correct": "Auguste Comte",
+     "wrong": [
+      "Max Weber",
+      "Karl Marx",
+      "Herbert Spencer"
+     ]
+    },
+    "en": {
+     "text": "Who coined the term “sociology”?",
+     "correct": "Auguste Comte",
+     "wrong": [
+      "Max Weber",
+      "Karl Marx",
+      "Herbert Spencer"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man den extremen Hell-Dunkel-Kontrast in Caravaggios Malerei?",
+     "correct": "Tenebrismus (Chiaroscuro)",
+     "wrong": [
+      "Sfumato",
+      "Pointillismus",
+      "Grisaille"
+     ]
+    },
+    "en": {
+     "text": "What is the extreme light–dark contrast in Caravaggio's painting called?",
+     "correct": "Tenebrism (chiaroscuro)",
+     "wrong": [
+      "Sfumato",
+      "Pointillism",
+      "Grisaille"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Public-Key-Verfahren beruht auf der Schwierigkeit der Faktorisierung großer Zahlen?",
+     "correct": "RSA",
+     "wrong": [
+      "AES",
+      "Diffie-Hellman",
+      "ChaCha20"
+     ]
+    },
+    "en": {
+     "text": "Which public-key scheme relies on the difficulty of factoring large numbers?",
+     "correct": "RSA",
+     "wrong": [
+      "AES",
+      "Diffie-Hellman",
+      "ChaCha20"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_mint",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Teilchen vermittelt die starke Wechselwirkung zwischen Quarks?",
+     "correct": "Gluon",
+     "wrong": [
+      "Photon",
+      "W-Boson",
+      "Graviton"
+     ]
+    },
+    "en": {
+     "text": "Which particle mediates the strong interaction between quarks?",
+     "correct": "Gluon",
+     "wrong": [
+      "Photon",
+      "W-Boson",
+      "Graviton"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_humanities",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Mit welchem Soziologen verbindet man die Begriffe „Habitus“ und „Kapitalsorten“?",
+     "correct": "Pierre Bourdieu",
+     "wrong": [
+      "Anthony Giddens",
+      "Erving Goffman",
+      "Norbert Elias"
+     ]
+    },
+    "en": {
+     "text": "Which sociologist is associated with the concepts of “habitus” and forms of capital?",
+     "correct": "Pierre Bourdieu",
+     "wrong": [
+      "Anthony Giddens",
+      "Erving Goffman",
+      "Norbert Elias"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_arts",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Auf der Suche nach der verlorenen Zeit“?",
+     "correct": "Marcel Proust",
+     "wrong": [
+      "Gustave Flaubert",
+      "André Gide",
+      "Émile Zola"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “In Search of Lost Time”?",
+     "correct": "Marcel Proust",
+     "wrong": [
+      "Gustave Flaubert",
+      "André Gide",
+      "Émile Zola"
+     ]
+    }
+   }
+  },
+  {
+   "category": "expert_it",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welchem Typ der Chomsky-Hierarchie entsprechen kontextfreie Grammatiken?",
+     "correct": "Typ 2",
+     "wrong": [
+      "Typ 0",
+      "Typ 1",
+      "Typ 3"
+     ]
+    },
+    "en": {
+     "text": "Which type of the Chomsky hierarchy do context-free grammars correspond to?",
+     "correct": "Type 2",
+     "wrong": [
+      "Type 0",
+      "Type 1",
+      "Type 3"
+     ]
+    }
+   }
+  }
+ ]
+}

@@ -1,5 +1,5 @@
 import crypto from 'node:crypto'
-import { CATEGORIES, CATEGORY_TIERS, isCategory, LICENSES, REGIONS, SERVABLE_SQL } from './categories.ts'
+import { CATEGORIES, CATEGORY_TIERS, TIERS, isCategory, LICENSES, REGIONS, SERVABLE_SQL } from './categories.ts'
 import { config } from './config.ts'
 import { all, get, run, tx, now } from './db.ts'
 import { HttpError, Router, rateLimit, type Ctx } from './http.ts'
@@ -13,7 +13,7 @@ import {
 } from './admin.ts'
 import { deliver, validEndpoint, validKeys, vapidPublicKey } from './push.ts'
 import { applyPatch, datasetLines, exportCommunityBatch, insertQuestion, licenseSummary, questionUid, validateContent, type QContent, type QPatch, type QRow } from './questions.ts'
-import { createCode, deleteCode, grant, listCodes, playerTiers, redeem } from './unlocks.ts'
+import { cleanSettings } from './settings.ts'
 import { fileReview, listReviews, questionOut, resolveReview } from './reviews.ts'
 
 export const router = new Router()
@@ -35,12 +35,12 @@ function pickLang(want: unknown, fallback: string) {
 
 const profile = (p: PlayerRow) => ({
   ...pub(p), lang: p.lang, has_account: !!p.username, username: p.username, created_at: p.created_at, reviewer: !!p.reviewer,
-  tiers: playerTiers(p.id),
+  level: p.level, disabled_cats: JSON.parse(p.disabled_cats) as string[],
 })
 
 /* ---------- Öffentliches ---------- */
 router.get('/api/meta', () => ({
-  categories: CATEGORIES, tiers: CATEGORY_TIERS, regions: REGIONS, reports: config.playerReports,
+  categories: CATEGORIES, tiers: CATEGORY_TIERS, levels: TIERS, regions: REGIONS, reports: config.playerReports,
   langs: supportedLangs(),
   time_limit_ms: game.TIME_LIMIT_MS, rounds: game.ROUNDS, per_round: game.PER_ROUND,
 }), { auth: false })
@@ -87,6 +87,10 @@ router.patch('/api/me', (c) => {
   if (c.body.lang !== undefined) {
     if (!LANG_RE.test(c.body.lang)) throw new HttpError(400, 'bad_lang')
     run('UPDATE players SET lang=? WHERE id=?', c.body.lang, p.id)
+  }
+  if (c.body.level !== undefined || c.body.disabled_cats !== undefined) {
+    const s = cleanSettings(c.body.level ?? p.level, c.body.disabled_cats ?? JSON.parse(p.disabled_cats))
+    run('UPDATE players SET level=?, disabled_cats=? WHERE id=?', s.level, JSON.stringify(s.disabled), p.id)
   }
   return { player: profile(get<PlayerRow>('SELECT * FROM players WHERE id=?', p.id)!) }
 })
@@ -180,13 +184,6 @@ router.post('/api/transfer/redeem', (c) => {
     return { token: createSession(p.id, 'transfer'), player: profile(p) }
   })
 }, { auth: false })
-
-/* ---------- Nerd-/Experten-Stufen freischalten ---------- */
-router.post('/api/unlock', (c) => {
-  rateLimit(`unlock:${c.ip}`, 10, 900_000)
-  const tier = redeem(me(c).id, c.body.code)
-  return { tier, tiers: playerTiers(me(c).id) }
-})
 
 /* ---------- Kontakte ---------- */
 router.post('/api/contacts', (c) => {
@@ -471,31 +468,6 @@ router.get('/api/admin/edits', (c) => {
   const after = Number(c.url.searchParams.get('after') ?? 0) || 0
   return { edits: all<{ id: number; group_id: string; lang: string; batch: string | null; old: string; new: string; created_at: number }>(
     'SELECT * FROM edits WHERE id>? ORDER BY id', after).map((e) => ({ ...e, old: JSON.parse(e.old), new: JSON.parse(e.new) })) }
-}, { auth: false })
-
-router.get('/api/admin/unlock-codes', (c) => {
-  admin(c)
-  return { codes: listCodes() }
-}, { auth: false })
-
-router.post('/api/admin/unlock-codes', (c) => {
-  admin(c)
-  return { code: createCode(c.body.tier, c.body.max_uses, c.body.note, c.body.days) }
-}, { auth: false })
-
-router.delete('/api/admin/unlock-codes/:code', (c) => {
-  admin(c)
-  deleteCode(c.params.code)
-  return { ok: true }
-}, { auth: false })
-
-/** Stufe direkt einem Spieler (per öffentlicher ID) freischalten. */
-router.post('/api/admin/unlocks', (c) => {
-  admin(c)
-  const p = get<{ id: number }>('SELECT id FROM players WHERE public_id=? AND deleted=0 AND is_bot=0', String(c.body.public_id ?? '').trim().toUpperCase())
-  if (!p) throw new HttpError(404, 'unknown_player')
-  grant(p.id, c.body.tier, 'admin')
-  return { ok: true }
 }, { auth: false })
 
 router.get('/api/admin/stats', (c) => {

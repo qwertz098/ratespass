@@ -1,6 +1,7 @@
 /**
- * Kategorien nach Stufe: `basic` ist für alle offen; `nerd` und `expert` müssen pro Spieler freigeschaltet werden
- * (Freischalt-Code oder Admin, siehe server/unlocks.ts). Die Stufe gehört zur Kategorie, nicht zur Frage.
+ * Kategorien nach Stufe. Jeder Spieler wählt selbst sein Level (`basic` < `nerd` < `expert`) und kann einzelne Extra-Kategorien
+ * (alle außer `basic`) abwählen, siehe server/settings.ts. Im Duell gilt immer die niedrigste Einstellung.
+ * Die Stufe gehört zur Kategorie, nicht zur Frage.
  */
 export const TIERS = ['basic', 'nerd', 'expert'] as const
 export type Tier = (typeof TIERS)[number]
@@ -8,11 +9,13 @@ export const CATEGORY_TIERS = {
   general: 'basic', geography: 'basic', history: 'basic', science: 'basic', nature: 'basic', sports: 'basic',
   film_tv: 'basic', music: 'basic', literature: 'basic', art: 'basic', games: 'basic', tech: 'basic',
   scifi_fantasy: 'nerd', coding: 'nerd', anime: 'nerd', retro_games: 'nerd',
+  expert_mint: 'expert', expert_humanities: 'expert', expert_arts: 'expert', expert_it: 'expert',
 } as const satisfies Record<string, Tier>
 export type Category = keyof typeof CATEGORY_TIERS
 export const CATEGORIES = Object.keys(CATEGORY_TIERS) as Category[]
 export const isTier = (t: unknown): t is Tier => TIERS.includes(t as Tier)
 export const tierOf = (c: string): Tier => (CATEGORY_TIERS as Record<string, Tier>)[c] ?? 'basic'
+export const tierRank = (t: Tier) => TIERS.indexOf(t)
 
 /** Erlaubte Lizenzen für Fragen (Wert = Lizenztext-URL). */
 export const LICENSES: Record<string, string> = {

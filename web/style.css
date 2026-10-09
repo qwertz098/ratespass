@@ -12,6 +12,7 @@
 [data-cat="science"] { --c: #2563eb } [data-cat="nature"] { --c: #16a34a } [data-cat="sports"] { --c: #ea580c }
 [data-cat="film_tv"] { --c: #db2777 } [data-cat="music"] { --c: #9333ea } [data-cat="literature"] { --c: #a16207 }
 [data-cat="scifi_fantasy"] { --c: #7c3aed } [data-cat="coding"] { --c: #059669 } [data-cat="anime"] { --c: #f43f5e } [data-cat="retro_games"] { --c: #d97706 }
+[data-cat="expert_mint"] { --c: #0369a1 } [data-cat="expert_humanities"] { --c: #92400e } [data-cat="expert_arts"] { --c: #be185d } [data-cat="expert_it"] { --c: #334155 }
 [data-cat="art"] { --c: #e11d48 } [data-cat="games"] { --c: #0891b2 } [data-cat="tech"] { --c: #475569 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -130,3 +131,6 @@ input[type=checkbox] { width: 20px; height: 20px; margin-top: 2px; accent-color:
 [hidden] { display: none !important; }
 
 .row.wrap, .seg.wrap { flex-wrap: wrap; }
+
+.chipcheck { gap: 6px; padding: 6px 10px; border-radius: 999px; background: color-mix(in srgb, var(--c, #888) 14%, transparent); font-size: .85rem }
+.chipcheck input { margin: 0 }

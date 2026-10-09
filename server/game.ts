@@ -2,8 +2,8 @@ import crypto from 'node:crypto'
 import { all, get, run, tx, now } from './db.ts'
 import { createPlayer, type PlayerRow } from './auth.ts'
 import { config } from './config.ts'
-import { SERVABLE_SQL, tierOf } from './categories.ts'
-import { openCategories } from './unlocks.ts'
+import { CATEGORIES, SERVABLE_SQL, tierOf, type Tier } from './categories.ts'
+import { effectiveFor } from './settings.ts'
 import { HttpError } from './http.ts'
 import { notifyPlayer, type PushKind } from './push.ts'
 import type { QRow } from './questions.ts'
@@ -17,6 +17,7 @@ export interface GameRow {
   id: number; p1: number; p2: number | null; lang: string
   status: 'waiting' | 'active' | 'finished' | 'abandoned'
   round: number; turn: number | null; phase: 'pick' | 'play' | null
+  level: Tier | null; cats: string | null // Snapshot der wirksamen Stufe/Kategorien (null: Spiel aus der Zeit vor v5 → nur Basis)
   winner: number | null; end_reason: string | null; created_at: number; updated_at: number
 }
 
@@ -48,9 +49,9 @@ export function ensureBot(): number {
 }
 
 /** Kategorien mit genug noch nicht in diesem Spiel verwendeten Fragen; sonst (kleiner Pool) alle mit genug Fragen. */
-function categoriesFor(g: GameRow, picker: number): string[] {
-  const open = openCategories(picker)
-  return categoriesPool(g).filter((c) => open.has(c))
+function categoriesFor(g: GameRow): string[] {
+  const allowed = new Set<string>(g.cats ? (JSON.parse(g.cats) as string[]) : CATEGORIES.filter((c) => tierOf(c) === 'basic'))
+  return categoriesPool(g).filter((c) => allowed.has(c))
 }
 function categoriesPool(g: GameRow): string[] {
   const fresh = all<{ category: string }>(
@@ -62,7 +63,7 @@ function categoriesPool(g: GameRow): string[] {
     `SELECT category FROM questions WHERE lang=? AND status='active' AND ${SERVABLE_SQL} GROUP BY category HAVING COUNT(*)>=?`, g.lang, PER_ROUND).map((r) => r.category)
 }
 
-/** Drei zufällige Kategorien; ist eine freigeschaltete Nerd-/Experten-Kategorie dabei, ist mindestens eine davon im Angebot. */
+/** Drei zufällige Kategorien; gibt es wirksame Nerd-/Experten-Kategorien, ist mindestens eine davon im Angebot. */
 function pickOptions(cats: string[]): string[] {
   const mixed = shuffle(cats)
   const special = mixed.find((c) => tierOf(c) !== 'basic')
@@ -72,7 +73,7 @@ function pickOptions(cats: string[]): string[] {
 
 function startRound(g: GameRow, n: number) {
   const picker = n % 2 === 1 ? g.p1 : g.p2!
-  const cats = categoriesFor(g, picker)
+  const cats = categoriesFor(g)
   if (!cats.length) throw new HttpError(503, 'no_questions')
   run('INSERT INTO rounds(game_id,n,picker,options) VALUES(?,?,?,?)', g.id, n, picker, JSON.stringify(pickOptions(cats)))
   run("UPDATE games SET round=?, turn=?, phase='pick', updated_at=? WHERE id=?", n, picker, now(), g.id)
@@ -87,7 +88,8 @@ function guardLimit(pid: number) {
 
 function insertGame(p1: number, p2: number | null, lang: string) {
   const t = now()
-  const r = run('INSERT INTO games(p1,p2,lang,status,created_at,updated_at) VALUES(?,?,?,?,?,?)', p1, p2, lang, p2 ? 'active' : 'waiting', t, t)
+  const eff = effectiveFor([p1, p2])
+  const r = run('INSERT INTO games(p1,p2,lang,status,level,cats,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)', p1, p2, lang, p2 ? 'active' : 'waiting', eff.level, JSON.stringify(eff.cats), t, t)
   const g = getGame(Number(r.lastInsertRowid))!
   if (p2) startRound(g, 1)
   return g.id
@@ -106,7 +108,8 @@ export function createGame(me: PlayerRow, opponent: string, lang: string): numbe
       const w = get<{ id: number; p1: number }>(
         "SELECT id, p1 FROM games WHERE status='waiting' AND lang=? AND p1<>? ORDER BY created_at LIMIT 1", lang, me.id)
       if (w) {
-        run("UPDATE games SET p2=?, status='active' WHERE id=?", me.id, w.id)
+        const eff = effectiveFor([w.p1, me.id]) // zählt die niedrigste Einstellung beider
+        run("UPDATE games SET p2=?, status='active', level=?, cats=? WHERE id=?", me.id, eff.level, JSON.stringify(eff.cats), w.id)
         startRound(getGame(w.id)!, 1)
         notifyPlayer(w.p1, 'matched', w.id, me.name)
         id = w.id
@@ -360,7 +363,7 @@ export function gameView(g: GameRow, viewer: number) {
   const sum = (k: 'me' | 'opp') => view.reduce((s, r) => s + r[k].filter(Boolean).length, 0)
   const myTurn = g.turn === viewer
   return {
-    id: g.id, status: g.status, lang: g.lang, round: g.round, rounds_total: ROUNDS,
+    id: g.id, status: g.status, lang: g.lang, round: g.round, rounds_total: ROUNDS, level: g.level ?? 'basic',
     phase: g.phase, turn: g.turn === null ? null : myTurn ? 'me' : 'opp',
     me: pinfo(viewer), opp: pinfo(oppId),
     options: myTurn && g.phase === 'pick' ? JSON.parse(rounds.find((r) => r.n === g.round)!.options) : null,

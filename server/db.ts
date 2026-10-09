@@ -187,8 +187,20 @@ CREATE TABLE unlocks(
 );
 `
 
+// v5: Spieler wählen Level und Extra-Kategorien selbst (ersetzt die Freischaltung aus v4); Spiele merken sich die wirksame Auswahl
+const SCHEMA_V5 = `
+ALTER TABLE players ADD COLUMN level TEXT NOT NULL DEFAULT 'basic';
+ALTER TABLE players ADD COLUMN disabled_cats TEXT NOT NULL DEFAULT '[]';
+ALTER TABLE games ADD COLUMN level TEXT;
+ALTER TABLE games ADD COLUMN cats TEXT;
+UPDATE players SET level='nerd' WHERE id IN (SELECT player_id FROM unlocks WHERE tier='nerd');
+UPDATE players SET level='expert' WHERE id IN (SELECT player_id FROM unlocks WHERE tier='expert');
+DROP TABLE unlock_codes;
+DROP TABLE unlocks;
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)

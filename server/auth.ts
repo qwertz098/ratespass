@@ -10,6 +10,8 @@ export interface PlayerRow {
   lang: string
   is_bot: number
   reviewer: number
+  level: string
+  disabled_cats: string
   deleted: number
   username: string | null
   pw_hash: string | null

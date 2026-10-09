@@ -136,7 +136,7 @@ async function route() {
   try {
     if (!S.me) { loading(); if (!(await boot())) return }
     if (my !== runId) return
-    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, unlock }
+    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends }
     await (pages[page] ?? home)(arg, my)
   } catch (e) {
     if (my !== runId) return
@@ -263,6 +263,7 @@ async function gameView(id, my) {
           h('div', { class: 'who' }, avatar(g.me), h('span', { class: 'ell' }, t('game.you'))),
           h('div', { class: 'big' }, `${g.score.me}:${g.score.opp}`),
           h('div', { class: 'who' }, avatar(g.opp), h('span', { class: 'ell' }, g.opp?.name ?? '…'))),
+        g.level !== 'basic' || g.level !== S.me.level ? h('div', { class: 'hint', style: 'text-align:center' }, t(g.level !== S.me.level ? 'level.lowered' : 'level.badge', { level: t('tier.' + g.level) })) : null,
         h('div', { class: 'rounds' }, rounds.map((r) => h('div', { class: 'round' + (!finished && r.n === g.round ? ' now' : '') },
           dots(r.me), h('div', { class: 'cat', cat: r.category }, r.category ? t('cat.' + r.category) : t('game.round', { n: r.n })), dots(r.opp, true))))),
       h('div', { class: 'card stack' }, actions(g, id)))
@@ -393,13 +394,22 @@ async function adoptToken(token) {
   toast(t('profile.saved')); go('#/')
 }
 
-function unlockCard() {
-  const input = h('input', { type: 'text', maxLength: 12, autocapitalize: 'characters', placeholder: t('unlock.placeholder') })
-  const open = (S.me.tiers ?? []).filter((x) => x !== 'basic')
-  return [h('h2', {}, t('unlock.title')),
-    h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('unlock.info')),
-      open.length ? h('div', { class: 'row wrap' }, open.map((x) => h('span', { class: 'badge good' }, '✓ ' + t('tier.' + x)))) : null,
-      h('div', { class: 'row' }, input, h('button', { class: 'btn', onclick: guard(async () => { await redeemUnlock(input.value); route() }) }, t('unlock.use'))))]
+/** Spielstufe und Extra-Kategorien: jeder stellt selbst ein; im Duell gilt die niedrigste Einstellung beider. */
+function levelCard() {
+  const p = S.me, tiers = S.meta.tiers, levels = S.meta.levels ?? ['basic', 'nerd', 'expert']
+  const rank = (l) => levels.indexOf(l)
+  const off = new Set(p.disabled_cats ?? [])
+  const save = guard(async () => { const r = await api('PATCH', '/api/me', { level: p.level, disabled_cats: [...off] }); S.me = { ...S.me, ...r.player }; toast(t('profile.saved')) })
+  const cats = h('div', { class: 'stack' })
+  const draw = () => cats.replaceChildren(...levels.filter((l) => l !== 'basic' && rank(l) <= rank(p.level)).map((l) => h('div', { class: 'stack' },
+    h('div', { class: 'hint' }, t('tier.' + l)),
+    h('div', { class: 'row wrap' }, Object.keys(tiers).filter((c) => tiers[c] === l).map((c) => h('label', { class: 'row chipcheck', cat: c },
+      h('input', { type: 'checkbox', checked: !off.has(c), onchange: (e) => { e.target.checked ? off.delete(c) : off.add(c); save() } }), h('span', {}, t('cat.' + c))))))))
+  const seg = h('div', { class: 'seg wrap' }, levels.map((l) => h('button', { 'aria-pressed': String(p.level === l), onclick: (e) => {
+    p.level = l; seg.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === e.currentTarget))); desc.textContent = t('level.' + l + 'Desc'); draw(); save() } }, t('tier.' + l))))
+  const desc = h('p', { class: 'hint' }, t('level.' + p.level + 'Desc'))
+  draw()
+  return [h('h2', {}, t('level.title')), h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('level.info')), seg, desc, cats)]
 }
 
 async function profile() {
@@ -433,7 +443,7 @@ async function profile() {
     S.meta?.reports !== false ? h('label', { class: 'row' }, h('input', { type: 'checkbox', checked: store.get('rp.noReport') !== '1',
       onchange: (e) => { e.target.checked ? store.del('rp.noReport') : store.set('rp.noReport', '1') } }), h('span', { class: 'hint' }, t('profile.reportBtn'))) : null,
     p.reviewer ? h('p', { class: 'hint' }, t('profile.reviewer')) : null,
-    unlockCard(),
+    levelCard(),
     h('h2', {}, t('profile.code')),
     h('div', { class: 'card stack' }, h('div', { class: 'code' }, p.public_id), h('button', { class: 'btn block', onclick: () => share(inviteUrl(), t('app.name')) }, '🔗 ' + t('profile.share'))),
     h('h2', {}, t('profile.contacts')), contacts,
@@ -579,18 +589,6 @@ async function invite(code) {
     who.public_id === S.me.public_id ? null : h('button', { class: 'btn primary block', onclick: guard(async () => {
       await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe()
       const r = await api('POST', '/api/games', { opponent: who.public_id, lang: gameLang() }); go('#/game/' + r.id) }) }, t('invite.accept'))))
-}
-
-/* ---------- Nerd-/Experten-Kategorien freischalten ---------- */
-async function redeemUnlock(code) {
-  const r = await api('POST', '/api/unlock', { code })
-  S.me.tiers = r.tiers
-  toast(t('unlock.done', { tier: t('tier.' + r.tier) }))
-}
-async function unlock(code) {
-  mount(topbar(t('unlock.title')), h('div', { class: 'card stack' }, h('p', {}, t('unlock.redeeming'))))
-  await redeemUnlock(code || '')
-  go('#/')
 }
 
 /* ---------- Frage einreichen ---------- */
