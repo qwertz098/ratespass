@@ -1,0 +1,4714 @@
+{
+ "format": "ratespass-batch",
+ "version": 1,
+ "batch": "original-013",
+ "source": "original",
+ "license": "CC-BY-SA-4.0",
+ "attribution": "Ratespaß-Projekt (eigene Formulierungen, Faktenwissen)",
+ "questions": [
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Menschen leben ungefähr auf der Erde (Stand 2024)?",
+     "correct": "8 Milliarden",
+     "wrong": [
+      "5 Milliarden",
+      "10 Milliarden",
+      "3 Milliarden"
+     ]
+    },
+    "en": {
+     "text": "Roughly how many people live on Earth (as of 2024)?",
+     "correct": "8 billion",
+     "wrong": [
+      "5 billion",
+      "10 billion",
+      "3 billion"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farben hat die Flagge Frankreichs?",
+     "correct": "Blau, Weiß, Rot",
+     "wrong": [
+      "Rot, Weiß, Grün",
+      "Blau, Gelb, Rot",
+      "Schwarz, Rot, Gold"
+     ]
+    },
+    "en": {
+     "text": "What colours are on the flag of France?",
+     "correct": "Blue, white, red",
+     "wrong": [
+      "Red, white, green",
+      "Blue, yellow, red",
+      "Black, red, gold"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches antike Weltwunder war ein monumentales Grabmal in Kleinasien?",
+     "correct": "Das Mausoleum von Halikarnassos",
+     "wrong": [
+      "Der Koloss von Rhodos",
+      "Die Hängenden Gärten",
+      "Der Leuchtturm von Pharos"
+     ]
+    },
+    "en": {
+     "text": "Which wonder of the ancient world was a monumental tomb in Asia Minor?",
+     "correct": "The Mausoleum at Halicarnassus",
+     "wrong": [
+      "The Colossus of Rhodes",
+      "The Hanging Gardens",
+      "The Pharos Lighthouse"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Aus wie vielen Sauerstoffatomen besteht ein Ozonmolekül?",
+     "correct": "3",
+     "wrong": [
+      "2",
+      "1",
+      "4"
+     ]
+    },
+    "en": {
+     "text": "How many oxygen atoms does an ozone molecule consist of?",
+     "correct": "3",
+     "wrong": [
+      "2",
+      "1",
+      "4"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Tiefseefisch lockt Beute mit einem leuchtenden Anhängsel an?",
+     "correct": "Anglerfisch",
+     "wrong": [
+      "Thunfisch",
+      "Hering",
+      "Kabeljau"
+     ]
+    },
+    "en": {
+     "text": "Which deep-sea fish lures prey with a glowing appendage?",
+     "correct": "Anglerfish",
+     "wrong": [
+      "Tuna",
+      "Herring",
+      "Cod"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Stürmerstar Kylian Mbappé?",
+     "correct": "Frankreich",
+     "wrong": [
+      "Belgien",
+      "Spanien",
+      "Italien"
+     ]
+    },
+    "en": {
+     "text": "Which country does the star striker Kylian Mbappé come from?",
+     "correct": "France",
+     "wrong": [
+      "Belgium",
+      "Spain",
+      "Italy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Homer Simpsons Ehefrau mit den blauen Haaren?",
+     "correct": "Marge",
+     "wrong": [
+      "Lisa",
+      "Patty",
+      "Selma"
+     ]
+    },
+    "en": {
+     "text": "What is Homer Simpson's blue-haired wife called?",
+     "correct": "Marge",
+     "wrong": [
+      "Lisa",
+      "Patty",
+      "Selma"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Von welchem Komponisten stammt die Oper „Der Barbier von Sevilla“?",
+     "correct": "Gioachino Rossini",
+     "wrong": [
+      "Giuseppe Verdi",
+      "Wolfgang Amadeus Mozart",
+      "Gaetano Donizetti"
+     ]
+    },
+    "en": {
+     "text": "Which composer wrote the opera “The Barber of Seville”?",
+     "correct": "Gioachino Rossini",
+     "wrong": [
+      "Giuseppe Verdi",
+      "Wolfgang Amadeus Mozart",
+      "Gaetano Donizetti"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb das Gedicht „Der Rabe“?",
+     "correct": "Edgar Allan Poe",
+     "wrong": [
+      "Charles Baudelaire",
+      "Walt Whitman",
+      "Lord Byron"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the poem “The Raven”?",
+     "correct": "Edgar Allan Poe",
+     "wrong": [
+      "Charles Baudelaire",
+      "Walt Whitman",
+      "Lord Byron"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher belgische Maler schuf das Bild „Der Verrat der Bilder“ mit der Pfeife und dem Satz „Dies ist keine Pfeife“?",
+     "correct": "René Magritte",
+     "wrong": [
+      "Salvador Dalí",
+      "Paul Delvaux",
+      "James Ensor"
+     ]
+    },
+    "en": {
+     "text": "Which Belgian painter created “The Treachery of Images” with the pipe and the words “This is not a pipe”?",
+     "correct": "René Magritte",
+     "wrong": [
+      "Salvador Dalí",
+      "Paul Delvaux",
+      "James Ensor"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Bei welchem Mobile-Spiel flattert ein Vogel durch Röhren?",
+     "correct": "Flappy Bird",
+     "wrong": [
+      "Doodle Jump",
+      "Cut the Rope",
+      "Clash of Clans"
+     ]
+    },
+    "en": {
+     "text": "In which mobile game does a bird flap through pipes?",
+     "correct": "Flappy Bird",
+     "wrong": [
+      "Doodle Jump",
+      "Cut the Rope",
+      "Clash of Clans"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Mit welcher Taste bricht man häufig Vorgänge oder Eingaben ab?",
+     "correct": "Esc",
+     "wrong": [
+      "Tab",
+      "Enter",
+      "Alt"
+     ]
+    },
+    "en": {
+     "text": "Which key do you often press to cancel actions or input?",
+     "correct": "Esc",
+     "wrong": [
+      "Tab",
+      "Enter",
+      "Alt"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land wurde das Papier erfunden?",
+     "correct": "China",
+     "wrong": [
+      "Ägypten",
+      "Indien",
+      "Griechenland"
+     ]
+    },
+    "en": {
+     "text": "In which country was paper invented?",
+     "correct": "China",
+     "wrong": [
+      "Egypt",
+      "India",
+      "Greece"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Land zeigt auf seiner Flagge den Umriss der eigenen Insel?",
+     "correct": "Zypern",
+     "wrong": [
+      "Malta",
+      "Island",
+      "Sri Lanka"
+     ]
+    },
+    "en": {
+     "text": "Which country shows the outline of its own island on its flag?",
+     "correct": "Cyprus",
+     "wrong": [
+      "Malta",
+      "Iceland",
+      "Sri Lanka"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie hieß das Überschallpassagierflugzeug, das von Großbritannien und Frankreich gebaut wurde?",
+     "correct": "Concorde",
+     "wrong": [
+      "Boeing 747",
+      "Airbus A380",
+      "Tupolew Tu-144"
+     ]
+    },
+    "en": {
+     "text": "What was the supersonic passenger aircraft built by Britain and France called?",
+     "correct": "Concorde",
+     "wrong": [
+      "Boeing 747",
+      "Airbus A380",
+      "Tupolev Tu-144"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Metall ist das häufigste in der Erdkruste?",
+     "correct": "Aluminium",
+     "wrong": [
+      "Eisen",
+      "Kupfer",
+      "Gold"
+     ]
+    },
+    "en": {
+     "text": "Which metal is the most abundant in the Earth's crust?",
+     "correct": "Aluminium",
+     "wrong": [
+      "Iron",
+      "Copper",
+      "Gold"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welcher Region lebt der Weißkopfseeadler?",
+     "correct": "Nordamerika",
+     "wrong": [
+      "Europa",
+      "Asien",
+      "Südamerika"
+     ]
+    },
+    "en": {
+     "text": "In which region does the bald eagle live?",
+     "correct": "North America",
+     "wrong": [
+      "Europe",
+      "Asia",
+      "South America"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie hieß der französische Fußballer, der 2006 im WM-Finale einen Kopfstoß gab?",
+     "correct": "Zinédine Zidane",
+     "wrong": [
+      "Thierry Henry",
+      "Michel Platini",
+      "Franck Ribéry"
+     ]
+    },
+    "en": {
+     "text": "Which French footballer headbutted an opponent in the 2006 World Cup final?",
+     "correct": "Zinédine Zidane",
+     "wrong": [
+      "Thierry Henry",
+      "Michel Platini",
+      "Franck Ribéry"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe hat die Haut der Figuren in „Die Simpsons“?",
+     "correct": "Gelb",
+     "wrong": [
+      "Grün",
+      "Blau",
+      "Rosa"
+     ]
+    },
+    "en": {
+     "text": "What colour is the skin of the characters in “The Simpsons”?",
+     "correct": "Yellow",
+     "wrong": [
+      "Green",
+      "Blue",
+      "Pink"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher polnische Komponist schrieb viele Nocturnes und Mazurken für Klavier?",
+     "correct": "Frédéric Chopin",
+     "wrong": [
+      "Franz Liszt",
+      "Robert Schumann",
+      "Claude Debussy"
+     ]
+    },
+    "en": {
+     "text": "Which Polish composer wrote many nocturnes and mazurkas for piano?",
+     "correct": "Frédéric Chopin",
+     "wrong": [
+      "Franz Liszt",
+      "Robert Schumann",
+      "Claude Debussy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer ist in „Alice im Wunderland“ beim verrückten Teekränzchen zu Gast?",
+     "correct": "Der Hutmacher",
+     "wrong": [
+      "Der Zauberer",
+      "Der Seemann",
+      "Der König"
+     ]
+    },
+    "en": {
+     "text": "Who is at the mad tea party in “Alice in Wonderland”?",
+     "correct": "The Hatter",
+     "wrong": [
+      "The Wizard",
+      "The Sailor",
+      "The King"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Mit welchem Werkzeug streicht man große Wandflächen schnell an?",
+     "correct": "Mit einer Farbrolle",
+     "wrong": [
+      "Mit einem Zirkel",
+      "Mit einer Pinzette",
+      "Mit einer Lupe"
+     ]
+    },
+    "en": {
+     "text": "Which tool do you use to paint large wall areas quickly?",
+     "correct": "A paint roller",
+     "wrong": [
+      "A compass",
+      "Tweezers",
+      "A magnifying glass"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier ist Fox McCloud?",
+     "correct": "Ein Fuchs",
+     "wrong": [
+      "Ein Wolf",
+      "Ein Hase",
+      "Ein Hund"
+     ]
+    },
+    "en": {
+     "text": "Which animal is Fox McCloud?",
+     "correct": "A fox",
+     "wrong": [
+      "A wolf",
+      "A rabbit",
+      "A dog"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht die Einheit GHz bei Prozessoren?",
+     "correct": "Gigahertz",
+     "wrong": [
+      "Gigabyte",
+      "Gigawatt",
+      "Gigapixel"
+     ]
+    },
+    "en": {
+     "text": "What does the unit GHz stand for in processors?",
+     "correct": "Gigahertz",
+     "wrong": [
+      "Gigabyte",
+      "Gigawatt",
+      "Gigapixel"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Jahre hat ein Jahrhundert?",
+     "correct": "100",
+     "wrong": [
+      "10",
+      "1000",
+      "50"
+     ]
+    },
+    "en": {
+     "text": "How many years are in a century?",
+     "correct": "100",
+     "wrong": [
+      "10",
+      "1000",
+      "50"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Land zeigt eine Sonne mit Gesicht auf seiner Flagge, hellblau-weiß gestreift?",
+     "correct": "Argentinien",
+     "wrong": [
+      "Uruguay",
+      "Peru",
+      "Chile"
+     ]
+    },
+    "en": {
+     "text": "Which country shows a sun with a face on its light-blue-and-white striped flag?",
+     "correct": "Argentina",
+     "wrong": [
+      "Uruguay",
+      "Peru",
+      "Chile"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Weltwunder der Antike gab es?",
+     "correct": "7",
+     "wrong": [
+      "5",
+      "10",
+      "12"
+     ]
+    },
+    "en": {
+     "text": "How many wonders of the ancient world were there?",
+     "correct": "7",
+     "wrong": [
+      "5",
+      "10",
+      "12"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Element ist das häufigste in der Erdkruste?",
+     "correct": "Sauerstoff",
+     "wrong": [
+      "Silizium",
+      "Eisen",
+      "Wasserstoff"
+     ]
+    },
+    "en": {
+     "text": "Which element is the most abundant in the Earth's crust?",
+     "correct": "Oxygen",
+     "wrong": [
+      "Silicon",
+      "Iron",
+      "Hydrogen"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Kontinent leben Zebras in freier Wildbahn?",
+     "correct": "Afrika",
+     "wrong": [
+      "Asien",
+      "Europa",
+      "Nordamerika"
+     ]
+    },
+    "en": {
+     "text": "On which continent do zebras live in the wild?",
+     "correct": "Africa",
+     "wrong": [
+      "Asia",
+      "Europe",
+      "North America"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe tragen die Fußballer der niederländischen Nationalmannschaft?",
+     "correct": "Orange",
+     "wrong": [
+      "Blau",
+      "Rot",
+      "Weiß"
+     ]
+    },
+    "en": {
+     "text": "What colour do the Dutch national football team wear?",
+     "correct": "Orange",
+     "wrong": [
+      "Blue",
+      "Red",
+      "White"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die kluge Tochter von Homer Simpson?",
+     "correct": "Lisa",
+     "wrong": [
+      "Maggie",
+      "Marge",
+      "Patty"
+     ]
+    },
+    "en": {
+     "text": "What is Homer Simpson's clever daughter called?",
+     "correct": "Lisa",
+     "wrong": [
+      "Maggie",
+      "Marge",
+      "Patty"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Zu welcher Instrumentengruppe gehört das Saxofon?",
+     "correct": "Blasinstrumente",
+     "wrong": [
+      "Streichinstrumente",
+      "Zupfinstrumente",
+      "Tasteninstrumente"
+     ]
+    },
+    "en": {
+     "text": "To which instrument family does the saxophone belong?",
+     "correct": "Wind instruments",
+     "wrong": [
+      "String instruments",
+      "Plucked instruments",
+      "Keyboard instruments"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Wal spielt die Hauptrolle im Film „Free Willy“?",
+     "correct": "Ein Orca",
+     "wrong": [
+      "Ein Blauwal",
+      "Ein Pottwal",
+      "Ein Buckelwal"
+     ]
+    },
+    "en": {
+     "text": "Which kind of whale stars in the film “Free Willy”?",
+     "correct": "An orca",
+     "wrong": [
+      "A blue whale",
+      "A sperm whale",
+      "A humpback whale"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Kunstrichtung wurde 1916 im Zürcher Cabaret Voltaire begründet?",
+     "correct": "Dada",
+     "wrong": [
+      "Kubismus",
+      "Bauhaus",
+      "Pop-Art"
+     ]
+    },
+    "en": {
+     "text": "Which art movement was founded in 1916 at the Cabaret Voltaire in Zurich?",
+     "correct": "Dada",
+     "wrong": [
+      "Cubism",
+      "Bauhaus",
+      "Pop Art"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Bei welchem Mobile-Spiel schneidet man mit dem Finger fliegende Früchte durch?",
+     "correct": "Fruit Ninja",
+     "wrong": [
+      "Candy Crush",
+      "Angry Birds",
+      "Temple Run"
+     ]
+    },
+    "en": {
+     "text": "In which mobile game do you slice flying fruit with your finger?",
+     "correct": "Fruit Ninja",
+     "wrong": [
+      "Candy Crush",
+      "Angry Birds",
+      "Temple Run"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was ist größer: ein Megabyte oder ein Kilobyte?",
+     "correct": "Ein Megabyte",
+     "wrong": [
+      "Ein Kilobyte",
+      "Beide gleich",
+      "Kommt auf das Gerät an"
+     ]
+    },
+    "en": {
+     "text": "Which is larger: a megabyte or a kilobyte?",
+     "correct": "A megabyte",
+     "wrong": [
+      "A kilobyte",
+      "They are equal",
+      "Depends on the device"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Land ist das größte Südamerikas?",
+     "correct": "Brasilien",
+     "wrong": [
+      "Argentinien",
+      "Peru",
+      "Kolumbien"
+     ]
+    },
+    "en": {
+     "text": "Which is the largest country in South America?",
+     "correct": "Brazil",
+     "wrong": [
+      "Argentina",
+      "Peru",
+      "Colombia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farben hat die Flagge Schwedens?",
+     "correct": "Blau mit gelbem Kreuz",
+     "wrong": [
+      "Rot mit weißem Kreuz",
+      "Weiß mit blauem Kreuz",
+      "Gelb mit rotem Kreuz"
+     ]
+    },
+    "en": {
+     "text": "What does the flag of Sweden look like?",
+     "correct": "Blue with a yellow cross",
+     "wrong": [
+      "Red with a white cross",
+      "White with a blue cross",
+      "Yellow with a red cross"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welcher antiken Stadt stand der berühmte Tempel der Artemis, ein Weltwunder?",
+     "correct": "Ephesos",
+     "wrong": [
+      "Athen",
+      "Korinth",
+      "Delphi"
+     ]
+    },
+    "en": {
+     "text": "In which ancient city stood the famous Temple of Artemis, one of the Seven Wonders?",
+     "correct": "Ephesus",
+     "wrong": [
+      "Athens",
+      "Corinth",
+      "Delphi"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie lautet die chemische Formel von Kohlendioxid?",
+     "correct": "CO2",
+     "wrong": [
+      "H2O",
+      "O2",
+      "NaCl"
+     ]
+    },
+    "en": {
+     "text": "What is the chemical formula of carbon dioxide?",
+     "correct": "CO2",
+     "wrong": [
+      "H2O",
+      "O2",
+      "NaCl"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Auf welchen Inseln leben Orang-Utans in freier Wildbahn?",
+     "correct": "Borneo und Sumatra",
+     "wrong": [
+      "Madagaskar und Sri Lanka",
+      "Kuba und Haiti",
+      "Island und Grönland"
+     ]
+    },
+    "en": {
+     "text": "On which islands do orangutans live in the wild?",
+     "correct": "Borneo and Sumatra",
+     "wrong": [
+      "Madagascar and Sri Lanka",
+      "Cuba and Haiti",
+      "Iceland and Greenland"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe tragen die Fußballer der spanischen Nationalmannschaft?",
+     "correct": "Rot",
+     "wrong": [
+      "Blau",
+      "Gelb",
+      "Weiß"
+     ]
+    },
+    "en": {
+     "text": "What colour do the Spanish national football team wear?",
+     "correct": "Red",
+     "wrong": [
+      "Blue",
+      "Yellow",
+      "White"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welcher Zeichentrickserie reist ein verrückter Wissenschaftler mit seinem Enkel durch Dimensionen?",
+     "correct": "Rick and Morty",
+     "wrong": [
+      "Family Guy",
+      "Futurama",
+      "American Dad"
+     ]
+    },
+    "en": {
+     "text": "In which animated series does a mad scientist travel through dimensions with his grandson?",
+     "correct": "Rick and Morty",
+     "wrong": [
+      "Family Guy",
+      "Futurama",
+      "American Dad"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte das bekannte „Ave Maria“ mit der Melodie „Ellens dritter Gesang“?",
+     "correct": "Franz Schubert",
+     "wrong": [
+      "Johann Sebastian Bach",
+      "Charles Gounod",
+      "Giulio Caccini"
+     ]
+    },
+    "en": {
+     "text": "Who composed the famous “Ave Maria” to the melody of “Ellens dritter Gesang”?",
+     "correct": "Franz Schubert",
+     "wrong": [
+      "Johann Sebastian Bach",
+      "Charles Gounod",
+      "Giulio Caccini"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier ist Black Beauty in dem Roman von Anna Sewell?",
+     "correct": "Ein Pferd",
+     "wrong": [
+      "Ein Hund",
+      "Eine Katze",
+      "Ein Bär"
+     ]
+    },
+    "en": {
+     "text": "Which animal is Black Beauty in Anna Sewell's novel?",
+     "correct": "A horse",
+     "wrong": [
+      "A dog",
+      "A cat",
+      "A bear"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt befindet sich das Van Gogh Museum?",
+     "correct": "Amsterdam",
+     "wrong": [
+      "Rotterdam",
+      "Den Haag",
+      "Brüssel"
+     ]
+    },
+    "en": {
+     "text": "In which city is the Van Gogh Museum?",
+     "correct": "Amsterdam",
+     "wrong": [
+      "Rotterdam",
+      "Den Haag",
+      "Brüssel"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Karten bekommt jeder Spieler beim Skat zu Beginn?",
+     "correct": "10",
+     "wrong": [
+      "7",
+      "12",
+      "8"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Taste lädt eine Webseite im Browser neu?",
+     "correct": "F5",
+     "wrong": [
+      "F1",
+      "F10",
+      "F12"
+     ]
+    },
+    "en": {
+     "text": "Which key reloads a web page in the browser?",
+     "correct": "F5",
+     "wrong": [
+      "F1",
+      "F10",
+      "F12"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Sprachen gibt es auf der Welt ungefähr?",
+     "correct": "7000",
+     "wrong": [
+      "700",
+      "70.000",
+      "200"
+     ]
+    },
+    "en": {
+     "text": "Roughly how many languages are there in the world?",
+     "correct": "7,000",
+     "wrong": [
+      "700",
+      "70,000",
+      "200"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Land hat eine grüne Flagge mit gelber Raute und blauer Kugel?",
+     "correct": "Brasilien",
+     "wrong": [
+      "Portugal",
+      "Mexiko",
+      "Kolumbien"
+     ]
+    },
+    "en": {
+     "text": "Which country has a green flag with a yellow diamond and a blue globe?",
+     "correct": "Brazil",
+     "wrong": [
+      "Portugal",
+      "Mexico",
+      "Colombia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem antiken Heiligtum stand die riesige Zeusstatue des Phidias?",
+     "correct": "Olympia",
+     "wrong": [
+      "Delphi",
+      "Epidauros",
+      "Dodona"
+     ]
+    },
+    "en": {
+     "text": "In which ancient sanctuary stood the huge statue of Zeus by Phidias?",
+     "correct": "Olympia",
+     "wrong": [
+      "Delphi",
+      "Epidaurus",
+      "Dodona"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Aggregatzustände unterscheidet man klassisch?",
+     "correct": "3",
+     "wrong": [
+      "2",
+      "4",
+      "5"
+     ]
+    },
+    "en": {
+     "text": "How many states of matter are classically distinguished?",
+     "correct": "3",
+     "wrong": [
+      "2",
+      "4",
+      "5"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wo leben Krokodile meistens?",
+     "correct": "In Flüssen und Seen warmer Länder",
+     "wrong": [
+      "In der Arktis",
+      "Im Hochgebirge",
+      "In Wäldern Mitteleuropas"
+     ]
+    },
+    "en": {
+     "text": "Where do crocodiles mostly live?",
+     "correct": "In rivers and lakes of warm countries",
+     "wrong": [
+      "In the Arctic",
+      "In high mountains",
+      "In central European forests"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farben tragen die Fußballer der argentinischen Nationalmannschaft?",
+     "correct": "Himmelblau-Weiß",
+     "wrong": [
+      "Rot-Gelb",
+      "Grün-Gelb",
+      "Schwarz-Weiß"
+     ]
+    },
+    "en": {
+     "text": "What colours do the Argentine national football team wear?",
+     "correct": "Sky blue and white",
+     "wrong": [
+      "Red and yellow",
+      "Green and yellow",
+      "Black and white"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der freche Sohn von Homer Simpson?",
+     "correct": "Bart",
+     "wrong": [
+      "Milhouse",
+      "Nelson",
+      "Ralph"
+     ]
+    },
+    "en": {
+     "text": "What is Homer Simpson's cheeky son called?",
+     "correct": "Bart",
+     "wrong": [
+      "Milhouse",
+      "Nelson",
+      "Ralph"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man eine Person, die Musik komponiert?",
+     "correct": "Komponist",
+     "wrong": [
+      "Dirigent",
+      "Solist",
+      "Tontechniker"
+     ]
+    },
+    "en": {
+     "text": "What do you call a person who writes music?",
+     "correct": "Composer",
+     "wrong": [
+      "Conductor",
+      "Soloist",
+      "Sound engineer"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb das Drama „Nathan der Weise“?",
+     "correct": "Gotthold Ephraim Lessing",
+     "wrong": [
+      "Friedrich Schiller",
+      "Heinrich von Kleist",
+      "Johann Wolfgang von Goethe"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Künstler wurde mit Siebdrucken von Marilyn Monroe berühmt?",
+     "correct": "Andy Warhol",
+     "wrong": [
+      "Roy Lichtenstein",
+      "Jackson Pollock",
+      "Keith Haring"
+     ]
+    },
+    "en": {
+     "text": "Which artist became famous for his silkscreen prints of Marilyn Monroe?",
+     "correct": "Andy Warhol",
+     "wrong": [
+      "Roy Lichtenstein",
+      "Jackson Pollock",
+      "Keith Haring"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Marios gelb gekleideter, geldgieriger Gegenspieler?",
+     "correct": "Wario",
+     "wrong": [
+      "Waluigi",
+      "Bowser",
+      "Toad"
+     ]
+    },
+    "en": {
+     "text": "What is Mario's greedy, yellow-clad rival called?",
+     "correct": "Wario",
+     "wrong": [
+      "Waluigi",
+      "Bowser",
+      "Toad"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht die Abkürzung IDE in der Softwareentwicklung?",
+     "correct": "Integrated Development Environment",
+     "wrong": [
+      "Internet Data Exchange",
+      "Internal Disk Engine",
+      "Interactive Design Editor"
+     ]
+    },
+    "en": {
+     "text": "What does the abbreviation IDE stand for in software development?",
+     "correct": "Integrated Development Environment",
+     "wrong": [
+      "Internet Data Exchange",
+      "Internal Disk Engine",
+      "Interactive Design Editor"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Land hat die meisten Einwohner (Stand 2024)?",
+     "correct": "Indien",
+     "wrong": [
+      "China",
+      "USA",
+      "Indonesien"
+     ]
+    },
+    "en": {
+     "text": "Which country has the largest population (as of 2024)?",
+     "correct": "India",
+     "wrong": [
+      "China",
+      "USA",
+      "Indonesia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farben hat die Flagge der Niederlande?",
+     "correct": "Rot, Weiß, Blau",
+     "wrong": [
+      "Rot, Gelb, Schwarz",
+      "Grün, Weiß, Rot",
+      "Blau, Weiß, Orange"
+     ]
+    },
+    "en": {
+     "text": "What colours are on the flag of the Netherlands?",
+     "correct": "Red, white, blue",
+     "wrong": [
+      "Red, yellow, black",
+      "Green, white, red",
+      "Blue, white, orange"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer überquerte 1927 als Erster den Atlantik im Alleinflug?",
+     "correct": "Charles Lindbergh",
+     "wrong": [
+      "Howard Hughes",
+      "Richard Byrd",
+      "Wiley Post"
+     ]
+    },
+    "en": {
+     "text": "Who was the first to fly solo across the Atlantic in 1927?",
+     "correct": "Charles Lindbergh",
+     "wrong": [
+      "Howard Hughes",
+      "Richard Byrd",
+      "Wiley Post"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißen die beiden Pole eines Magneten?",
+     "correct": "Nordpol und Südpol",
+     "wrong": [
+      "Pluspol und Minuspol",
+      "Ostpol und Westpol",
+      "Oberpol und Unterpol"
+     ]
+    },
+    "en": {
+     "text": "What are the two poles of a magnet called?",
+     "correct": "North pole and south pole",
+     "wrong": [
+      "Positive and negative pole",
+      "East pole and west pole",
+      "Upper and lower pole"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Kontinent leben Tiger in freier Wildbahn?",
+     "correct": "Asien",
+     "wrong": [
+      "Afrika",
+      "Südamerika",
+      "Australien"
+     ]
+    },
+    "en": {
+     "text": "On which continent do tigers live in the wild?",
+     "correct": "Asia",
+     "wrong": [
+      "Africa",
+      "South America",
+      "Australia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe tragen die Fußballer der portugiesischen Nationalmannschaft meist?",
+     "correct": "Rot",
+     "wrong": [
+      "Blau",
+      "Gelb",
+      "Weiß"
+     ]
+    },
+    "en": {
+     "text": "What colour do the Portuguese national football team mostly wear?",
+     "correct": "Red",
+     "wrong": [
+      "Blue",
+      "Yellow",
+      "White"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der fromme Nachbar der Simpsons?",
+     "correct": "Ned Flanders",
+     "wrong": [
+      "Moe Szyslak",
+      "Krusty",
+      "Milhouse"
+     ]
+    },
+    "en": {
+     "text": "What is the Simpsons' devout neighbour called?",
+     "correct": "Ned Flanders",
+     "wrong": [
+      "Moe Szyslak",
+      "Krusty",
+      "Milhouse"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Zu welcher Instrumentengruppe gehören Flöte und Klarinette?",
+     "correct": "Holzblasinstrumente",
+     "wrong": [
+      "Blechblasinstrumente",
+      "Schlaginstrumente",
+      "Streichinstrumente"
+     ]
+    },
+    "en": {
+     "text": "To which instrument family do the flute and clarinet belong?",
+     "correct": "Woodwind instruments",
+     "wrong": [
+      "Brass instruments",
+      "Percussion instruments",
+      "String instruments"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Asteroiden lebt der kleine Prinz?",
+     "correct": "B 612",
+     "wrong": [
+      "A 17",
+      "C 5",
+      "D 99"
+     ]
+    },
+    "en": {
+     "text": "On which asteroid does the Little Prince live?",
+     "correct": "B 612",
+     "wrong": [
+      "A 17",
+      "C 5",
+      "D 99"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man Bilder, die sich durch viele einzelne Zeichnungen scheinbar bewegen?",
+     "correct": "Animation",
+     "wrong": [
+      "Skulptur",
+      "Collage",
+      "Radierung"
+     ]
+    },
+    "en": {
+     "text": "What do you call pictures that seem to move through many single drawings?",
+     "correct": "Animation",
+     "wrong": [
+      "Sculpture",
+      "Collage",
+      "Etching"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe hat der Pilz, der Mario ein zusätzliches Leben schenkt?",
+     "correct": "Grün",
+     "wrong": [
+      "Rot",
+      "Gelb",
+      "Blau"
+     ]
+    },
+    "en": {
+     "text": "What colour is the mushroom that gives Mario an extra life?",
+     "correct": "Green",
+     "wrong": [
+      "Red",
+      "Yellow",
+      "Blue"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Tastenkombination schließt unter Windows das aktive Fenster?",
+     "correct": "Alt + F4",
+     "wrong": [
+      "Strg + F4",
+      "Alt + Tab",
+      "Strg + W-Alt"
+     ]
+    },
+    "en": {
+     "text": "Which keyboard shortcut closes the active window on Windows?",
+     "correct": "Alt + F4",
+     "wrong": [
+      "Ctrl + F4",
+      "Alt + Tab",
+      "Ctrl + Alt + W"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Monate hat ein Vierteljahr?",
+     "correct": "3",
+     "wrong": [
+      "4",
+      "6",
+      "2"
+     ]
+    },
+    "en": {
+     "text": "How many months are in a quarter of a year?",
+     "correct": "3",
+     "wrong": [
+      "4",
+      "6",
+      "2"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Land hat eine Flagge, die oben weiß und unten rot ist?",
+     "correct": "Polen",
+     "wrong": [
+      "Indonesien",
+      "Monaco",
+      "Japan"
+     ]
+    },
+    "en": {
+     "text": "Which country has a flag that is white on top and red below?",
+     "correct": "Poland",
+     "wrong": [
+      "Indonesia",
+      "Monaco",
+      "Japan"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr starb Königin Elisabeth II.?",
+     "correct": "2022",
+     "wrong": [
+      "2018",
+      "2020",
+      "2024"
+     ]
+    },
+    "en": {
+     "text": "In which year did Queen Elizabeth II die?",
+     "correct": "2022",
+     "wrong": [
+      "2018",
+      "2020",
+      "2024"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was misst ein Amperemeter?",
+     "correct": "Die Stromstärke",
+     "wrong": [
+      "Die Spannung",
+      "Die Temperatur",
+      "Den Druck"
+     ]
+    },
+    "en": {
+     "text": "What does an ammeter measure?",
+     "correct": "Electric current",
+     "wrong": [
+      "Voltage",
+      "Temperature",
+      "Pressure"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Kontinent leben Gorillas in freier Wildbahn?",
+     "correct": "Afrika",
+     "wrong": [
+      "Asien",
+      "Südamerika",
+      "Australien"
+     ]
+    },
+    "en": {
+     "text": "On which continent do gorillas live in the wild?",
+     "correct": "Africa",
+     "wrong": [
+      "Asia",
+      "South America",
+      "Australia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt spielt der Fußballverein Juventus?",
+     "correct": "Turin",
+     "wrong": [
+      "Mailand",
+      "Rom",
+      "Neapel"
+     ]
+    },
+    "en": {
+     "text": "In which city does the football club Juventus play?",
+     "correct": "Turin",
+     "wrong": [
+      "Milan",
+      "Rome",
+      "Naples"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Schauspieler spielt den Chef Michael Scott in der US-Serie „The Office“?",
+     "correct": "Steve Carell",
+     "wrong": [
+      "Ricky Gervais",
+      "Jim Carrey",
+      "Will Ferrell"
+     ]
+    },
+    "en": {
+     "text": "Which actor plays boss Michael Scott in the US series “The Office”?",
+     "correct": "Steve Carell",
+     "wrong": [
+      "Ricky Gervais",
+      "Jim Carrey",
+      "Will Ferrell"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die Hauptstimme in einem Lied, die man leicht mitsummen kann?",
+     "correct": "Melodie",
+     "wrong": [
+      "Takt",
+      "Pause",
+      "Refrain-Kopf"
+     ]
+    },
+    "en": {
+     "text": "What is the main tune of a song that you can easily hum along to called?",
+     "correct": "Melody",
+     "wrong": [
+      "Beat",
+      "Rest",
+      "Chorus line"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Känguru im Hundertmorgenwald von Winnie Puuh?",
+     "correct": "Kanga",
+     "wrong": [
+      "Roo",
+      "Rabbit",
+      "Eeyore"
+     ]
+    },
+    "en": {
+     "text": "What is the kangaroo in the Hundred Acre Wood called?",
+     "correct": "Kanga",
+     "wrong": [
+      "Roo",
+      "Rabbit",
+      "Eeyore"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt befinden sich die Alte und die Neue Pinakothek?",
+     "correct": "München",
+     "wrong": [
+      "Berlin",
+      "Köln",
+      "Stuttgart"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe hat Yoshi?",
+     "correct": "Grün",
+     "wrong": [
+      "Rot",
+      "Blau",
+      "Gelb"
+     ]
+    },
+    "en": {
+     "text": "What colour is Yoshi?",
+     "correct": "Green",
+     "wrong": [
+      "Red",
+      "Blue",
+      "Yellow"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Tastenkombination kopiert markierten Text unter Windows?",
+     "correct": "Strg + C",
+     "wrong": [
+      "Strg + V",
+      "Strg + X",
+      "Strg + Z"
+     ]
+    },
+    "en": {
+     "text": "Which keyboard shortcut copies selected text on Windows?",
+     "correct": "Ctrl + C",
+     "wrong": [
+      "Ctrl + V",
+      "Ctrl + X",
+      "Ctrl + Z"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Land ist das flächengrößte Afrikas?",
+     "correct": "Algerien",
+     "wrong": [
+      "Libyen",
+      "Sudan",
+      "Demokratische Republik Kongo"
+     ]
+    },
+    "en": {
+     "text": "Which is the largest country in Africa by area?",
+     "correct": "Algeria",
+     "wrong": [
+      "Libya",
+      "Sudan",
+      "Democratic Republic of the Congo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Land hat den „Union Jack“ als Flagge?",
+     "correct": "Vereinigtes Königreich",
+     "wrong": [
+      "Irland",
+      "Australien",
+      "USA"
+     ]
+    },
+    "en": {
+     "text": "Which country has the “Union Jack” as its flag?",
+     "correct": "United Kingdom",
+     "wrong": [
+      "Ireland",
+      "Australia",
+      "USA"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Zu welcher Weltausstellung wurde 1889 der Eiffelturm eröffnet?",
+     "correct": "Weltausstellung in Paris",
+     "wrong": [
+      "Weltausstellung in London",
+      "Weltausstellung in Chicago",
+      "Weltausstellung in Wien"
+     ]
+    },
+    "en": {
+     "text": "For which world's fair was the Eiffel Tower opened in 1889?",
+     "correct": "The Paris World's Fair",
+     "wrong": [
+      "The London World's Fair",
+      "The Chicago World's Fair",
+      "The Vienna World's Fair"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Was passiert mit Eis, wenn es in der Sonne liegt?",
+     "correct": "Es schmilzt",
+     "wrong": [
+      "Es verdampft sofort",
+      "Es wird härter",
+      "Es verfärbt sich"
+     ]
+    },
+    "en": {
+     "text": "What happens to ice that lies in the sun?",
+     "correct": "It melts",
+     "wrong": [
+      "It evaporates immediately",
+      "It gets harder",
+      "It changes colour"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Vogel kann über den Himalaya in über 7000 Metern Höhe fliegen?",
+     "correct": "Streifengans",
+     "wrong": [
+      "Amsel",
+      "Taube",
+      "Spatz"
+     ]
+    },
+    "en": {
+     "text": "Which bird can fly over the Himalayas at more than 7,000 metres?",
+     "correct": "Bar-headed goose",
+     "wrong": [
+      "Blackbird",
+      "Pigeon",
+      "Sparrow"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Sportart feierte bei den Olympischen Spielen in Tokio 2020 ihr Debüt?",
+     "correct": "Skateboard",
+     "wrong": [
+      "Fußball",
+      "Rudern",
+      "Fechten"
+     ]
+    },
+    "en": {
+     "text": "Which sport made its debut at the Tokyo 2020 Olympics?",
+     "correct": "Skateboarding",
+     "wrong": [
+      "Football",
+      "Rowing",
+      "Fencing"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Haushund der Familie Feuerstein?",
+     "correct": "Dino",
+     "wrong": [
+      "Rex",
+      "Gromit",
+      "Fred"
+     ]
+    },
+    "en": {
+     "text": "What is the pet dinosaur of the Flintstone family called?",
+     "correct": "Dino",
+     "wrong": [
+      "Rex",
+      "Gromit",
+      "Fred"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Instrument spielt man mit zwei Schlägeln, die das Fell treffen?",
+     "correct": "Trommel",
+     "wrong": [
+      "Harfe",
+      "Flöte",
+      "Geige"
+     ]
+    },
+    "en": {
+     "text": "Which instrument is played with two sticks that hit the skin?",
+     "correct": "Drum",
+     "wrong": [
+      "Harp",
+      "Flute",
+      "Violin"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier in „Alice im Wunderland“ verschwindet und lässt nur sein Grinsen zurück?",
+     "correct": "Die Grinsekatze",
+     "wrong": [
+      "Das weiße Kaninchen",
+      "Die Raupe",
+      "Der Märzhase"
+     ]
+    },
+    "en": {
+     "text": "Which animal in “Alice in Wonderland” disappears, leaving only its grin?",
+     "correct": "The Cheshire Cat",
+     "wrong": [
+      "The White Rabbit",
+      "The Caterpillar",
+      "The March Hare"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Street-Art-Künstler schuf das Motiv „Girl with Balloon“ („Mädchen mit Ballon“)?",
+     "correct": "Banksy",
+     "wrong": [
+      "Keith Haring",
+      "Shepard Fairey",
+      "Jean-Michel Basquiat"
+     ]
+    },
+    "en": {
+     "text": "Which street artist created the motif “Girl with Balloon”?",
+     "correct": "Banksy",
+     "wrong": [
+      "Keith Haring",
+      "Shepard Fairey",
+      "Jean-Michel Basquiat"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Fabeltier ist Spyro in den gleichnamigen Spielen?",
+     "correct": "Ein Drache",
+     "wrong": [
+      "Ein Einhorn",
+      "Ein Greif",
+      "Ein Phönix"
+     ]
+    },
+    "en": {
+     "text": "Which mythical creature is Spyro in the games of the same name?",
+     "correct": "A dragon",
+     "wrong": [
+      "A unicorn",
+      "A griffin",
+      "A phoenix"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Tastenkombination öffnet in vielen Programmen die Suche?",
+     "correct": "Strg + F",
+     "wrong": [
+      "Strg + J",
+      "Strg + H",
+      "Strg + G"
+     ]
+    },
+    "en": {
+     "text": "Which keyboard shortcut opens search in many programs?",
+     "correct": "Ctrl + F",
+     "wrong": [
+      "Ctrl + J",
+      "Ctrl + H",
+      "Ctrl + G"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Jahre hat ein Jahrzehnt?",
+     "correct": "10",
+     "wrong": [
+      "5",
+      "100",
+      "20"
+     ]
+    },
+    "en": {
+     "text": "How many years are in a decade?",
+     "correct": "10",
+     "wrong": [
+      "5",
+      "100",
+      "20"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Land hat als einziges eine nicht rechteckige Nationalflagge?",
+     "correct": "Nepal",
+     "wrong": [
+      "Bhutan",
+      "Tibet",
+      "Mongolei"
+     ]
+    },
+    "en": {
+     "text": "Which country has the only non-rectangular national flag?",
+     "correct": "Nepal",
+     "wrong": [
+      "Bhutan",
+      "Tibet",
+      "Mongolia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr wurde der Panamakanal eröffnet?",
+     "correct": "1914",
+     "wrong": [
+      "1869",
+      "1930",
+      "1900"
+     ]
+    },
+    "en": {
+     "text": "In which year was the Panama Canal opened?",
+     "correct": "1914",
+     "wrong": [
+      "1869",
+      "1930",
+      "1900"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie lautet die chemische Formel von Kochsalz?",
+     "correct": "NaCl",
+     "wrong": [
+      "KCl",
+      "CaCO3",
+      "H2SO4"
+     ]
+    },
+    "en": {
+     "text": "What is the chemical formula of table salt?",
+     "correct": "NaCl",
+     "wrong": [
+      "KCl",
+      "CaCO3",
+      "H2SO4"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Kontinent leben Giraffen in freier Wildbahn?",
+     "correct": "Afrika",
+     "wrong": [
+      "Asien",
+      "Südamerika",
+      "Australien"
+     ]
+    },
+    "en": {
+     "text": "On which continent do giraffes live in the wild?",
+     "correct": "Africa",
+     "wrong": [
+      "Asia",
+      "South America",
+      "Australia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Stürmerstar Neymar?",
+     "correct": "Brasilien",
+     "wrong": [
+      "Argentinien",
+      "Portugal",
+      "Uruguay"
+     ]
+    },
+    "en": {
+     "text": "Which country does the star forward Neymar come from?",
+     "correct": "Brazil",
+     "wrong": [
+      "Argentina",
+      "Portugal",
+      "Uruguay"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer erfand die Zeichentrickserie „Die Simpsons“?",
+     "correct": "Matt Groening",
+     "wrong": [
+      "Seth MacFarlane",
+      "Trey Parker",
+      "Walt Disney"
+     ]
+    },
+    "en": {
+     "text": "Who created the animated series “The Simpsons”?",
+     "correct": "Matt Groening",
+     "wrong": [
+      "Seth MacFarlane",
+      "Trey Parker",
+      "Walt Disney"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte das Klavierwerk „Bilder einer Ausstellung“?",
+     "correct": "Modest Mussorgski",
+     "wrong": [
+      "Pjotr Tschaikowski",
+      "Sergei Rachmaninow",
+      "Nikolai Rimski-Korsakow"
+     ]
+    },
+    "en": {
+     "text": "Who composed the piano work “Pictures at an Exhibition”?",
+     "correct": "Modest Mussorgsky",
+     "wrong": [
+      "Pyotr Tchaikovsky",
+      "Sergei Rachmaninoff",
+      "Nikolai Rimsky-Korsakov"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier ist Babe in dem gleichnamigen Film nach dem Buch?",
+     "correct": "Ein Schwein",
+     "wrong": [
+      "Ein Schaf",
+      "Eine Kuh",
+      "Ein Pferd"
+     ]
+    },
+    "en": {
+     "text": "Which animal is Babe in the film of the same name based on the book?",
+     "correct": "A pig",
+     "wrong": [
+      "A sheep",
+      "A cow",
+      "A horse"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Berliner Anlage vereint mehrere berühmte Museen auf einer Flussinsel?",
+     "correct": "Museumsinsel",
+     "wrong": [
+      "Zitadelle",
+      "Tempelhof",
+      "Gendarmenmarkt"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Kartenspiel mit deutschem Blatt ist besonders in Bayern beliebt?",
+     "correct": "Schafkopf",
+     "wrong": [
+      "Poker",
+      "Bridge",
+      "Canasta"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Tastenkombination speichert ein Dokument?",
+     "correct": "Strg + S",
+     "wrong": [
+      "Strg + P",
+      "Strg + D",
+      "Strg + O"
+     ]
+    },
+    "en": {
+     "text": "Which keyboard shortcut saves a document?",
+     "correct": "Ctrl + S",
+     "wrong": [
+      "Ctrl + P",
+      "Ctrl + D",
+      "Ctrl + O"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Sprache wird insgesamt (mit Zweitsprachlern) von den meisten Menschen gesprochen?",
+     "correct": "Englisch",
+     "wrong": [
+      "Mandarin",
+      "Spanisch",
+      "Hindi"
+     ]
+    },
+    "en": {
+     "text": "Which language is spoken by the most people overall (including second-language speakers)?",
+     "correct": "English",
+     "wrong": [
+      "Mandarin",
+      "Spanish",
+      "Hindi"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Land hat eine rote Flagge mit einem weißen, zur Mastseite hin versetzten Kreuz?",
+     "correct": "Dänemark",
+     "wrong": [
+      "England",
+      "Georgien",
+      "Schweiz"
+     ]
+    },
+    "en": {
+     "text": "Which country has a flag with a white cross on a red field, shifted slightly to the left?",
+     "correct": "Denmark",
+     "wrong": [
+      "England",
+      "Georgia",
+      "Switzerland"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer war die erste Frau, die einen Nobelpreis erhielt?",
+     "correct": "Marie Curie",
+     "wrong": [
+      "Mutter Teresa",
+      "Bertha von Suttner",
+      "Selma Lagerlöf"
+     ]
+    },
+    "en": {
+     "text": "Who was the first woman to win a Nobel Prize?",
+     "correct": "Marie Curie",
+     "wrong": [
+      "Mutter Teresa",
+      "Bertha von Suttner",
+      "Selma Lagerlöf"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man bewegte Luft?",
+     "correct": "Wind",
+     "wrong": [
+      "Nebel",
+      "Wolke",
+      "Regen"
+     ]
+    },
+    "en": {
+     "text": "What is moving air called?",
+     "correct": "Wind",
+     "wrong": [
+      "Fog",
+      "Cloud",
+      "Rain"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Fisch gehört zu den schnellsten Schwimmern der Meere?",
+     "correct": "Fächerfisch",
+     "wrong": [
+      "Karpfen",
+      "Hering",
+      "Seepferdchen"
+     ]
+    },
+    "en": {
+     "text": "Which fish is among the fastest swimmers in the seas?",
+     "correct": "Sailfish",
+     "wrong": [
+      "Carp",
+      "Herring",
+      "Seahorse"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher niederländische Fußballer gilt als Erfinder des „Totalen Fußballs“ und trug die Nummer 14?",
+     "correct": "Johan Cruyff",
+     "wrong": [
+      "Marco van Basten",
+      "Ruud Gullit",
+      "Dennis Bergkamp"
+     ]
+    },
+    "en": {
+     "text": "Which Dutch footballer is regarded as the face of “Total Football” and wore number 14?",
+     "correct": "Johan Cruyff",
+     "wrong": [
+      "Marco van Basten",
+      "Ruud Gullit",
+      "Dennis Bergkamp"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der sprechende Hund der Familie Griffin in „Family Guy“?",
+     "correct": "Brian",
+     "wrong": [
+      "Stewie",
+      "Cleveland",
+      "Quagmire"
+     ]
+    },
+    "en": {
+     "text": "What is the talking dog of the Griffin family in “Family Guy” called?",
+     "correct": "Brian",
+     "wrong": [
+      "Stewie",
+      "Cleveland",
+      "Quagmire"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Zu welcher Instrumentengruppe gehören Geige, Bratsche und Cello?",
+     "correct": "Streichinstrumente",
+     "wrong": [
+      "Blechblasinstrumente",
+      "Schlaginstrumente",
+      "Holzblasinstrumente"
+     ]
+    },
+    "en": {
+     "text": "To which instrument family do the violin, viola and cello belong?",
+     "correct": "String instruments",
+     "wrong": [
+      "Brass instruments",
+      "Percussion instruments",
+      "Woodwind instruments"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Ferkel, das mit Winnie Puuh befreundet ist?",
+     "correct": "Ferkel (Piglet)",
+     "wrong": [
+      "Eule",
+      "Känguru",
+      "Tigger"
+     ]
+    },
+    "en": {
+     "text": "What is the little pig that is friends with Winnie the Pooh called?",
+     "correct": "Piglet",
+     "wrong": [
+      "Owl",
+      "Kanga",
+      "Tigger"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man ein großes gedrucktes Bild, das man an die Wand hängt?",
+     "correct": "Poster",
+     "wrong": [
+      "Skulptur",
+      "Statue",
+      "Relief"
+     ]
+    },
+    "en": {
+     "text": "What do you call a large printed picture that you hang on the wall?",
+     "correct": "Poster",
+     "wrong": [
+      "Sculpture",
+      "Statue",
+      "Relief"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Handyspiel-Hersteller entwickelte „Clash Royale“?",
+     "correct": "Supercell",
+     "wrong": [
+      "Rovio",
+      "King",
+      "Zynga"
+     ]
+    },
+    "en": {
+     "text": "Which mobile game company developed “Clash Royale”?",
+     "correct": "Supercell",
+     "wrong": [
+      "Rovio",
+      "King",
+      "Zynga"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Symbol findet man meist auf der Ein-/Aus-Taste von Geräten?",
+     "correct": "Ein Kreis mit senkrechtem Strich",
+     "wrong": [
+      "Ein Dreieck",
+      "Ein Stern",
+      "Ein Herz"
+     ]
+    },
+    "en": {
+     "text": "Which symbol is usually on the power button of devices?",
+     "correct": "A circle with a vertical line",
+     "wrong": [
+      "A triangle",
+      "A star",
+      "A heart"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farben hat die Flagge Italiens?",
+     "correct": "Grün, Weiß, Rot",
+     "wrong": [
+      "Rot, Weiß, Blau",
+      "Grün, Gelb, Rot",
+      "Blau, Weiß, Rot"
+     ]
+    },
+    "en": {
+     "text": "What colours are on the flag of Italy?",
+     "correct": "Green, white, red",
+     "wrong": [
+      "Red, white, blue",
+      "Green, yellow, red",
+      "Blue, white, red"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Land hat eine quadratische Flagge mit weißem Kreuz auf rotem Grund?",
+     "correct": "Schweiz",
+     "wrong": [
+      "Dänemark",
+      "Österreich",
+      "Tschechien"
+     ]
+    },
+    "en": {
+     "text": "Which country has a square flag with a white cross on a red field?",
+     "correct": "Switzerland",
+     "wrong": [
+      "Denmark",
+      "Austria",
+      "Czechia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches der sieben antiken Weltwunder ist noch erhalten?",
+     "correct": "Die Pyramide des Cheops",
+     "wrong": [
+      "Der Koloss von Rhodos",
+      "Die Hängenden Gärten",
+      "Der Leuchtturm von Alexandria"
+     ]
+    },
+    "en": {
+     "text": "Which of the seven wonders of the ancient world still exists?",
+     "correct": "The Great Pyramid of Giza",
+     "wrong": [
+      "The Colossus of Rhodes",
+      "The Hanging Gardens",
+      "The Lighthouse of Alexandria"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie lautet die chemische Formel von Sauerstoff als Gas?",
+     "correct": "O2",
+     "wrong": [
+      "O",
+      "O3",
+      "CO"
+     ]
+    },
+    "en": {
+     "text": "What is the chemical formula of oxygen gas?",
+     "correct": "O2",
+     "wrong": [
+      "O",
+      "O3",
+      "CO"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Auf welcher Halbkugel der Erde leben die meisten Pinguinarten?",
+     "correct": "Südhalbkugel",
+     "wrong": [
+      "Nordhalbkugel",
+      "Östliche Halbkugel",
+      "Keine bestimmte"
+     ]
+    },
+    "en": {
+     "text": "On which hemisphere do most penguin species live?",
+     "correct": "Southern Hemisphere",
+     "wrong": [
+      "Northern Hemisphere",
+      "Eastern Hemisphere",
+      "No particular one"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Stadion von Manchester United?",
+     "correct": "Old Trafford",
+     "wrong": [
+      "Anfield",
+      "Stamford Bridge",
+      "Emirates Stadium"
+     ]
+    },
+    "en": {
+     "text": "What is Manchester United's stadium called?",
+     "correct": "Old Trafford",
+     "wrong": [
+      "Anfield",
+      "Stamford Bridge",
+      "Emirates Stadium"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Netflix-Serie erzählt das Leben der britischen Königin Elisabeth II.?",
+     "correct": "The Crown",
+     "wrong": [
+      "Bridgerton",
+      "The Queen's Gambit",
+      "Victoria"
+     ]
+    },
+    "en": {
+     "text": "Which Netflix series tells the life of British Queen Elizabeth II?",
+     "correct": "The Crown",
+     "wrong": [
+      "Bridgerton",
+      "The Queen's Gambit",
+      "Victoria"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Zu welcher Instrumentengruppe gehören Trompete und Posaune?",
+     "correct": "Blechblasinstrumente",
+     "wrong": [
+      "Holzblasinstrumente",
+      "Zupfinstrumente",
+      "Schlaginstrumente"
+     ]
+    },
+    "en": {
+     "text": "To which instrument family do the trumpet and trombone belong?",
+     "correct": "Brass instruments",
+     "wrong": [
+      "Woodwind instruments",
+      "Plucked instruments",
+      "Percussion instruments"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Das Fräulein von Scuderi“ und „Der Sandmann“?",
+     "correct": "E. T. A. Hoffmann",
+     "wrong": [
+      "Wilhelm Hauff",
+      "Joseph von Eichendorff",
+      "Theodor Storm"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt steht das Pergamonmuseum mit dem Pergamonaltar?",
+     "correct": "Berlin",
+     "wrong": [
+      "Athen",
+      "Istanbul",
+      "London"
+     ]
+    },
+    "en": {
+     "text": "In which city is the Pergamon Museum with the Pergamon Altar?",
+     "correct": "Berlin",
+     "wrong": [
+      "Athens",
+      "Istanbul",
+      "London"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Bei welchem Endless-Runner-Spiel flieht ein Graffiti-Sprayer vor einem Aufseher durch Zugstrecken?",
+     "correct": "Subway Surfers",
+     "wrong": [
+      "Temple Run",
+      "Crossy Road",
+      "Minecraft"
+     ]
+    },
+    "en": {
+     "text": "In which endless-runner game does a graffiti artist flee from an inspector along train tracks?",
+     "correct": "Subway Surfers",
+     "wrong": [
+      "Temple Run",
+      "Crossy Road",
+      "Minecraft"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Tastenkombination markiert alles in einem Dokument?",
+     "correct": "Strg + A",
+     "wrong": [
+      "Strg + M",
+      "Strg + K",
+      "Strg + E"
+     ]
+    },
+    "en": {
+     "text": "Which keyboard shortcut selects everything in a document?",
+     "correct": "Ctrl + A",
+     "wrong": [
+      "Ctrl + M",
+      "Ctrl + K",
+      "Ctrl + E"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das höchste Gebäude der Welt?",
+     "correct": "Burj Khalifa",
+     "wrong": [
+      "Empire State Building",
+      "Eiffelturm",
+      "Petronas Towers"
+     ]
+    },
+    "en": {
+     "text": "What is the tallest building in the world?",
+     "correct": "Burj Khalifa",
+     "wrong": [
+      "Empire State Building",
+      "Eiffelturm",
+      "Petronas Towers"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Land hat einen Halbmond mit Stern auf roter Flagge?",
+     "correct": "Türkei",
+     "wrong": [
+      "Griechenland",
+      "Ägypten",
+      "Libanon"
+     ]
+    },
+    "en": {
+     "text": "Which country has a crescent and star on a red flag?",
+     "correct": "Turkey",
+     "wrong": [
+      "Greece",
+      "Egypt",
+      "Lebanon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr wurden die Vereinten Nationen gegründet?",
+     "correct": "1945",
+     "wrong": [
+      "1919",
+      "1955",
+      "1939"
+     ]
+    },
+    "en": {
+     "text": "In which year were the United Nations founded?",
+     "correct": "1945",
+     "wrong": [
+      "1919",
+      "1955",
+      "1939"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was passiert, wenn man zwei gleiche Magnetpole aneinander hält?",
+     "correct": "Sie stoßen sich ab",
+     "wrong": [
+      "Sie ziehen sich an",
+      "Nichts",
+      "Sie verschmelzen"
+     ]
+    },
+    "en": {
+     "text": "What happens when you hold two like magnetic poles together?",
+     "correct": "They repel each other",
+     "wrong": [
+      "They attract each other",
+      "Nothing",
+      "They fuse"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Kontinent leben Faultiere?",
+     "correct": "Mittel- und Südamerika",
+     "wrong": [
+      "Afrika",
+      "Asien",
+      "Australien"
+     ]
+    },
+    "en": {
+     "text": "On which continent(s) do sloths live?",
+     "correct": "Central and South America",
+     "wrong": [
+      "Africa",
+      "Asia",
+      "Australia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Land hat bei den Olympischen Sommerspielen insgesamt die meisten Goldmedaillen gewonnen?",
+     "correct": "USA",
+     "wrong": [
+      "China",
+      "Sowjetunion",
+      "Großbritannien"
+     ]
+    },
+    "en": {
+     "text": "Which country has won the most gold medals overall at the Summer Olympics?",
+     "correct": "USA",
+     "wrong": [
+      "China",
+      "Soviet Union",
+      "Great Britain"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Freds bester Freund und Nachbar in „Familie Feuerstein“?",
+     "correct": "Barney Geröllheimer",
+     "wrong": [
+      "Wilma",
+      "Bamm-Bamm",
+      "Dino"
+     ]
+    },
+    "en": {
+     "text": "What is Fred's best friend and neighbour called in “The Flintstones”?",
+     "correct": "Barney Rubble",
+     "wrong": [
+      "Wilma",
+      "Bamm-Bamm",
+      "Dino"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man Gesang ohne Instrumentalbegleitung?",
+     "correct": "A cappella",
+     "wrong": [
+      "Playback",
+      "Rezitativ",
+      "Kanon"
+     ]
+    },
+    "en": {
+     "text": "What is singing without instrumental accompaniment called?",
+     "correct": "A cappella",
+     "wrong": [
+      "Playback",
+      "Rezitativ",
+      "Kanon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier ist Lassie in den bekannten Geschichten?",
+     "correct": "Ein Hund",
+     "wrong": [
+      "Eine Katze",
+      "Ein Pferd",
+      "Ein Fuchs"
+     ]
+    },
+    "en": {
+     "text": "Which animal is Lassie in the well-known stories?",
+     "correct": "A dog",
+     "wrong": [
+      "A cat",
+      "A horse",
+      "A fox"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt befindet sich das Centre Pompidou?",
+     "correct": "Paris",
+     "wrong": [
+      "Lyon",
+      "Brüssel",
+      "Genf"
+     ]
+    },
+    "en": {
+     "text": "In which city is the Centre Pompidou?",
+     "correct": "Paris",
+     "wrong": [
+      "Lyon",
+      "Brussels",
+      "Geneva"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe hat die Krawatte von Donkey Kong?",
+     "correct": "Rot",
+     "wrong": [
+      "Blau",
+      "Gelb",
+      "Grün"
+     ]
+    },
+    "en": {
+     "text": "What colour is Donkey Kong's tie?",
+     "correct": "Red",
+     "wrong": [
+      "Blue",
+      "Yellow",
+      "Green"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht die Abkürzung CAPTCHA?",
+     "correct": "Completely Automated Public Turing test to tell Computers and Humans Apart",
+     "wrong": [
+      "Computer Access Protection Technology",
+      "Copy And Paste Text Check",
+      "Central Authentication Process"
+     ]
+    },
+    "en": {
+     "text": "What does the abbreviation CAPTCHA stand for?",
+     "correct": "Completely Automated Public Turing test to tell Computers and Humans Apart",
+     "wrong": [
+      "Computer Access Protection Technology",
+      "Copy And Paste Text Check",
+      "Central Authentication Process"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Brüder führten 1895 den ersten öffentlichen Kinofilm vor?",
+     "correct": "Die Brüder Lumière",
+     "wrong": [
+      "Die Brüder Wright",
+      "Die Brüder Grimm",
+      "Die Brüder Skladanowsky"
+     ]
+    },
+    "en": {
+     "text": "Which brothers showed the first public film screening in 1895?",
+     "correct": "The Lumière brothers",
+     "wrong": [
+      "The Wright brothers",
+      "The Brothers Grimm",
+      "The Skladanowsky brothers"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Farben hat die Flagge Irlands?",
+     "correct": "Grün, Weiß, Orange",
+     "wrong": [
+      "Grün, Weiß, Rot",
+      "Orange, Weiß, Blau",
+      "Grün, Gelb, Weiß"
+     ]
+    },
+    "en": {
+     "text": "What colours are on the flag of Ireland?",
+     "correct": "Green, white, orange",
+     "wrong": [
+      "Green, white, red",
+      "Orange, white, blue",
+      "Green, yellow, white"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer überquerte 1932 als erste Frau den Atlantik im Alleinflug?",
+     "correct": "Amelia Earhart",
+     "wrong": [
+      "Bessie Coleman",
+      "Hanna Reitsch",
+      "Jacqueline Cochran"
+     ]
+    },
+    "en": {
+     "text": "Who was the first woman to fly solo across the Atlantic, in 1932?",
+     "correct": "Amelia Earhart",
+     "wrong": [
+      "Bessie Coleman",
+      "Hanna Reitsch",
+      "Jacqueline Cochran"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Element besteht Diamant?",
+     "correct": "Kohlenstoff",
+     "wrong": [
+      "Silizium",
+      "Aluminium",
+      "Kalzium"
+     ]
+    },
+    "en": {
+     "text": "Which element is diamond made of?",
+     "correct": "Carbon",
+     "wrong": [
+      "Silicon",
+      "Aluminium",
+      "Calcium"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land leben Große Pandas in freier Wildbahn?",
+     "correct": "China",
+     "wrong": [
+      "Japan",
+      "Indien",
+      "Thailand"
+     ]
+    },
+    "en": {
+     "text": "In which country do giant pandas live in the wild?",
+     "correct": "China",
+     "wrong": [
+      "Japan",
+      "India",
+      "Thailand"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Farben haben die olympischen Ringe?",
+     "correct": "Blau, Gelb, Schwarz, Grün, Rot",
+     "wrong": [
+      "Rot, Gelb, Grün, Blau, Weiß",
+      "Blau, Orange, Schwarz, Violett, Rot",
+      "Gold, Silber, Bronze, Rot, Blau"
+     ]
+    },
+    "en": {
+     "text": "What colours are the Olympic rings?",
+     "correct": "Blue, yellow, black, green, red",
+     "wrong": [
+      "Red, yellow, green, blue, white",
+      "Blue, orange, black, purple, red",
+      "Gold, silver, bronze, red, blue"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der dicke freche Junge in der Serie „South Park“?",
+     "correct": "Eric Cartman",
+     "wrong": [
+      "Stan Marsh",
+      "Kyle Broflovski",
+      "Kenny McCormick"
+     ]
+    },
+    "en": {
+     "text": "What is the fat, cheeky boy in the series “South Park” called?",
+     "correct": "Eric Cartman",
+     "wrong": [
+      "Stan Marsh",
+      "Kyle Broflovski",
+      "Kenny McCormick"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Zu welcher Instrumentengruppe gehören Pauke, Becken und Xylophon?",
+     "correct": "Schlaginstrumente",
+     "wrong": [
+      "Streichinstrumente",
+      "Blechblasinstrumente",
+      "Tasteninstrumente"
+     ]
+    },
+    "en": {
+     "text": "To which instrument family do the timpani, cymbals and xylophone belong?",
+     "correct": "Percussion instruments",
+     "wrong": [
+      "String instruments",
+      "Brass instruments",
+      "Keyboard instruments"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb die Komödie „Der zerbrochne Krug“?",
+     "correct": "Heinrich von Kleist",
+     "wrong": [
+      "Gotthold Ephraim Lessing",
+      "Georg Büchner",
+      "Friedrich Hebbel"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man eine Geschichte, die in gezeichneten Bildern mit Sprechblasen erzählt wird?",
+     "correct": "Comic",
+     "wrong": [
+      "Aquarell",
+      "Mosaik",
+      "Fresko"
+     ]
+    },
+    "en": {
+     "text": "What do you call a story told in drawn pictures with speech bubbles?",
+     "correct": "Comic",
+     "wrong": [
+      "Watercolour",
+      "Mosaic",
+      "Fresco"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Mit welcher Tastenfolge beginnt der berühmte Konami-Code?",
+     "correct": "Hoch, Hoch, Runter, Runter",
+     "wrong": [
+      "Links, Rechts, Links, Rechts",
+      "A, B, A, B",
+      "Start, Select, Start, Select"
+     ]
+    },
+    "en": {
+     "text": "With which sequence of buttons does the famous Konami Code begin?",
+     "correct": "Up, Up, Down, Down",
+     "wrong": [
+      "Left, Right, Left, Right",
+      "A, B, A, B",
+      "Start, Select, Start, Select"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Tastenkombination öffnet in vielen Programmen den Druckdialog?",
+     "correct": "Strg + P",
+     "wrong": [
+      "Strg + D",
+      "Strg + T",
+      "Strg + U"
+     ]
+    },
+    "en": {
+     "text": "Which keyboard shortcut opens the print dialogue in many programs?",
+     "correct": "Ctrl + P",
+     "wrong": [
+      "Ctrl + D",
+      "Ctrl + T",
+      "Ctrl + U"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Zeitzonen hat Russland?",
+     "correct": "11",
+     "wrong": [
+      "3",
+      "6",
+      "24"
+     ]
+    },
+    "en": {
+     "text": "How many time zones does Russia have?",
+     "correct": "11",
+     "wrong": [
+      "3",
+      "6",
+      "24"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farben hat die Flagge Spaniens?",
+     "correct": "Rot und Gelb",
+     "wrong": [
+      "Rot und Weiß",
+      "Blau und Gelb",
+      "Grün und Rot"
+     ]
+    },
+    "en": {
+     "text": "What colours are on the flag of Spain?",
+     "correct": "Red and yellow",
+     "wrong": [
+      "Red and white",
+      "Blue and yellow",
+      "Green and red"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier wurde 1957 als erstes Lebewesen in eine Erdumlaufbahn geschossen?",
+     "correct": "Die Hündin Laika",
+     "wrong": [
+      "Ein Affe",
+      "Eine Katze",
+      "Eine Maus"
+     ]
+    },
+    "en": {
+     "text": "Which animal was the first living creature sent into Earth orbit in 1957?",
+     "correct": "The dog Laika",
+     "wrong": [
+      "A monkey",
+      "A cat",
+      "A mouse"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Gas riecht nach faulen Eiern?",
+     "correct": "Schwefelwasserstoff",
+     "wrong": [
+      "Methan",
+      "Ammoniak",
+      "Kohlenmonoxid"
+     ]
+    },
+    "en": {
+     "text": "Which gas smells of rotten eggs?",
+     "correct": "Hydrogen sulfide",
+     "wrong": [
+      "Methane",
+      "Ammonia",
+      "Carbon monoxide"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Kontinent lebt der Bison?",
+     "correct": "Nordamerika",
+     "wrong": [
+      "Afrika",
+      "Australien",
+      "Südamerika"
+     ]
+    },
+    "en": {
+     "text": "On which continent does the bison live?",
+     "correct": "North America",
+     "wrong": [
+      "Africa",
+      "Australia",
+      "South America"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Verein aus Buenos Aires hat die Farben Blau und Gelb und trägt den Namen „Xeneizes“?",
+     "correct": "Boca Juniors",
+     "wrong": [
+      "River Plate",
+      "Independiente",
+      "Racing Club"
+     ]
+    },
+    "en": {
+     "text": "Which Buenos Aires club in blue and gold is nicknamed “Xeneizes”?",
+     "correct": "Boca Juniors",
+     "wrong": [
+      "River Plate",
+      "Independiente",
+      "Racing Club"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Besitzer der Kneipe in „Die Simpsons“?",
+     "correct": "Moe",
+     "wrong": [
+      "Barney",
+      "Lenny",
+      "Apu"
+     ]
+    },
+    "en": {
+     "text": "What is the name of the tavern owner in “The Simpsons”?",
+     "correct": "Moe",
+     "wrong": [
+      "Barney",
+      "Lenny",
+      "Apu"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher französische Komponist schrieb „Clair de lune“?",
+     "correct": "Claude Debussy",
+     "wrong": [
+      "Maurice Ravel",
+      "Erik Satie",
+      "Georges Bizet"
+     ]
+    },
+    "en": {
+     "text": "Which French composer wrote “Clair de lune”?",
+     "correct": "Claude Debussy",
+     "wrong": [
+      "Maurice Ravel",
+      "Erik Satie",
+      "Georges Bizet"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt Pippi Langstrumpfs Pferd?",
+     "correct": "Kleiner Onkel",
+     "wrong": [
+      "Herr Nilsson",
+      "Lilla Gubben",
+      "Dunkelstern"
+     ]
+    },
+    "en": {
+     "text": "What is Pippi Longstocking's horse called?",
+     "correct": "Little Uncle",
+     "wrong": [
+      "Mr. Nilsson",
+      "Old Man",
+      "Darkstar"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt steht der Zwinger mit seiner Gemäldegalerie?",
+     "correct": "Dresden",
+     "wrong": [
+      "Leipzig",
+      "Kassel",
+      "Weimar"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe hat das Pokémon Pikachu?",
+     "correct": "Gelb",
+     "wrong": [
+      "Rot",
+      "Blau",
+      "Grün"
+     ]
+    },
+    "en": {
+     "text": "What colour is the Pokémon Pikachu?",
+     "correct": "Yellow",
+     "wrong": [
+      "Red",
+      "Blue",
+      "Green"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Tastenkombination fügt kopierten Text unter Windows ein?",
+     "correct": "Strg + V",
+     "wrong": [
+      "Strg + C",
+      "Strg + S",
+      "Strg + A"
+     ]
+    },
+    "en": {
+     "text": "Which keyboard shortcut pastes copied text on Windows?",
+     "correct": "Ctrl + V",
+     "wrong": [
+      "Ctrl + C",
+      "Ctrl + S",
+      "Ctrl + A"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie alt ist die Erde ungefähr?",
+     "correct": "4,5 Milliarden Jahre",
+     "wrong": [
+      "4,5 Millionen Jahre",
+      "450 Millionen Jahre",
+      "45 Milliarden Jahre"
+     ]
+    },
+    "en": {
+     "text": "Roughly how old is the Earth?",
+     "correct": "4.5 billion years",
+     "wrong": [
+      "4.5 million years",
+      "450 million years",
+      "45 billion years"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Land zeigt auf seiner Flagge einen Drachen?",
+     "correct": "Bhutan",
+     "wrong": [
+      "China",
+      "Japan",
+      "Vietnam"
+     ]
+    },
+    "en": {
+     "text": "Which country shows a dragon on its flag?",
+     "correct": "Bhutan",
+     "wrong": [
+      "China",
+      "Japan",
+      "Vietnam"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Stadt war 1896 Schauplatz der ersten Olympischen Spiele der Neuzeit?",
+     "correct": "Athen",
+     "wrong": [
+      "Paris",
+      "London",
+      "Rom"
+     ]
+    },
+    "en": {
+     "text": "Which city hosted the first modern Olympic Games in 1896?",
+     "correct": "Athens",
+     "wrong": [
+      "Paris",
+      "London",
+      "Rome"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe hat Rost?",
+     "correct": "Rotbraun",
+     "wrong": [
+      "Grün",
+      "Blau",
+      "Weiß"
+     ]
+    },
+    "en": {
+     "text": "What colour is rust?",
+     "correct": "Reddish brown",
+     "wrong": [
+      "Green",
+      "Blue",
+      "White"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Kontinent leben Löwen in freier Wildbahn (fast ausschließlich)?",
+     "correct": "Afrika",
+     "wrong": [
+      "Asien",
+      "Südamerika",
+      "Europa"
+     ]
+    },
+    "en": {
+     "text": "On which continent do lions mostly live in the wild?",
+     "correct": "Africa",
+     "wrong": [
+      "Asia",
+      "South America",
+      "Europe"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe tragen die Fußballer der englischen Nationalmannschaft traditionell?",
+     "correct": "Weiß",
+     "wrong": [
+      "Rot",
+      "Blau",
+      "Grün"
+     ]
+    },
+    "en": {
+     "text": "What colour do the English national football team traditionally wear?",
+     "correct": "White",
+     "wrong": [
+      "Red",
+      "Blue",
+      "Green"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der reiche Besitzer des Atomkraftwerks in „Die Simpsons“?",
+     "correct": "Mr. Burns",
+     "wrong": [
+      "Mr. Smithers",
+      "Principal Skinner",
+      "Kent Brockman"
+     ]
+    },
+    "en": {
+     "text": "What is the rich owner of the nuclear plant in “The Simpsons” called?",
+     "correct": "Mr. Burns",
+     "wrong": [
+      "Mr. Smithers",
+      "Principal Skinner",
+      "Kent Brockman"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte das Ballett „Schwanensee“?",
+     "correct": "Pjotr Tschaikowski",
+     "wrong": [
+      "Sergei Prokofjew",
+      "Igor Strawinsky",
+      "Johann Strauss"
+     ]
+    },
+    "en": {
+     "text": "Who composed the ballet “Swan Lake”?",
+     "correct": "Pyotr Tchaikovsky",
+     "wrong": [
+      "Sergei Prokofiev",
+      "Igor Stravinsky",
+      "Johann Strauss"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier ist Moby Dick in Melvilles Roman?",
+     "correct": "Ein Wal",
+     "wrong": [
+      "Ein Hai",
+      "Ein Krake",
+      "Ein Delfin"
+     ]
+    },
+    "en": {
+     "text": "Which animal is Moby Dick in Melville's novel?",
+     "correct": "A whale",
+     "wrong": [
+      "A shark",
+      "An octopus",
+      "A dolphin"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt befindet sich die Albertina mit ihrer berühmten Grafiksammlung?",
+     "correct": "Wien",
+     "wrong": [
+      "Salzburg",
+      "Prag",
+      "Budapest"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe hat die Latzhose von Mario?",
+     "correct": "Blau",
+     "wrong": [
+      "Rot",
+      "Grün",
+      "Gelb"
+     ]
+    },
+    "en": {
+     "text": "What colour are Mario's overalls?",
+     "correct": "Blue",
+     "wrong": [
+      "Red",
+      "Green",
+      "Yellow"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Tastenkombination macht den letzten Schritt rückgängig?",
+     "correct": "Strg + Z",
+     "wrong": [
+      "Strg + Y",
+      "Strg + N",
+      "Strg + R"
+     ]
+    },
+    "en": {
+     "text": "Which keyboard shortcut undoes the last step?",
+     "correct": "Ctrl + Z",
+     "wrong": [
+      "Ctrl + Y",
+      "Ctrl + N",
+      "Ctrl + R"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Auf welchem Kontinent leben die meisten Menschen?",
+     "correct": "Asien",
+     "wrong": [
+      "Afrika",
+      "Europa",
+      "Nordamerika"
+     ]
+    },
+    "en": {
+     "text": "On which continent do the most people live?",
+     "correct": "Asia",
+     "wrong": [
+      "Africa",
+      "Europe",
+      "North America"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farben hat die Flagge Russlands?",
+     "correct": "Weiß, Blau, Rot",
+     "wrong": [
+      "Rot, Blau, Weiß",
+      "Schwarz, Gelb, Rot",
+      "Grün, Weiß, Rot"
+     ]
+    },
+    "en": {
+     "text": "What colours are on the flag of Russia (top to bottom)?",
+     "correct": "White, blue, red",
+     "wrong": [
+      "Red, blue, white",
+      "Black, yellow, red",
+      "Green, white, red"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches antike Weltwunder stand der Sage nach am Hafen der Insel Rhodos?",
+     "correct": "Der Koloss von Rhodos",
+     "wrong": [
+      "Das Mausoleum von Halikarnassos",
+      "Der Artemistempel",
+      "Die Zeusstatue"
+     ]
+    },
+    "en": {
+     "text": "Which wonder of the ancient world is said to have stood in the harbour of Rhodes?",
+     "correct": "The Colossus of Rhodes",
+     "wrong": [
+      "The Mausoleum at Halicarnassus",
+      "The Temple of Artemis",
+      "The Statue of Zeus"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Anlage wandelt Windenergie in Strom um?",
+     "correct": "Windkraftanlage",
+     "wrong": [
+      "Solarzelle",
+      "Wasserkraftwerk",
+      "Kohlekraftwerk"
+     ]
+    },
+    "en": {
+     "text": "Which installation converts wind energy into electricity?",
+     "correct": "Wind turbine",
+     "wrong": [
+      "Solar cell",
+      "Hydroelectric plant",
+      "Coal power plant"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Wirbeltier wird vermutlich am ältesten?",
+     "correct": "Grönlandhai",
+     "wrong": [
+      "Elefant",
+      "Blauwal",
+      "Schildkröte"
+     ]
+    },
+    "en": {
+     "text": "Which vertebrate probably lives the longest?",
+     "correct": "Greenland shark",
+     "wrong": [
+      "Elephant",
+      "Blue whale",
+      "Tortoise"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Stürmerstar Erling Haaland?",
+     "correct": "Norwegen",
+     "wrong": [
+      "Schweden",
+      "Dänemark",
+      "Island"
+     ]
+    },
+    "en": {
+     "text": "Which country does the star striker Erling Haaland come from?",
+     "correct": "Norway",
+     "wrong": [
+      "Sweden",
+      "Denmark",
+      "Iceland"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Baby der Familie Simpson, das einen Schnuller trägt?",
+     "correct": "Maggie",
+     "wrong": [
+      "Lisa",
+      "Lola",
+      "Lucy"
+     ]
+    },
+    "en": {
+     "text": "What is the Simpson family's baby with a pacifier called?",
+     "correct": "Maggie",
+     "wrong": [
+      "Lisa",
+      "Lola",
+      "Lucy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte die Orchestersuite „Die Planeten“?",
+     "correct": "Gustav Holst",
+     "wrong": [
+      "Edward Elgar",
+      "Ralph Vaughan Williams",
+      "Benjamin Britten"
+     ]
+    },
+    "en": {
+     "text": "Who composed the orchestral suite “The Planets”?",
+     "correct": "Gustav Holst",
+     "wrong": [
+      "Edward Elgar",
+      "Ralph Vaughan Williams",
+      "Benjamin Britten"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer ruft in „Alice im Wunderland“ ständig „Köpfe ab!“?",
+     "correct": "Die Herzkönigin",
+     "wrong": [
+      "Die Grinsekatze",
+      "Das weiße Kaninchen",
+      "Die Raupe"
+     ]
+    },
+    "en": {
+     "text": "Who keeps shouting “Off with their heads!” in “Alice in Wonderland”?",
+     "correct": "The Queen of Hearts",
+     "wrong": [
+      "The Cheshire Cat",
+      "The White Rabbit",
+      "The Caterpillar"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt befindet sich das Städel Museum?",
+     "correct": "Frankfurt am Main",
+     "wrong": [
+      "Hamburg",
+      "Düsseldorf",
+      "Nürnberg"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches deutsche Kartenspiel wird zu viert gespielt, mit zwei Parteien und Schweinchen?",
+     "correct": "Doppelkopf",
+     "wrong": [
+      "Skat",
+      "Rommé",
+      "Mau-Mau"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht die Abkürzung ISP?",
+     "correct": "Internet Service Provider",
+     "wrong": [
+      "Internal System Protocol",
+      "Integrated Software Package",
+      "Instant Server Port"
+     ]
+    },
+    "en": {
+     "text": "What does the abbreviation ISP stand for?",
+     "correct": "Internet Service Provider",
+     "wrong": [
+      "Internal System Protocol",
+      "Integrated Software Package",
+      "Instant Server Port"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land leben die Komodowarane?",
+     "correct": "Indonesien",
+     "wrong": [
+      "Australien",
+      "Thailand",
+      "Indien"
+     ]
+    },
+    "en": {
+     "text": "In which country do Komodo dragons live?",
+     "correct": "Indonesia",
+     "wrong": [
+      "Australia",
+      "Thailand",
+      "India"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe tragen die Fußballer der italienischen Nationalmannschaft?",
+     "correct": "Blau",
+     "wrong": [
+      "Rot",
+      "Grün",
+      "Weiß"
+     ]
+    },
+    "en": {
+     "text": "What colour do the Italian national football team wear?",
+     "correct": "Blue",
+     "wrong": [
+      "Red",
+      "Green",
+      "White"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das grüne „Baby Yoda“ in der Serie „The Mandalorian“ eigentlich?",
+     "correct": "Grogu",
+     "wrong": [
+      "Yaddle",
+      "Ewok",
+      "Wicket"
+     ]
+    },
+    "en": {
+     "text": "What is the green “Baby Yoda” in “The Mandalorian” actually called?",
+     "correct": "Grogu",
+     "wrong": [
+      "Yaddle",
+      "Ewok",
+      "Wicket"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Von welchem Komponisten stammt die Oper „Nabucco“ mit dem berühmten Gefangenenchor?",
+     "correct": "Giuseppe Verdi",
+     "wrong": [
+      "Giacomo Puccini",
+      "Gioachino Rossini",
+      "Vincenzo Bellini"
+     ]
+    },
+    "en": {
+     "text": "Which composer wrote the opera “Nabucco” with its famous chorus of the Hebrew slaves?",
+     "correct": "Giuseppe Verdi",
+     "wrong": [
+      "Giacomo Puccini",
+      "Gioachino Rossini",
+      "Vincenzo Bellini"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb das Drama „Die Weber“?",
+     "correct": "Gerhart Hauptmann",
+     "wrong": [
+      "Bertolt Brecht",
+      "Friedrich Schiller",
+      "Georg Büchner"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wozu benutzt man einen Radiergummi beim Zeichnen?",
+     "correct": "Zum Entfernen von Bleistiftstrichen",
+     "wrong": [
+      "Zum Anspitzen",
+      "Zum Messen",
+      "Zum Färben"
+     ]
+    },
+    "en": {
+     "text": "What do you use an eraser for when drawing?",
+     "correct": "To remove pencil marks",
+     "wrong": [
+      "To sharpen",
+      "To measure",
+      "To colour"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe hat der Igel Sonic?",
+     "correct": "Blau",
+     "wrong": [
+      "Rot",
+      "Gelb",
+      "Grün"
+     ]
+    },
+    "en": {
+     "text": "What colour is Sonic the Hedgehog?",
+     "correct": "Blue",
+     "wrong": [
+      "Red",
+      "Yellow",
+      "Green"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Tastenkombination schneidet markierten Text aus?",
+     "correct": "Strg + X",
+     "wrong": [
+      "Strg + C",
+      "Strg + V",
+      "Strg + Q"
+     ]
+    },
+    "en": {
+     "text": "Which keyboard shortcut cuts selected text?",
+     "correct": "Ctrl + X",
+     "wrong": [
+      "Ctrl + C",
+      "Ctrl + V",
+      "Ctrl + Q"
+     ]
+    }
+   }
+  }
+ ]
+}
