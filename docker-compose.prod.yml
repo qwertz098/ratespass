@@ -7,6 +7,7 @@ services:
     environment:
       ADMIN_TOKEN: ${ADMIN_TOKEN:?bitte setzen (mind. 16 Zeichen)}
       VAPID_SUBJECT: ${VAPID_SUBJECT:?bitte setzen (mailto:… oder https://…)}
+      PLAYER_CREATE_LIMIT_PER_HOUR: ${PLAYER_CREATE_LIMIT_PER_HOUR:-60}   # neue Profile pro IP und Stunde
       TRUST_PROXY: "1"
     volumes:
       - ratespass-data:/data            # Datenbank + VAPID-Schlüssel – unbedingt sichern!

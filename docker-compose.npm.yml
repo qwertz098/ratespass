@@ -17,6 +17,7 @@ services:
     environment:
       ADMIN_TOKEN: ${ADMIN_TOKEN:?bitte in .env setzen (mind. 16 Zeichen, z. B. openssl rand -hex 16)}
       VAPID_SUBJECT: ${VAPID_SUBJECT:?bitte in .env setzen (mailto:… oder https://…)}
+      PLAYER_CREATE_LIMIT_PER_HOUR: ${PLAYER_CREATE_LIMIT_PER_HOUR:-60}   # neue Profile pro IP und Stunde
       TRUST_PROXY: "1"                                            # Client-IP aus X-Forwarded-For (für Rate-Limits)
       PROXY_HOPS: ${PROXY_HOPS:-1}                                # 1 = nur NPM; 2 = Cloudflare-Proxy (orange Wolke) → NPM
     volumes:

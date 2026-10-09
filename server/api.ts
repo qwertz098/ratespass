@@ -63,7 +63,7 @@ router.get('/api/players/:public_id', (c) => {
 
 /* ---------- Identität ---------- */
 router.post('/api/players', (c) => {
-  rateLimit(`create:${c.ip}`, 20, 3_600_000)
+  rateLimit(`create:${c.ip}`, config.playerCreateLimit, 3_600_000)
   const name = c.body.name ? cleanName(c.body.name) : `Spieler-${crypto.randomInt(1000, 10000)}`
   const lang = typeof c.body.lang === 'string' && LANG_RE.test(c.body.lang) ? c.body.lang : 'de'
   return tx(() => {

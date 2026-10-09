@@ -21,6 +21,8 @@ export const config = {
   proxyHops: Math.max(1, Number(env.PROXY_HOPS ?? 1) || 1),
   /** Sprachen mit weniger aktiven Fragen werden nicht zum Spielen angeboten. */
   minLangQuestions: Number(env.MIN_LANG_QUESTIONS ?? 30),
+  /** Neue anonyme Profile pro IP und Stunde (großzügig, weil sich hinter Mobilfunk-/Schul-/WLAN-Gateways viele Nutzer eine IP teilen). */
+  playerCreateLimit: ((n) => (n >= 1 ? Math.floor(n) : 60))(Number(env.PLAYER_CREATE_LIMIT_PER_HOUR ?? 60)),
   maxActiveGames: 25,
   /** VAPID-Kontakt (mailto: oder https-URL), von Push-Diensten verlangt. */
   vapidSubject: env.VAPID_SUBJECT ?? 'https://github.com/qwertz098/ratespass',
