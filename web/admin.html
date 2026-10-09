@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Ratespaß · Moderation</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="app">
+    <div class="top"><h1>Moderation</h1></div>
+    <div class="card stack">
+      <label class="field">Admin-Token<input id="token" type="password" autocomplete="off"></label>
+      <div class="row">
+        <div class="seg" id="tabs"><button data-s="pending" aria-pressed="true">Eingereicht</button><button data-s="disabled" aria-pressed="false">Gemeldet/deaktiviert</button></div>
+        <button class="btn small" id="load">Laden</button>
+      </div>
+    </div>
+    <div id="list" class="stack"></div>
+    <div id="stats" class="hint"></div>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="/admin.js"></script>
+</body>
+</html>

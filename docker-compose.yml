@@ -1,0 +1,17 @@
+services:
+  ratespass:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      # Moderation unter /admin; ohne Token ist sie abgeschaltet.
+      ADMIN_TOKEN: ${ADMIN_TOKEN:-}
+      # Auf 1 setzen, wenn ein Reverse-Proxy (Caddy/nginx/Traefik) davor steht.
+      TRUST_PROXY: ${TRUST_PROXY:-0}
+    volumes:
+      - ratespass-data:/data
+      # Neue Fragen-Batches: Datei hier ablegen und Container neu starten -> wird automatisch importiert.
+      - ./batches:/app/batches:ro
+    restart: unless-stopped
+volumes:
+  ratespass-data:

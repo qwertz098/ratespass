@@ -1,0 +1,22 @@
+{
+  "name": "ratespass",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Ratespaß – minimalistischer Quizduell-Clon als PWA",
+  "type": "module",
+  "engines": { "node": ">=22.18" },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server/main.ts",
+    "dev": "node --watch --disable-warning=ExperimentalWarning server/main.ts",
+    "test": "node --disable-warning=ExperimentalWarning --test \"test/*.test.ts\"",
+    "check": "tsc --noEmit",
+    "import": "node --disable-warning=ExperimentalWarning tools/import-batch.ts",
+    "fetch:opentdb": "node --disable-warning=ExperimentalWarning tools/fetch-opentdb.ts",
+    "gen:wikidata": "node --disable-warning=ExperimentalWarning tools/gen-wikidata.ts",
+    "todo:translate": "node --disable-warning=ExperimentalWarning tools/export-missing.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.9.0"
+  }
+}
