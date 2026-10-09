@@ -85,6 +85,10 @@ Aktueller Bestand: **3378 Fragen** (davon 3186 auch auf Englisch spielbar) (`see
 
 Jeder Spieler wählt im Profil sein **Level** – Basis, Nerd (Sci-Fi & Fantasy, Programmieren & IT, Anime & Manga, Retro-Games) oder Experte (MINT & Ingenieurwesen, Geisteswissenschaften, Kunst & Literatur, Informatik) – und kann einzelne Extra-Kategorien abwählen. Im Duell zählt immer die **niedrigste Einstellung** beider Spieler (niedrigstes Level, Schnitt der aktiven Kategorien); beim Spielstart wird die Auswahl im Spiel festgehalten. Details in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
 
+### Bestenlisten (Opt-in)
+
+Unter „🏆 Bestenliste“ (Startseite) kann man freiwillig mit einem **eigenen Bestenlisten-Namen** teilnehmen. **Absolut** = richtig beantwortete Fragen, **Quote** = gewusst/(gewusst + nicht gewusst) ab 100 Antworten; je Woche/Monat/Gesamt, jeweils „mit Bot-Spielen“ oder „nur gegen Menschen“ (ohne Bot-Duelle und Solo-Leiter). Bot-Schutz Basis: plausible Lesezeit, Tages- und Stundenlimit, Wertung erst ab 24 h Profilalter und 50 Antworten, Auffälligkeits-Liste mit manueller Sperre im Admin (Tab „Bestenliste“). Stärkere Maßnahmen als Plan: [`docs/BOTSCHUTZ.md`](docs/BOTSCHUTZ.md). Code: `server/leaderboard.ts`, Tests: `test/leaderboard.test.ts`.
+
 ### Datenschutz und Zustimmung
 
 Beim ersten Aufruf zeigt die App die Datenschutzerklärung (Kurzfassung + Volltext) und verlangt eine **nicht vorangekreuzte Zustimmung** inkl. Altersbestätigung (16 Jahre bzw. Sorgeberechtigte). Die Zustimmung wird mit Zeitpunkt und **Version** dokumentiert; die Version ist die Prüfsumme des gesamten Textes (de + en, inkl. der Verantwortlichen-Angaben aus den Umgebungsvariablen und der aktiven Funktionen). Der Wortlaut jeder Version wird archiviert. Gefragt wird nur beim ersten Mal und erneut, wenn sich der Text ändert; der Server sperrt die API bis zur Zustimmung. Widerruf = „Zustimmung widerrufen und Profil löschen“ im Profil. Details und Betreiberpflichten: [`docs/DATENSCHUTZ.md`](docs/DATENSCHUTZ.md). Code: `server/privacy.ts`, `server/erase.ts`, Tests: `test/privacy.test.ts`.

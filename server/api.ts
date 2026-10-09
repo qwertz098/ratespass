@@ -10,6 +10,7 @@ import * as game from './game.ts'
 import * as ladder from './ladder.ts'
 import * as rooms from './rooms.ts'
 import * as ai from './ai.ts'
+import * as lb from './leaderboard.ts'
 import { consentState, consentStats, currentPrivacy, recordConsent } from './privacy.ts'
 import { erasePlayer } from './erase.ts'
 import {
@@ -41,7 +42,7 @@ function pickLang(want: unknown, fallback: string) {
 
 const profile = (p: PlayerRow) => ({
   ...pub(p), lang: p.lang, has_account: !!p.username, username: p.username, created_at: p.created_at, reviewer: !!p.reviewer,
-  level: p.level, disabled_cats: JSON.parse(p.disabled_cats) as string[], best_ladder: p.best_ladder, birth_year: p.birth_year,
+  level: p.level, disabled_cats: JSON.parse(p.disabled_cats) as string[], best_ladder: p.best_ladder, birth_year: p.birth_year, lb_name: p.lb_name, lb_banned: !!p.lb_banned,
 })
 
 /* ---------- Öffentliches ---------- */
@@ -259,6 +260,22 @@ router.post('/api/games/:id/review', (c) => {
   rateLimit(`review:${p.id}`, 120, 3_600_000)
   const questionId = game.answeredQuestionId(gid(c), p, c.body.round, c.body.idx)
   fileReview(questionId, p.id, c.body.part, c.body.kind, c.body.note)
+  return { ok: true }
+})
+
+/* ---------- Bestenliste (Opt-in) ---------- */
+router.get('/api/leaderboard', (c) => {
+  const q = c.url.searchParams
+  const scope = (lb.SCOPES as readonly string[]).includes(q.get('scope') ?? '') ? (q.get('scope') as lb.Scope) : 'week'
+  const r = lb.ranking(scope, q.get('bots') === 'excl', q.get('kind') === 'rel' ? 'rel' : 'abs', me(c).id, Math.min(100, Number(q.get('limit')) || 50))
+  return { ...r, participating: !!me(c).lb_name, name: me(c).lb_name, banned: !!me(c).lb_banned }
+})
+router.post('/api/leaderboard/join', (c) => {
+  rateLimit(`lbjoin:${me(c).id}`, 20, 3_600_000)
+  return { name: lb.join(me(c).id, c.body?.name) }
+})
+router.delete('/api/leaderboard/join', (c) => {
+  lb.leave(me(c).id)
   return { ok: true }
 })
 
@@ -576,6 +593,17 @@ router.post('/api/admin/ai/estimate', async (c) => {
 router.post('/api/admin/ai/apply', (c) => {
   admin(c)
   return ai.applyEstimates(Math.min(1, Math.max(0, Number(c.body?.min_confidence ?? 0.7))))
+}, { auth: false })
+
+/* --- Bestenliste: Auffälligkeiten prüfen, Teilnehmer sperren --- */
+router.get('/api/admin/lb/flags', (c) => {
+  admin(c)
+  return { flags: lb.flags(Number(c.url.searchParams.get('min_n')) || 200), banned: all('SELECT public_id, name, lb_name FROM players WHERE lb_banned=1 AND deleted=0') }
+}, { auth: false })
+router.post('/api/admin/lb/ban', (c) => {
+  admin(c)
+  lb.ban(String(c.body?.public_id ?? ''), c.body?.banned !== false)
+  return { ok: true }
 }, { auth: false })
 
 /** Lösungen vs. Alter: Auswertung der Antworten aller Spieler (ohne Bots), Altersgruppen nur ab 5 Antworten. */

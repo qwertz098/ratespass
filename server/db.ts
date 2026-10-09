@@ -313,8 +313,17 @@ CREATE TABLE consents(
 CREATE INDEX consents_player ON consents(player_id, id);
 `
 
+// v11: Bestenlisten (Opt-in): eigener Bestenlisten-Name, Sperre durch den Admin
+const SCHEMA_V11 = `
+ALTER TABLE players ADD COLUMN lb_name TEXT;
+ALTER TABLE players ADD COLUMN lb_key TEXT;
+ALTER TABLE players ADD COLUMN lb_optin_at INTEGER;
+ALTER TABLE players ADD COLUMN lb_banned INTEGER NOT NULL DEFAULT 0;
+CREATE UNIQUE INDEX players_lb_key ON players(lb_key) WHERE lb_key IS NOT NULL;
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10], [11, SCHEMA_V11]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)

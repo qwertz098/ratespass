@@ -24,7 +24,7 @@ const DEMO = (() => {
 
   const pool = (lang) => QS.filter((q) => q[lang] && (q.r === 0 || lang === 'de'))
   const content = (q, lang) => ({ text: q[lang][0], answers: q[lang].slice(1) })
-  const profile = () => ({ ...st.me, has_account: false, username: null, reviewer: true, level: st.level ?? 'basic', disabled_cats: st.disabled ?? [], best_ladder: st.best ?? 0, birth_year: st.birth ?? null })
+  const profile = () => ({ ...st.me, has_account: false, username: null, reviewer: true, level: st.level ?? 'basic', disabled_cats: st.disabled ?? [], best_ladder: st.best ?? 0, birth_year: st.birth ?? null, lb_name: st.lb ?? null })
   const err = (status, error, message) => ({ status, body: { error, message } })
 
   const used = (g) => new Set(g.rounds.flatMap((r) => r.qs.map((x) => x.i)))
@@ -210,6 +210,18 @@ const DEMO = (() => {
     if (path === '/api/games' && method === 'GET') {
       return { body: { games: st.games.map((g) => { const v = view(g); return { id: v.id, status: v.status, lang: v.lang, round: v.round, turn: v.turn, phase: v.phase, opp: v.opp, score: v.score, winner: v.winner, updated_at: v.updated_at } }) } }
     }
+    /* Bestenliste (Demo: Beispieldaten + dein eigener Stand aus der Demo) */
+    if (path === '/api/leaderboard' && method === 'GET') {
+      const sample = [['Quizkönig', 412, 540], ['Wissensdurst', 388, 470], ['Rätselfuchs', 351, 520], ['Nachteule', 300, 380], ['Neunmalklug', 262, 400]]
+      const mine = st.lb ? { name: st.lb, ok: st.lbOk ?? 0, n: st.lbN ?? 0 } : null
+      const all = [...sample.map(([name, ok, n]) => ({ name, ok, n })), ...(mine && mine.n >= 50 ? [{ ...mine, me: true }] : [])]
+      all.sort((a, b) => b.ok - a.ok)
+      const top = all.map((x, i) => ({ rank: i + 1, name: x.name, ok: x.ok, n: x.n, rate: Math.round((x.ok / x.n) * 1000) / 10, is_me: !!x.me }))
+      return { body: { top, me: mine ? { rank: top.find((x) => x.is_me)?.rank ?? null, ok: mine.ok, n: mine.n, rate: mine.n ? Math.round((mine.ok / mine.n) * 1000) / 10 : null, needs: Math.max(0, 50 - mine.n), young: false } : null,
+        total: top.length, rules: { min_answers: 50, min_relative: 100, day_cap: 400 }, participating: !!st.lb, name: st.lb ?? null, banned: false } }
+    }
+    if (path === '/api/leaderboard/join' && method === 'POST') { const n = String(body?.name ?? '').trim(); if (n.length < 3 || n.length > 20) return err(400, 'bad_lb_name'); st.lb = n; save(); return { body: { name: n } } }
+    if (path === '/api/leaderboard/join' && method === 'DELETE') { st.lb = null; save(); return { body: { ok: true } } }
     /* Mehrspieler-Räume */
     if (path === '/api/rooms' && method === 'GET') return { body: { rooms: (st.rooms ?? []).map((r) => { const v = rview(r), me = v.players.find((p) => p.is_me); return { id: r.id, code: r.code, mode: r.mode, status: r.status, players: v.players.length, my_done: me.done, my_rank: me.rank, updated_at: r.updated_at } }) } }
     if (path === '/api/rooms' && method === 'POST') {
@@ -305,6 +317,7 @@ const DEMO = (() => {
         const x = r.qs[idx], correctIdx = x.perm.indexOf(0)
         const choice = Date.now() - x.served > LIMIT + 4000 ? -1 : body.choice
         r.me[idx] = choice === correctIdx
+        st.lbN = (st.lbN ?? 0) + 1; if (choice === correctIdx) st.lbOk = (st.lbOk ?? 0) + 1 // Demo: eigener Stand für die Bestenliste
         if (idx === 2) endTurn(g, 'me')
         settle(g); save()
         return { body: { correct: choice === correctIdx, correct_index: correctIdx, explanation: null, game: view(g) } }

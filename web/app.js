@@ -136,7 +136,7 @@ async function route() {
   try {
     if (!S.me) { loading(); if (!(await boot())) return }
     if (my !== runId) return
-    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join }
+    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top }
     await (pages[page] ?? home)(arg, my)
   } catch (e) {
     if (my !== runId) return
@@ -252,6 +252,7 @@ async function home(_, my) {
       h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Rates', h('b', {}, 'paß')),
         h('button', { class: 'iconbtn', 'aria-label': t('profile.title'), onclick: () => go('#/profile') }, avatar(S.me, 'sm'))),
       h('button', { class: 'btn primary block', onclick: () => go('#/new') }, '＋ ' + t('home.new')),
+      h('button', { class: 'btn block', onclick: () => go('#/top') }, '🏆 ' + t('lb.title')),
       games.length || rooms.length ? null : h('div', { class: 'empty' }, t('home.empty')),
       rooms.length ? [h('h2', {}, t('room.rounds')), h('div', { class: 'list' }, rooms.map(roomItem))] : null,
       section(t('home.yourTurn'), mine), section(t('home.theirTurn'), theirs), section(t('home.waiting'), waiting), section(t('home.finished'), done))
@@ -420,6 +421,30 @@ async function play(id, my) {
     if (q.idx >= q.total - 1 || g.turn !== 'me' || g.status !== 'active' || g.phase !== 'play') return go('#/game/' + id)
     await sleep(50)
   }
+}
+
+/* ---------- Bestenliste (Opt-in) ---------- */
+async function top(_, my) {
+  const st = { kind: store.get('rp.lbKind') || 'abs', bots: store.get('rp.lbBots') || 'incl', scope: store.get('rp.lbScope') || 'week' }
+  const name = h('input', { type: 'text', maxLength: 20, placeholder: t('lb.namePlaceholder'), autocomplete: 'off' })
+  const seg = (key, opts, storeKey) => h('div', { class: 'seg wrap' }, opts.map(([v, label]) => h('button', { 'aria-pressed': String(st[key] === v), onclick: () => { st[key] = v; store.set(storeKey, v); load() } }, t(label))))
+  const render = (r) => {
+    if (my !== runId) return
+    const val = (x) => (st.kind === 'abs' ? h('span', { class: 'score' }, String(x.ok), h('span', { class: 'muted' }, ` / ${x.n}`)) : h('span', { class: 'score' }, `${x.rate} %`, h('span', { class: 'muted' }, ` (${x.ok}/${x.n})`)))
+    const rows = r.top.map((x) => h('div', { class: 'item' + (x.is_me ? ' me' : '') }, h('span', { class: 'rank' }, '#' + x.rank), h('div', { class: 'grow ell' }, x.name + (x.is_me ? ' (' + t('game.you') + ')' : '')), val(x)))
+    const mine = r.me ? h('p', { class: 'hint' }, r.me.rank ? t('lb.myRank', { rank: r.me.rank, total: r.total }) : r.me.young ? t('lb.young') : t('lb.needs', { n: r.me.needs })) : null
+    const join = r.banned ? h('p', { class: 'hint' }, t('err.lb_banned'))
+      : r.participating
+        ? h('div', { class: 'stack' }, h('p', { class: 'muted' }, t('lb.participating', { name: r.name })), h('button', { class: 'btn block', onclick: guard(async () => { await api('DELETE', '/api/leaderboard/join'); await refreshMe(); load() }) }, t('lb.leave')))
+        : h('div', { class: 'stack' }, h('p', { class: 'muted' }, t('lb.joinInfo')), h('label', { class: 'field' }, t('lb.name'), name),
+          h('button', { class: 'btn primary block', onclick: guard(async () => { await api('POST', '/api/leaderboard/join', { name: name.value }); await refreshMe(); load() }) }, t('lb.join')))
+    mount(topbar(t('lb.title')),
+      h('div', { class: 'card stack' }, seg('kind', [['abs', 'lb.abs'], ['rel', 'lb.rel']], 'rp.lbKind'), seg('bots', [['incl', 'lb.botsIncl'], ['excl', 'lb.botsExcl']], 'rp.lbBots'), seg('scope', [['week', 'lb.week'], ['month', 'lb.month'], ['all', 'lb.all']], 'rp.lbScope'), mine),
+      rows.length ? h('div', { class: 'list' }, rows) : h('div', { class: 'empty' }, t('lb.empty')),
+      h('div', { class: 'card stack' }, join, h('p', { class: 'hint' }, t('lb.rules', { rel: r.rules.min_relative, abs: r.rules.min_answers, cap: r.rules.day_cap }))))
+  }
+  const load = guard(async () => render(await api('GET', `/api/leaderboard?scope=${st.scope}&bots=${st.bots}&kind=${st.kind}`)))
+  await load()
 }
 
 /* ---------- Millionen-Leiter (Solo) ---------- */

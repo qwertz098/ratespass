@@ -14,6 +14,10 @@ export interface PlayerRow {
   disabled_cats: string
   best_ladder: number
   birth_year: number | null
+  lb_name: string | null
+  lb_key: string | null
+  lb_optin_at: number | null
+  lb_banned: number
   deleted: number
   username: string | null
   pw_hash: string | null

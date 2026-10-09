@@ -48,6 +48,8 @@ async function load() {
       list.push(await reviewersCard())
     } else if (status === 'stats') {
       list.push(...(await statsCards()))
+    } else if (status === 'lb') {
+      list.push(...(await lbCards()))
     } else if (status === 'ai') {
       list.push(...(await aiCards()))
     } else {
@@ -154,6 +156,20 @@ async function statsCards() {
     q.suggested && q.suggested !== q.difficulty ? el('button', { className: 'btn small primary', textContent: 'Schwierigkeit übernehmen', onclick: guarded(async () => {
       await call('POST', '/api/admin/stats/apply-difficulty', { group_id: q.group_id, min_n: Number($('stmin').value) || 30 }); toast('Angepasst'); load() }) }) : null))
   return [head, ...(rows.length ? rows : [el('div', { className: 'empty', textContent: 'Noch keine Frage mit genug Antworten' })]), el('div', { className: 'hint', textContent: `${questions.length} von ${total} Fragen` })]
+}
+
+/** Bestenliste: statistisch auffällige Spieler prüfen und bei Bedarf aus der Liste sperren (keine automatische Sperre). */
+async function lbCards() {
+  const { flags, banned } = await call('GET', '/api/admin/lb/flags')
+  const ban = (id, b) => guarded(async () => { await call('POST', '/api/admin/lb/ban', { public_id: id, banned: b }); toast(b ? 'Gesperrt' : 'Entsperrt'); load() })
+  const head = el('div', { className: 'card hint', textContent: 'Auffällig ab 200 Antworten: Quote über 97 %, weit besser als andere bei denselben Fragen, sehr gleichförmige Antwortzeiten oder Aktivität rund um die Uhr. Das sind Hinweise, keine Beweise – bitte prüfen, bevor du sperrst.' })
+  const cards = flags.map((f) => el('div', { className: 'card stack' },
+    el('div', { className: 'row wrap' }, el('strong', { className: 'grow', textContent: `${f.name} · ${f.public_id}` }), f.participating ? el('span', { className: 'badge', textContent: 'nimmt teil' }) : null, f.banned ? el('span', { className: 'badge bad', textContent: 'gesperrt' }) : null),
+    el('div', { className: 'hint', textContent: `${f.n} Antworten · Quote ${Math.round(f.rate * 100)} % (erwartet ${Math.round(f.expected * 100)} %) · Zeit-Streuung ${f.cv ?? '–'} · ${f.hours} Tagesstunden aktiv` }),
+    el('div', { textContent: f.flags.join(' · ') }),
+    el('button', { className: 'btn small ' + (f.banned ? '' : 'danger'), textContent: f.banned ? 'Sperre aufheben' : 'Aus Bestenliste sperren', onclick: ban(f.public_id, !f.banned) })))
+  const bl = banned.length ? el('div', { className: 'card stack' }, el('div', { className: 'hint', textContent: 'Gesperrt' }), ...banned.map((b) => el('div', { className: 'row' }, el('span', { className: 'grow', textContent: `${b.name} · ${b.public_id}` }), el('button', { className: 'btn small', textContent: 'Entsperren', onclick: ban(b.public_id, false) })))) : null
+  return [head, ...(cards.length ? cards : [el('div', { className: 'empty', textContent: 'Keine Auffälligkeiten 🎉' })]), bl].filter(Boolean)
 }
 
 /** KI-Schnittstelle: Lücken füllen, Schwierigkeit schätzen, Zielverteilung. Neue Fragen erscheinen unter „Eingereicht“. */

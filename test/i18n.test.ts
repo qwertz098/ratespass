@@ -26,6 +26,6 @@ test('Alle im Code verwendeten t()-Schlüssel existieren; Kategorien sind übers
   const codes = new Set(fs.readdirSync(new URL('../server/', import.meta.url)).filter((f) => f.endsWith('.ts'))
     .flatMap((f) => [...fs.readFileSync(new URL(`../server/${f}`, import.meta.url), 'utf8').matchAll(/HttpError\(\d+, '(\w+)'/g)].map((m) => m[1])))
   const technical = new Set(['unauthorized', 'not_found', 'method_not_allowed', 'bad_json', 'too_large', 'bad_id', 'bad_opponent', 'bad_lang', 'bad_category', 'bad_difficulty',
-    'bad_action', 'bad_answer', 'bad_report', 'not_your_turn', 'wrong_question', 'not_served', 'not_waiting', 'already_over', 'already_has_account', 'license_ack_required', 'nothing_to_export', 'forbidden_origin', 'bad_review', 'bad_region', 'bad_mode', 'privacy_changed', 'invalid_question', 'ai_unavailable', 'ai_failed', 'ai_limit', 'bad_target'])
+    'bad_action', 'bad_answer', 'bad_report', 'not_your_turn', 'wrong_question', 'not_served', 'not_waiting', 'already_over', 'already_has_account', 'license_ack_required', 'nothing_to_export', 'forbidden_origin', 'bad_review', 'bad_region', 'bad_mode', 'privacy_changed', 'lb_banned', 'invalid_question', 'ai_unavailable', 'ai_failed', 'ai_limit', 'bad_target'])
   for (const c of codes) if (!technical.has(c)) assert.ok(`err.${c}` in dict.de, `UI-Text für Fehler fehlt: ${c}`)
 })
