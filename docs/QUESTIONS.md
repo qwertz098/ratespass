@@ -62,3 +62,19 @@ Gleiche Pipeline, nur automatisiert: Generator (strukturierte Ausgabe im Batch-F
 - Einreichen: Profil → „Frage einreichen“ (max. 10/Tag), landet als `pending` – nie direkt im Spiel.
 - Moderation unter `/admin` (Header `X-Admin-Token`): freigeben (mit Korrekturen), ablehnen.
 - Spieler können beantwortete Fragen melden; ab **3 Meldungen verschiedener Spieler** wird die Frage automatisch deaktiviert und erscheint in der Moderationsliste „Gemeldet/deaktiviert“.
+
+### Community-Fragen zurück ins Repo (Single Source of Truth)
+
+Freigegebene Community-Fragen leben zunächst nur in der Datenbank. Damit sie versioniert, prüfbar und bei Datenverlust wiederherstellbar sind, werden sie als Batch exportiert:
+
+```bash
+npm run export:community -- --dry-run   # nur anzeigen
+npm run export:community                # schreibt batches/community-NNN.json (nächste freie Nummer) und markiert sie in der DB
+git add batches && git commit           # Datei einchecken
+```
+
+- Ohne Shell-Zugriff (z. B. gehosteter Container): `/admin` → **Batch exportieren** lädt dieselbe Datei herunter und markiert die Fragen als exportiert; sie dann unter `batches/` ins Repo legen.
+- Exportiert werden nur Fragen mit Status `active` und ohne bisherigen Batch. Die Fragen werden danach dem Batch zugeordnet: kein zweiter Export, kein Doppelimport beim Neustart. Der Einreicher (`submitted_by`) wird **nicht** exportiert.
+- Wiederherstellung: Datenbank neu aufgebaut → Server importiert beim Start alle `batches/*.json`, auch `community-NNN.json` (Quelle `community`, Lizenz CC BY-SA 4.0).
+- **Grenze:** Admin-Korrekturen an Fragen aus *anderen* Batches (z. B. ein verbesserter Text) fließen noch nicht zurück; dafür bitte die Batch-Datei selbst anpassen.
+

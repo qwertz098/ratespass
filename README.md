@@ -26,7 +26,7 @@ Entwicklung ohne Docker (Node ≥ 22.18):
 ```bash
 npm install          # nur typescript + @types/node für `npm run check`
 npm run dev          # http://localhost:3000, Seed-Fragen werden beim Start importiert
-npm test             # Server-, Spiel-, Import-, Push- und i18n-Tests (24)
+npm test             # Server-, Spiel-, Import-, Push- und i18n-Tests (25)
 npm run backup -- ./backup   # konsistente DB-Sicherung + VAPID-Schlüssel
 npm run check        # Typprüfung
 ```
@@ -51,7 +51,7 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 
 ## Fragen
 
-Beim Start werden alle neuen Dateien aus `batches/` importiert (idempotent, dedupliziert, Lizenz geprüft). Neue Batches = Datei ablegen, Container neu starten. Details, Workflow für „200er-Batches auf Abruf“ und die **Lizenzregeln** stehen in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
+Beim Start werden alle neuen Dateien aus `batches/` importiert (idempotent, dedupliziert, Lizenz geprüft). Neue Batches = Datei ablegen, Container neu starten. Freigegebene Community-Fragen lassen sich per `npm run export:community` (oder `/admin` → „Batch exportieren“) als Batch ins Repo zurückschreiben. Details, Workflow für „200er-Batches auf Abruf“ und die **Lizenzregeln** stehen in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
 
 Aktueller Bestand: **378 Fragen × de/en** (`seed-000` 72, `original-001` 200, `original-002` 106), selbst formuliert, CC BY-SA 4.0. Zielbestand 4000 folgt in weiteren Batches.
 

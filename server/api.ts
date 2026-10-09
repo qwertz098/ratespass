@@ -8,7 +8,7 @@ import {
 } from './auth.ts'
 import * as game from './game.ts'
 import { deliver, validEndpoint, validKeys, vapidPublicKey } from './push.ts'
-import { datasetLines, insertQuestion, licenseSummary, questionUid, validateContent, type QContent, type QRow } from './questions.ts'
+import { datasetLines, exportCommunityBatch, insertQuestion, licenseSummary, questionUid, validateContent, type QContent, type QRow } from './questions.ts'
 
 export const router = new Router()
 const me = (c: Ctx) => c.player!
@@ -331,6 +331,19 @@ router.post('/api/admin/questions/:id', (c) => {
   run('UPDATE questions SET status=? WHERE id=?', status, id)
   if (status === 'active') run('DELETE FROM reports WHERE question_id=?', id)
   return { ok: true }
+}, { auth: false })
+
+/** Freigegebene, noch nicht exportierte Community-Fragen als Batch-Datei (zum Einchecken ins Repo). ?mark=1 vermerkt sie als exportiert. */
+router.get('/api/admin/community-batch', (c) => {
+  admin(c)
+  const batch = exportCommunityBatch({ mark: c.url.searchParams.get('mark') === '1', dir: config.batchDir })
+  if (!batch) throw new HttpError(404, 'nothing_to_export')
+  c.res.writeHead(200, {
+    'content-type': 'application/json; charset=utf-8',
+    'content-disposition': `attachment; filename="${batch.batch}.json"`, 'cache-control': 'no-store',
+  })
+  c.res.end(JSON.stringify(batch, null, 1))
+  return undefined
 }, { auth: false })
 
 router.get('/api/admin/stats', (c) => {

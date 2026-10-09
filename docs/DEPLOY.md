@@ -61,7 +61,7 @@ Quellen der Recherche: [Vergleich kostenloser Docker-Hoster 2026](https://flywp.
 
 - **Backup:** `docker compose exec ratespass node tools/backup.ts /data/backup` erzeugt eine konsistente DB-Kopie **und** sichert `vapid.json`. Regelmäßig (z. B. per Cron) ausführen und den Ordner **außerhalb** der Maschine ablegen. Gehen die VAPID-Schlüssel verloren, erzeugt der Server neue; die App abonniert dann automatisch neu, sobald sie geöffnet wird.
 - **Push:** Läuft ohne Zusatzdienst (VAPID, direkt zu FCM/Mozilla/Apple). `VAPID_SUBJECT` sollte eine echte Kontaktadresse sein. iPhone/iPad: Push funktioniert nur, wenn die App über *Teilen → Zum Home-Bildschirm* installiert ist.
-- **Neue Fragen:** Batch-Datei nach `batches/` legen, Container neu starten.
+- **Neue Fragen:** Batch-Datei nach `batches/` legen, Container neu starten. Community-Fragen vorher mit `/admin` → „Batch exportieren“ sichern und einchecken.
 - **Rechtliches:** `web/legal.html` (Impressum/Datenschutz) vor dem öffentlichen Betrieb ausfüllen.
 
 ## Hinweis zum Prüfstand

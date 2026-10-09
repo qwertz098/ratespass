@@ -16,7 +16,8 @@
     "fetch:opentdb": "node --disable-warning=ExperimentalWarning tools/fetch-opentdb.ts",
     "gen:wikidata": "node --disable-warning=ExperimentalWarning tools/gen-wikidata.ts",
     "todo:translate": "node --disable-warning=ExperimentalWarning tools/export-missing.ts",
-    "backup": "node --disable-warning=ExperimentalWarning tools/backup.ts"
+    "backup": "node --disable-warning=ExperimentalWarning tools/backup.ts",
+    "export:community": "node --disable-warning=ExperimentalWarning tools/export-community.ts"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

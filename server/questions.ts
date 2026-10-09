@@ -164,3 +164,41 @@ export function licenseSummary() {
     "SELECT source, license, attribution, COUNT(*) n FROM questions WHERE status='active' GROUP BY source, license, attribution ORDER BY n DESC")
   return rows.map((r) => ({ ...r, license_url: LICENSES[r.license] }))
 }
+
+/** Nächster freier Batch-Name `community-NNN` (Datenbank und Dateien im Batch-Verzeichnis berücksichtigt). */
+function nextCommunityName(dir: string): string {
+  const used = [
+    ...all<{ name: string }>("SELECT name FROM batches WHERE name LIKE 'community-%'").map((r) => r.name),
+    ...(fs.existsSync(dir) ? fs.readdirSync(dir).map((f) => f.replace(/\.json$/, '')) : []),
+  ]
+  const max = Math.max(0, ...used.map((n) => Number(/^community-(\d+)$/.exec(n)?.[1] ?? 0)))
+  return `community-${String(max + 1).padStart(3, '0')}`
+}
+
+/**
+ * Exportiert freigegebene Community-Fragen, die noch in keinem Batch stehen, als Batch (für das Repo).
+ * Mit mark=true werden sie danach dem Batch zugeordnet und in `batches` vermerkt, sodass sie nicht erneut
+ * exportiert und beim Neustart nicht doppelt importiert werden. Personenbezug (submitted_by) wird nicht exportiert.
+ */
+export function exportCommunityBatch(opts: { mark: boolean; dir: string }): Batch | null {
+  return tx(() => {
+    const rows = all<QRow>("SELECT * FROM questions WHERE source='community' AND status='active' AND batch IS NULL ORDER BY id")
+    if (!rows.length) return null
+    const groups = new Map<string, QRow[]>()
+    for (const r of rows) groups.set(r.group_id, [...(groups.get(r.group_id) ?? []), r])
+    const name = nextCommunityName(opts.dir)
+    const questions: BatchEntry[] = [...groups.entries()].map(([group, rs]) => ({
+      group, category: rs[0].category, difficulty: rs[0].difficulty,
+      source: 'community', license: rs[0].license, attribution: rs[0].attribution ?? 'Community contribution',
+      i18n: Object.fromEntries(rs.map((r) => [r.lang, {
+        text: r.text, correct: r.correct, wrong: JSON.parse(r.wrong) as string[], ...(r.explanation ? { explanation: r.explanation } : {}),
+      }])),
+    }))
+    const batch: Batch = { format: 'ratespass-batch', version: 1, batch: name, source: 'community', license: 'CC-BY-SA-4.0', attribution: 'Community contribution', questions }
+    if (opts.mark) {
+      for (const r of rows) run('UPDATE questions SET batch=? WHERE id=?', name, r.id)
+      run('INSERT INTO batches(name,source,license,inserted,imported_at) VALUES(?,?,?,?,?)', name, 'community', 'CC-BY-SA-4.0', rows.length, now())
+    }
+    return batch
+  })
+}

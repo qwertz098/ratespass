@@ -38,6 +38,17 @@ function card(q) {
     text, correct, wrong, el('div', { className: 'row' }, act('approve', 'Freigeben', 'primary'), act('reject', 'Ablehnen', 'danger')))
 }
 
+$('export').onclick = async () => {
+  try {
+    const res = await fetch('/api/admin/community-batch?mark=1', { headers: { 'x-admin-token': $('token').value } })
+    if (res.status === 404) return toast('Nichts zu exportieren')
+    if (!res.ok) throw new Error(res.status)
+    const name = /filename="([^"]+)"/.exec(res.headers.get('content-disposition') ?? '')?.[1] ?? 'community.json'
+    const a = el('a', { href: URL.createObjectURL(await res.blob()), download: name })
+    document.body.append(a); a.click(); a.remove()
+    toast(`${name} heruntergeladen – ins Repo unter batches/ legen und committen`)
+  } catch (e) { toast('Fehler: ' + e.message) }
+}
 $('load').onclick = load
 $('tabs').onclick = (e) => {
   if (!e.target.dataset.s) return
