@@ -315,7 +315,7 @@ async function play(id, my) {
       const feedback = h('div', { class: 'feedback' })
       mount(
         topbar(t('game.round', { n: q.round }), true),
-        h('div', { class: 'card', cat: q.category },
+        h('div', { class: 'card qcard', cat: q.category },
           h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, t('play.question', { n: q.idx + 1, total: q.total }))),
           h('div', { class: 'timer' }, bar), h('div', { class: 'question' }, q.text), h('div', { class: 'opts' }, buttons), feedback))
       const deadline = performance.now() + q.remaining_ms
