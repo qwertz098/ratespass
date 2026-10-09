@@ -91,3 +91,30 @@ test('Speicherbegrenzung: lange inaktive anonyme Profile werden gelöscht, Konte
   assert.equal(get<{ deleted: number }>('SELECT deleted FROM players WHERE public_id=?', a.player.public_id)!.deleted, 1)
   assert.equal(get<{ deleted: number }>('SELECT deleted FROM players WHERE public_id=?', b.player.public_id)!.deleted, 0)
 })
+
+test('Textvorlagen: Platzhalter, optionale Zeilen, eigene Fassung per LEGAL_DIR ändert die Version', async () => {
+  const { renderTemplate } = await import('../server/privacy.ts')
+  const doc = renderTemplate('# Titel\n<!-- {{IGNORIERT}} -->\n## Kurzfassung\n- eins\n## A\nHallo {{NAME}}\n{{?TEL}}Telefon: {{TEL}}\n{{!TEL}}Kein Telefon\n- Punkt {{FEHLT}}\n', { NAME: 'Welt', TEL: '' })
+  assert.equal(doc.title, 'Titel'); assert.deepEqual(doc.summary, ['eins'])
+  assert.deepEqual(doc.sections, [{ title: 'A', paras: ['Hallo Welt', 'Kein Telefon'], items: ['Punkt [nicht konfiguriert: FEHLT]'] }])
+  assert.deepEqual(renderTemplate('## A\n{{?TEL}}Telefon: {{TEL}}', { TEL: '123' }).sections[0].paras, ['Telefon: 123'])
+  // Betreiber-Angaben erscheinen im Impressum, optionale Felder nur wenn gesetzt
+  Object.assign(config.privacy, { controllerPhone: '', vatId: '' })
+  const without = JSON.stringify((await privacy()).de)
+  assert.ok(!/Telefon:|Umsatzsteuer/.test(without))
+  Object.assign(config.privacy, { controllerPhone: '+49 30 123456', vatId: 'DE123456789', representative: 'Erika Muster', supervisoryAuthority: 'Landesbeauftragte für Datenschutz' })
+  const withAll = JSON.stringify((await privacy()).de)
+  assert.match(withAll, /Telefon: \+49 30 123456/); assert.match(withAll, /DE123456789/); assert.match(withAll, /Erika Muster/); assert.match(withAll, /Zuständige Aufsichtsbehörde/)
+  // eigene Fassung
+  const fs = await import('node:fs'), os = await import('node:os'), path = await import('node:path')
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rp-legal-'))
+  fs.writeFileSync(path.join(dir, 'datenschutz.de.md'), '# Eigen\n## Kurzfassung\n- x\n## Verantwortlicher\n{{CONTROLLER_NAME}}\n')
+  fs.writeFileSync(path.join(dir, 'datenschutz.en.md'), '# Own\n## Summary\n- x\n## Controller\n{{CONTROLLER_NAME}}\n')
+  const v0 = (await privacy()).version
+  config.legalDir = dir
+  const mine = await privacy()
+  assert.notEqual(mine.version, v0); assert.equal(mine.de.title, 'Eigen'); assert.match(JSON.stringify(mine.en), /Muster GmbH/)
+  fs.appendFileSync(path.join(dir, 'datenschutz.de.md'), 'Neue Zeile\n')
+  const edited = await privacy()
+  assert.notEqual(edited.version, mine.version, 'Textänderung = neue Version')
+})

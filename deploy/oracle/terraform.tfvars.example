@@ -4,6 +4,13 @@ region           = "eu-frankfurt-1"                 # Home-Region deines Kontos
 
 domain           = "quiz.example.org"
 vapid_subject    = "mailto:du@example.org"
+
+# Betreiber für Impressum & Datenschutzerklärung (Pflicht)
+controller_name    = "Max Mustermann"
+controller_address = "Musterstraße 1, 12345 Musterstadt, Deutschland"
+controller_email   = "datenschutz@example.org"
+# controller_phone = ""
+hosting_provider   = "Oracle Cloud Infrastructure, Region Frankfurt"
 ssh_public_key   = "ssh-ed25519 AAAA… du@rechner"
 ssh_allowed_cidr = "203.0.113.7/32"                 # deine eigene IP (curl -4 ifconfig.me) + /32
 

@@ -17,6 +17,11 @@ write_files:
       DOMAIN=${domain}
       ADMIN_TOKEN=${admin_token}
       VAPID_SUBJECT=${vapid_subject}
+      CONTROLLER_NAME="${controller_name}"
+      CONTROLLER_ADDRESS="${controller_address}"
+      CONTROLLER_EMAIL="${controller_email}"
+      CONTROLLER_PHONE="${controller_phone}"
+      HOSTING_PROVIDER="${hosting_provider}"
 
   - path: /opt/ratespass/docker-compose.yml
     owner: root:root
@@ -30,6 +35,11 @@ write_files:
           environment:
             ADMIN_TOKEN: $${ADMIN_TOKEN}
             VAPID_SUBJECT: $${VAPID_SUBJECT}
+            CONTROLLER_NAME: $${CONTROLLER_NAME}
+            CONTROLLER_ADDRESS: $${CONTROLLER_ADDRESS}
+            CONTROLLER_EMAIL: $${CONTROLLER_EMAIL}
+            CONTROLLER_PHONE: $${CONTROLLER_PHONE}
+            HOSTING_PROVIDER: $${HOSTING_PROVIDER}
             TRUST_PROXY: "1"
             PROXY_HOPS: "1"
           volumes:
@@ -58,7 +68,10 @@ write_files:
     content: |
       {$DOMAIN} {
       	encode zstd gzip
-      	reverse_proxy ratespass:3000
+      	# Live-Spiel (Server-Sent Events) darf nicht gepuffert werden
+      	reverse_proxy ratespass:3000 {
+      		flush_interval -1
+      	}
       }
 
   - path: /usr/local/bin/ratespass-backup

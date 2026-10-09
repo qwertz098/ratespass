@@ -1,7 +1,10 @@
-// Datenschutzerklärung und Impressum, zusammengesetzt aus der Konfiguration des Betreibers (Umgebungsvariablen) und den aktiven Funktionen.
+// Datenschutzerklärung und Impressum: vorbereitete Textvorlagen (legal/datenschutz.de.md und .en.md) mit den Angaben des Betreibers
+// aus den Umgebungsvariablen (nur Verantwortlicher/Impressum, Hoster, Speicherdauer) und den aktiven Funktionen.
 // `version` ist die Prüfsumme des gesamten Textes (de + en): Ändert sich Text, Verantwortlicher oder eine Funktion, ändert sich die Version
 // und alle Spieler stimmen einmal erneut zu – sonst nie. Jede ausgelieferte Version wird mit vollem Text archiviert (Nachweis der Zustimmung).
 // Hinweis: Das ist eine technische Vorlage, keine Rechtsberatung – bitte vor dem öffentlichen Betrieb prüfen lassen.
+import fs from 'node:fs'
+import path from 'node:path'
 import { sha256 } from './auth.ts'
 import { config } from './config.ts'
 import { all, get, run, now } from './db.ts'
@@ -10,104 +13,58 @@ export interface Section { title: string; paras?: string[]; items?: string[] }
 export interface Doc { title: string; summary: string[]; sections: Section[] }
 export interface Privacy { version: string; de: Doc; en: Doc; missing: string[] }
 
-const todo = (name: string, v: string) => (v || `[nicht konfiguriert: ${name}]`)
+const REQUIRED = ['CONTROLLER_NAME', 'CONTROLLER_ADDRESS', 'CONTROLLER_EMAIL'] as const
 
-export function missingSettings(): string[] {
+/** Variablen für die Textvorlagen: Angaben des Betreibers aus der Umgebung plus Funktionsschalter. */
+function vars(): Record<string, string> {
   const p = config.privacy
-  return [['CONTROLLER_NAME', p.controllerName], ['CONTROLLER_ADDRESS', p.controllerAddress], ['CONTROLLER_EMAIL', p.controllerEmail]].filter(([, v]) => !v).map(([k]) => k)
+  return {
+    CONTROLLER_NAME: p.controllerName, CONTROLLER_ADDRESS: p.controllerAddress, CONTROLLER_EMAIL: p.controllerEmail, CONTROLLER_PHONE: p.controllerPhone,
+    CONTROLLER_REPRESENTATIVE: p.representative, CONTROLLER_REGISTER: p.register, CONTROLLER_VAT_ID: p.vatId, DPO_CONTACT: p.dpoContact,
+    SUPERVISORY_AUTHORITY: p.supervisoryAuthority, HOSTING_PROVIDER: p.hosting, PRIVACY_RETENTION_DAYS: String(p.retentionDays),
+    ai: config.ai.key ? '1' : '',
+  }
 }
 
-export function buildPrivacy(): Privacy {
-  const p = config.privacy
-  const ai = !!config.ai.key
-  const contact = [todo('CONTROLLER_NAME', p.controllerName), todo('CONTROLLER_ADDRESS', p.controllerAddress), 'E-Mail: ' + todo('CONTROLLER_EMAIL', p.controllerEmail), p.controllerPhone && 'Telefon: ' + p.controllerPhone].filter(Boolean) as string[]
-  const contactEn = [todo('CONTROLLER_NAME', p.controllerName), todo('CONTROLLER_ADDRESS', p.controllerAddress), 'Email: ' + todo('CONTROLLER_EMAIL', p.controllerEmail), p.controllerPhone && 'Phone: ' + p.controllerPhone].filter(Boolean) as string[]
-  const host = p.hosting || '[nicht konfiguriert: HOSTING_PROVIDER]'
-  const years = (p.retentionDays / 365).toFixed(p.retentionDays % 365 ? 1 : 0)
+export function missingSettings(): string[] {
+  const v = vars()
+  return REQUIRED.filter((k) => !v[k])
+}
 
-  const de: Doc = {
-    title: 'Impressum & Datenschutz',
-    summary: [
-      'Du spielst mit einem anonymen Profil: Anzeigename, Spielstand und deine Antworten werden gespeichert. Kein Tracking, keine Werbung, keine Cookies.',
-      'Mitspieler sehen deinen Anzeigenamen. Geburtsjahr und Bestenliste sind freiwillig und nur mit eigener Entscheidung aktiv.',
-      'Du kannst die Zustimmung jederzeit widerrufen: „Profil löschen“ entfernt deine Daten.',
-    ],
-    sections: [
-      { title: 'Verantwortlicher und Impressum (§ 5 DDG)', paras: [contact.join(', ')].concat(p.dpoContact ? ['Datenschutzbeauftragte/r: ' + p.dpoContact] : []) },
-      { title: 'Was diese App speichert', items: [
-        'Anonymes Profil: zufälliger Freundescode, frei gewählter Anzeigename, Sprache, Spielstufe und Kategorie-Auswahl, ein geheimer Zugangsschlüssel (im Browser, auf dem Server nur als Hash).',
-        'Spielverlauf: Spiele, Runden, Antworten (richtig/falsch, Antwortzeit), Ergebnisse, Millionen-Leiter-Stände, Kontakte (Freundescodes), die du hinzufügst.',
-        'Optional: Benutzername und Passwort (als Hash), Geburtsjahr (nur das Jahr), Bestenlisten-Name, Push-Abo deines Browsers, Reviewer-Rolle.',
-        'Technisch: IP-Adressen nur flüchtig im Arbeitsspeicher für Missbrauchsschutz (Rate-Limits); der Browser speichert Zugangsschlüssel und Einstellungen lokal (technisch notwendig, keine Tracking-Cookies).',
-      ] },
-      { title: 'Zwecke und Rechtsgrundlagen', items: [
-        'Betrieb des Spiels und Matchmaking (Art. 6 Abs. 1 lit. b DSGVO).',
-        'Missbrauchsschutz, Sicherheit und Fehleranalyse (Art. 6 Abs. 1 lit. f DSGVO).',
-        'Deine Zustimmung (Art. 6 Abs. 1 lit. a DSGVO) für die Nutzung der App mit anonymem Profil, für das freiwillige Geburtsjahr und für die Teilnahme an der Bestenliste; sie ist jederzeit mit Wirkung für die Zukunft widerrufbar.',
-        'Anonyme statistische Auswertung, wie schwer Fragen für Altersgruppen sind (nur mit freiwilligem Geburtsjahr; Gruppen unter 5 Antworten werden nicht ausgewertet).',
-      ] },
-      { title: 'Was andere sehen', items: [
-        'Gegner und Mitspieler in Duellen, Runden und Live-Spielen sehen deinen Anzeigenamen und das Spielergebnis.',
-        'In der Bestenliste erscheint nur der eigene Bestenlisten-Name – und nur, wenn du aktiv teilnimmst. Du kannst die Teilnahme jederzeit beenden; der Name wird sofort entfernt.',
-        'Von dir eingereichte Community-Fragen werden mit deiner Zustimmung unter CC BY-SA 4.0 veröffentlicht; dein Name wird nicht genannt.',
-      ] },
-      { title: 'Empfänger und Hosting', paras: ['Hosting: ' + host + '. Der Hoster verarbeitet Daten in unserem Auftrag.', ai ? 'KI-Funktionen: Fragen werden mit einem KI-Dienst erstellt und geprüft. Dabei werden keine Daten von Spielerinnen und Spielern übermittelt.' : 'Es werden keine Daten an KI-Dienste übermittelt.', 'Push-Nachrichten laufen über den Push-Dienst deines Browsers/Betriebssystems, sofern du sie aktivierst.'] },
-      { title: 'Speicherdauer', items: [
-        `Anonyme Profile ohne Anmeldung werden nach ${years} ${p.retentionDays % 365 ? 'Jahren' : 'Jahr(en)'} ohne Aktivität gelöscht.`,
-        'Wartende Spiele verfallen nach 24 Stunden, Mehrspieler-Runden werden spätestens nach 48 Stunden ausgewertet, inaktive Spiele nach 7 Tagen beendet.',
-        'Mit „Profil löschen“ werden Zugang, Kontakte, Konto, Geburtsjahr, Bestenlisten-Name und deine Zustimmungsdokumentation sofort entfernt; abgeschlossene Spiele bleiben für Gegner anonymisiert (Name „—“).',
-      ] },
-      { title: 'Deine Rechte', items: [
-        'Auskunft und Datenübertragbarkeit: Profil → „Profil & Verlauf herunterladen“; zusätzlich per E-Mail an den Verantwortlichen.',
-        'Berichtigung (Anzeigename, Geburtsjahr im Profil), Löschung („Profil löschen“), Einschränkung und Widerspruch gegen Verarbeitungen nach Art. 6 Abs. 1 lit. f.',
-        'Widerruf der Zustimmung jederzeit; die Rechtmäßigkeit der bisherigen Verarbeitung bleibt unberührt.',
-        'Beschwerde bei einer Datenschutz-Aufsichtsbehörde.',
-      ] },
-      { title: 'Alter und Zustimmung', paras: ['Die Nutzung setzt voraus, dass du mindestens 16 Jahre alt bist oder die Zustimmung deiner Sorgeberechtigten hast (Art. 8 DSGVO). Deine Zustimmung wird mit Zeitpunkt und Version dieses Textes dokumentiert. Du wirst nur dann erneut gefragt, wenn sich dieser Text ändert.'] },
-    ],
+/**
+ * Markdown-ähnliche Vorlage → Dokument. `# Titel`, `## Abschnitt`, `- Listenpunkt`, sonst Absatz je Zeile; `<!-- Kommentar -->` wird ignoriert.
+ * `{{NAME}}` wird ersetzt (fehlende Angaben erscheinen als „[nicht konfiguriert: NAME]“); `{{?NAME}}`/`{{!NAME}}` am Zeilenanfang
+ * lassen die Zeile nur erscheinen, wenn NAME gesetzt bzw. nicht gesetzt ist. Der erste Abschnitt „Kurzfassung/Summary“ wird zur Zusammenfassung.
+ */
+export function renderTemplate(src: string, v: Record<string, string>): Doc {
+  const doc: Doc = { title: '', summary: [], sections: [] }
+  let cur: Section | null = null
+  const text = src.replace(/<!--[\s\S]*?-->/g, '')
+  for (const raw of text.split('\n')) {
+    let line = raw.trim()
+    if (!line) continue
+    const cond = /^\{\{([?!])(\w+)\}\}/.exec(line)
+    if (cond) { if ((cond[1] === '?') !== !!v[cond[2]]) continue; line = line.slice(cond[0].length) }
+    line = line.replace(/\{\{(\w+)\}\}/g, (_, k: string) => v[k] || `[nicht konfiguriert: ${k}]`)
+    if (line.startsWith('# ')) doc.title = line.slice(2)
+    else if (line.startsWith('## ')) cur = { title: line.slice(3) }, doc.sections.push(cur)
+    else if (cur) { if (line.startsWith('- ')) (cur.items ??= []).push(line.slice(2)); else (cur.paras ??= []).push(line) }
   }
-  const en: Doc = {
-    title: 'Legal notice & privacy',
-    summary: [
-      'You play with an anonymous profile: display name, progress and your answers are stored. No tracking, no ads, no cookies.',
-      'Other players see your display name. Birth year and leaderboard are optional and only active if you choose them.',
-      'You can withdraw your consent at any time: “Delete profile” removes your data.',
-    ],
-    sections: [
-      { title: 'Controller and legal notice (§ 5 DDG)', paras: [contactEn.join(', ')].concat(p.dpoContact ? ['Data protection officer: ' + p.dpoContact] : []) },
-      { title: 'What this app stores', items: [
-        'Anonymous profile: random friend code, display name of your choice, language, play level and category selection, a secret access key (in your browser, stored on the server only as a hash).',
-        'Play history: games, rounds, answers (right/wrong, response time), results, million ladder progress, contacts (friend codes) you add.',
-        'Optional: username and password (hashed), birth year (year only), leaderboard name, your browser’s push subscription, reviewer role.',
-        'Technical: IP addresses only transiently in memory for abuse protection (rate limits); your browser stores the access key and settings locally (technically necessary, no tracking cookies).',
-      ] },
-      { title: 'Purposes and legal bases', items: [
-        'Operating the game and matchmaking (Art. 6(1)(b) GDPR).',
-        'Abuse protection, security and error analysis (Art. 6(1)(f) GDPR).',
-        'Your consent (Art. 6(1)(a) GDPR) to use the app with an anonymous profile, for the optional birth year and for taking part in the leaderboard; you can withdraw it at any time with effect for the future.',
-        'Anonymous statistics on how hard questions are for age groups (only with the optional birth year; groups under 5 answers are not evaluated).',
-      ] },
-      { title: 'What others can see', items: [
-        'Opponents and fellow players in duels, rounds and live games see your display name and the result.',
-        'The leaderboard shows only your leaderboard name – and only if you actively take part. You can stop at any time; the name is removed immediately.',
-        'Community questions you submit are published under CC BY-SA 4.0 with your consent; your name is not mentioned.',
-      ] },
-      { title: 'Recipients and hosting', paras: ['Hosting: ' + host + '. The host processes data on our behalf.', ai ? 'AI features: questions are created and checked with an AI service. No player data is transmitted in the process.' : 'No data is transmitted to AI services.', 'Push messages go through your browser’s/operating system’s push service if you enable them.'] },
-      { title: 'Retention', items: [
-        `Anonymous profiles without an account are deleted after ${years} year(s) without activity.`,
-        'Waiting games expire after 24 hours, multiplayer rounds are evaluated after 48 hours at the latest, inactive games end after 7 days.',
-        'With “Delete profile”, access, contacts, account, birth year, leaderboard name and your consent record are removed immediately; finished games remain anonymised for opponents (name “—”).',
-      ] },
-      { title: 'Your rights', items: [
-        'Access and data portability: Profile → “Download profile & history”; additionally by email to the controller.',
-        'Rectification (display name, birth year in your profile), erasure (“Delete profile”), restriction and objection to processing under Art. 6(1)(f).',
-        'Withdrawal of consent at any time; the lawfulness of earlier processing remains unaffected.',
-        'Complaint to a data protection supervisory authority.',
-      ] },
-      { title: 'Age and consent', paras: ['Use requires that you are at least 16 years old or have your guardians’ consent (Art. 8 GDPR). Your consent is documented with time and version of this text. You are only asked again if this text changes.'] },
-    ],
-  }
-  return { version: sha256(JSON.stringify({ de, en })), de, en, missing: missingSettings() }
+  if (doc.sections.length && /^(Kurzfassung|Summary)$/i.test(doc.sections[0].title)) doc.summary = doc.sections.shift()!.items ?? []
+  return doc
+}
+
+let cache: { key: string; value: Privacy } | undefined
+export function buildPrivacy(): Privacy {
+  const dir = config.legalDir
+  const files = ['de', 'en'].map((l) => path.join(dir, `datenschutz.${l}.md`))
+  const stamps = files.map((f) => { try { const st = fs.statSync(f); return `${st.mtimeMs}:${st.size}` } catch { return '0' } })
+  const key = JSON.stringify([vars(), stamps, dir])
+  if (cache?.key === key) return cache.value
+  const [de, en] = files.map((f) => renderTemplate(fs.existsSync(f) ? fs.readFileSync(f, 'utf8') : '# Datenschutz\n## Fehlt\nTextvorlage nicht gefunden: ' + f, vars()))
+  const value = { version: sha256(JSON.stringify({ de, en })), de, en, missing: missingSettings() }
+  cache = { key, value }
+  return value
 }
 
 /** Aktueller Text; jede Version wird beim ersten Ausliefern mit vollem Wortlaut archiviert. */

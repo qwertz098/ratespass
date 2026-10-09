@@ -2,17 +2,22 @@
 
 > Technische Umsetzung, **keine Rechtsberatung**. Vor dem öffentlichen Betrieb Text und Prozesse juristisch prüfen lassen (Impressum § 5 DDG, DSGVO, ggf. Auftragsverarbeitung mit dem Hoster, Verzeichnis von Verarbeitungstätigkeiten, Datenschutzbeauftragte/r).
 
+## Aufbau: vorbereiteter Text + Betreiberangaben
+
+Der Text der Datenschutzerklärung steht **vorbereitet** in `legal/datenschutz.de.md` und `legal/datenschutz.en.md` (Markdown-ähnlich: `## Abschnitt`, `- Punkt`, Absatz je Zeile). Aus der Umgebung kommen nur die **Angaben des Betreibers** (Verantwortlicher inkl. Anschrift, Kontakt, optional Register/USt-IdNr./Datenschutzbeauftragte/r/Aufsichtsbehörde), der Hoster und die Speicherdauer. Platzhalter `{{NAME}}`, Zeilen mit `{{?NAME}}` erscheinen nur bei gesetzter Variable, `{{!NAME}}` nur bei nicht gesetzter; `{{?ai}}`/`{{!ai}}` hängen am KI-Schlüssel. Eine **eigene (juristisch geprüfte) Fassung** lässt sich per `LEGAL_DIR` einbinden. Vorlage für die Werte: `.env.example` (Terraform: `terraform.tfvars.example`).
+
 ## Pflichtangaben (Umgebungsvariablen)
 
 | Variable | Zweck |
 |---|---|
 | `CONTROLLER_NAME`, `CONTROLLER_ADDRESS`, `CONTROLLER_EMAIL` | Verantwortlicher / Impressum (Pflicht). Fehlen sie, erscheint „[nicht konfiguriert: …]“ im Text, `GET /api/admin/stats` meldet `privacy_missing`, der Server warnt beim Start. |
-| `CONTROLLER_PHONE`, `DPO_CONTACT`, `HOSTING_PROVIDER` | optional (Telefon, Datenschutzbeauftragte/r, Hoster inkl. Standort) |
+| `CONTROLLER_PHONE`, `CONTROLLER_REPRESENTATIVE`, `CONTROLLER_REGISTER`, `CONTROLLER_VAT_ID`, `DPO_CONTACT`, `SUPERVISORY_AUTHORITY` | optional (Impressum-Zusatzangaben) |
+| `HOSTING_PROVIDER` | Hoster inkl. Standort (erscheint im Text; fehlt er, steht dort „[nicht konfiguriert: HOSTING_PROVIDER]“) |
 | `PRIVACY_RETENTION_DAYS` | Speicherdauer anonymer Profile ohne Aktivität (Standard 730 Tage) |
 
 ## Wie die Zustimmung funktioniert
 
-1. `server/privacy.ts` baut Erklärung + Impressum (de/en) aus Konfiguration und aktiven Funktionen (z. B. KI-Hinweis nur mit `ANTHROPIC_API_KEY`). `version` = SHA-256 des gesamten Textes.
+1. `server/privacy.ts` rendert die Vorlagen (de/en) mit den Betreiberangaben und den aktiven Funktionen (z. B. KI-Hinweis nur mit `ANTHROPIC_API_KEY`). `version` = SHA-256 des gesamten gerenderten Textes.
 2. Erster Aufruf: Zustimmungsbildschirm (nicht vorangekreuzt, Altersbestätigung, Volltext lesbar, Ablehnen möglich). `POST /api/players` verlangt `consent: {version, age_ok: true}` mit der **aktuellen** Version.
 3. Nachweis: Tabelle `consents` (Spieler, Version, Zeitpunkt, Altersbestätigung, Sprache) und `privacy_versions` (voller Wortlaut je Version, Zeitpunkt der ersten Auslieferung). Auswertung: `GET /api/admin/stats` → `consents` (Zahl je Version).
 4. Ändert sich der Text (auch durch geänderte Env-Werte oder neue Funktionen), ändert sich die Version: Alle Spieler stimmen **einmal** erneut zu; bis dahin antwortet die API mit `403 consent_required` (Ausnahmen: Profil abrufen, Zustimmen, Export, Abmelden, Löschen).

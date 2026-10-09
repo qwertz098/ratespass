@@ -39,6 +39,8 @@ export const config = {
     questionMs: Math.max(3000, Number(env.LIVE_QUESTION_MS ?? 20_000) || 20_000), revealMs: Math.max(500, Number(env.LIVE_REVEAL_MS ?? 5_000) || 5_000),
     tempoQuestions: Math.min(12, Math.max(1, Number(env.LIVE_TEMPO_QUESTIONS ?? 10) || 10)), joinTokenMs: 2 * 3_600_000,
   },
+  /** Verzeichnis mit den Textvorlagen der Datenschutzerklärung (datenschutz.de.md / datenschutz.en.md); mit LEGAL_DIR durch eine eigene Fassung ersetzbar. */
+  legalDir: env.LEGAL_DIR ?? path.join(root, 'legal'),
   /** Zustimmung zur Datenschutzerklärung serverseitig erzwingen (nur für lokale Entwicklung/Tests mit CONSENT_REQUIRED=0 abschaltbar). */
   requireConsent: env.CONSENT_REQUIRED !== '0',
   /** Verantwortlicher (Impressum und Datenschutzerklärung). Pflichtangaben: Name, Anschrift, E-Mail. */
@@ -47,6 +49,10 @@ export const config = {
     controllerAddress: (env.CONTROLLER_ADDRESS ?? '').trim(),
     controllerEmail: (env.CONTROLLER_EMAIL ?? '').trim(),
     controllerPhone: (env.CONTROLLER_PHONE ?? '').trim(),
+    representative: (env.CONTROLLER_REPRESENTATIVE ?? '').trim(),
+    register: (env.CONTROLLER_REGISTER ?? '').trim(),
+    vatId: (env.CONTROLLER_VAT_ID ?? '').trim(),
+    supervisoryAuthority: (env.SUPERVISORY_AUTHORITY ?? '').trim(),
     dpoContact: (env.DPO_CONTACT ?? '').trim(),
     hosting: (env.HOSTING_PROVIDER ?? '').trim(),
     /** Anonyme Profile ohne Anmeldung werden nach so vielen Tagen ohne Aktivität gelöscht (Speicherbegrenzung). */

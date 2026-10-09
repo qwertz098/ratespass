@@ -53,7 +53,7 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 | `ADMIN_TOKEN` | – | Zugang zu `/admin` und `/api/admin/*` (**mind. 16 Zeichen**, z. B. `openssl rand -hex 16`; leer oder kürzer = abgeschaltet) |
 | `ADMIN_SESSION_HOURS` | 8 | Laufzeit der Admin-Sitzung nach dem Login |
 | `CONTROLLER_NAME`, `CONTROLLER_ADDRESS`, `CONTROLLER_EMAIL` | – | **Pflicht** für Impressum und Datenschutzerklärung (Verantwortlicher); fehlen sie, zeigt die Erklärung „[nicht konfiguriert]“ und der Server warnt |
-| `CONTROLLER_PHONE`, `DPO_CONTACT`, `HOSTING_PROVIDER` | – | optionale Angaben für Impressum/Datenschutz (Telefon, Datenschutzbeauftragte/r, Hoster) |
+| `CONTROLLER_PHONE`, `CONTROLLER_REPRESENTATIVE`, `CONTROLLER_REGISTER`, `CONTROLLER_VAT_ID`, `DPO_CONTACT`, `SUPERVISORY_AUTHORITY`, `HOSTING_PROVIDER` | – | optionale Angaben für Impressum/Datenschutz; der übrige Text steht vorbereitet in `legal/` (eigene Fassung: `LEGAL_DIR`) |
 | `PRIVACY_RETENTION_DAYS` | 730 | anonyme Profile ohne Anmeldung werden nach so vielen Tagen ohne Aktivität gelöscht |
 | `LIVE_MAX_PLAYERS` / `LIVE_QUESTION_MS` / `LIVE_REVEAL_MS` / `LIVE_TEMPO_QUESTIONS` | 30 / 20000 / 5000 / 10 | Live-Spielabend: Höchstzahl Spieler, Fragezeit, Auflösungszeit (ms), Fragen im Tempo-Quiz |
 | `CONSENT_REQUIRED` | 1 | `0` schaltet die Zustimmungspflicht nur für lokale Entwicklung/Tests ab |

@@ -23,6 +23,11 @@ locals {
     domain        = var.domain
     admin_token   = local.admin_token
     vapid_subject = var.vapid_subject
+    controller_name    = var.controller_name
+    controller_address = var.controller_address
+    controller_email   = var.controller_email
+    controller_phone   = var.controller_phone
+    hosting_provider   = var.hosting_provider
     image         = var.image
     ghcr_user     = var.ghcr_user
     ghcr_token    = var.ghcr_token

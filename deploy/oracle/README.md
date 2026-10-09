@@ -21,7 +21,7 @@ Legt in Oracle Cloud eine kleine Gratis-VM an und richtet sie komplett ein: Dock
 
 ```bash
 cd deploy/oracle
-cp terraform.tfvars.example terraform.tfvars   # anpassen: compartment_ocid, domain, vapid_subject, ssh_public_key, ssh_allowed_cidr
+cp terraform.tfvars.example terraform.tfvars   # anpassen: compartment_ocid, domain, vapid_subject, controller_name/-address/-email (Impressum & Datenschutz), ssh_public_key, ssh_allowed_cidr
 terraform init
 terraform plan                                  # genau lesen: es dürfen nur die oben genannten Ressourcen entstehen
 terraform apply

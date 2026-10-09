@@ -35,6 +35,46 @@ variable "vapid_subject" {
   }
 }
 
+# --- Betreiber (Impressum & Datenschutzerklärung) – siehe .env.example im Repo -------------------------------------------------
+variable "controller_name" {
+  description = "Verantwortlicher (Person/Firma inkl. Rechtsform) für Impressum und Datenschutzerklärung."
+  type        = string
+  validation {
+    condition     = length(trimspace(var.controller_name)) > 0 && !can(regex("[\"$\\n\\r]", var.controller_name))
+    error_message = "controller_name darf nicht leer sein und kein Anführungszeichen, Dollarzeichen oder Zeilenumbruch enthalten."
+  }
+}
+
+variable "controller_address" {
+  description = "Ladungsfähige Anschrift des Verantwortlichen."
+  type        = string
+  validation {
+    condition     = length(trimspace(var.controller_address)) > 0 && !can(regex("[\"$\\n\\r]", var.controller_address))
+    error_message = "controller_address darf nicht leer sein und kein Anführungszeichen, Dollarzeichen oder Zeilenumbruch enthalten."
+  }
+}
+
+variable "controller_email" {
+  description = "Kontakt-E-Mail des Verantwortlichen."
+  type        = string
+  validation {
+    condition     = can(regex("^[^@ \"$]+@[^@ \"$]+$", var.controller_email))
+    error_message = "controller_email muss eine E-Mail-Adresse sein."
+  }
+}
+
+variable "controller_phone" {
+  description = "Optional: Telefonnummer."
+  type        = string
+  default     = ""
+}
+
+variable "hosting_provider" {
+  description = "Hoster inkl. Standort für die Datenschutzerklärung."
+  type        = string
+  default     = "Oracle Cloud Infrastructure"
+}
+
 variable "ssh_public_key" {
   description = "Öffentlicher SSH-Schlüssel (Inhalt von z. B. ~/.ssh/id_ed25519.pub) für den Benutzer „ubuntu“."
   type        = string

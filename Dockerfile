@@ -7,6 +7,7 @@ COPY server ./server
 COPY tools ./tools
 COPY web ./web
 COPY batches ./batches
+COPY legal ./legal
 RUN mkdir -p /data && chown node:node /data
 USER node
 VOLUME /data
