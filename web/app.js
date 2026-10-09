@@ -64,6 +64,40 @@ function avatar(p, cls = '') {
 const catChip = (cat) => h('span', { class: 'chip', cat }, t('cat.' + cat))
 const inviteUrl = () => `${location.origin}/i/${S.me.public_id}`
 
+/* Kontakte zusätzlich lokal speichern (Spiegel des Servers; stellt ihn wieder her, falls er leer ist). */
+const LC_KEY = 'rp.contacts'
+function localContacts() {
+  try {
+    const d = JSON.parse(store.get(LC_KEY) || 'null')
+    return d && d.owner === S.me?.public_id && Array.isArray(d.list) ? d.list : []
+  } catch { return [] }
+}
+const setLocalContacts = (list) => store.set(LC_KEY, JSON.stringify({ owner: S.me.public_id, list: list.map((c) => ({ public_id: c.public_id, name: c.name })) }))
+function forgetIdentity() { store.del('rp.token'); store.del(LC_KEY); S.token = null; S.me = null; S.contacts = [] }
+
+/** Server-Liste ist maßgeblich. Nur wenn sie komplett leer ist (z. B. Datenbank zurückgesetzt), werden lokale Kontakte nachgetragen. */
+async function syncContacts(restore) {
+  const local = localContacts()
+  if (restore && !S.contacts.length && local.length) {
+    for (const c of local) { try { await api('POST', '/api/contacts', { public_id: c.public_id }) } catch { /* Spieler existiert nicht mehr */ } }
+    S.contacts = (await api('GET', '/api/me')).contacts
+  }
+  setLocalContacts(S.contacts)
+}
+
+const scriptLoads = {}
+const loadScript = (src) => (scriptLoads[src] ??= new Promise((resolve, reject) => {
+  document.head.append(h('script', { src, onload: resolve, onerror: () => { delete scriptLoads[src]; reject(new Error('load ' + src)) } }))
+}))
+
+/** Akzeptiert Freundescode, Einladungslink (/i/CODE oder #/invite/CODE) oder QR-Inhalt. */
+function parseCode(text) {
+  const raw = String(text ?? '').trim()
+  const m = raw.match(/\/i\/([A-Za-z0-9]{8})(?![A-Za-z0-9])/) || raw.match(/#\/invite\/([A-Za-z0-9]{8})(?![A-Za-z0-9])/)
+  const code = (m ? m[1] : raw).toUpperCase().replace(/[^A-Z0-9]/g, '')
+  return /^[A-HJ-NP-Z2-9]{8}$/.test(code) ? code : null
+}
+
 async function share(url, title) {
   if (navigator.share) { try { await navigator.share({ title, url }); return } catch (e) { if (e.name === 'AbortError') return } }
   try { await navigator.clipboard.writeText(url); toast(t('profile.copied')) } catch { prompt(title, url) }
@@ -102,7 +136,7 @@ async function route() {
   try {
     if (!S.me) { loading(); if (!(await boot())) return }
     if (my !== runId) return
-    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite }
+    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends }
     await (pages[page] ?? home)(arg, my)
   } catch (e) {
     if (my !== runId) return
@@ -126,19 +160,20 @@ async function boot() {
     const r = await api('POST', '/api/players', { lang: getLang() }, { auth: false })
     S.token = r.token; store.set('rp.token', r.token)
   }
-  try { await refreshMe() } catch (e) { if (e instanceof ApiError && e.status === 401) { sessionLost(); return false } throw e }
+  try { await refreshMe(true) } catch (e) { if (e instanceof ApiError && e.status === 401) { sessionLost(); return false } throw e }
   return true
 }
-async function refreshMe() {
+async function refreshMe(restore = false) {
   const r = await api('GET', '/api/me')
   S.me = r.player; S.contacts = r.contacts
+  await syncContacts(restore)
 }
 function sessionLost() {
   S.me = null
   mount(topbar(t('session.title'), false), h('div', { class: 'card stack' },
     h('p', { class: 'muted' }, t('session.info')),
     importControls(),
-    h('button', { class: 'btn block', onclick: () => { store.del('rp.token'); S.token = null; route() } }, t('session.fresh'))))
+    h('button', { class: 'btn block', onclick: () => { forgetIdentity(); route() } }, t('session.fresh'))))
 }
 
 /* ---------- Startseite ---------- */
@@ -185,7 +220,7 @@ async function newGame() {
     h('div', { class: 'list' },
       option(t('new.random'), t('new.randomSub'), '🎲', () => start('random')),
       option(t('new.bot'), t('new.botSub'), '🤖', () => start('bot')),
-      option(t('new.invite'), t('new.inviteSub'), '🔗', () => share(inviteUrl(), t('app.name')))),
+      option(t('friends.title'), t('new.inviteSub'), '🤝', () => go('#/friends'))),
     h('h2', {}, t('new.questionLang')), h('div', { class: 'card' }, langSel),
     h('h2', {}, t('new.contacts')),
     S.contacts.length
@@ -308,6 +343,9 @@ function importControls() {
     let data
     try { data = JSON.parse(await f.text()) } catch { data = null }
     if (data?.format !== 'ratespass-profile' || typeof data.token !== 'string') throw new ApiError(0, 'bad_file')
+    if (data.player?.public_id && Array.isArray(data.contacts)) {
+      store.set(LC_KEY, JSON.stringify({ owner: data.player.public_id, list: data.contacts.filter((c) => parseCode(c?.public_id)).map((c) => ({ public_id: c.public_id, name: String(c.name ?? '') })) }))
+    }
     await adoptToken(data.token)
   }) })
   const code = h('input', { type: 'text', placeholder: 'ABCD-EFGH', maxLength: 12, autocapitalize: 'characters', autocomplete: 'off' })
@@ -318,7 +356,7 @@ function importControls() {
 }
 async function adoptToken(token) {
   S.token = token; store.set('rp.token', token); S.me = null
-  await refreshMe()
+  await refreshMe(true)
   toast(t('profile.saved')); go('#/')
 }
 
@@ -333,11 +371,11 @@ async function profile() {
   const contacts = S.contacts.length
     ? h('div', { class: 'list' }, S.contacts.map((c) => h('div', { class: 'item' }, avatar(c), h('div', { class: 'grow ell' }, c.name),
       h('button', { class: 'btn small', onclick: guard(async () => { const r = await api('POST', '/api/games', { opponent: c.public_id, lang: gameLang() }); go('#/game/' + r.id) }) }, t('profile.challenge')),
-      h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: guard(async () => { await api('DELETE', '/api/contacts/' + c.public_id); await refreshMe(); route() }) }, '✕'))))
+      h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: guard(async () => { await api('DELETE', '/api/contacts/' + c.public_id); S.contacts = S.contacts.filter((x) => x.public_id !== c.public_id); setLocalContacts(S.contacts); route() }) }, '✕'))))
     : h('div', { class: 'empty' }, t('new.noContacts'))
   const account = p.has_account
     ? h('div', { class: 'stack' }, h('div', {}, t('profile.loggedInAs', { name: p.username })),
-        h('button', { class: 'btn block', onclick: guard(async () => { await api('POST', '/api/logout', {}); store.del('rp.token'); S.token = null; S.me = null; go('#/') }) }, t('profile.logout')))
+        h('button', { class: 'btn block', onclick: guard(async () => { await api('POST', '/api/logout', {}); forgetIdentity(); go('#/') }) }, t('profile.logout')))
     : h('div', { class: 'stack' }, h('p', { class: 'muted' }, t('profile.accountInfo')),
         h('label', { class: 'field' }, t('profile.username'), uname), h('label', { class: 'field' }, t('profile.password'), pass),
         h('button', { class: 'btn primary block', onclick: guard(async () => { await api('POST', '/api/account', { username: uname.value, password: pass.value }); await refreshMe(); toast(t('profile.saved')); route() }) }, t('profile.createAccount')),
@@ -353,6 +391,8 @@ async function profile() {
     h('h2', {}, t('profile.code')),
     h('div', { class: 'card stack' }, h('div', { class: 'code' }, p.public_id), h('button', { class: 'btn block', onclick: () => share(inviteUrl(), t('app.name')) }, '🔗 ' + t('profile.share'))),
     h('h2', {}, t('profile.contacts')), contacts,
+    h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend')),
+    h('p', { class: 'hint' }, t('friends.localNote')),
     h('h2', {}, t('profile.account')), h('div', { class: 'card' }, account),
     h('h2', {}, t('profile.move')),
     h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('profile.moveInfo')),
@@ -368,7 +408,7 @@ async function profile() {
       h('a', { class: 'item', href: '/legal.html' }, h('div', { class: 'grow' }, t('profile.legal')))),
     h('div', {}, h('button', { class: 'btn block danger', onclick: guard(async () => {
       if (!confirm(t('profile.deleteConfirm'))) return
-      await api('DELETE', '/api/me'); store.del('rp.token'); S.token = null; S.me = null; go('#/') }) }, t('profile.delete'))))
+      await api('DELETE', '/api/me'); forgetIdentity(); go('#/') }) }, t('profile.delete'))))
 }
 const linkItem = (label, hash) => h('button', { class: 'item', onclick: () => go(hash) }, h('div', { class: 'grow' }, label), '›')
 
@@ -377,6 +417,110 @@ async function downloadProfile() {
   const a = h('a', { href: URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' })), download: `ratespass-${S.me.public_id}.json` })
   document.body.append(a); a.click(); a.remove()
   setTimeout(() => URL.revokeObjectURL(a.href), 10000)
+}
+
+/* ---------- Freunde hinzufügen: QR / Code / Scan ---------- */
+async function renderQr(text) {
+  await loadScript('/vendor/qrcode.js')
+  const qr = window.qrcode(0, 'M')
+  qr.addData(text); qr.make()
+  const n = qr.getModuleCount(), quiet = 4, cell = 8, px = (n + quiet * 2) * cell
+  const canvas = h('canvas', { width: px, height: px, role: 'img', 'aria-label': 'QR' })
+  const ctx = canvas.getContext('2d')
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, px, px)
+  ctx.fillStyle = '#111'
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) ctx.fillRect((c + quiet) * cell, (r + quiet) * cell, cell, cell)
+  return canvas
+}
+
+async function startScan(video, onCode) {
+  await loadScript('/vendor/jsQR.js')
+  const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false })
+  video.setAttribute('playsinline', '')
+  video.muted = true
+  video.srcObject = stream
+  await video.play()
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d', { willReadFrequently: true })
+  let stopped = false, last = 0
+  const stop = () => { stopped = true; stream.getTracks().forEach((tr) => tr.stop()); video.srcObject = null }
+  const loop = (ts) => {
+    if (stopped) return
+    if (ts - last > 120 && video.videoWidth) {
+      last = ts
+      const k = Math.min(1, 480 / video.videoWidth)
+      canvas.width = Math.round(video.videoWidth * k); canvas.height = Math.round(video.videoHeight * k)
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+      const img = ctx.getImageData(0, 0, canvas.width, canvas.height)
+      const hit = window.jsQR(img.data, img.width, img.height, { inversionAttempts: 'dontInvert' })
+      if (hit && parseCode(hit.data)) { stop(); onCode(hit.data); return }
+    }
+    requestAnimationFrame(loop)
+  }
+  requestAnimationFrame(loop)
+  return stop
+}
+
+async function friends() {
+  let stopScan = () => {}
+  const prev = cleanup
+  cleanup = () => { prev(); stopScan() }
+  const result = h('div', { class: 'stack' })
+  const body = h('div', { class: 'stack' })
+  const tabs = h('div', { class: 'seg', role: 'tablist' })
+
+  const lookup = guard(async (raw) => {
+    const code = parseCode(raw)
+    if (!code) return toast(t('friends.notFound'))
+    if (code === S.me.public_id) return toast(t('friends.self'))
+    let who
+    try { who = await api('GET', '/api/players/' + code, undefined, { auth: false }) } catch (e) { if (e.status === 404) return toast(t('friends.notFound')); throw e }
+    const known = () => S.contacts.some((c) => c.public_id === who.public_id)
+    const draw = () => result.replaceChildren(h('div', { class: 'card stack fade' },
+      h('div', { class: 'row' }, avatar(who), h('div', { class: 'grow' }, h('strong', {}, who.name), h('div', { class: 'muted' }, known() ? t('friends.already') : t('friends.found')))),
+      known() ? null : h('button', { class: 'btn block', onclick: guard(async () => { await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe(); toast(t('friends.added', { name: who.name })); draw() }) }, t('friends.add')),
+      h('button', { class: 'btn primary block', onclick: guard(async () => {
+        if (!known()) { await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe() }
+        const r = await api('POST', '/api/games', { opponent: who.public_id, lang: gameLang() }); go('#/game/' + r.id) }) }, known() ? t('friends.challenge') : t('friends.addPlay'))))
+    draw()
+  })
+
+  async function show(tab) {
+    stopScan(); stopScan = () => {}
+    store.set('rp.friendsTab', tab)
+    for (const b of tabs.children) b.setAttribute('aria-pressed', String(b.dataset.tab === tab))
+    result.replaceChildren()
+    if (tab === 'mine') {
+      const holder = h('div', { class: 'qr' }, h('div', { class: 'spinner' }))
+      body.replaceChildren(holder, h('p', { class: 'hint' }, t('friends.qrHint')), h('div', { class: 'code' }, S.me.public_id),
+        h('button', { class: 'btn primary block', onclick: () => share(inviteUrl(), t('app.name')) }, '🔗 ' + t('profile.share')),
+        h('button', { class: 'btn block', onclick: guard(async () => { await navigator.clipboard.writeText(S.me.public_id); toast(t('friends.codeCopied')) }) }, t('friends.copyCode')))
+      try { holder.replaceChildren(await renderQr(inviteUrl())) } catch { holder.replaceChildren(h('p', { class: 'hint' }, inviteUrl())) }
+    } else if (tab === 'enter') {
+      const input = h('input', { type: 'text', placeholder: t('friends.placeholder'), autocomplete: 'off', autocapitalize: 'characters', spellcheck: false, 'aria-label': t('friends.enter') })
+      const go1 = () => lookup(input.value)
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') go1() })
+      input.addEventListener('input', () => { if (parseCode(input.value)) go1() })
+      body.replaceChildren(h('div', { class: 'row' }, input, h('button', { class: 'btn', onclick: go1 }, t('friends.lookup'))))
+      input.focus()
+    } else {
+      const video = h('video', { 'aria-label': t('friends.scan') })
+      const note = h('p', { class: 'hint' }, t('friends.camHint'))
+      const start = h('button', { class: 'btn primary block', onclick: async () => {
+        start.disabled = true
+        try {
+          stopScan = await startScan(video, (text) => { video.parentElement.classList.remove('live'); start.hidden = false; start.disabled = false; lookup(text) })
+          video.parentElement.classList.add('live'); start.hidden = true
+        } catch (e) { console.warn(e); note.textContent = t('friends.noCamera'); start.disabled = false }
+      } }, t('friends.camStart'))
+      body.replaceChildren(h('div', { class: 'scanbox' }, video), note, start)
+    }
+  }
+  for (const [tab, label] of [['mine', t('friends.mine')], ['enter', t('friends.enter')], ['scan', t('friends.scan')]]) {
+    tabs.append(h('button', { 'data-tab': tab, role: 'tab', 'aria-pressed': 'false', onclick: () => show(tab) }, label))
+  }
+  mount(topbar(t('friends.title')), h('div', { class: 'card stack' }, tabs, body), result, h('p', { class: 'hint' }, t('friends.localNote')))
+  await show(store.get('rp.friendsTab') || 'mine')
 }
 
 /* ---------- Einladung ---------- */

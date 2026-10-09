@@ -5,6 +5,8 @@ Minimalistischer Quizduell-Clon als **PWA**, betrieben als **ein Docker-Containe
 - 2 Spieler, 6 Runden à 3 Fragen, Kategorie-Wahl aus 3 Vorschlägen, 4 Antworten, 20 s pro Frage – rundenbasiert (asynchron)
 - Gegner: Freunde per Einladungslink/Freundescode, zufälliger Gegner (Warteliste), Bot
 - **Kein Login nötig:** anonymes Profil beim ersten Start. Verlauf & Identität lassen sich als Datei exportieren oder per Einmal-Code auf ein anderes Gerät übertragen
+- **Befreunden** per Link, per Freundescode (auch einfach einen Link/Chat-Text einfügen) oder per **QR-Code** (anzeigen und mit der In-App-Kamera scannen; mit der Kamera-App des Handys geht der Link ebenfalls)
+- **Kontakte lokal + zentral:** Sie liegen auf dem Server (an den anonymen Zugangsschlüssel bzw. das Konto gebunden) und zusätzlich als lokale Kopie im Browser; ist die Server-Liste leer, werden sie aus der lokalen Kopie wiederhergestellt
 - **Optionaler Account** (Benutzername + Passwort): Login auf jedem Gerät, Kontakte zentral gespeichert
 - Mehrsprachig (UI und Fragen: de/en; weitere Sprachen = zusätzliche Texte bzw. Fragen-Batches)
 - Fragen aus mehreren Quellen mit **Lizenz je Frage**, Community-Einreichungen mit Moderation, „Frage melden“-Button
@@ -24,7 +26,7 @@ Entwicklung ohne Docker (Node ≥ 22.18):
 ```bash
 npm install          # nur typescript + @types/node für `npm run check`
 npm run dev          # http://localhost:3000, Seed-Fragen werden beim Start importiert
-npm test             # Server-, Spiel-, Import- und i18n-Tests
+npm test             # Server-, Spiel-, Import- und i18n-Tests (17)
 npm run check        # Typprüfung
 ```
 
@@ -59,8 +61,14 @@ Spielregeln serverseitig: Die Lösung verlässt den Server erst nach der Antwort
 
 ## Bekannte Lücken / Nächste Schritte
 
+- Der Kamera-Scan braucht HTTPS (oder `localhost`) und die Kamera-Berechtigung; ohne beides bleibt der Link-/Code-Weg.
+- Gleichen Kontakt auf einem Gerät entfernen und auf einem anderen noch lokal gespeichert haben: die lokale Kopie stellt Kontakte nur wieder her, wenn die Server-Liste komplett leer ist.
 - **Web-Push** („Du bist dran“) fehlt noch – Spielstände aktualisieren sich per Polling, solange die App offen ist.
 - `/legal.html` (Impressum/Datenschutz) ist ein **Platzhalter** und muss vor einem öffentlichen Betrieb ausgefüllt und rechtlich geprüft werden.
 - `tools/fetch-opentdb.ts` und `tools/gen-wikidata.ts` sind gegen Fixtures im dokumentierten API-Format getestet, aber noch nicht gegen die Live-Dienste gelaufen (Netzwerkzugriff war in der Entwicklungsumgebung gesperrt).
 - Code-Lizenz für dieses Repository ist noch nicht festgelegt (die **Fragen** stehen unter CC BY-SA 4.0, siehe Doku).
 - Für „Quizduell“ als Name bestehen Markenrechte – deshalb „Ratespaß“.
+
+## Drittbibliotheken
+
+`web/vendor/` enthält unverändert `qrcode-generator` (MIT) und `jsQR` (Apache-2.0), nur bei Bedarf geladen – siehe `web/vendor/README.md` und die Lizenztexte dort.

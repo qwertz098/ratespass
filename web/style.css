@@ -111,3 +111,10 @@ details[open] > summary { margin-bottom: 8px; }
 label.row { cursor: pointer; align-items: flex-start; }
 input[type=checkbox] { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--accent); }
 #list{margin-top:16px}#stats{margin-top:24px}
+.qr { display: grid; place-items: center; background: #fff; border-radius: 16px; padding: 12px; min-height: 120px; }
+.qr canvas { width: 100%; max-width: 280px; height: auto; image-rendering: pixelated; display: block; }
+.scanbox { position: relative; border-radius: 16px; overflow: hidden; background: #000; aspect-ratio: 1; display: grid; place-items: center; }
+.scanbox video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scanbox.live::after { content: ""; position: absolute; inset: 16%; border: 3px solid #fff; border-radius: 18px; box-shadow: 0 0 0 999px rgba(0, 0, 0, .35); pointer-events: none; }
+.seg[role=tablist] { display: flex; }
+.seg[role=tablist] button { flex: 1; }

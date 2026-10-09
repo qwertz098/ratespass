@@ -50,7 +50,7 @@ export function createApp() {
     res.setHeader('content-security-policy', CSP)
     res.setHeader('x-content-type-options', 'nosniff')
     res.setHeader('referrer-policy', 'same-origin')
-    res.setHeader('permissions-policy', 'camera=(), microphone=(), geolocation=()')
+    res.setHeader('permissions-policy', 'camera=(self), microphone=(), geolocation=()')
     try {
       const url = new URL(req.url ?? '/', 'http://localhost')
       const method = req.method ?? 'GET'
