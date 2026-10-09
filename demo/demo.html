@@ -160,6 +160,22 @@ table.stat th:first-child, table.stat td:first-child { text-align: left }
 
 .item.me { outline: 2px solid var(--accent) }
 
+/* Live-Spielabend */
+.qrcard { align-items: center; text-align: center }
+.qr.big { width: min(78vw, 340px); height: auto; border-radius: 12px; background: #fff }
+.opt.lv-a { --lv: #e11d48 } .opt.lv-b { --lv: #2563eb } .opt.lv-c { --lv: #d97706 } .opt.lv-d { --lv: #16a34a }
+.opt[class*="lv-"] { border-left: 8px solid var(--lv) }
+.opt.letter { justify-content: center; min-height: 96px; font-size: 2rem; background: color-mix(in srgb, var(--lv) 22%, var(--surface)) }
+.opt.letter kbd { font-size: 1.6rem; border: 0; color: var(--text) }
+.opts.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
+.opt.dim { opacity: .45 }
+.opt.big { min-height: 90px; font-size: 1.2rem }
+.opt .cnt { margin-left: auto; font-weight: 800; min-width: 70px; text-align: right }
+.opt .cnt i { display: block; height: 6px; background: var(--lv); border-radius: 3px; margin-bottom: 4px }
+.question.bigq { font-size: clamp(1.4rem, 4vw, 2.2rem); line-height: 1.25 }
+.qcard.display { max-width: 980px }
+#app.wide { max-width: 1100px }
+
 .demo-bar{max-width:520px;margin:0 auto;padding:12px 16px 0;display:grid;gap:10px}
 .demo-bar .row{justify-content:space-between}
 .demo-note{font-size:13px;color:var(--muted);margin:0}
@@ -362,7 +378,8 @@ const DEMO = (() => {
     }
     if (path === '/api/consent' && method === 'POST') { st.consent = Date.now(); save(); return { body: { consent: { current: 'demo-version', accepted: 'demo-version', at: st.consent } } } }
     if (path === '/api/players' && method === 'POST') {
-      if (body?.consent) st.consent = Date.now() if (body?.name) st.me.name = String(body.name).slice(0, 24); if (body?.lang) st.me.lang = body.lang; save(); return { body: { token: 'demo-token', player: profile() } } }
+      if (body?.consent) st.consent = Date.now()
+      if (body?.name) st.me.name = String(body.name).slice(0, 24); if (body?.lang) st.me.lang = body.lang; save(); return { body: { token: 'demo-token', player: profile() } } }
     if (path === '/api/me' && method === 'GET') return { body: { player: profile(), contacts: st.contacts, consent: { current: 'demo-version', accepted: st.consent ? 'demo-version' : null, at: st.consent ?? null } } }
     if (path === '/api/me' && method === 'PATCH') {
       if (body.name !== undefined) { const n = String(body.name).trim(); if (n.length < 2 || n.length > 24) return err(400, 'bad_name'); st.me.name = n }
@@ -400,6 +417,7 @@ const DEMO = (() => {
     if (path === '/api/games' && method === 'GET') {
       return { body: { games: st.games.map((g) => { const v = view(g); return { id: v.id, status: v.status, lang: v.lang, round: v.round, turn: v.turn, phase: v.phase, opp: v.opp, score: v.score, winner: v.winner, updated_at: v.updated_at } }) } }
     }
+    if (path.startsWith('/api/live')) return err(501, 'demo_unavailable') // Echtzeit braucht den echten Server
     /* Bestenliste (Demo: Beispieldaten + dein eigener Stand aus der Demo) */
     if (path === '/api/leaderboard' && method === 'GET') {
       const sample = [['Quizkönig', 412, 540], ['Wissensdurst', 388, 470], ['Rätselfuchs', 351, 520], ['Nachteule', 300, 380], ['Neunmalklug', 262, 400]]
@@ -588,6 +606,12 @@ const dict = {
     'lb.joinInfo': 'Freiwillig: Du erscheinst nur mit einem eigenen Bestenlisten-Namen (nicht mit deinem Anzeigenamen). Du kannst jederzeit aussteigen.', 'lb.name': 'Bestenlisten-Name', 'lb.namePlaceholder': '3–20 Zeichen', 'lb.join': 'Mitmachen', 'lb.leave': 'Teilnahme beenden', 'lb.participating': 'Du nimmst teil als „{name}“.',
     'lb.rules': 'Absolut = richtig beantwortete Fragen, Quote = richtig/gewusst ab {rel} Antworten. Es zählen Antworten mit plausibler Lesezeit, höchstens {cap} pro Tag; Wertung ab {abs} Antworten und 24 Stunden Profilalter. „Nur gegen Menschen“ ohne Bot-Duelle und Solo-Leiter.',
     'err.bad_lb_name': 'Name: 3–20 Zeichen (Buchstaben, Ziffern, Leerzeichen, . _ · -), nicht reserviert.', 'err.lb_name_taken': 'Dieser Name ist schon vergeben.', 'err.lb_banned': 'Du wurdest von der Bestenliste ausgeschlossen.',
+    'live.title': 'Live-Spielabend', 'live.sub': 'Alle gleichzeitig: ein Gastgeber, Mitspieler scannen seinen QR-Code', 'live.scan': 'Mitspieler scannen diesen QR-Code mit der Kamera ihres Handys.', 'live.renew': 'QR-Code erneuern',
+    'live.waiting': 'Du bist dabei!', 'live.waitHost': 'Der Gastgeber startet gleich die Runde …', 'live.start': 'Spiel starten', 'live.cancel': 'Abbrechen', 'live.end': 'Beenden', 'live.endConfirm': 'Live-Spiel jetzt beenden?', 'live.next': 'Weiter', 'live.endQuestion': 'Frage beenden',
+    'live.mode.tempo': 'Tempo-Quiz', 'live.mode.survival': 'Survival-Leiter', 'live.modeInfo.tempo': 'Feste Fragenzahl: richtig und schnell bringt bis zu 1000 Punkte.', 'live.modeInfo.survival': 'Immer schwerere Fragen: wer falsch liegt, scheidet aus – der Letzte gewinnt.',
+    'live.screen.on': 'Bildschirm-Modus', 'live.screen.off': 'Handy-Modus', 'live.screenInfo.on': 'Dieses Gerät zeigt Fragen und Ergebnisse groß (TV, Laptop, Tablet), die Handys zeigen nur die Antwort-Tasten A–D. Der Host spielt nicht mit.', 'live.screenInfo.off': 'Jedes Handy zeigt Frage und Antworten; der Host spielt mit und steuert.',
+    'live.alive': 'dabei', 'live.out': 'raus', 'live.sent': 'Antwort gesendet', 'live.spectate': 'Ausgeschieden – schau zu', 'live.finished': 'Runde beendet',
+    'err.demo_unavailable': 'In der Demo nicht verfügbar – dafür braucht es den echten Server.', 'err.not_found': 'Nicht gefunden.', 'err.live_closed': 'Dieses Live-Spiel nimmt gerade keine Spieler oder Antworten an.', 'err.unknown_live': 'Dieser QR-Code ist nicht mehr gültig – bitte beim Gastgeber neu scannen.', 'err.live_full': 'Das Live-Spiel ist voll.', 'err.live_too_small': 'Zum Starten braucht es mindestens 2 Spieler.', 'err.already_answered': 'Du hast schon geantwortet.',
     'play.question': 'Frage {n}/{total}', 'play.report': 'Frage melden', 'play.reported': 'Danke, wir prüfen die Frage.', 'play.next': 'Weiter',
     'play.right': 'Richtig!', 'play.wrong': 'Leider falsch', 'play.timeUp': 'Zeit abgelaufen',
     'profile.birthYear': 'Geburtsjahr (freiwillig)', 'profile.birthHint': 'Nur das Jahr, nur für anonyme Auswertungen, wie schwer Fragen für verschiedene Altersgruppen sind. Leer lassen ist völlig in Ordnung; du kannst es jederzeit löschen.',
@@ -685,6 +709,12 @@ const dict = {
     'lb.joinInfo': 'Optional: you only appear under a separate leaderboard name (not your display name). You can leave at any time.', 'lb.name': 'Leaderboard name', 'lb.namePlaceholder': '3–20 characters', 'lb.join': 'Join', 'lb.leave': 'Leave leaderboard', 'lb.participating': 'You take part as “{name}”.',
     'lb.rules': 'Absolute = correctly answered questions, rate = right/known from {rel} answers. Answers with a plausible reading time count, at most {cap} per day; ranked from {abs} answers and a 24-hour-old profile. “Humans only” excludes bot duels and the solo ladder.',
     'err.bad_lb_name': 'Name: 3–20 characters (letters, digits, spaces, . _ · -), not reserved.', 'err.lb_name_taken': 'That name is already taken.', 'err.lb_banned': 'You have been excluded from the leaderboard.',
+    'live.title': 'Live party game', 'live.sub': 'Everyone at once: one host, players scan the host’s QR code', 'live.scan': 'Players scan this QR code with their phone camera.', 'live.renew': 'Renew QR code',
+    'live.waiting': 'You’re in!', 'live.waitHost': 'The host will start the round shortly …', 'live.start': 'Start game', 'live.cancel': 'Cancel', 'live.end': 'End', 'live.endConfirm': 'End the live game now?', 'live.next': 'Next', 'live.endQuestion': 'End question',
+    'live.mode.tempo': 'Speed quiz', 'live.mode.survival': 'Survival ladder', 'live.modeInfo.tempo': 'Fixed number of questions: right and fast earns up to 1000 points.', 'live.modeInfo.survival': 'Ever harder questions: wrong answers are out – the last one standing wins.',
+    'live.screen.on': 'Screen mode', 'live.screen.off': 'Phone mode', 'live.screenInfo.on': 'This device shows questions and results big (TV, laptop, tablet); phones only show the answer buttons A–D. The host does not play.', 'live.screenInfo.off': 'Every phone shows question and answers; the host plays along and controls.',
+    'live.alive': 'in', 'live.out': 'out', 'live.sent': 'Answer sent', 'live.spectate': 'Out – watch along', 'live.finished': 'Round over',
+    'err.demo_unavailable': 'Not available in the demo – this needs the real server.', 'err.not_found': 'Not found.', 'err.live_closed': 'This live game is not accepting players or answers right now.', 'err.unknown_live': 'This QR code is no longer valid – please scan again at the host.', 'err.live_full': 'The live game is full.', 'err.live_too_small': 'At least 2 players are needed to start.', 'err.already_answered': 'You have already answered.',
     'play.question': 'Question {n}/{total}', 'play.report': 'Report question', 'play.reported': "Thanks, we'll review it.", 'play.next': 'Next',
     'play.right': 'Correct!', 'play.wrong': 'Not quite', 'play.timeUp': "Time's up",
     'profile.birthYear': 'Birth year (optional)', 'profile.birthHint': 'Year only, used only for anonymous statistics on how hard questions are for different age groups. Leaving it empty is perfectly fine; you can delete it at any time.',
@@ -882,7 +912,7 @@ async function route() {
   try {
     if (!S.me) { loading(); if (!(await boot())) return }
     if (my !== runId) return
-    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top }
+    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top, live, 'live-join': liveJoin }
     await (pages[page] ?? home)(arg, my)
   } catch (e) {
     if (my !== runId) return
@@ -1044,6 +1074,9 @@ async function newGame() {
         const r = await api('POST', '/api/rooms', { mode: m, lang: gameLang() }); go('#/room/' + r.id) })))),
     h('div', { class: 'card' }, h('label', { class: 'field' }, t('room.codeLabel'), h('div', { class: 'row' }, roomCode,
       h('button', { class: 'btn', onclick: guard(async () => joinRoom(roomCode.value)) }, t('room.join'))))),
+    h('h2', {}, t('live.title')),
+    h('div', { class: 'list' }, option(t('live.title'), t('live.sub'), '🎉', guard(async () => {
+      const r = await api('POST', '/api/live', { mode: 'tempo', screen: false, lang: gameLang() }); go('#/live/' + r.id) }))),
     h('h2', {}, t('new.questionLang')), h('div', { class: 'card' }, langSel))
 }
 const langName = (code) => { try { return new Intl.DisplayNames([getLang()], { type: 'language' }).of(code) } catch { return code } }
@@ -1167,6 +1200,137 @@ async function play(id, my) {
     if (q.idx >= q.total - 1 || g.turn !== 'me' || g.status !== 'active' || g.phase !== 'play') return go('#/game/' + id)
     await sleep(50)
   }
+}
+
+/* ---------- Live-Gesellschaftsspiel (Echtzeit) ---------- */
+const LETTERS = ['A', 'B', 'C', 'D']
+const liveLink = (token) => `${location.origin}/#/live-join/${token}`
+
+async function liveJoin(token) {
+  mount(topbar(t('app.name'), false), h('div', { class: 'card stack' }, h('p', {}, t('room.joining'))))
+  const r = await api('POST', '/api/live/join', { token: token || '' })
+  go('#/live/' + r.id)
+}
+
+/** Server-Sent Events über fetch (Bearer-Header bleibt, kein Token in der URL); baut bei Abbruch mit Backoff neu auf. */
+function connectLive(id, onState, onGone) {
+  const ac = new AbortController()
+  let stopped = false
+  const prev = cleanup
+  cleanup = () => { prev(); stopped = true; ac.abort() }
+  ;(async () => {
+    let delay = 500
+    while (!stopped) {
+      try {
+        const res = await fetch(`/api/live/${id}/events`, { headers: { authorization: 'Bearer ' + S.token }, signal: ac.signal })
+        if (res.status === 404 || res.status === 401 || res.status === 403) return onGone()
+        if (!res.ok || !res.body) throw new Error('sse ' + res.status)
+        delay = 500
+        const reader = res.body.getReader(), dec = new TextDecoder()
+        let buf = ''
+        for (;;) {
+          const { value, done } = await reader.read()
+          if (done) break
+          buf += dec.decode(value, { stream: true })
+          let i
+          while ((i = buf.indexOf('\n\n')) >= 0) {
+            const chunk = buf.slice(0, i); buf = buf.slice(i + 2)
+            const d = /^data: (.*)$/m.exec(chunk)
+            if (d && /^event: state/m.test(chunk)) onState(JSON.parse(d[1]))
+          }
+        }
+      } catch { if (stopped) return }
+      await new Promise((r) => setTimeout(r, delay)); delay = Math.min(delay * 2, 5000)
+    }
+  })()
+}
+
+async function live(id, my) {
+  let raf = 0, lastQr = '', offset = 0
+  const prev = cleanup
+  cleanup = () => { prev(); cancelAnimationFrame(raf); document.getElementById('app').classList.remove('wide') }
+  const act = (path, body = {}) => guard(async () => { await api('POST', `/api/live/${id}/${path}`, body) })
+  const timerBar = (s) => {
+    const bar = h('i'), box = h('div', { class: 'timer' }, bar)
+    cancelAnimationFrame(raf)
+    const until = s.phase_until - s.now + performance.now() // Server- und Gerätezeit gleichen sich über `now` an
+    const tick = () => { const left = until - performance.now(); bar.style.transform = `scaleX(${Math.max(0, Math.min(1, left / (s.status === 'question' ? s.limit_ms : 5000)))})`; if (left > 0) raf = requestAnimationFrame(tick) }
+    raf = requestAnimationFrame(tick)
+    return box
+  }
+  const players = (s, kick) => h('div', { class: 'list' }, s.players.map((p) => h('div', { class: 'item' + (p.is_me ? ' me' : '') },
+    s.status === 'finished' || s.status === 'reveal' ? h('span', { class: 'rank' }, '#' + p.rank) : null,
+    h('div', { class: 'grow ell' }, p.name + (p.is_me ? ' (' + t('game.you') + ')' : '')),
+    s.status === 'question' && p.answered !== undefined ? h('span', { class: 'badge ' + (p.answered ? 'good' : '') }, p.answered ? '✓' : '…') : null,
+    s.mode === 'survival' && s.status !== 'lobby' ? h('span', { class: 'badge ' + (p.alive ? 'good' : 'bad') }, p.alive ? t('live.alive') : t('live.out')) : null,
+    s.mode === 'tempo' && s.status !== 'lobby' ? h('span', { class: 'score' }, String(p.score)) : null,
+    kick && p.public_id && !p.is_me ? h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: act('kick', { public_id: p.public_id }) }, '✕') : null)))
+  const hostBar = (s) => s.is_host && s.status !== 'finished' ? h('div', { class: 'row wrap' },
+    s.status !== 'lobby' ? h('button', { class: 'btn small primary', onclick: act('next') }, t(s.status === 'question' ? 'live.endQuestion' : 'live.next')) : null,
+    h('button', { class: 'btn small danger', onclick: guard(async () => { if ((()=>true)(t('live.endConfirm'))) await api('POST', `/api/live/${id}/end`, {}) }) }, t('live.end'))) : null
+
+  const lobby = async (s) => {
+    const url = s.token ? liveLink(s.token) : ''
+    let qr = null
+    if (s.is_host && url) { qr = await renderQr(url); qr.className = 'qr big' }
+    const seg = (key, opts, cur) => h('div', { class: 'seg wrap' }, opts.map(([v, label]) => h('button', { 'aria-pressed': String(cur === v), onclick: act('settings', { [key]: v }) }, t(label))))
+    mount(topbar(t('live.title'), true),
+      s.is_host ? h('div', { class: 'card stack qrcard' }, qr, h('p', { class: 'muted' }, t('live.scan')),
+        h('button', { class: 'btn small', onclick: act('renew') }, t('live.renew'))) : h('div', { class: 'card stack' }, h('h3', {}, t('live.waiting')), h('p', { class: 'muted' }, t('live.waitHost'))),
+      s.is_host ? h('div', { class: 'card stack' }, seg('mode', [['tempo', 'live.mode.tempo'], ['survival', 'live.mode.survival']], s.mode), h('p', { class: 'hint' }, t('live.modeInfo.' + s.mode)),
+        seg('screen', [[true, 'live.screen.on'], [false, 'live.screen.off']], s.screen), h('p', { class: 'hint' }, t(s.screen ? 'live.screenInfo.on' : 'live.screenInfo.off'))) : null,
+      h('h2', {}, t('room.players', { n: s.players.length, max: s.max_players })), players(s, s.is_host),
+      s.is_host ? h('button', { class: 'btn primary block', disabled: s.players.length < 2, onclick: act('start') }, t('live.start')) : null,
+      s.is_host ? h('button', { class: 'btn block danger', onclick: act('end') }, t('live.cancel')) : null)
+  }
+
+  const question = (s) => {
+    const q = s.question, reveal = s.status !== 'question'
+    const display = s.is_host && s.screen // Bildschirm-Ansicht des Hosts
+    const answered = s.me?.answered
+    const mineChoice = s.me?.choice
+    const head = h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, t('ladder.step', { n: s.idx + 1, total: s.total }) + (q.prize ? ' · ' + money(q.prize) : '')))
+    const maxCount = Math.max(1, ...(q.counts ?? [1]))
+    const opt = (text, i) => {
+      const cls = 'opt lv-' + LETTERS[i].toLowerCase() + (reveal ? (i === q.correct_index ? ' good' : mineChoice === i ? ' bad' : ' dim') : (answered && s.me && !reveal ? '' : ''))
+      const label = display || s.screen ? [h('kbd', {}, LETTERS[i]), display ? h('span', {}, text) : null] : [h('kbd', {}, LETTERS[i]), h('span', {}, text)]
+      const canAnswer = !display && s.me && !answered && !reveal && (s.mode !== 'survival' || s.me.alive)
+      return h('button', { class: cls + (display ? ' big' : '') + (s.screen && !display ? ' letter' : ''), disabled: !canAnswer, onclick: guard(async () => { await api('POST', `/api/live/${id}/answer`, { idx: s.idx, choice: i }) }) },
+        ...label, reveal && display && q.counts ? h('span', { class: 'cnt' }, h('i', { style: `width:${Math.round((q.counts[i] / maxCount) * 100)}%` }), String(q.counts[i])) : null)
+    }
+    const status = reveal && s.me ? h('div', { class: 'feedback' }, h('strong', {}, s.me.correct === undefined ? t('play.timeUp') : s.me.correct ? t('play.right') : t('play.wrong')),
+      s.mode === 'tempo' ? h('span', { class: 'score' }, '+' + (s.me.points ?? 0)) : (s.me.alive ? h('span', { class: 'badge good' }, t('live.alive')) : h('span', { class: 'badge bad' }, t('live.out')))) :
+      !reveal && answered ? h('div', { class: 'feedback' }, h('strong', {}, t('live.sent'))) :
+      !reveal && s.me && s.mode === 'survival' && !s.me.alive ? h('div', { class: 'feedback' }, h('strong', {}, t('live.spectate'))) : null
+    mount(topbar(t('live.title'), false),
+      h('div', { class: 'card qcard' + (display ? ' display' : ''), cat: q.category }, head, timerBar(s),
+        !s.screen || display ? h('div', { class: 'question' + (display ? ' bigq' : '') }, q.text) : null,
+        h('div', { class: 'opts' + (display ? ' grid' : s.screen ? ' grid' : '') }, q.options.map(opt)), status,
+        reveal && q.explanation ? h('p', { class: 'muted' }, q.explanation) : null),
+      reveal || display ? h('div', { class: 'card stack' }, players({ ...s, players: s.players.slice(0, display ? 8 : 5) }, false)) : null,
+      hostBar(s))
+  }
+
+  const finished = (s) => mount(topbar(t('live.title'), true),
+    h('div', { class: 'card stack lresult' }, h('h3', {}, t('live.finished')), s.players[0] ? h('div', { class: 'big' }, '🏆 ' + s.players[0].name) : null),
+    h('h2', {}, t('room.ranking')), players(s, false),
+    h('button', { class: 'btn block', onclick: () => go('#/') }, t('ladder.home')))
+
+  let rendering = false, pending = null
+  const render = async (s) => {
+    if (my !== runId) return
+    document.getElementById('app').classList.toggle('wide', s.is_host && s.screen && s.status !== 'lobby') // Bildschirm-Ansicht darf breit sein
+    if (rendering) { pending = s; return }
+    rendering = true
+    try {
+      if (s.status === 'lobby') { if (!document.activeElement || document.activeElement === document.body || s.token !== lastQr) { lastQr = s.token; await lobby(s) } else await lobby(s) }
+      else if (s.status === 'finished') finished(s)
+      else if (s.question) question(s)
+    } finally { rendering = false }
+    if (pending) { const p = pending; pending = null; render(p) }
+  }
+  mount(topbar(t('live.title'), true), h('div', { class: 'card stack' }, h('p', {}, t('room.joining'))))
+  connectLive(id, (s) => { offset = s.now - Date.now(); render(s) }, () => { toast(t('err.not_found')); go('#/') })
 }
 
 /* ---------- Bestenliste (Opt-in) ---------- */

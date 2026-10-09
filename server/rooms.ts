@@ -78,11 +78,11 @@ export function leaveRoom(me: PlayerRow, roomId: number) {
   })
 }
 
-function selectQuestions(room: RoomRow, cats: string[], pids: number[]): QRow[] {
+/** Wählt je gewünschter Schwierigkeit eine Frage aus den Kategorien (bevorzugt solchen, die keiner der Spieler schon kennt). */
+export function pickQuestions(lang: string, cats: string[], pids: number[], diffs: number[]): QRow[] {
   const marks = cats.map(() => '?').join(',')
-  const pool = all<QRow>(`SELECT * FROM questions WHERE lang=? AND status='active' AND ${SERVABLE_SQL} AND category IN (${marks})`, room.lang, ...cats)
+  const pool = all<QRow>(`SELECT * FROM questions WHERE lang=? AND status='active' AND ${SERVABLE_SQL} AND category IN (${marks})`, lang, ...cats)
   const seen = new Set(all<{ group_id: string }>(`SELECT DISTINCT group_id FROM seen WHERE player_id IN (${pids.map(() => '?').join(',')})`, ...pids).map((r) => r.group_id))
-  const diffs = room.mode === 'quiz' ? QUIZ_DIFFICULTIES : PRIZES.map((_, i) => difficultyOf(i + 1))
   const used = new Set<string>(), out: QRow[] = []
   for (const want of diffs) {
     let pick: QRow | undefined
@@ -107,7 +107,7 @@ export function startRoom(me: PlayerRow, roomId: number) {
     const ps = members(roomId)
     if (ps.length < 2) throw new HttpError(409, 'room_too_small')
     const eff = effectiveFor(ps.map((p) => p.player_id))
-    const qs = selectQuestions(room, eff.cats, ps.map((p) => p.player_id))
+    const qs = pickQuestions(room.lang, eff.cats, ps.map((p) => p.player_id), room.mode === 'quiz' ? QUIZ_DIFFICULTIES : PRIZES.map((_, i) => difficultyOf(i + 1)))
     qs.forEach((q, i) => run('INSERT INTO room_questions(room_id,idx,question_id,perm) VALUES(?,?,?,?)', roomId, i, q.id, JSON.stringify(shuffle([0, 1, 2, 3]))))
     run("UPDATE rooms SET status='active', level=?, cats=?, total=?, deadline=?, updated_at=? WHERE id=?", eff.level, JSON.stringify(eff.cats), qs.length, now() + DEADLINE_MS, now(), roomId)
     for (const p of ps) if (p.player_id !== me.id) notifyPlayer(p.player_id, 'room_start', roomId, me.name)

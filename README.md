@@ -55,6 +55,7 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 | `CONTROLLER_NAME`, `CONTROLLER_ADDRESS`, `CONTROLLER_EMAIL` | – | **Pflicht** für Impressum und Datenschutzerklärung (Verantwortlicher); fehlen sie, zeigt die Erklärung „[nicht konfiguriert]“ und der Server warnt |
 | `CONTROLLER_PHONE`, `DPO_CONTACT`, `HOSTING_PROVIDER` | – | optionale Angaben für Impressum/Datenschutz (Telefon, Datenschutzbeauftragte/r, Hoster) |
 | `PRIVACY_RETENTION_DAYS` | 730 | anonyme Profile ohne Anmeldung werden nach so vielen Tagen ohne Aktivität gelöscht |
+| `LIVE_MAX_PLAYERS` / `LIVE_QUESTION_MS` / `LIVE_REVEAL_MS` / `LIVE_TEMPO_QUESTIONS` | 30 / 20000 / 5000 / 10 | Live-Spielabend: Höchstzahl Spieler, Fragezeit, Auflösungszeit (ms), Fragen im Tempo-Quiz |
 | `CONSENT_REQUIRED` | 1 | `0` schaltet die Zustimmungspflicht nur für lokale Entwicklung/Tests ab |
 | `ANTHROPIC_API_KEY` | – | aktiviert die KI-Schnittstelle (Fragen erzeugen/prüfen, Schwierigkeit schätzen); nie ins Repo, nur als Umgebungsvariable |
 | `AI_MODEL` | `claude-sonnet-5-5` | Modell für die KI-Schnittstelle |
@@ -84,6 +85,10 @@ Aktueller Bestand: **3378 Fragen** (davon 3186 auch auf Englisch spielbar) (`see
 ### Spielstufen und Extra-Kategorien
 
 Jeder Spieler wählt im Profil sein **Level** – Basis, Nerd (Sci-Fi & Fantasy, Programmieren & IT, Anime & Manga, Retro-Games) oder Experte (MINT & Ingenieurwesen, Geisteswissenschaften, Kunst & Literatur, Informatik) – und kann einzelne Extra-Kategorien abwählen. Im Duell zählt immer die **niedrigste Einstellung** beider Spieler (niedrigstes Level, Schnitt der aktiven Kategorien); beim Spielstart wird die Auswahl im Spiel festgehalten. Details in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
+
+### Live-Spielabend (Echtzeit, Beitritt per QR)
+
+Gesellschaftsspiel-Ersatz: Der **Initiator** (Host) öffnet unter „Neues Spiel → Live-Spielabend“ eine Lobby und zeigt einen **QR-Code**; Mitspieler scannen ihn mit der Handy-Kamera und sind dabei (kein Raumcode zum Eintippen; der Token gilt nur in der Lobby, 2 Stunden, und lässt sich erneuern). Modi: **Tempo-Quiz** (feste Fragenzahl, bis zu 1000 Punkte je Frage nach Tempo) und **Survival-Leiter** (Leiter-Schwierigkeit, wer falsch antwortet, scheidet aus). Anzeige: **Bildschirm-Modus** (Host-Gerät zeigt Frage und Ergebnisse groß auf TV/Laptop, Handys zeigen nur die Tasten A–D, der Host spielt nicht mit) oder **Handy-Modus** (jedes Handy zeigt die Frage, der Host spielt mit). Es gilt die niedrigste Einstellung aller Mitspieler. Technik: Server-Sent Events über `fetch` (`GET /api/live/:id/events`), Zeitgeber im Server und nach einem Neustart aus der Datenbank wieder aufgenommen; die richtige Antwort wird erst in der Auflösung gesendet. **Hinter einem Reverse-Proxy darf die Antwort nicht gepuffert werden:** Caddy (`flush_interval -1`, siehe `Caddyfile`), nginx/NPM (`proxy_buffering off`; der Server setzt zusätzlich `X-Accel-Buffering: no`). Einzelinstanz-Annahme (SQLite, ein Container). Live-Antworten zählen für die Bestenliste als „gegen Menschen“. Code: `server/live.ts`, Tests: `test/live.test.ts`; in der Demo nicht verfügbar.
 
 ### Bestenlisten (Opt-in)
 

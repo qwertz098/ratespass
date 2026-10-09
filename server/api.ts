@@ -11,6 +11,7 @@ import * as ladder from './ladder.ts'
 import * as rooms from './rooms.ts'
 import * as ai from './ai.ts'
 import * as lb from './leaderboard.ts'
+import * as live from './live.ts'
 import { consentState, consentStats, currentPrivacy, recordConsent } from './privacy.ts'
 import { erasePlayer } from './erase.ts'
 import {
@@ -262,6 +263,28 @@ router.post('/api/games/:id/review', (c) => {
   fileReview(questionId, p.id, c.body.part, c.body.kind, c.body.note)
   return { ok: true }
 })
+
+/* ---------- Live-Gesellschaftsspiel (Echtzeit, Beitritt per QR des Hosts) ---------- */
+router.post('/api/live', (c) => {
+  const p = me(c)
+  rateLimit(`live:${p.id}`, 20, 3_600_000)
+  const r = live.createLive(p, c.body?.mode, c.body?.screen, pickLang(c.body?.lang, p.lang))
+  return { id: r.id, live: live.getView(r.id, p) }
+})
+router.post('/api/live/join', (c) => {
+  rateLimit(`livejoin:${c.ip}`, 60, 900_000)
+  const id = live.joinByToken(me(c), c.body?.token)
+  return { id, live: live.getView(id, me(c)) }
+})
+router.get('/api/live/:id', (c) => ({ live: live.getView(gid(c), me(c)) }))
+router.get('/api/live/:id/events', (c) => { live.subscribe(gid(c), me(c), c.res); return undefined })
+router.post('/api/live/:id/settings', (c) => { live.configure(me(c), gid(c), { mode: c.body?.mode, screen: c.body?.screen }); return { live: live.getView(gid(c), me(c)) } })
+router.post('/api/live/:id/renew', (c) => { live.renewToken(me(c), gid(c)); return { live: live.getView(gid(c), me(c)) } })
+router.post('/api/live/:id/start', (c) => { live.start(me(c), gid(c)); return { live: live.getView(gid(c), me(c)) } })
+router.post('/api/live/:id/next', (c) => { live.next(me(c), gid(c)); return { live: live.getView(gid(c), me(c)) } })
+router.post('/api/live/:id/end', (c) => { live.end(me(c), gid(c)); return { live: live.getView(gid(c), me(c)) } })
+router.post('/api/live/:id/kick', (c) => { live.kick(me(c), gid(c), c.body?.public_id); return { live: live.getView(gid(c), me(c)) } })
+router.post('/api/live/:id/answer', (c) => { live.answer(me(c), gid(c), c.body?.idx, c.body?.choice); return { ok: true } })
 
 /* ---------- Bestenliste (Opt-in) ---------- */
 router.get('/api/leaderboard', (c) => {

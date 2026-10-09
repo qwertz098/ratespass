@@ -6,10 +6,12 @@ import { sweepRooms } from './rooms.ts'
 import { importPendingBatches } from './questions.ts'
 import { autoRun } from './ai.ts'
 import { sweepProfiles } from './erase.ts'
+import { resumeLive, sweepLive } from './live.ts'
 import { missingSettings } from './privacy.ts'
 
 importPendingBatches(config.batchDir)
-setInterval(() => { try { sweep(); sweepRooms(); sweepProfiles() } catch (e) { console.error('sweep', e) } }, 30 * 60_000).unref()
+resumeLive()
+setInterval(() => { try { sweep(); sweepRooms(); sweepProfiles(); sweepLive() } catch (e) { console.error('sweep', e) } }, 30 * 60_000).unref()
 
 // KI-Auto-Lauf (nur mit ANTHROPIC_API_KEY und AI_AUTO=1 bzw. im Admin eingeschaltet): neue Fragen landen immer in der Moderation
 setInterval(() => { autoRun().catch((e) => console.error('ai auto', e?.message ?? e)) }, 60 * 60_000).unref()

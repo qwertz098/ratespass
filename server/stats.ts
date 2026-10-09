@@ -28,7 +28,8 @@ const ANSWERS = `
     JOIN round_questions rq ON rq.game_id=a.game_id AND rq.round=a.round AND rq.idx=a.idx WHERE a.choice IS NOT NULL
   UNION ALL SELECT s.question_id, l.player_id, s.correct, s.ms FROM ladder_steps s JOIN ladders l ON l.id=s.ladder_id WHERE s.choice IS NOT NULL
   UNION ALL SELECT rq.question_id, a.player_id, a.correct, a.ms FROM room_answers a
-    JOIN room_questions rq ON rq.room_id=a.room_id AND rq.idx=a.idx WHERE a.choice IS NOT NULL`
+    JOIN room_questions rq ON rq.room_id=a.room_id AND rq.idx=a.idx WHERE a.choice IS NOT NULL
+  UNION ALL SELECT lq.question_id, a.player_id, a.correct, a.ms FROM live_answers a JOIN live_questions lq ON lq.game_id=a.game_id AND lq.idx=a.idx WHERE a.choice >= 0`
 const year = () => ({ year: new Date().getFullYear() })
 /** SQL mit benannten Parametern (:name); es werden nur die Parameter übergeben, die im Text vorkommen. */
 const named = <T>(sql: string, params: Record<string, string | number>): T[] =>

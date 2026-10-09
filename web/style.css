@@ -156,3 +156,19 @@ table.stat th:first-child, table.stat td:first-child { text-align: left }
 .doc ul, .card ul { padding-left: 20px; margin: 4px 0 }
 
 .item.me { outline: 2px solid var(--accent) }
+
+/* Live-Spielabend */
+.qrcard { align-items: center; text-align: center }
+.qr.big { width: min(78vw, 340px); height: auto; border-radius: 12px; background: #fff }
+.opt.lv-a { --lv: #e11d48 } .opt.lv-b { --lv: #2563eb } .opt.lv-c { --lv: #d97706 } .opt.lv-d { --lv: #16a34a }
+.opt[class*="lv-"] { border-left: 8px solid var(--lv) }
+.opt.letter { justify-content: center; min-height: 96px; font-size: 2rem; background: color-mix(in srgb, var(--lv) 22%, var(--surface)) }
+.opt.letter kbd { font-size: 1.6rem; border: 0; color: var(--text) }
+.opts.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
+.opt.dim { opacity: .45 }
+.opt.big { min-height: 90px; font-size: 1.2rem }
+.opt .cnt { margin-left: auto; font-weight: 800; min-width: 70px; text-align: right }
+.opt .cnt i { display: block; height: 6px; background: var(--lv); border-radius: 3px; margin-bottom: 4px }
+.question.bigq { font-size: clamp(1.4rem, 4vw, 2.2rem); line-height: 1.25 }
+.qcard.display { max-width: 980px }
+#app.wide { max-width: 1100px }

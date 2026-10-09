@@ -1,4 +1,7 @@
 {$DOMAIN} {
 	encode zstd gzip
-	reverse_proxy ratespass:3000
+	# Live-Spiel: Server-Sent Events dürfen nicht gepuffert werden
+	reverse_proxy ratespass:3000 {
+		flush_interval -1
+	}
 }

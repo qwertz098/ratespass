@@ -33,6 +33,12 @@ export const config = {
   /** Melde-Knopf (⚑) für alle Spieler; mit PLAYER_REPORTS=0 abschaltbar (Reviewer und Admin bleiben unberührt). */
   playerReports: env.PLAYER_REPORTS !== '0',
   inactiveDaysForfeit: 7,
+  /** Live-Gesellschaftsspiel (Zeiten in ms; in Tests verkürzt). */
+  live: {
+    maxPlayers: Math.max(2, Number(env.LIVE_MAX_PLAYERS ?? 30) || 30),
+    questionMs: Math.max(3000, Number(env.LIVE_QUESTION_MS ?? 20_000) || 20_000), revealMs: Math.max(500, Number(env.LIVE_REVEAL_MS ?? 5_000) || 5_000),
+    tempoQuestions: Math.min(12, Math.max(1, Number(env.LIVE_TEMPO_QUESTIONS ?? 10) || 10)), joinTokenMs: 2 * 3_600_000,
+  },
   /** Zustimmung zur Datenschutzerklärung serverseitig erzwingen (nur für lokale Entwicklung/Tests mit CONSENT_REQUIRED=0 abschaltbar). */
   requireConsent: env.CONSENT_REQUIRED !== '0',
   /** Verantwortlicher (Impressum und Datenschutzerklärung). Pflichtangaben: Name, Anschrift, E-Mail. */

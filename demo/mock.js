@@ -172,7 +172,8 @@ const DEMO = (() => {
     }
     if (path === '/api/consent' && method === 'POST') { st.consent = Date.now(); save(); return { body: { consent: { current: 'demo-version', accepted: 'demo-version', at: st.consent } } } }
     if (path === '/api/players' && method === 'POST') {
-      if (body?.consent) st.consent = Date.now() if (body?.name) st.me.name = String(body.name).slice(0, 24); if (body?.lang) st.me.lang = body.lang; save(); return { body: { token: 'demo-token', player: profile() } } }
+      if (body?.consent) st.consent = Date.now()
+      if (body?.name) st.me.name = String(body.name).slice(0, 24); if (body?.lang) st.me.lang = body.lang; save(); return { body: { token: 'demo-token', player: profile() } } }
     if (path === '/api/me' && method === 'GET') return { body: { player: profile(), contacts: st.contacts, consent: { current: 'demo-version', accepted: st.consent ? 'demo-version' : null, at: st.consent ?? null } } }
     if (path === '/api/me' && method === 'PATCH') {
       if (body.name !== undefined) { const n = String(body.name).trim(); if (n.length < 2 || n.length > 24) return err(400, 'bad_name'); st.me.name = n }
@@ -210,6 +211,7 @@ const DEMO = (() => {
     if (path === '/api/games' && method === 'GET') {
       return { body: { games: st.games.map((g) => { const v = view(g); return { id: v.id, status: v.status, lang: v.lang, round: v.round, turn: v.turn, phase: v.phase, opp: v.opp, score: v.score, winner: v.winner, updated_at: v.updated_at } }) } }
     }
+    if (path.startsWith('/api/live')) return err(501, 'demo_unavailable') // Echtzeit braucht den echten Server
     /* Bestenliste (Demo: Beispieldaten + dein eigener Stand aus der Demo) */
     if (path === '/api/leaderboard' && method === 'GET') {
       const sample = [['Quizkönig', 412, 540], ['Wissensdurst', 388, 470], ['Rätselfuchs', 351, 520], ['Nachteule', 300, 380], ['Neunmalklug', 262, 400]]

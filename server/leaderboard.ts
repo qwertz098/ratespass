@@ -28,6 +28,7 @@ export const ANSWER_SOURCES: string[] = [
    FROM answers a JOIN games g ON g.id=a.game_id JOIN round_questions rq ON rq.game_id=a.game_id AND rq.round=a.round AND rq.idx=a.idx WHERE a.choice IS NOT NULL`,
   `SELECT s.question_id, l.player_id, s.correct, s.ms, s.served_at, 0 FROM ladder_steps s JOIN ladders l ON l.id=s.ladder_id WHERE s.choice IS NOT NULL`,
   `SELECT rq.question_id, a.player_id, a.correct, a.ms, a.served_at, 1 FROM room_answers a JOIN room_questions rq ON rq.room_id=a.room_id AND rq.idx=a.idx WHERE a.choice IS NOT NULL`,
+  `SELECT lq.question_id, a.player_id, a.correct, a.ms, a.at, 1 FROM live_answers a JOIN live_questions lq ON lq.game_id=a.game_id AND lq.idx=a.idx WHERE a.choice >= 0`,
 ]
 
 export function since(scope: Scope, t = now()): number {

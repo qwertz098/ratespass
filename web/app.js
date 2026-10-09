@@ -136,7 +136,7 @@ async function route() {
   try {
     if (!S.me) { loading(); if (!(await boot())) return }
     if (my !== runId) return
-    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top }
+    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top, live, 'live-join': liveJoin }
     await (pages[page] ?? home)(arg, my)
   } catch (e) {
     if (my !== runId) return
@@ -298,6 +298,9 @@ async function newGame() {
         const r = await api('POST', '/api/rooms', { mode: m, lang: gameLang() }); go('#/room/' + r.id) })))),
     h('div', { class: 'card' }, h('label', { class: 'field' }, t('room.codeLabel'), h('div', { class: 'row' }, roomCode,
       h('button', { class: 'btn', onclick: guard(async () => joinRoom(roomCode.value)) }, t('room.join'))))),
+    h('h2', {}, t('live.title')),
+    h('div', { class: 'list' }, option(t('live.title'), t('live.sub'), '🎉', guard(async () => {
+      const r = await api('POST', '/api/live', { mode: 'tempo', screen: false, lang: gameLang() }); go('#/live/' + r.id) }))),
     h('h2', {}, t('new.questionLang')), h('div', { class: 'card' }, langSel))
 }
 const langName = (code) => { try { return new Intl.DisplayNames([getLang()], { type: 'language' }).of(code) } catch { return code } }
@@ -421,6 +424,137 @@ async function play(id, my) {
     if (q.idx >= q.total - 1 || g.turn !== 'me' || g.status !== 'active' || g.phase !== 'play') return go('#/game/' + id)
     await sleep(50)
   }
+}
+
+/* ---------- Live-Gesellschaftsspiel (Echtzeit) ---------- */
+const LETTERS = ['A', 'B', 'C', 'D']
+const liveLink = (token) => `${location.origin}/#/live-join/${token}`
+
+async function liveJoin(token) {
+  mount(topbar(t('app.name'), false), h('div', { class: 'card stack' }, h('p', {}, t('room.joining'))))
+  const r = await api('POST', '/api/live/join', { token: token || '' })
+  go('#/live/' + r.id)
+}
+
+/** Server-Sent Events über fetch (Bearer-Header bleibt, kein Token in der URL); baut bei Abbruch mit Backoff neu auf. */
+function connectLive(id, onState, onGone) {
+  const ac = new AbortController()
+  let stopped = false
+  const prev = cleanup
+  cleanup = () => { prev(); stopped = true; ac.abort() }
+  ;(async () => {
+    let delay = 500
+    while (!stopped) {
+      try {
+        const res = await fetch(`/api/live/${id}/events`, { headers: { authorization: 'Bearer ' + S.token }, signal: ac.signal })
+        if (res.status === 404 || res.status === 401 || res.status === 403) return onGone()
+        if (!res.ok || !res.body) throw new Error('sse ' + res.status)
+        delay = 500
+        const reader = res.body.getReader(), dec = new TextDecoder()
+        let buf = ''
+        for (;;) {
+          const { value, done } = await reader.read()
+          if (done) break
+          buf += dec.decode(value, { stream: true })
+          let i
+          while ((i = buf.indexOf('\n\n')) >= 0) {
+            const chunk = buf.slice(0, i); buf = buf.slice(i + 2)
+            const d = /^data: (.*)$/m.exec(chunk)
+            if (d && /^event: state/m.test(chunk)) onState(JSON.parse(d[1]))
+          }
+        }
+      } catch { if (stopped) return }
+      await new Promise((r) => setTimeout(r, delay)); delay = Math.min(delay * 2, 5000)
+    }
+  })()
+}
+
+async function live(id, my) {
+  let raf = 0, lastQr = '', offset = 0
+  const prev = cleanup
+  cleanup = () => { prev(); cancelAnimationFrame(raf); document.getElementById('app').classList.remove('wide') }
+  const act = (path, body = {}) => guard(async () => { await api('POST', `/api/live/${id}/${path}`, body) })
+  const timerBar = (s) => {
+    const bar = h('i'), box = h('div', { class: 'timer' }, bar)
+    cancelAnimationFrame(raf)
+    const until = s.phase_until - s.now + performance.now() // Server- und Gerätezeit gleichen sich über `now` an
+    const tick = () => { const left = until - performance.now(); bar.style.transform = `scaleX(${Math.max(0, Math.min(1, left / (s.status === 'question' ? s.limit_ms : 5000)))})`; if (left > 0) raf = requestAnimationFrame(tick) }
+    raf = requestAnimationFrame(tick)
+    return box
+  }
+  const players = (s, kick) => h('div', { class: 'list' }, s.players.map((p) => h('div', { class: 'item' + (p.is_me ? ' me' : '') },
+    s.status === 'finished' || s.status === 'reveal' ? h('span', { class: 'rank' }, '#' + p.rank) : null,
+    h('div', { class: 'grow ell' }, p.name + (p.is_me ? ' (' + t('game.you') + ')' : '')),
+    s.status === 'question' && p.answered !== undefined ? h('span', { class: 'badge ' + (p.answered ? 'good' : '') }, p.answered ? '✓' : '…') : null,
+    s.mode === 'survival' && s.status !== 'lobby' ? h('span', { class: 'badge ' + (p.alive ? 'good' : 'bad') }, p.alive ? t('live.alive') : t('live.out')) : null,
+    s.mode === 'tempo' && s.status !== 'lobby' ? h('span', { class: 'score' }, String(p.score)) : null,
+    kick && p.public_id && !p.is_me ? h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: act('kick', { public_id: p.public_id }) }, '✕') : null)))
+  const hostBar = (s) => s.is_host && s.status !== 'finished' ? h('div', { class: 'row wrap' },
+    s.status !== 'lobby' ? h('button', { class: 'btn small primary', onclick: act('next') }, t(s.status === 'question' ? 'live.endQuestion' : 'live.next')) : null,
+    h('button', { class: 'btn small danger', onclick: guard(async () => { if (confirm(t('live.endConfirm'))) await api('POST', `/api/live/${id}/end`, {}) }) }, t('live.end'))) : null
+
+  const lobby = async (s) => {
+    const url = s.token ? liveLink(s.token) : ''
+    let qr = null
+    if (s.is_host && url) { qr = await renderQr(url); qr.className = 'qr big' }
+    const seg = (key, opts, cur) => h('div', { class: 'seg wrap' }, opts.map(([v, label]) => h('button', { 'aria-pressed': String(cur === v), onclick: act('settings', { [key]: v }) }, t(label))))
+    mount(topbar(t('live.title'), true),
+      s.is_host ? h('div', { class: 'card stack qrcard' }, qr, h('p', { class: 'muted' }, t('live.scan')),
+        h('button', { class: 'btn small', onclick: act('renew') }, t('live.renew'))) : h('div', { class: 'card stack' }, h('h3', {}, t('live.waiting')), h('p', { class: 'muted' }, t('live.waitHost'))),
+      s.is_host ? h('div', { class: 'card stack' }, seg('mode', [['tempo', 'live.mode.tempo'], ['survival', 'live.mode.survival']], s.mode), h('p', { class: 'hint' }, t('live.modeInfo.' + s.mode)),
+        seg('screen', [[true, 'live.screen.on'], [false, 'live.screen.off']], s.screen), h('p', { class: 'hint' }, t(s.screen ? 'live.screenInfo.on' : 'live.screenInfo.off'))) : null,
+      h('h2', {}, t('room.players', { n: s.players.length, max: s.max_players })), players(s, s.is_host),
+      s.is_host ? h('button', { class: 'btn primary block', disabled: s.players.length < 2, onclick: act('start') }, t('live.start')) : null,
+      s.is_host ? h('button', { class: 'btn block danger', onclick: act('end') }, t('live.cancel')) : null)
+  }
+
+  const question = (s) => {
+    const q = s.question, reveal = s.status !== 'question'
+    const display = s.is_host && s.screen // Bildschirm-Ansicht des Hosts
+    const answered = s.me?.answered
+    const mineChoice = s.me?.choice
+    const head = h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, t('ladder.step', { n: s.idx + 1, total: s.total }) + (q.prize ? ' · ' + money(q.prize) : '')))
+    const maxCount = Math.max(1, ...(q.counts ?? [1]))
+    const opt = (text, i) => {
+      const cls = 'opt lv-' + LETTERS[i].toLowerCase() + (reveal ? (i === q.correct_index ? ' good' : mineChoice === i ? ' bad' : ' dim') : (answered && s.me && !reveal ? '' : ''))
+      const label = display || s.screen ? [h('kbd', {}, LETTERS[i]), display ? h('span', {}, text) : null] : [h('kbd', {}, LETTERS[i]), h('span', {}, text)]
+      const canAnswer = !display && s.me && !answered && !reveal && (s.mode !== 'survival' || s.me.alive)
+      return h('button', { class: cls + (display ? ' big' : '') + (s.screen && !display ? ' letter' : ''), disabled: !canAnswer, onclick: guard(async () => { await api('POST', `/api/live/${id}/answer`, { idx: s.idx, choice: i }) }) },
+        ...label, reveal && display && q.counts ? h('span', { class: 'cnt' }, h('i', { style: `width:${Math.round((q.counts[i] / maxCount) * 100)}%` }), String(q.counts[i])) : null)
+    }
+    const status = reveal && s.me ? h('div', { class: 'feedback' }, h('strong', {}, s.me.correct === undefined ? t('play.timeUp') : s.me.correct ? t('play.right') : t('play.wrong')),
+      s.mode === 'tempo' ? h('span', { class: 'score' }, '+' + (s.me.points ?? 0)) : (s.me.alive ? h('span', { class: 'badge good' }, t('live.alive')) : h('span', { class: 'badge bad' }, t('live.out')))) :
+      !reveal && answered ? h('div', { class: 'feedback' }, h('strong', {}, t('live.sent'))) :
+      !reveal && s.me && s.mode === 'survival' && !s.me.alive ? h('div', { class: 'feedback' }, h('strong', {}, t('live.spectate'))) : null
+    mount(topbar(t('live.title'), false),
+      h('div', { class: 'card qcard' + (display ? ' display' : ''), cat: q.category }, head, timerBar(s),
+        !s.screen || display ? h('div', { class: 'question' + (display ? ' bigq' : '') }, q.text) : null,
+        h('div', { class: 'opts' + (display ? ' grid' : s.screen ? ' grid' : '') }, q.options.map(opt)), status,
+        reveal && q.explanation ? h('p', { class: 'muted' }, q.explanation) : null),
+      reveal || display ? h('div', { class: 'card stack' }, players({ ...s, players: s.players.slice(0, display ? 8 : 5) }, false)) : null,
+      hostBar(s))
+  }
+
+  const finished = (s) => mount(topbar(t('live.title'), true),
+    h('div', { class: 'card stack lresult' }, h('h3', {}, t('live.finished')), s.players[0] ? h('div', { class: 'big' }, '🏆 ' + s.players[0].name) : null),
+    h('h2', {}, t('room.ranking')), players(s, false),
+    h('button', { class: 'btn block', onclick: () => go('#/') }, t('ladder.home')))
+
+  let rendering = false, pending = null
+  const render = async (s) => {
+    if (my !== runId) return
+    document.getElementById('app').classList.toggle('wide', s.is_host && s.screen && s.status !== 'lobby') // Bildschirm-Ansicht darf breit sein
+    if (rendering) { pending = s; return }
+    rendering = true
+    try {
+      if (s.status === 'lobby') { if (!document.activeElement || document.activeElement === document.body || s.token !== lastQr) { lastQr = s.token; await lobby(s) } else await lobby(s) }
+      else if (s.status === 'finished') finished(s)
+      else if (s.question) question(s)
+    } finally { rendering = false }
+    if (pending) { const p = pending; pending = null; render(p) }
+  }
+  mount(topbar(t('live.title'), true), h('div', { class: 'card stack' }, h('p', {}, t('room.joining'))))
+  connectLive(id, (s) => { offset = s.now - Date.now(); render(s) }, () => { toast(t('err.not_found')); go('#/') })
 }
 
 /* ---------- Bestenliste (Opt-in) ---------- */

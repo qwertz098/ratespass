@@ -322,8 +322,58 @@ ALTER TABLE players ADD COLUMN lb_banned INTEGER NOT NULL DEFAULT 0;
 CREATE UNIQUE INDEX players_lb_key ON players(lb_key) WHERE lb_key IS NOT NULL;
 `
 
+// v12: Live-Gesellschaftsspiel (Echtzeit, Beitritt per QR des Initiators)
+const SCHEMA_V12 = `
+CREATE TABLE live_games(
+  id INTEGER PRIMARY KEY,
+  host INTEGER NOT NULL REFERENCES players(id),
+  token TEXT NOT NULL UNIQUE,
+  token_expires INTEGER NOT NULL,
+  status TEXT NOT NULL DEFAULT 'lobby',
+  mode TEXT NOT NULL DEFAULT 'tempo',
+  screen INTEGER NOT NULL DEFAULT 0,
+  lang TEXT NOT NULL,
+  level TEXT,
+  cats TEXT,
+  total INTEGER NOT NULL DEFAULT 0,
+  idx INTEGER NOT NULL DEFAULT -1,
+  phase_started INTEGER,
+  phase_until INTEGER,
+  created_at INTEGER NOT NULL,
+  updated_at INTEGER NOT NULL
+);
+CREATE TABLE live_players(
+  game_id INTEGER NOT NULL REFERENCES live_games(id) ON DELETE CASCADE,
+  player_id INTEGER NOT NULL REFERENCES players(id),
+  score INTEGER NOT NULL DEFAULT 0,
+  alive INTEGER NOT NULL DEFAULT 1,
+  pos INTEGER NOT NULL DEFAULT 0,
+  ms INTEGER NOT NULL DEFAULT 0,
+  joined_at INTEGER NOT NULL,
+  PRIMARY KEY(game_id, player_id)
+);
+CREATE TABLE live_questions(
+  game_id INTEGER NOT NULL REFERENCES live_games(id) ON DELETE CASCADE,
+  idx INTEGER NOT NULL,
+  question_id INTEGER NOT NULL REFERENCES questions(id),
+  perm TEXT NOT NULL,
+  PRIMARY KEY(game_id, idx)
+);
+CREATE TABLE live_answers(
+  game_id INTEGER NOT NULL REFERENCES live_games(id) ON DELETE CASCADE,
+  idx INTEGER NOT NULL,
+  player_id INTEGER NOT NULL,
+  choice INTEGER NOT NULL,
+  ms INTEGER NOT NULL,
+  correct INTEGER NOT NULL,
+  points INTEGER NOT NULL DEFAULT 0,
+  at INTEGER NOT NULL,
+  PRIMARY KEY(game_id, idx, player_id)
+);
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10], [11, SCHEMA_V11]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10], [11, SCHEMA_V11], [12, SCHEMA_V12]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)
