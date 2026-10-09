@@ -1,0 +1,4810 @@
+{
+ "format": "ratespass-batch",
+ "version": 1,
+ "batch": "original-004",
+ "source": "original",
+ "license": "CC-BY-SA-4.0",
+ "attribution": "Ratespaß-Projekt (eigene Formulierungen, Faktenwissen)",
+ "questions": [
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welcher Monat hat in jedem Jahr nur 28 oder 29 Tage?",
+     "correct": "Februar",
+     "wrong": [
+      "April",
+      "Juni",
+      "September"
+     ]
+    },
+    "en": {
+     "text": "Which month has only 28 or 29 days?",
+     "correct": "February",
+     "wrong": [
+      "April",
+      "June",
+      "September"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was ist die Hauptstadt von Kolumbien?",
+     "correct": "Bogotá",
+     "wrong": [
+      "Medellín",
+      "Cali",
+      "Caracas"
+     ]
+    },
+    "en": {
+     "text": "What is the capital of Colombia?",
+     "correct": "Bogotá",
+     "wrong": [
+      "Medellín",
+      "Cali",
+      "Caracas"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche britische Premierministerin wurde „Eiserne Lady“ genannt?",
+     "correct": "Margaret Thatcher",
+     "wrong": [
+      "Theresa May",
+      "Elisabeth II.",
+      "Indira Gandhi"
+     ]
+    },
+    "en": {
+     "text": "Which British prime minister was nicknamed the “Iron Lady”?",
+     "correct": "Margaret Thatcher",
+     "wrong": [
+      "Theresa May",
+      "Elizabeth II",
+      "Indira Gandhi"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man Wasser im gasförmigen Zustand?",
+     "correct": "Wasserdampf",
+     "wrong": [
+      "Eis",
+      "Nebel",
+      "Tau"
+     ]
+    },
+    "en": {
+     "text": "What is water in its gaseous state called?",
+     "correct": "Water vapour",
+     "wrong": [
+      "Ice",
+      "Fog",
+      "Dew"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Insekt erzeugt sein eigenes Licht?",
+     "correct": "Glühwürmchen",
+     "wrong": [
+      "Libelle",
+      "Marienkäfer",
+      "Hummel"
+     ]
+    },
+    "en": {
+     "text": "Which insect produces its own light?",
+     "correct": "Firefly",
+     "wrong": [
+      "Dragonfly",
+      "Ladybird",
+      "Bumblebee"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer war 1985 der erste deutsche Wimbledon-Sieger?",
+     "correct": "Boris Becker",
+     "wrong": [
+      "Michael Stich",
+      "Tommy Haas",
+      "Rainer Schüttler"
+     ]
+    },
+    "en": {
+     "text": "Who was the first German to win Wimbledon, in 1985?",
+     "correct": "Boris Becker",
+     "wrong": [
+      "Michael Stich",
+      "Tommy Haas",
+      "Rainer Schüttler"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer führte Regie bei „Taxi Driver“ (1976)?",
+     "correct": "Martin Scorsese",
+     "wrong": [
+      "Francis Ford Coppola",
+      "Brian De Palma",
+      "Sidney Lumet"
+     ]
+    },
+    "en": {
+     "text": "Who directed “Taxi Driver” (1976)?",
+     "correct": "Martin Scorsese",
+     "wrong": [
+      "Francis Ford Coppola",
+      "Brian De Palma",
+      "Sidney Lumet"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Band sang „Viva la Vida“?",
+     "correct": "Coldplay",
+     "wrong": [
+      "Muse",
+      "Keane",
+      "Snow Patrol"
+     ]
+    },
+    "en": {
+     "text": "Which band sang “Viva la Vida”?",
+     "correct": "Coldplay",
+     "wrong": [
+      "Muse",
+      "Keane",
+      "Snow Patrol"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Die Tribute von Panem“?",
+     "correct": "Suzanne Collins",
+     "wrong": [
+      "Stephenie Meyer",
+      "Veronica Roth",
+      "Cassandra Clare"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Hunger Games”?",
+     "correct": "Suzanne Collins",
+     "wrong": [
+      "Stephenie Meyer",
+      "Veronica Roth",
+      "Cassandra Clare"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Stadt ist berühmt für ihren Karneval mit kunstvollen Masken?",
+     "correct": "Venedig",
+     "wrong": [
+      "Florenz",
+      "Verona",
+      "Neapel"
+     ]
+    },
+    "en": {
+     "text": "Which city is famous for its carnival with elaborate masks?",
+     "correct": "Venice",
+     "wrong": [
+      "Florence",
+      "Verona",
+      "Naples"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Bei welchem Spiel zieht man Holzklötze aus einem Turm, ohne dass er umfällt?",
+     "correct": "Jenga",
+     "wrong": [
+      "Mikado",
+      "Twister",
+      "Domino"
+     ]
+    },
+    "en": {
+     "text": "In which game do you pull wooden blocks out of a tower without it collapsing?",
+     "correct": "Jenga",
+     "wrong": [
+      "Mikado",
+      "Twister",
+      "Domino"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man das weltweite Netzwerk, das Computer miteinander verbindet?",
+     "correct": "Internet",
+     "wrong": [
+      "Intranet",
+      "Ethernet",
+      "Bluetooth"
+     ]
+    },
+    "en": {
+     "text": "What is the worldwide network that connects computers called?",
+     "correct": "Internet",
+     "wrong": [
+      "Intranet",
+      "Ethernet",
+      "Bluetooth"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Kanten hat ein Würfel?",
+     "correct": "12",
+     "wrong": [
+      "8",
+      "6",
+      "10"
+     ]
+    },
+    "en": {
+     "text": "How many edges does a cube have?",
+     "correct": "12",
+     "wrong": [
+      "8",
+      "6",
+      "10"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher ist der längste Fluss Asiens?",
+     "correct": "Jangtse",
+     "wrong": [
+      "Ganges",
+      "Mekong",
+      "Indus"
+     ]
+    },
+    "en": {
+     "text": "What is the longest river in Asia?",
+     "correct": "Yangtze",
+     "wrong": [
+      "Ganges",
+      "Mekong",
+      "Indus"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die Epoche zwischen Antike und Neuzeit?",
+     "correct": "Mittelalter",
+     "wrong": [
+      "Barock",
+      "Aufklärung",
+      "Steinzeit"
+     ]
+    },
+    "en": {
+     "text": "What is the era between antiquity and the modern age called?",
+     "correct": "The Middle Ages",
+     "wrong": [
+      "The Baroque",
+      "The Enlightenment",
+      "The Stone Age"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer entdeckte 1610 die vier größten Jupitermonde?",
+     "correct": "Galileo Galilei",
+     "wrong": [
+      "Johannes Kepler",
+      "Isaac Newton",
+      "Christiaan Huygens"
+     ]
+    },
+    "en": {
+     "text": "Who discovered the four largest moons of Jupiter in 1610?",
+     "correct": "Galileo Galilei",
+     "wrong": [
+      "Johannes Kepler",
+      "Isaac Newton",
+      "Christiaan Huygens"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier wirft jedes Jahr sein Geweih ab?",
+     "correct": "Hirsch",
+     "wrong": [
+      "Steinbock",
+      "Wildschwein",
+      "Gämse"
+     ]
+    },
+    "en": {
+     "text": "Which animal sheds its antlers every year?",
+     "correct": "Red deer",
+     "wrong": [
+      "Ibex",
+      "Wild boar",
+      "Chamois"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie sieht das Trikot des besten Bergfahrers bei der Tour de France aus?",
+     "correct": "Weiß mit roten Punkten",
+     "wrong": [
+      "Gelb",
+      "Grün",
+      "Rosa"
+     ]
+    },
+    "en": {
+     "text": "What does the jersey of the best climber at the Tour de France look like?",
+     "correct": "White with red polka dots",
+     "wrong": [
+      "Yellow",
+      "Green",
+      "Pink"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer spielte Indiana Jones?",
+     "correct": "Harrison Ford",
+     "wrong": [
+      "Tom Selleck",
+      "Kevin Costner",
+      "Mel Gibson"
+     ]
+    },
+    "en": {
+     "text": "Who played Indiana Jones?",
+     "correct": "Harrison Ford",
+     "wrong": [
+      "Tom Selleck",
+      "Kevin Costner",
+      "Mel Gibson"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Band sang „Sweet Child o' Mine“?",
+     "correct": "Guns N' Roses",
+     "wrong": [
+      "Bon Jovi",
+      "Aerosmith",
+      "Mötley Crüe"
+     ]
+    },
+    "en": {
+     "text": "Which band sang “Sweet Child o' Mine”?",
+     "correct": "Guns N' Roses",
+     "wrong": [
+      "Bon Jovi",
+      "Aerosmith",
+      "Mötley Crüe"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Was verliert Aschenputtel beim Weglaufen auf der Schlosstreppe?",
+     "correct": "Einen Schuh",
+     "wrong": [
+      "Eine Krone",
+      "Einen Handschuh",
+      "Einen Ring"
+     ]
+    },
+    "en": {
+     "text": "What does Cinderella lose on the palace stairs as she runs away?",
+     "correct": "A shoe",
+     "wrong": [
+      "A crown",
+      "A glove",
+      "A ring"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Malerin ist für ihre Selbstporträts mit durchgehender Augenbraue bekannt?",
+     "correct": "Frida Kahlo",
+     "wrong": [
+      "Paula Modersohn-Becker",
+      "Georgia O'Keeffe",
+      "Tamara de Lempicka"
+     ]
+    },
+    "en": {
+     "text": "Which painter is known for her self-portraits with a unibrow?",
+     "correct": "Frida Kahlo",
+     "wrong": [
+      "Paula Modersohn-Becker",
+      "Georgia O'Keeffe",
+      "Tamara de Lempicka"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die 16-Bit-Konsole von Sega, auf der Sonic erschien?",
+     "correct": "Mega Drive",
+     "wrong": [
+      "Dreamcast",
+      "Master System",
+      "Saturn"
+     ]
+    },
+    "en": {
+     "text": "What is the 16-bit Sega console on which Sonic appeared called?",
+     "correct": "Mega Drive",
+     "wrong": [
+      "Dreamcast",
+      "Master System",
+      "Saturn"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man Schadsoftware, die Daten verschlüsselt und Lösegeld verlangt?",
+     "correct": "Ransomware",
+     "wrong": [
+      "Spyware",
+      "Adware",
+      "Freeware"
+     ]
+    },
+    "en": {
+     "text": "What is malware that encrypts data and demands a ransom called?",
+     "correct": "Ransomware",
+     "wrong": [
+      "Spyware",
+      "Adware",
+      "Freeware"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Grad hat ein Vollkreis?",
+     "correct": "360",
+     "wrong": [
+      "180",
+      "270",
+      "400"
+     ]
+    },
+    "en": {
+     "text": "How many degrees are in a full circle?",
+     "correct": "360",
+     "wrong": [
+      "180",
+      "270",
+      "400"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was ist die Hauptstadt von Rumänien?",
+     "correct": "Bukarest",
+     "wrong": [
+      "Budapest",
+      "Sofia",
+      "Belgrad"
+     ]
+    },
+    "en": {
+     "text": "What is the capital of Romania?",
+     "correct": "Bucharest",
+     "wrong": [
+      "Budapest",
+      "Sofia",
+      "Belgrade"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer verbesserte ab 1769 die Dampfmaschine entscheidend?",
+     "correct": "James Watt",
+     "wrong": [
+      "George Stephenson",
+      "Robert Fulton",
+      "Thomas Newcomen"
+     ]
+    },
+    "en": {
+     "text": "Who decisively improved the steam engine from 1769?",
+     "correct": "James Watt",
+     "wrong": [
+      "George Stephenson",
+      "Robert Fulton",
+      "Thomas Newcomen"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Einheit der Leistung?",
+     "correct": "Watt",
+     "wrong": [
+      "Joule",
+      "Newton",
+      "Pascal"
+     ]
+    },
+    "en": {
+     "text": "What is the unit of power?",
+     "correct": "Watt",
+     "wrong": [
+      "Joule",
+      "Newton",
+      "Pascal"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man ein junges Huhn?",
+     "correct": "Küken",
+     "wrong": [
+      "Fohlen",
+      "Kitz",
+      "Welpe"
+     ]
+    },
+    "en": {
+     "text": "What is a young chicken called?",
+     "correct": "Chick",
+     "wrong": [
+      "Foal",
+      "Fawn",
+      "Puppy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Reitsportdisziplin, bei der Hindernisse übersprungen werden?",
+     "correct": "Springreiten",
+     "wrong": [
+      "Dressurreiten",
+      "Voltigieren",
+      "Trabrennen"
+     ]
+    },
+    "en": {
+     "text": "What is the equestrian discipline in which obstacles are jumped?",
+     "correct": "Show jumping",
+     "wrong": [
+      "Dressage",
+      "Vaulting",
+      "Harness racing"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welcher Animationsfilm handelt von Spielzeug, das lebendig wird?",
+     "correct": "Toy Story",
+     "wrong": [
+      "Cars",
+      "Monster AG",
+      "Ratatouille"
+     ]
+    },
+    "en": {
+     "text": "Which animated film is about toys that come to life?",
+     "correct": "Toy Story",
+     "wrong": [
+      "Cars",
+      "Monster AG",
+      "Ratatouille"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Musiker wird „King of Reggae“ genannt?",
+     "correct": "Bob Marley",
+     "wrong": [
+      "Peter Tosh",
+      "Jimmy Cliff",
+      "Shaggy"
+     ]
+    },
+    "en": {
+     "text": "Which musician is known as the “King of Reggae”?",
+     "correct": "Bob Marley",
+     "wrong": [
+      "Peter Tosh",
+      "Jimmy Cliff",
+      "Shaggy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb die Romanreihe „Das Lied von Eis und Feuer“?",
+     "correct": "George R. R. Martin",
+     "wrong": [
+      "Patrick Rothfuss",
+      "Terry Pratchett",
+      "Brandon Sanderson"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel series “A Song of Ice and Fire”?",
+     "correct": "George R. R. Martin",
+     "wrong": [
+      "Patrick Rothfuss",
+      "Terry Pratchett",
+      "Brandon Sanderson"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt steht die Hagia Sophia?",
+     "correct": "Istanbul",
+     "wrong": [
+      "Athen",
+      "Kairo",
+      "Ankara"
+     ]
+    },
+    "en": {
+     "text": "In which city is the Hagia Sophia?",
+     "correct": "Istanbul",
+     "wrong": [
+      "Athen",
+      "Kairo",
+      "Ankara"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Nintendo-Konsole mit Bewegungssteuerung erschien 2006?",
+     "correct": "Wii",
+     "wrong": [
+      "GameCube",
+      "Nintendo 64",
+      "Switch"
+     ]
+    },
+    "en": {
+     "text": "Which Nintendo console with motion controls was released in 2006?",
+     "correct": "Wii",
+     "wrong": [
+      "GameCube",
+      "Nintendo 64",
+      "Switch"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht die Abkürzung „SSD“ bei Computern?",
+     "correct": "Solid State Drive",
+     "wrong": [
+      "Super Speed Disk",
+      "Secure Storage Device",
+      "System Software Disc"
+     ]
+    },
+    "en": {
+     "text": "What does the abbreviation “SSD” stand for?",
+     "correct": "Solid State Drive",
+     "wrong": [
+      "Super Speed Disk",
+      "Secure Storage Device",
+      "System Software Disc"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viel sind 15 Prozent von 200?",
+     "correct": "30",
+     "wrong": [
+      "15",
+      "20",
+      "45"
+     ]
+    },
+    "en": {
+     "text": "What is 15 percent of 200?",
+     "correct": "30",
+     "wrong": [
+      "15",
+      "20",
+      "45"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Zu welchem Land gehören die Kanarischen Inseln?",
+     "correct": "Spanien",
+     "wrong": [
+      "Portugal",
+      "Marokko",
+      "Italien"
+     ]
+    },
+    "en": {
+     "text": "To which country do the Canary Islands belong?",
+     "correct": "Spain",
+     "wrong": [
+      "Portugal",
+      "Morocco",
+      "Italy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer baute 1886 das erste Automobil mit Benzinmotor?",
+     "correct": "Carl Benz",
+     "wrong": [
+      "Gottlieb Daimler",
+      "Rudolf Diesel",
+      "Henry Ford"
+     ]
+    },
+    "en": {
+     "text": "Who built the first petrol-engined automobile in 1886?",
+     "correct": "Carl Benz",
+     "wrong": [
+      "Gottlieb Daimler",
+      "Rudolf Diesel",
+      "Henry Ford"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Einheit der elektrischen Stromstärke?",
+     "correct": "Ampere",
+     "wrong": [
+      "Volt",
+      "Ohm",
+      "Watt"
+     ]
+    },
+    "en": {
+     "text": "What is the unit of electric current?",
+     "correct": "Ampere",
+     "wrong": [
+      "Volt",
+      "Ohm",
+      "Watt"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Vogel legt die größten Eier?",
+     "correct": "Strauß",
+     "wrong": [
+      "Adler",
+      "Ente",
+      "Pinguin"
+     ]
+    },
+    "en": {
+     "text": "Which bird lays the largest eggs?",
+     "correct": "Ostrich",
+     "wrong": [
+      "Eagle",
+      "Duck",
+      "Penguin"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land findet der Radklassiker Giro d'Italia statt?",
+     "correct": "Italien",
+     "wrong": [
+      "Spanien",
+      "Frankreich",
+      "Belgien"
+     ]
+    },
+    "en": {
+     "text": "In which country does the cycling race Giro d'Italia take place?",
+     "correct": "Italy",
+     "wrong": [
+      "Spain",
+      "France",
+      "Belgium"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der kleine Clownfisch aus dem Pixar-Film?",
+     "correct": "Nemo",
+     "wrong": [
+      "Marlin",
+      "Flipper",
+      "Willy"
+     ]
+    },
+    "en": {
+     "text": "What is the little clownfish in the Pixar film called?",
+     "correct": "Nemo",
+     "wrong": [
+      "Marlin",
+      "Flipper",
+      "Willy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Band sang „Highway to Hell“?",
+     "correct": "AC/DC",
+     "wrong": [
+      "Metallica",
+      "Iron Maiden",
+      "Kiss"
+     ]
+    },
+    "en": {
+     "text": "Which band sang “Highway to Hell”?",
+     "correct": "AC/DC",
+     "wrong": [
+      "Metallica",
+      "Iron Maiden",
+      "Kiss"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Junge, der nie erwachsen werden will?",
+     "correct": "Peter Pan",
+     "wrong": [
+      "Tom Sawyer",
+      "Oliver Twist",
+      "Pinocchio"
+     ]
+    },
+    "en": {
+     "text": "What is the boy who never wants to grow up called?",
+     "correct": "Peter Pan",
+     "wrong": [
+      "Tom Sawyer",
+      "Oliver Twist",
+      "Pinocchio"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man ein Bild aus vielen kleinen Steinchen?",
+     "correct": "Mosaik",
+     "wrong": [
+      "Collage",
+      "Aquarell",
+      "Skizze"
+     ]
+    },
+    "en": {
+     "text": "What is a picture made of many small stones called?",
+     "correct": "Mosaic",
+     "wrong": [
+      "Collage",
+      "Watercolour",
+      "Sketch"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Bei welchem Ratespiel wird Buchstabe für Buchstabe ein Wort erraten, sonst wird ein Männchen gezeichnet?",
+     "correct": "Galgenmännchen",
+     "wrong": [
+      "Stadt Land Fluss",
+      "Activity",
+      "Tabu"
+     ]
+    },
+    "en": {
+     "text": "In which guessing game do you guess a word letter by letter, or a stick figure gets drawn?",
+     "correct": "Hangman",
+     "wrong": [
+      "Scattergories",
+      "Charades",
+      "Taboo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht das „S“ in „HTTPS“?",
+     "correct": "Secure",
+     "wrong": [
+      "Standard",
+      "Server",
+      "Speed"
+     ]
+    },
+    "en": {
+     "text": "What does the “S” in “HTTPS” stand for?",
+     "correct": "Secure",
+     "wrong": [
+      "Standard",
+      "Server",
+      "Speed"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Flächen hat ein Tetraeder?",
+     "correct": "4",
+     "wrong": [
+      "3",
+      "5",
+      "6"
+     ]
+    },
+    "en": {
+     "text": "How many faces does a tetrahedron have?",
+     "correct": "4",
+     "wrong": [
+      "3",
+      "5",
+      "6"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Küstenwüste im Südwesten Afrikas (Namibia)?",
+     "correct": "Namib",
+     "wrong": [
+      "Kalahari",
+      "Sahara",
+      "Gobi"
+     ]
+    },
+    "en": {
+     "text": "What is the coastal desert in south-western Africa (Namibia) called?",
+     "correct": "Namib",
+     "wrong": [
+      "Kalahari",
+      "Sahara",
+      "Gobi"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer erreichte um das Jahr 1000 als erster Europäer Nordamerika?",
+     "correct": "Leif Eriksson",
+     "wrong": [
+      "Christoph Kolumbus",
+      "Erik der Rote",
+      "Amerigo Vespucci"
+     ]
+    },
+    "en": {
+     "text": "Who was the first European to reach North America around the year 1000?",
+     "correct": "Leif Erikson",
+     "wrong": [
+      "Christopher Columbus",
+      "Erik the Red",
+      "Amerigo Vespucci"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Planet ist der heißeste im Sonnensystem?",
+     "correct": "Venus",
+     "wrong": [
+      "Merkur",
+      "Mars",
+      "Jupiter"
+     ]
+    },
+    "en": {
+     "text": "Which planet is the hottest in the Solar System?",
+     "correct": "Venus",
+     "wrong": [
+      "Mercury",
+      "Mars",
+      "Jupiter"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Blume dreht ihren Kopf nach der Sonne?",
+     "correct": "Sonnenblume",
+     "wrong": [
+      "Tulpe",
+      "Rose",
+      "Veilchen"
+     ]
+    },
+    "en": {
+     "text": "Which flower turns its head towards the sun?",
+     "correct": "Sunflower",
+     "wrong": [
+      "Tulip",
+      "Rose",
+      "Violet"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man im Tennis den Spielstand null?",
+     "correct": "Love",
+     "wrong": [
+      "Deuce",
+      "Ace",
+      "Let"
+     ]
+    },
+    "en": {
+     "text": "What is a score of zero called in tennis?",
+     "correct": "Love",
+     "wrong": [
+      "Deuce",
+      "Ace",
+      "Let"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Bösewicht mit der schwarzen Maske in „Star Wars“?",
+     "correct": "Darth Vader",
+     "wrong": [
+      "Kylo Ren",
+      "Imperator Palpatine",
+      "Boba Fett"
+     ]
+    },
+    "en": {
+     "text": "What is the villain with the black mask in “Star Wars” called?",
+     "correct": "Darth Vader",
+     "wrong": [
+      "Kylo Ren",
+      "Imperator Palpatine",
+      "Boba Fett"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wer sang „Roar“?",
+     "correct": "Katy Perry",
+     "wrong": [
+      "Taylor Swift",
+      "Lady Gaga",
+      "Adele"
+     ]
+    },
+    "en": {
+     "text": "Who sang “Roar”?",
+     "correct": "Katy Perry",
+     "wrong": [
+      "Taylor Swift",
+      "Lady Gaga",
+      "Adele"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Charlie und die Schokoladenfabrik“?",
+     "correct": "Roald Dahl",
+     "wrong": [
+      "J. K. Rowling",
+      "Enid Blyton",
+      "Astrid Lindgren"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Charlie and the Chocolate Factory”?",
+     "correct": "Roald Dahl",
+     "wrong": [
+      "J. K. Rowling",
+      "Enid Blyton",
+      "Astrid Lindgren"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Stadtstaat steht der Petersdom?",
+     "correct": "Vatikanstadt",
+     "wrong": [
+      "Monaco",
+      "San Marino",
+      "Malta"
+     ]
+    },
+    "en": {
+     "text": "In which city-state is St Peter's Basilica?",
+     "correct": "Vatican City",
+     "wrong": [
+      "Monaco",
+      "San Marino",
+      "Malta"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Karten bekommt jeder Spieler zu Beginn beim Texas Hold'em?",
+     "correct": "2",
+     "wrong": [
+      "3",
+      "5",
+      "7"
+     ]
+    },
+    "en": {
+     "text": "How many cards does each player receive at the start of Texas Hold'em?",
+     "correct": "2",
+     "wrong": [
+      "3",
+      "5",
+      "7"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welcher Messenger-Dienst gehört zu Meta und hat ein grünes Logo mit Telefonhörer?",
+     "correct": "WhatsApp",
+     "wrong": [
+      "Telegram",
+      "Signal",
+      "Threema"
+     ]
+    },
+    "en": {
+     "text": "Which messenger service belongs to Meta and has a green logo with a phone receiver?",
+     "correct": "WhatsApp",
+     "wrong": [
+      "Telegram",
+      "Signal",
+      "Threema"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man den längsten Tag des Jahres auf der Nordhalbkugel (um den 21. Juni)?",
+     "correct": "Sommersonnenwende",
+     "wrong": [
+      "Herbst-Tagundnachtgleiche",
+      "Wintersonnenwende",
+      "Frühlingsanfang"
+     ]
+    },
+    "en": {
+     "text": "What is the longest day of the year in the Northern Hemisphere (around 21 June) called?",
+     "correct": "Summer solstice",
+     "wrong": [
+      "Autumn equinox",
+      "Winter solstice",
+      "Spring equinox"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welcher Ozean liegt zwischen Europa und Amerika?",
+     "correct": "Atlantik",
+     "wrong": [
+      "Pazifik",
+      "Indischer Ozean",
+      "Arktischer Ozean"
+     ]
+    },
+    "en": {
+     "text": "Which ocean lies between Europe and the Americas?",
+     "correct": "Atlantic Ocean",
+     "wrong": [
+      "Pacific Ocean",
+      "Indian Ocean",
+      "Arctic Ocean"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Was war bis 1990 die Hauptstadt der Bundesrepublik Deutschland?",
+     "correct": "Bonn",
+     "wrong": [
+      "Frankfurt",
+      "Köln",
+      "Hamburg"
+     ]
+    },
+    "en": {
+     "text": "What was the capital of the Federal Republic of Germany until 1990?",
+     "correct": "Bonn",
+     "wrong": [
+      "Frankfurt",
+      "Köln",
+      "Hamburg"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Aus welchen beiden Elementen besteht Wasser?",
+     "correct": "Wasserstoff und Sauerstoff",
+     "wrong": [
+      "Stickstoff und Sauerstoff",
+      "Kohlenstoff und Wasserstoff",
+      "Helium und Sauerstoff"
+     ]
+    },
+    "en": {
+     "text": "Which two elements is water made of?",
+     "correct": "Hydrogen and oxygen",
+     "wrong": [
+      "Nitrogen and oxygen",
+      "Carbon and hydrogen",
+      "Helium and oxygen"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe haben Flamingos?",
+     "correct": "Rosa",
+     "wrong": [
+      "Weiß",
+      "Grau",
+      "Schwarz"
+     ]
+    },
+    "en": {
+     "text": "What colour are flamingos?",
+     "correct": "Pink",
+     "wrong": [
+      "White",
+      "Grey",
+      "Black"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Spieler hat ein Beachvolleyball-Team?",
+     "correct": "2",
+     "wrong": [
+      "3",
+      "4",
+      "6"
+     ]
+    },
+    "en": {
+     "text": "How many players are on a beach volleyball team?",
+     "correct": "2",
+     "wrong": [
+      "3",
+      "4",
+      "6"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer moderiert die Quizshow „Wer wird Millionär?“ in Deutschland?",
+     "correct": "Günther Jauch",
+     "wrong": [
+      "Thomas Gottschalk",
+      "Jörg Pilawa",
+      "Johannes B. Kerner"
+     ]
+    },
+    "en": {
+     "text": "Who hosts the German quiz show “Who Wants to Be a Millionaire?”?",
+     "correct": "Günther Jauch",
+     "wrong": [
+      "Thomas Gottschalk",
+      "Jörg Pilawa",
+      "Johannes B. Kerner"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wer sang „Single Ladies (Put a Ring on It)“?",
+     "correct": "Beyoncé",
+     "wrong": [
+      "Rihanna",
+      "Shakira",
+      "Britney Spears"
+     ]
+    },
+    "en": {
+     "text": "Who sang “Single Ladies (Put a Ring on It)”?",
+     "correct": "Beyoncé",
+     "wrong": [
+      "Rihanna",
+      "Shakira",
+      "Britney Spears"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Mädchen aus Kansas in „Der Zauberer von Oz“?",
+     "correct": "Dorothy",
+     "wrong": [
+      "Alice",
+      "Wendy",
+      "Heidi"
+     ]
+    },
+    "en": {
+     "text": "What is the girl from Kansas in “The Wonderful Wizard of Oz” called?",
+     "correct": "Dorothy",
+     "wrong": [
+      "Alice",
+      "Wendy",
+      "Heidi"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Kunstrichtung prägten die Maler der Künstlergruppe „Die Brücke“ um Ernst Ludwig Kirchner?",
+     "correct": "Expressionismus",
+     "wrong": [
+      "Impressionismus",
+      "Kubismus",
+      "Surrealismus"
+     ]
+    },
+    "en": {
+     "text": "Which art movement was shaped by the painters of the group “Die Brücke” around Ernst Ludwig Kirchner?",
+     "correct": "Expressionism",
+     "wrong": [
+      "Impressionism",
+      "Cubism",
+      "Surrealism"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Felder hat das Spielfeld bei Tic-Tac-Toe?",
+     "correct": "9",
+     "wrong": [
+      "6",
+      "12",
+      "16"
+     ]
+    },
+    "en": {
+     "text": "How many squares are on a tic-tac-toe board?",
+     "correct": "9",
+     "wrong": [
+      "6",
+      "12",
+      "16"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man betrügerische Nachrichten, die Zugangsdaten abgreifen sollen?",
+     "correct": "Phishing",
+     "wrong": [
+      "Streaming",
+      "Tethering",
+      "Spooling"
+     ]
+    },
+    "en": {
+     "text": "What are fraudulent messages that try to steal login details called?",
+     "correct": "Phishing",
+     "wrong": [
+      "Streaming",
+      "Tethering",
+      "Spooling"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahrhundert liegt das Jahr 1999?",
+     "correct": "20. Jahrhundert",
+     "wrong": [
+      "19. Jahrhundert",
+      "21. Jahrhundert",
+      "18. Jahrhundert"
+     ]
+    },
+    "en": {
+     "text": "In which century is the year 1999?",
+     "correct": "The 20th century",
+     "wrong": [
+      "The 19th century",
+      "The 21st century",
+      "The 18th century"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was ist die Hauptstadt von Irland?",
+     "correct": "Dublin",
+     "wrong": [
+      "Belfast",
+      "Cork",
+      "Galway"
+     ]
+    },
+    "en": {
+     "text": "What is the capital of Ireland?",
+     "correct": "Dublin",
+     "wrong": [
+      "Belfast",
+      "Cork",
+      "Galway"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Aus welcher Region stammten die Wikinger?",
+     "correct": "Skandinavien",
+     "wrong": [
+      "Iberien",
+      "Britannien",
+      "Mitteleuropa"
+     ]
+    },
+    "en": {
+     "text": "Which region did the Vikings come from?",
+     "correct": "Scandinavia",
+     "wrong": [
+      "Iberia",
+      "Britain",
+      "Central Europe"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Planet hat den „Großen Roten Fleck“?",
+     "correct": "Jupiter",
+     "wrong": [
+      "Mars",
+      "Saturn",
+      "Neptun"
+     ]
+    },
+    "en": {
+     "text": "Which planet has the “Great Red Spot”?",
+     "correct": "Jupiter",
+     "wrong": [
+      "Mars",
+      "Saturn",
+      "Neptune"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier hat das größte Gehirn aller Tiere?",
+     "correct": "Pottwal",
+     "wrong": [
+      "Elefant",
+      "Blauwal",
+      "Delfin"
+     ]
+    },
+    "en": {
+     "text": "Which animal has the largest brain of all?",
+     "correct": "Sperm whale",
+     "wrong": [
+      "Elephant",
+      "Blue whale",
+      "Dolphin"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer gewann Wimbledon der Herren mit acht Titeln am häufigsten?",
+     "correct": "Roger Federer",
+     "wrong": [
+      "Novak Djokovic",
+      "Pete Sampras",
+      "Björn Borg"
+     ]
+    },
+    "en": {
+     "text": "Who has won the most men's Wimbledon titles, with eight?",
+     "correct": "Roger Federer",
+     "wrong": [
+      "Novak Djokovic",
+      "Pete Sampras",
+      "Björn Borg"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer drehte den Stummfilm-Klassiker „Metropolis“ (1927)?",
+     "correct": "Fritz Lang",
+     "wrong": [
+      "F. W. Murnau",
+      "Robert Wiene",
+      "Ernst Lubitsch"
+     ]
+    },
+    "en": {
+     "text": "Who directed the silent-film classic “Metropolis” (1927)?",
+     "correct": "Fritz Lang",
+     "wrong": [
+      "F. W. Murnau",
+      "Robert Wiene",
+      "Ernst Lubitsch"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welcher US-Stadt entstand der Jazz?",
+     "correct": "New Orleans",
+     "wrong": [
+      "Chicago",
+      "Nashville",
+      "Memphis"
+     ]
+    },
+    "en": {
+     "text": "In which US city did jazz originate?",
+     "correct": "New Orleans",
+     "wrong": [
+      "Chicago",
+      "Nashville",
+      "Memphis"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Der Name der Rose“?",
+     "correct": "Umberto Eco",
+     "wrong": [
+      "Italo Calvino",
+      "Alberto Moravia",
+      "Dario Fo"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Name of the Rose”?",
+     "correct": "Umberto Eco",
+     "wrong": [
+      "Italo Calvino",
+      "Alberto Moravia",
+      "Dario Fo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt liegen die berühmten Uffizien?",
+     "correct": "Florenz",
+     "wrong": [
+      "Rom",
+      "Venedig",
+      "Mailand"
+     ]
+    },
+    "en": {
+     "text": "In which city are the famous Uffizi?",
+     "correct": "Florence",
+     "wrong": [
+      "Rome",
+      "Venice",
+      "Milan"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Hauptheld in „Assassin's Creed II“?",
+     "correct": "Ezio Auditore",
+     "wrong": [
+      "Altaïr",
+      "Connor",
+      "Edward Kenway"
+     ]
+    },
+    "en": {
+     "text": "What is the main hero of “Assassin's Creed II” called?",
+     "correct": "Ezio Auditore",
+     "wrong": [
+      "Altaïr",
+      "Connor",
+      "Edward Kenway"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht „E-Mail“?",
+     "correct": "Electronic Mail",
+     "wrong": [
+      "Easy Mail",
+      "External Mail",
+      "Entry Mail"
+     ]
+    },
+    "en": {
+     "text": "What does “e-mail” stand for?",
+     "correct": "Electronic Mail",
+     "wrong": [
+      "Easy Mail",
+      "External Mail",
+      "Entry Mail"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Zentimeter hat ein Meter?",
+     "correct": "100",
+     "wrong": [
+      "10",
+      "1000",
+      "50"
+     ]
+    },
+    "en": {
+     "text": "How many centimetres are in a metre?",
+     "correct": "100",
+     "wrong": [
+      "10",
+      "1000",
+      "50"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Was ist die Hauptstadt der USA?",
+     "correct": "Washington, D. C.",
+     "wrong": [
+      "New York",
+      "Los Angeles",
+      "Chicago"
+     ]
+    },
+    "en": {
+     "text": "What is the capital of the United States?",
+     "correct": "Washington, D.C.",
+     "wrong": [
+      "New York",
+      "Los Angeles",
+      "Chicago"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Brüder gelangen 1903 die ersten Motorflüge?",
+     "correct": "Die Gebrüder Wright",
+     "wrong": [
+      "Die Gebrüder Lumière",
+      "Die Gebrüder Grimm",
+      "Die Gebrüder Montgolfier"
+     ]
+    },
+    "en": {
+     "text": "Which brothers made the first powered flights in 1903?",
+     "correct": "The Wright brothers",
+     "wrong": [
+      "The Lumière brothers",
+      "The Brothers Grimm",
+      "The Montgolfier brothers"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer formulierte die Gesetze der Planetenbahnen?",
+     "correct": "Johannes Kepler",
+     "wrong": [
+      "Galileo Galilei",
+      "Nikolaus Kopernikus",
+      "Tycho Brahe"
+     ]
+    },
+    "en": {
+     "text": "Who formulated the laws of planetary motion?",
+     "correct": "Johannes Kepler",
+     "wrong": [
+      "Galileo Galilei",
+      "Nikolaus Kopernikus",
+      "Tycho Brahe"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "In welches Tier verwandelt sich die Kaulquappe?",
+     "correct": "Frosch",
+     "wrong": [
+      "Fisch",
+      "Libelle",
+      "Schnecke"
+     ]
+    },
+    "en": {
+     "text": "Into which animal does a tadpole develop?",
+     "correct": "Frog",
+     "wrong": [
+      "Fish",
+      "Dragonfly",
+      "Snail"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche deutsche Tennisspielerin gewann 1988 den „Golden Slam“?",
+     "correct": "Steffi Graf",
+     "wrong": [
+      "Angelique Kerber",
+      "Sabine Lisicki",
+      "Andrea Petkovic"
+     ]
+    },
+    "en": {
+     "text": "Which German tennis player won the “Golden Slam” in 1988?",
+     "correct": "Steffi Graf",
+     "wrong": [
+      "Angelique Kerber",
+      "Sabine Lisicki",
+      "Andrea Petkovic"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer spielte Rocky Balboa?",
+     "correct": "Sylvester Stallone",
+     "wrong": [
+      "Arnold Schwarzenegger",
+      "Bruce Willis",
+      "Jean-Claude Van Damme"
+     ]
+    },
+    "en": {
+     "text": "Who played Rocky Balboa?",
+     "correct": "Sylvester Stallone",
+     "wrong": [
+      "Arnold Schwarzenegger",
+      "Bruce Willis",
+      "Jean-Claude Van Damme"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer sang „Blinding Lights“?",
+     "correct": "The Weeknd",
+     "wrong": [
+      "Drake",
+      "Post Malone",
+      "Bruno Mars"
+     ]
+    },
+    "en": {
+     "text": "Who sang “Blinding Lights”?",
+     "correct": "The Weeknd",
+     "wrong": [
+      "Drake",
+      "Post Malone",
+      "Bruno Mars"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Tintenherz“?",
+     "correct": "Cornelia Funke",
+     "wrong": [
+      "Kirsten Boie",
+      "Andreas Steinhöfel",
+      "Mirjam Pressler"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Inkheart”?",
+     "correct": "Cornelia Funke",
+     "wrong": [
+      "Kirsten Boie",
+      "Andreas Steinhöfel",
+      "Mirjam Pressler"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land steht die Chinesische Mauer?",
+     "correct": "China",
+     "wrong": [
+      "Japan",
+      "Mongolei",
+      "Indien"
+     ]
+    },
+    "en": {
+     "text": "In which country is the Great Wall?",
+     "correct": "China",
+     "wrong": [
+      "Japan",
+      "Mongolia",
+      "India"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Detektiv-Brettspiel, bei dem man den Mörder, die Waffe und den Tatort erraten muss?",
+     "correct": "Cluedo",
+     "wrong": [
+      "Scotland Yard",
+      "Monopoly",
+      "Risiko"
+     ]
+    },
+    "en": {
+     "text": "What is the detective board game in which you must work out the murderer, weapon and room?",
+     "correct": "Clue (Cluedo)",
+     "wrong": [
+      "Scotland Yard",
+      "Monopoly",
+      "Risk"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht die Abkürzung „VPN“?",
+     "correct": "Virtual Private Network",
+     "wrong": [
+      "Very Protected Node",
+      "Visual Protocol Network",
+      "Verified Public Network"
+     ]
+    },
+    "en": {
+     "text": "What does the abbreviation “VPN” stand for?",
+     "correct": "Virtual Private Network",
+     "wrong": [
+      "Very Protected Node",
+      "Visual Protocol Network",
+      "Verified Public Network"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Sekunden hat ein Tag?",
+     "correct": "86.400",
+     "wrong": [
+      "3.600",
+      "36.000",
+      "864.000"
+     ]
+    },
+    "en": {
+     "text": "How many seconds are in a day?",
+     "correct": "86,400",
+     "wrong": [
+      "3,600",
+      "36,000",
+      "864,000"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was ist die Hauptstadt von Kroatien?",
+     "correct": "Zagreb",
+     "wrong": [
+      "Split",
+      "Dubrovnik",
+      "Ljubljana"
+     ]
+    },
+    "en": {
+     "text": "What is the capital of Croatia?",
+     "correct": "Zagreb",
+     "wrong": [
+      "Split",
+      "Dubrovnik",
+      "Ljubljana"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer wurde 1994 der erste schwarze Präsident Südafrikas?",
+     "correct": "Nelson Mandela",
+     "wrong": [
+      "Desmond Tutu",
+      "Thabo Mbeki",
+      "Steve Biko"
+     ]
+    },
+    "en": {
+     "text": "Who became South Africa's first Black president in 1994?",
+     "correct": "Nelson Mandela",
+     "wrong": [
+      "Desmond Tutu",
+      "Thabo Mbeki",
+      "Steve Biko"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wo in der Zelle liegt die Erbinformation (DNA)?",
+     "correct": "Im Zellkern",
+     "wrong": [
+      "In der Zellwand",
+      "Im Zytoplasma",
+      "In den Ribosomen"
+     ]
+    },
+    "en": {
+     "text": "Where in the cell is the genetic information (DNA) located?",
+     "correct": "In the nucleus",
+     "wrong": [
+      "In the cell wall",
+      "In the cytoplasm",
+      "In the ribosomes"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Beine hat ein Taschenkrebs (mit den Scheren)?",
+     "correct": "10",
+     "wrong": [
+      "6",
+      "8",
+      "12"
+     ]
+    },
+    "en": {
+     "text": "How many legs does an edible crab have (including the claws)?",
+     "correct": "10",
+     "wrong": [
+      "6",
+      "8",
+      "12"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Rennstrecke in der Eifel, die „Grüne Hölle“ genannt wird?",
+     "correct": "Nürburgring",
+     "wrong": [
+      "Hockenheimring",
+      "Sachsenring",
+      "Lausitzring"
+     ]
+    },
+    "en": {
+     "text": "What is the Eifel race track nicknamed the “Green Hell”?",
+     "correct": "Nürburgring",
+     "wrong": [
+      "Hockenheimring",
+      "Sachsenring",
+      "Lausitzring"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer führte Regie bei „Shining“ (1980)?",
+     "correct": "Stanley Kubrick",
+     "wrong": [
+      "Steven Spielberg",
+      "Wes Craven",
+      "John Carpenter"
+     ]
+    },
+    "en": {
+     "text": "Who directed “The Shining” (1980)?",
+     "correct": "Stanley Kubrick",
+     "wrong": [
+      "Steven Spielberg",
+      "Wes Craven",
+      "John Carpenter"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Band sang „Yesterday“?",
+     "correct": "The Beatles",
+     "wrong": [
+      "The Rolling Stones",
+      "The Who",
+      "The Kinks"
+     ]
+    },
+    "en": {
+     "text": "Which band sang “Yesterday”?",
+     "correct": "The Beatles",
+     "wrong": [
+      "The Rolling Stones",
+      "The Who",
+      "The Kinks"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb das Stück „Die Physiker“?",
+     "correct": "Friedrich Dürrenmatt",
+     "wrong": [
+      "Max Frisch",
+      "Bertolt Brecht",
+      "Peter Weiss"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the play “The Physicists”?",
+     "correct": "Friedrich Dürrenmatt",
+     "wrong": [
+      "Max Frisch",
+      "Bertolt Brecht",
+      "Peter Weiss"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt steht die Akropolis?",
+     "correct": "Athen",
+     "wrong": [
+      "Rom",
+      "Istanbul",
+      "Delphi"
+     ]
+    },
+    "en": {
+     "text": "In which city is the Acropolis?",
+     "correct": "Athens",
+     "wrong": [
+      "Rome",
+      "Istanbul",
+      "Delphi"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Strategiespiel dreht sich um die Eroberung der Welt mit Armeen?",
+     "correct": "Risiko",
+     "wrong": [
+      "Mensch ärgere dich nicht",
+      "Siedler von Catan",
+      "Dame"
+     ]
+    },
+    "en": {
+     "text": "Which strategy game is about conquering the world with armies?",
+     "correct": "Risk",
+     "wrong": [
+      "Ludo",
+      "Catan",
+      "Draughts"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht die Abkürzung „PC“?",
+     "correct": "Personal Computer",
+     "wrong": [
+      "Public Connection",
+      "Printed Circuit",
+      "Power Controller"
+     ]
+    },
+    "en": {
+     "text": "What does the abbreviation “PC” stand for?",
+     "correct": "Personal Computer",
+     "wrong": [
+      "Public Connection",
+      "Printed Circuit",
+      "Power Controller"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Was ergibt 7 mal 8?",
+     "correct": "56",
+     "wrong": [
+      "54",
+      "48",
+      "64"
+     ]
+    },
+    "en": {
+     "text": "What is 7 times 8?",
+     "correct": "56",
+     "wrong": [
+      "54",
+      "48",
+      "64"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welcher Fluss fließt durch Kairo?",
+     "correct": "Nil",
+     "wrong": [
+      "Euphrat",
+      "Niger",
+      "Sambesi"
+     ]
+    },
+    "en": {
+     "text": "Which river flows through Cairo?",
+     "correct": "Nile",
+     "wrong": [
+      "Euphrates",
+      "Niger",
+      "Zambezi"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wer verbesserte die Glühlampe und machte sie marktreif?",
+     "correct": "Thomas Edison",
+     "wrong": [
+      "Nikola Tesla",
+      "Alexander Graham Bell",
+      "Werner von Siemens"
+     ]
+    },
+    "en": {
+     "text": "Who improved the light bulb and made it commercially viable?",
+     "correct": "Thomas Edison",
+     "wrong": [
+      "Nikola Tesla",
+      "Alexander Graham Bell",
+      "Werner von Siemens"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Kraft hält uns auf dem Erdboden?",
+     "correct": "Schwerkraft",
+     "wrong": [
+      "Reibung",
+      "Fliehkraft",
+      "Magnetkraft"
+     ]
+    },
+    "en": {
+     "text": "Which force keeps us on the ground?",
+     "correct": "Gravity",
+     "wrong": [
+      "Friction",
+      "Centrifugal force",
+      "Magnetism"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier trägt seinen Panzer immer mit sich?",
+     "correct": "Schildkröte",
+     "wrong": [
+      "Igel",
+      "Eichhörnchen",
+      "Hase"
+     ]
+    },
+    "en": {
+     "text": "Which animal always carries its shell with it?",
+     "correct": "Tortoise",
+     "wrong": [
+      "Hedgehog",
+      "Squirrel",
+      "Hare"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das berühmteste 24-Stunden-Autorennen in Frankreich?",
+     "correct": "24 Stunden von Le Mans",
+     "wrong": [
+      "24 Stunden von Spa",
+      "24 Stunden von Daytona",
+      "24 Stunden vom Nürburgring"
+     ]
+    },
+    "en": {
+     "text": "What is the most famous 24-hour car race in France?",
+     "correct": "24 Hours of Le Mans",
+     "wrong": [
+      "24 Hours of Spa",
+      "24 Hours of Daytona",
+      "24 Hours of the Nürburgring"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer moderierte „Wetten, dass..?“ in der letzten Sendung 2021?",
+     "correct": "Thomas Gottschalk",
+     "wrong": [
+      "Markus Lanz",
+      "Wolfgang Lippert",
+      "Frank Elstner"
+     ]
+    },
+    "en": {
+     "text": "Who hosted the final “Wetten, dass..?” show in 2021?",
+     "correct": "Thomas Gottschalk",
+     "wrong": [
+      "Markus Lanz",
+      "Wolfgang Lippert",
+      "Frank Elstner"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Band sang „Wonderwall“?",
+     "correct": "Oasis",
+     "wrong": [
+      "Blur",
+      "Pulp",
+      "The Verve"
+     ]
+    },
+    "en": {
+     "text": "Which band sang “Wonderwall”?",
+     "correct": "Oasis",
+     "wrong": [
+      "Blur",
+      "Pulp",
+      "The Verve"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Die Dreigroschenoper“?",
+     "correct": "Bertolt Brecht",
+     "wrong": [
+      "Friedrich Dürrenmatt",
+      "Max Frisch",
+      "Carl Zuckmayer"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Threepenny Opera”?",
+     "correct": "Bertolt Brecht",
+     "wrong": [
+      "Friedrich Dürrenmatt",
+      "Max Frisch",
+      "Carl Zuckmayer"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land steht der berühmte Steinkreis Stonehenge?",
+     "correct": "England",
+     "wrong": [
+      "Irland",
+      "Frankreich",
+      "Dänemark"
+     ]
+    },
+    "en": {
+     "text": "In which country is the famous stone circle Stonehenge?",
+     "correct": "England",
+     "wrong": [
+      "Irland",
+      "Frankreich",
+      "Dänemark"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Schachfigur zieht nur diagonal?",
+     "correct": "Läufer",
+     "wrong": [
+      "Turm",
+      "Springer",
+      "Bauer"
+     ]
+    },
+    "en": {
+     "text": "Which chess piece moves only diagonally?",
+     "correct": "Bishop",
+     "wrong": [
+      "Rook",
+      "Knight",
+      "Pawn"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht die Abkürzung „HDMI“?",
+     "correct": "High-Definition Multimedia Interface",
+     "wrong": [
+      "High Data Media Input",
+      "Hyper Digital Mobile Interface",
+      "Home Display Media Internet"
+     ]
+    },
+    "en": {
+     "text": "What does the abbreviation “HDMI” stand for?",
+     "correct": "High-Definition Multimedia Interface",
+     "wrong": [
+      "High Data Media Input",
+      "Hyper Digital Mobile Interface",
+      "Home Display Media Internet"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man einen Zeitraum von 1000 Jahren?",
+     "correct": "Jahrtausend",
+     "wrong": [
+      "Jahrhundert",
+      "Jahrzehnt",
+      "Zeitalter"
+     ]
+    },
+    "en": {
+     "text": "What is a period of 1000 years called?",
+     "correct": "Millennium",
+     "wrong": [
+      "Century",
+      "Decade",
+      "Era"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der höchste Berg der Alpen?",
+     "correct": "Mont Blanc",
+     "wrong": [
+      "Matterhorn",
+      "Zugspitze",
+      "Großglockner"
+     ]
+    },
+    "en": {
+     "text": "What is the highest mountain in the Alps?",
+     "correct": "Mont Blanc",
+     "wrong": [
+      "Matterhorn",
+      "Zugspitze",
+      "Großglockner"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die Epoche der „Wiedergeburt“ der Antike im 14. bis 16. Jahrhundert?",
+     "correct": "Renaissance",
+     "wrong": [
+      "Romantik",
+      "Barock",
+      "Gotik"
+     ]
+    },
+    "en": {
+     "text": "What is the era of the “rebirth” of antiquity in the 14th–16th centuries called?",
+     "correct": "Renaissance",
+     "wrong": [
+      "Romantik",
+      "Barock",
+      "Gotik"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches ist das leichteste chemische Element?",
+     "correct": "Wasserstoff",
+     "wrong": [
+      "Helium",
+      "Lithium",
+      "Sauerstoff"
+     ]
+    },
+    "en": {
+     "text": "Which is the lightest chemical element?",
+     "correct": "Hydrogen",
+     "wrong": [
+      "Helium",
+      "Lithium",
+      "Oxygen"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Früchte wachsen an Weinreben?",
+     "correct": "Trauben",
+     "wrong": [
+      "Kirschen",
+      "Pflaumen",
+      "Äpfel"
+     ]
+    },
+    "en": {
+     "text": "Which fruit grows on grapevines?",
+     "correct": "Grapes",
+     "wrong": [
+      "Cherries",
+      "Plums",
+      "Apples"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land ist die Sportart Sumo zu Hause?",
+     "correct": "Japan",
+     "wrong": [
+      "China",
+      "Korea",
+      "Thailand"
+     ]
+    },
+    "en": {
+     "text": "In which country is the sport of sumo at home?",
+     "correct": "Japan",
+     "wrong": [
+      "China",
+      "Korea",
+      "Thailand"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer moderiert „Germany's Next Topmodel“?",
+     "correct": "Heidi Klum",
+     "wrong": [
+      "Barbara Schöneberger",
+      "Sylvie Meis",
+      "Collien Fernandes"
+     ]
+    },
+    "en": {
+     "text": "Who hosts “Germany's Next Topmodel”?",
+     "correct": "Heidi Klum",
+     "wrong": [
+      "Barbara Schöneberger",
+      "Sylvie Meis",
+      "Collien Fernandes"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die tiefe Frauenstimme?",
+     "correct": "Alt",
+     "wrong": [
+      "Sopran",
+      "Tenor",
+      "Bariton"
+     ]
+    },
+    "en": {
+     "text": "What is the low female voice type called?",
+     "correct": "Alto",
+     "wrong": [
+      "Soprano",
+      "Tenor",
+      "Baritone"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Der Prozess“?",
+     "correct": "Franz Kafka",
+     "wrong": [
+      "Thomas Mann",
+      "Hermann Hesse",
+      "Arthur Schnitzler"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “The Trial”?",
+     "correct": "Franz Kafka",
+     "wrong": [
+      "Thomas Mann",
+      "Hermann Hesse",
+      "Arthur Schnitzler"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man ein Bild aus aufgeklebten Papier- und Stoffstücken?",
+     "correct": "Collage",
+     "wrong": [
+      "Mosaik",
+      "Fresko",
+      "Radierung"
+     ]
+    },
+    "en": {
+     "text": "What is a picture made of glued paper and fabric pieces called?",
+     "correct": "Collage",
+     "wrong": [
+      "Mosaik",
+      "Fresko",
+      "Radierung"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Gegenspieler von Sonic?",
+     "correct": "Dr. Eggman",
+     "wrong": [
+      "Bowser",
+      "Ganondorf",
+      "Dr. Wily"
+     ]
+    },
+    "en": {
+     "text": "Who is Sonic's arch-enemy?",
+     "correct": "Dr. Eggman",
+     "wrong": [
+      "Bowser",
+      "Ganondorf",
+      "Dr. Wily"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer gründete Google?",
+     "correct": "Larry Page und Sergey Brin",
+     "wrong": [
+      "Bill Gates und Paul Allen",
+      "Steve Jobs und Steve Wozniak",
+      "Jack Dorsey und Evan Williams"
+     ]
+    },
+    "en": {
+     "text": "Who founded Google?",
+     "correct": "Larry Page and Sergey Brin",
+     "wrong": [
+      "Bill Gates and Paul Allen",
+      "Steve Jobs and Steve Wozniak",
+      "Jack Dorsey and Evan Williams"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man ein Vieleck mit fünf Ecken?",
+     "correct": "Fünfeck (Pentagon)",
+     "wrong": [
+      "Sechseck",
+      "Siebeneck",
+      "Viereck"
+     ]
+    },
+    "en": {
+     "text": "What is a five-sided polygon called?",
+     "correct": "Pentagon",
+     "wrong": [
+      "Hexagon",
+      "Heptagon",
+      "Square"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Was ist die Hauptstadt von Finnland?",
+     "correct": "Helsinki",
+     "wrong": [
+      "Turku",
+      "Tampere",
+      "Oslo"
+     ]
+    },
+    "en": {
+     "text": "What is the capital of Finland?",
+     "correct": "Helsinki",
+     "wrong": [
+      "Turku",
+      "Tampere",
+      "Oslo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer erreichte 1911 als Erster den Südpol?",
+     "correct": "Roald Amundsen",
+     "wrong": [
+      "Robert Falcon Scott",
+      "Ernest Shackleton",
+      "Fridtjof Nansen"
+     ]
+    },
+    "en": {
+     "text": "Who was the first to reach the South Pole in 1911?",
+     "correct": "Roald Amundsen",
+     "wrong": [
+      "Robert Falcon Scott",
+      "Ernest Shackleton",
+      "Fridtjof Nansen"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Vitamin schützt vor der Krankheit Skorbut?",
+     "correct": "Vitamin C",
+     "wrong": [
+      "Vitamin A",
+      "Vitamin D",
+      "Vitamin K"
+     ]
+    },
+    "en": {
+     "text": "Which vitamin protects against scurvy?",
+     "correct": "Vitamin C",
+     "wrong": [
+      "Vitamin A",
+      "Vitamin D",
+      "Vitamin K"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Pflanze gehört zu den am schnellsten wachsenden der Welt?",
+     "correct": "Bambus",
+     "wrong": [
+      "Eiche",
+      "Kaktus",
+      "Farn"
+     ]
+    },
+    "en": {
+     "text": "Which plant is among the fastest-growing in the world?",
+     "correct": "Bamboo",
+     "wrong": [
+      "Oak",
+      "Cactus",
+      "Fern"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Punkte sind mit drei Darts höchstens in einer Aufnahme möglich?",
+     "correct": "180",
+     "wrong": [
+      "120",
+      "150",
+      "201"
+     ]
+    },
+    "en": {
+     "text": "What is the maximum score with three darts in one turn?",
+     "correct": "180",
+     "wrong": [
+      "120",
+      "150",
+      "201"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wer spielte Jack Sparrow in „Fluch der Karibik“?",
+     "correct": "Johnny Depp",
+     "wrong": [
+      "Orlando Bloom",
+      "Geoffrey Rush",
+      "Brad Pitt"
+     ]
+    },
+    "en": {
+     "text": "Who played Jack Sparrow in “Pirates of the Caribbean”?",
+     "correct": "Johnny Depp",
+     "wrong": [
+      "Orlando Bloom",
+      "Geoffrey Rush",
+      "Brad Pitt"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Band sang „Smells Like Teen Spirit“?",
+     "correct": "Nirvana",
+     "wrong": [
+      "Pearl Jam",
+      "Green Day",
+      "Foo Fighters"
+     ]
+    },
+    "en": {
+     "text": "Which band sang “Smells Like Teen Spirit”?",
+     "correct": "Nirvana",
+     "wrong": [
+      "Pearl Jam",
+      "Green Day",
+      "Foo Fighters"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Gefährte von Robinson Crusoe auf der Insel?",
+     "correct": "Freitag",
+     "wrong": [
+      "Montag",
+      "Sonntag",
+      "Samstag"
+     ]
+    },
+    "en": {
+     "text": "What is the name of Robinson Crusoe's companion on the island?",
+     "correct": "Friday",
+     "wrong": [
+      "Monday",
+      "Sunday",
+      "Saturday"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches berühmte Museum liegt in Sankt Petersburg?",
+     "correct": "Die Eremitage",
+     "wrong": [
+      "Das Prado",
+      "Das Rijksmuseum",
+      "Der Louvre"
+     ]
+    },
+    "en": {
+     "text": "Which famous museum is in Saint Petersburg?",
+     "correct": "The Hermitage",
+     "wrong": [
+      "The Prado",
+      "The Rijksmuseum",
+      "The Louvre"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Schatzjäger in der Spielreihe „Uncharted“?",
+     "correct": "Nathan Drake",
+     "wrong": [
+      "Lara Croft",
+      "Indiana Jones",
+      "Marcus Fenix"
+     ]
+    },
+    "en": {
+     "text": "What is the treasure hunter in the “Uncharted” series called?",
+     "correct": "Nathan Drake",
+     "wrong": [
+      "Lara Croft",
+      "Indiana Jones",
+      "Marcus Fenix"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht „QR“ bei QR-Codes?",
+     "correct": "Quick Response",
+     "wrong": [
+      "Quality Reader",
+      "Quadratic Row",
+      "Query Result"
+     ]
+    },
+    "en": {
+     "text": "What does “QR” in QR codes stand for?",
+     "correct": "Quick Response",
+     "wrong": [
+      "Quality Reader",
+      "Quadratic Row",
+      "Query Result"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Ecken hat ein Dodekaeder (Zwölfflächner mit regelmäßigen Fünfecken)?",
+     "correct": "20",
+     "wrong": [
+      "12",
+      "30",
+      "24"
+     ]
+    },
+    "en": {
+     "text": "How many vertices does a dodecahedron have?",
+     "correct": "20",
+     "wrong": [
+      "12",
+      "30",
+      "24"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welcher Fluss fließt durch London?",
+     "correct": "Themse",
+     "wrong": [
+      "Severn",
+      "Mersey",
+      "Tyne"
+     ]
+    },
+    "en": {
+     "text": "Which river flows through London?",
+     "correct": "Thames",
+     "wrong": [
+      "Severn",
+      "Mersey",
+      "Tyne"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land begann die Industrielle Revolution?",
+     "correct": "Großbritannien",
+     "wrong": [
+      "Deutschland",
+      "Frankreich",
+      "USA"
+     ]
+    },
+    "en": {
+     "text": "In which country did the Industrial Revolution begin?",
+     "correct": "Great Britain",
+     "wrong": [
+      "Germany",
+      "France",
+      "USA"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Mit welchem Organ hören wir?",
+     "correct": "Dem Ohr",
+     "wrong": [
+      "Der Nase",
+      "Dem Auge",
+      "Der Zunge"
+     ]
+    },
+    "en": {
+     "text": "With which organ do we hear?",
+     "correct": "The ear",
+     "wrong": [
+      "The nose",
+      "The eye",
+      "The tongue"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Baum wird am höchsten?",
+     "correct": "Küstenmammutbaum",
+     "wrong": [
+      "Eiche",
+      "Kiefer",
+      "Zeder"
+     ]
+    },
+    "en": {
+     "text": "Which tree grows the tallest?",
+     "correct": "Coast redwood",
+     "wrong": [
+      "Oak",
+      "Pine",
+      "Cedar"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt der Fußballstar Cristiano Ronaldo?",
+     "correct": "Portugal",
+     "wrong": [
+      "Spanien",
+      "Brasilien",
+      "Argentinien"
+     ]
+    },
+    "en": {
+     "text": "Which country is the footballer Cristiano Ronaldo from?",
+     "correct": "Portugal",
+     "wrong": [
+      "Spain",
+      "Brazil",
+      "Argentina"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer spielte Wolverine in den „X-Men“-Filmen?",
+     "correct": "Hugh Jackman",
+     "wrong": [
+      "Ryan Reynolds",
+      "Patrick Stewart",
+      "Chris Pratt"
+     ]
+    },
+    "en": {
+     "text": "Who played Wolverine in the “X-Men” films?",
+     "correct": "Hugh Jackman",
+     "wrong": [
+      "Ryan Reynolds",
+      "Patrick Stewart",
+      "Chris Pratt"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Aus welchem Land stammt die Musikrichtung Reggae?",
+     "correct": "Jamaika",
+     "wrong": [
+      "Kuba",
+      "Brasilien",
+      "Spanien"
+     ]
+    },
+    "en": {
+     "text": "Which country does reggae music come from?",
+     "correct": "Jamaica",
+     "wrong": [
+      "Cuba",
+      "Brazil",
+      "Spain"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Hundert Jahre Einsamkeit“?",
+     "correct": "Gabriel García Márquez",
+     "wrong": [
+      "Mario Vargas Llosa",
+      "Jorge Luis Borges",
+      "Pablo Neruda"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “One Hundred Years of Solitude”?",
+     "correct": "Gabriel García Márquez",
+     "wrong": [
+      "Mario Vargas Llosa",
+      "Jorge Luis Borges",
+      "Pablo Neruda"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "In welchem Bundesland steht Schloss Neuschwanstein?",
+     "correct": "Bayern",
+     "wrong": [
+      "Baden-Württemberg",
+      "Sachsen",
+      "Hessen"
+     ]
+    },
+    "en": {
+     "text": "In which German state is Neuschwanstein Castle?",
+     "correct": "Bavaria",
+     "wrong": [
+      "Baden-Württemberg",
+      "Saxony",
+      "Hesse"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Punktzahl darf man beim Blackjack nicht überschreiten?",
+     "correct": "21",
+     "wrong": [
+      "17",
+      "25",
+      "31"
+     ]
+    },
+    "en": {
+     "text": "Which score must you not exceed in blackjack?",
+     "correct": "21",
+     "wrong": [
+      "17",
+      "25",
+      "31"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welches Unternehmen stellt Elektroautos wie das „Model S“ her?",
+     "correct": "Tesla",
+     "wrong": [
+      "Toyota",
+      "BMW",
+      "Volvo"
+     ]
+    },
+    "en": {
+     "text": "Which company makes electric cars such as the “Model S”?",
+     "correct": "Tesla",
+     "wrong": [
+      "Toyota",
+      "BMW",
+      "Volvo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Tage hat eine Woche?",
+     "correct": "7",
+     "wrong": [
+      "5",
+      "6",
+      "8"
+     ]
+    },
+    "en": {
+     "text": "How many days are in a week?",
+     "correct": "7",
+     "wrong": [
+      "5",
+      "6",
+      "8"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Was ist die Hauptstadt des Iran?",
+     "correct": "Teheran",
+     "wrong": [
+      "Bagdad",
+      "Isfahan",
+      "Täbris"
+     ]
+    },
+    "en": {
+     "text": "What is the capital of Iran?",
+     "correct": "Tehran",
+     "wrong": [
+      "Baghdad",
+      "Isfahan",
+      "Tabriz"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer war der erste Kaiser des Deutschen Kaiserreichs (1871)?",
+     "correct": "Wilhelm I.",
+     "wrong": [
+      "Friedrich III.",
+      "Wilhelm II.",
+      "Otto von Bismarck"
+     ]
+    },
+    "en": {
+     "text": "Who was the first emperor of the German Empire (1871)?",
+     "correct": "Wilhelm I",
+     "wrong": [
+      "Frederick III",
+      "Wilhelm II",
+      "Otto von Bismarck"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Farben zählt man traditionell im Regenbogen?",
+     "correct": "7",
+     "wrong": [
+      "5",
+      "6",
+      "9"
+     ]
+    },
+    "en": {
+     "text": "How many colours are traditionally counted in a rainbow?",
+     "correct": "7",
+     "wrong": [
+      "5",
+      "6",
+      "9"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man Tiere, die sowohl im Wasser als auch an Land leben können, etwa Frösche?",
+     "correct": "Amphibien",
+     "wrong": [
+      "Reptilien",
+      "Säugetiere",
+      "Insekten"
+     ]
+    },
+    "en": {
+     "text": "What are animals that can live in water and on land, such as frogs, called?",
+     "correct": "Amphibians",
+     "wrong": [
+      "Reptiles",
+      "Mammals",
+      "Insects"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Mannschaftssport, der im Becken mit Ball und Toren gespielt wird?",
+     "correct": "Wasserball",
+     "wrong": [
+      "Beachvolleyball",
+      "Wasserski",
+      "Synchronschwimmen"
+     ]
+    },
+    "en": {
+     "text": "What is the team sport played in a pool with a ball and goals?",
+     "correct": "Water polo",
+     "wrong": [
+      "Beach volleyball",
+      "Water skiing",
+      "Synchronised swimming"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Deutsche gewann 2010 den Eurovision Song Contest?",
+     "correct": "Lena Meyer-Landrut",
+     "wrong": [
+      "Helene Fischer",
+      "Nicole",
+      "Sarah Connor"
+     ]
+    },
+    "en": {
+     "text": "Which German won the Eurovision Song Contest in 2010?",
+     "correct": "Lena Meyer-Landrut",
+     "wrong": [
+      "Helene Fischer",
+      "Nicole",
+      "Sarah Connor"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wer sang „Thinking Out Loud“?",
+     "correct": "Ed Sheeran",
+     "wrong": [
+      "Sam Smith",
+      "Justin Bieber",
+      "Shawn Mendes"
+     ]
+    },
+    "en": {
+     "text": "Who sang “Thinking Out Loud”?",
+     "correct": "Ed Sheeran",
+     "wrong": [
+      "Sam Smith",
+      "Justin Bieber",
+      "Shawn Mendes"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „In 80 Tagen um die Welt“?",
+     "correct": "Jules Verne",
+     "wrong": [
+      "Alexandre Dumas",
+      "Karl May",
+      "Mark Twain"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Around the World in Eighty Days”?",
+     "correct": "Jules Verne",
+     "wrong": [
+      "Alexandre Dumas",
+      "Karl May",
+      "Mark Twain"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man Kunst im öffentlichen Raum, etwa Graffiti von Banksy?",
+     "correct": "Street Art",
+     "wrong": [
+      "Pop-Art",
+      "Op-Art",
+      "Land Art"
+     ]
+    },
+    "en": {
+     "text": "What is art in public space, such as Banksy's graffiti, called?",
+     "correct": "Street Art",
+     "wrong": [
+      "Pop-Art",
+      "Op-Art",
+      "Land Art"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Held der Spielreihe „God of War“?",
+     "correct": "Kratos",
+     "wrong": [
+      "Ezio",
+      "Nathan Drake",
+      "Master Chief"
+     ]
+    },
+    "en": {
+     "text": "What is the hero of the “God of War” series called?",
+     "correct": "Kratos",
+     "wrong": [
+      "Ezio",
+      "Nathan Drake",
+      "Master Chief"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Dateiformat komprimiert Musik und ist besonders weit verbreitet?",
+     "correct": "MP3",
+     "wrong": [
+      "PDF",
+      "JPG",
+      "ZIP"
+     ]
+    },
+    "en": {
+     "text": "Which file format compresses music and is especially widespread?",
+     "correct": "MP3",
+     "wrong": [
+      "PDF",
+      "JPG",
+      "ZIP"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Zahl größer als 1 ist sowohl eine Quadrat- als auch eine Kubikzahl (die kleinste)?",
+     "correct": "64",
+     "wrong": [
+      "16",
+      "36",
+      "81"
+     ]
+    },
+    "en": {
+     "text": "What is the smallest number greater than 1 that is both a perfect square and a perfect cube?",
+     "correct": "64",
+     "wrong": [
+      "16",
+      "36",
+      "81"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Inselstaat im Mittelmeer hat die Hauptstadt Valletta?",
+     "correct": "Malta",
+     "wrong": [
+      "Zypern",
+      "Korsika",
+      "Sizilien"
+     ]
+    },
+    "en": {
+     "text": "Which Mediterranean island nation has the capital Valletta?",
+     "correct": "Malta",
+     "wrong": [
+      "Cyprus",
+      "Corsica",
+      "Sicily"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Seuche wütete im 14. Jahrhundert in Europa und wird „Schwarzer Tod“ genannt?",
+     "correct": "Die Pest",
+     "wrong": [
+      "Die Cholera",
+      "Die Pocken",
+      "Die Grippe"
+     ]
+    },
+    "en": {
+     "text": "Which epidemic ravaged Europe in the 14th century and is called the “Black Death”?",
+     "correct": "The plague",
+     "wrong": [
+      "Cholera",
+      "Smallpox",
+      "Influenza"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man den Vorgang, bei dem Pflanzen mit Licht Zucker herstellen?",
+     "correct": "Photosynthese",
+     "wrong": [
+      "Fotolyse",
+      "Fermentation",
+      "Verdauung"
+     ]
+    },
+    "en": {
+     "text": "What is the process by which plants make sugar using light called?",
+     "correct": "Photosynthesis",
+     "wrong": [
+      "Photolysis",
+      "Fermentation",
+      "Digestion"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Vogel hat die größte Flügelspannweite?",
+     "correct": "Wanderalbatros",
+     "wrong": [
+      "Kondor",
+      "Steinadler",
+      "Pelikan"
+     ]
+    },
+    "en": {
+     "text": "Which bird has the largest wingspan?",
+     "correct": "Wandering albatross",
+     "wrong": [
+      "Condor",
+      "Golden eagle",
+      "Pelican"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie lange dauert ein Eishockeyspiel regulär (reine Spielzeit)?",
+     "correct": "60 Minuten",
+     "wrong": [
+      "90 Minuten",
+      "40 Minuten",
+      "48 Minuten"
+     ]
+    },
+    "en": {
+     "text": "How long does a regular ice hockey game last (playing time)?",
+     "correct": "60 minutes",
+     "wrong": [
+      "90 minutes",
+      "40 minutes",
+      "48 minutes"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die in Wien spielende Fernsehserie über einen Polizei-Schäferhund?",
+     "correct": "Kommissar Rex",
+     "wrong": [
+      "SOKO Kitzbühel",
+      "Der Bulle von Tölz",
+      "Ein Fall für zwei"
+     ]
+    },
+    "en": {
+     "text": "What is the TV series set in Vienna about a police German shepherd called?",
+     "correct": "Inspector Rex",
+     "wrong": [
+      "SOKO Kitzbühel",
+      "Der Bulle von Tölz",
+      "Ein Fall für zwei"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer sang „Bad Guy“?",
+     "correct": "Billie Eilish",
+     "wrong": [
+      "Dua Lipa",
+      "Olivia Rodrigo",
+      "Ariana Grande"
+     ]
+    },
+    "en": {
+     "text": "Who sang “Bad Guy”?",
+     "correct": "Billie Eilish",
+     "wrong": [
+      "Dua Lipa",
+      "Olivia Rodrigo",
+      "Ariana Grande"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb „Robinson Crusoe“?",
+     "correct": "Daniel Defoe",
+     "wrong": [
+      "Jonathan Swift",
+      "Robert Louis Stevenson",
+      "Henry Fielding"
+     ]
+    },
+    "en": {
+     "text": "Who wrote “Robinson Crusoe”?",
+     "correct": "Daniel Defoe",
+     "wrong": [
+      "Jonathan Swift",
+      "Robert Louis Stevenson",
+      "Henry Fielding"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer malte „Der Garten der Lüste“?",
+     "correct": "Hieronymus Bosch",
+     "wrong": [
+      "Pieter Bruegel",
+      "Jan van Eyck",
+      "Albrecht Dürer"
+     ]
+    },
+    "en": {
+     "text": "Who painted “The Garden of Earthly Delights”?",
+     "correct": "Hieronymus Bosch",
+     "wrong": [
+      "Pieter Bruegel",
+      "Jan van Eyck",
+      "Albrecht Dürer"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Spiel arbeitet mit Buchstabensteinen auf einem Brett?",
+     "correct": "Scrabble",
+     "wrong": [
+      "Sudoku",
+      "Tabu",
+      "Dame"
+     ]
+    },
+    "en": {
+     "text": "Which game uses letter tiles on a board?",
+     "correct": "Scrabble",
+     "wrong": [
+      "Sudoku",
+      "Taboo",
+      "Pictionary"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Plattform ist für kurze Tanz- und Comedy-Videos bekannt?",
+     "correct": "TikTok",
+     "wrong": [
+      "LinkedIn",
+      "Pinterest",
+      "Xing"
+     ]
+    },
+    "en": {
+     "text": "Which platform is known for short dance and comedy videos?",
+     "correct": "TikTok",
+     "wrong": [
+      "LinkedIn",
+      "Pinterest",
+      "Xing"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie lautet die Zahl Pi auf zwei Nachkommastellen gerundet?",
+     "correct": "3,14",
+     "wrong": [
+      "3,41",
+      "3,12",
+      "3,16"
+     ]
+    },
+    "en": {
+     "text": "What is pi rounded to two decimal places?",
+     "correct": "3.14",
+     "wrong": [
+      "3.41",
+      "3.12",
+      "3.16"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Was ist die Hauptstadt der Ukraine?",
+     "correct": "Kiew",
+     "wrong": [
+      "Charkiw",
+      "Odessa",
+      "Lwiw"
+     ]
+    },
+    "en": {
+     "text": "What is the capital of Ukraine?",
+     "correct": "Kyiv",
+     "wrong": [
+      "Kharkiv",
+      "Odesa",
+      "Lviv"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr eroberten die Osmanen Konstantinopel?",
+     "correct": "1453",
+     "wrong": [
+      "1492",
+      "1204",
+      "1529"
+     ]
+    },
+    "en": {
+     "text": "In which year did the Ottomans conquer Constantinople?",
+     "correct": "1453",
+     "wrong": [
+      "1492",
+      "1204",
+      "1529"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Planet rotiert praktisch „auf der Seite“ (Achsneigung rund 98°)?",
+     "correct": "Uranus",
+     "wrong": [
+      "Neptun",
+      "Saturn",
+      "Mars"
+     ]
+    },
+    "en": {
+     "text": "Which planet rotates practically “on its side” (axial tilt about 98°)?",
+     "correct": "Uranus",
+     "wrong": [
+      "Neptune",
+      "Saturn",
+      "Mars"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man Tiere, die vor allem nachts aktiv sind?",
+     "correct": "Nachtaktiv",
+     "wrong": [
+      "Tagaktiv",
+      "Winterschläfer",
+      "Zugvögel"
+     ]
+    },
+    "en": {
+     "text": "What are animals that are mainly active at night called?",
+     "correct": "Nocturnal",
+     "wrong": [
+      "Diurnal",
+      "Hibernators",
+      "Migratory"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Karte zeigt der Schiedsrichter im Fußball für eine Verwarnung?",
+     "correct": "Gelbe Karte",
+     "wrong": [
+      "Rote Karte",
+      "Grüne Karte",
+      "Weiße Karte"
+     ]
+    },
+    "en": {
+     "text": "Which card does the referee show in football for a caution?",
+     "correct": "Yellow card",
+     "wrong": [
+      "Red card",
+      "Green card",
+      "White card"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Märchenfigur bekommt eine lange Nase, wenn sie lügt?",
+     "correct": "Pinocchio",
+     "wrong": [
+      "Rumpelstilzchen",
+      "Peter Pan",
+      "Aladdin"
+     ]
+    },
+    "en": {
+     "text": "Which fairy-tale character gets a long nose when lying?",
+     "correct": "Pinocchio",
+     "wrong": [
+      "Rumpelstilzchen",
+      "Peter Pan",
+      "Aladdin"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welcher bayerischen Stadt finden die Richard-Wagner-Festspiele statt?",
+     "correct": "Bayreuth",
+     "wrong": [
+      "Augsburg",
+      "Würzburg",
+      "Regensburg"
+     ]
+    },
+    "en": {
+     "text": "In which Bavarian city is the Richard Wagner Festival held?",
+     "correct": "Bayreuth",
+     "wrong": [
+      "Augsburg",
+      "Würzburg",
+      "Regensburg"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Bär, der Honig liebt und im Hundertmorgenwald lebt?",
+     "correct": "Winnie Puuh",
+     "wrong": [
+      "Balu",
+      "Paddington",
+      "Yogi"
+     ]
+    },
+    "en": {
+     "text": "What is the honey-loving bear from the Hundred Acre Wood called?",
+     "correct": "Winnie the Pooh",
+     "wrong": [
+      "Baloo",
+      "Paddington",
+      "Yogi"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die Kunst des schönen Schreibens?",
+     "correct": "Kalligrafie",
+     "wrong": [
+      "Typografie",
+      "Stenografie",
+      "Kartografie"
+     ]
+    },
+    "en": {
+     "text": "What is the art of beautiful handwriting called?",
+     "correct": "Calligraphy",
+     "wrong": [
+      "Typography",
+      "Shorthand",
+      "Cartography"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Zahlenrätsel mit 3×3-Blöcken und den Ziffern 1 bis 9?",
+     "correct": "Sudoku",
+     "wrong": [
+      "Kakuro",
+      "Kreuzworträtsel",
+      "Mastermind"
+     ]
+    },
+    "en": {
+     "text": "What is the number puzzle with 3×3 blocks and the digits 1 to 9 called?",
+     "correct": "Sudoku",
+     "wrong": [
+      "Kakuro",
+      "Kreuzworträtsel",
+      "Mastermind"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wofür steht die Abkürzung „NFC“?",
+     "correct": "Near Field Communication",
+     "wrong": [
+      "New File Connection",
+      "Network Fiber Cable",
+      "Node Frequency Control"
+     ]
+    },
+    "en": {
+     "text": "What does the abbreviation “NFC” stand for?",
+     "correct": "Near Field Communication",
+     "wrong": [
+      "New File Connection",
+      "Network Fiber Cable",
+      "Node Frequency Control"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche ist die größte einstellige Primzahl?",
+     "correct": "7",
+     "wrong": [
+      "9",
+      "5",
+      "3"
+     ]
+    },
+    "en": {
+     "text": "What is the largest single-digit prime number?",
+     "correct": "7",
+     "wrong": [
+      "9",
+      "5",
+      "3"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches ist das einwohnerreichste Land Afrikas?",
+     "correct": "Nigeria",
+     "wrong": [
+      "Ägypten",
+      "Äthiopien",
+      "Südafrika"
+     ]
+    },
+    "en": {
+     "text": "Which is the most populous country in Africa?",
+     "correct": "Nigeria",
+     "wrong": [
+      "Ägypten",
+      "Äthiopien",
+      "Südafrika"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Was war die Hauptstadt der DDR?",
+     "correct": "Ost-Berlin",
+     "wrong": [
+      "Leipzig",
+      "Dresden",
+      "Potsdam"
+     ]
+    },
+    "en": {
+     "text": "What was the capital of East Germany?",
+     "correct": "East Berlin",
+     "wrong": [
+      "Leipzig",
+      "Dresden",
+      "Potsdam"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der sonnennächste Stern (nach der Sonne)?",
+     "correct": "Proxima Centauri",
+     "wrong": [
+      "Sirius",
+      "Wega",
+      "Polarstern"
+     ]
+    },
+    "en": {
+     "text": "What is the nearest star to the Sun (other than the Sun itself)?",
+     "correct": "Proxima Centauri",
+     "wrong": [
+      "Sirius",
+      "Vega",
+      "Polaris"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man Tiere ohne Wirbelsäule?",
+     "correct": "Wirbellose",
+     "wrong": [
+      "Wirbeltiere",
+      "Säuger",
+      "Reptilien"
+     ]
+    },
+    "en": {
+     "text": "What are animals without a backbone called?",
+     "correct": "Invertebrates",
+     "wrong": [
+      "Vertebrates",
+      "Mammals",
+      "Reptiles"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "In welcher Sportart gleiten Steine über das Eis?",
+     "correct": "Curling",
+     "wrong": [
+      "Eishockey",
+      "Eisschnelllauf",
+      "Biathlon"
+     ]
+    },
+    "en": {
+     "text": "In which sport do stones slide across the ice?",
+     "correct": "Curling",
+     "wrong": [
+      "Ice hockey",
+      "Speed skating",
+      "Biathlon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Wie heißen die kleinen gelben Helfer in „Ich – Einfach unverbesserlich“?",
+     "correct": "Minions",
+     "wrong": [
+      "Smurfs",
+      "Oompa Loompas",
+      "Gremlins"
+     ]
+    },
+    "en": {
+     "text": "What are the little yellow helpers in “Despicable Me” called?",
+     "correct": "Minions",
+     "wrong": [
+      "Smurfs",
+      "Oompa Loompas",
+      "Gremlins"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 1,
+   "i18n": {
+    "de": {
+     "text": "Welche Gruppe sang „Dancing Queen“?",
+     "correct": "ABBA",
+     "wrong": [
+      "Boney M.",
+      "Bee Gees",
+      "Roxette"
+     ]
+    },
+    "en": {
+     "text": "Which group sang “Dancing Queen”?",
+     "correct": "ABBA",
+     "wrong": [
+      "Boney M.",
+      "Bee Gees",
+      "Roxette"
+     ]
+    }
+   }
+  }
+ ]
+}
