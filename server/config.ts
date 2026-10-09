@@ -14,6 +14,10 @@ export const config = {
   webDir: env.WEB_DIR ?? path.join(root, 'web'),
   /** Ohne ADMIN_TOKEN ist die Moderations-API deaktiviert. */
   adminToken: env.ADMIN_TOKEN ?? '',
+  /** Fester Admin-Login aus der Umgebung (Passwort mind. 12 Zeichen, sonst bleibt der Login aus). */
+  adminUser: env.ADMIN_USER ?? '',
+  adminPassword: env.ADMIN_PASSWORD ?? '',
+  adminSessionMs: (Number(env.ADMIN_SESSION_HOURS ?? 8) || 8) * 3_600_000,
   /** Hinter einem Reverse-Proxy: X-Forwarded-For für Rate-Limits auswerten. */
   trustProxy: env.TRUST_PROXY === '1',
   /** Anzahl vertrauenswürdiger Proxys vor der App (z. B. Cloudflare → NPM = 2). Es zählt der n-te Eintrag von rechts in X-Forwarded-For. */

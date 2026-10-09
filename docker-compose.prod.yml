@@ -1,11 +1,12 @@
 # Produktion mit automatischem HTTPS (Caddy + Let's Encrypt). Voraussetzung: DOMAIN zeigt per DNS auf diesen Server, Ports 80/443 offen.
-#   DOMAIN=quiz.example.org ADMIN_TOKEN=$(openssl rand -hex 16) VAPID_SUBJECT=mailto:du@example.org docker compose -f docker-compose.prod.yml up -d
+#   DOMAIN=quiz.example.org ADMIN_USER=moderator ADMIN_PASSWORD=$(openssl rand -base64 18) VAPID_SUBJECT=mailto:du@example.org docker compose -f docker-compose.prod.yml up -d
 services:
   ratespass:
     image: ghcr.io/qwertz098/ratespass:latest   # wird von .github/workflows/publish.yml gebaut
     restart: unless-stopped
     environment:
-      ADMIN_TOKEN: ${ADMIN_TOKEN:?bitte setzen}
+      ADMIN_USER: ${ADMIN_USER:?bitte setzen}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?bitte setzen (mind. 12 Zeichen)}
       VAPID_SUBJECT: ${VAPID_SUBJECT:?bitte setzen (mailto:… oder https://…)}
       TRUST_PROXY: "1"
     volumes:

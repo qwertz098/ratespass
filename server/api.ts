@@ -7,6 +7,10 @@ import {
   cleanName, createPlayer, createSession, hashPassword, randomCode, sha256, verifyPassword, type PlayerRow,
 } from './auth.ts'
 import * as game from './game.ts'
+import {
+  adminEnabled, clearFailures, closeSession, COOKIE, credentialsOk, loginBlocked, loginEnabled, openSession, parseCookie,
+  recordFailure, safeEqual, sameOriginOk, sessionCookie, validSession,
+} from './admin.ts'
 import { deliver, validEndpoint, validKeys, vapidPublicKey } from './push.ts'
 import { datasetLines, exportCommunityBatch, insertQuestion, licenseSummary, questionUid, validateContent, type QContent, type QRow } from './questions.ts'
 
@@ -290,13 +294,47 @@ router.get('/api/submissions', (c) => ({
 }))
 
 /* ---------- Moderation ---------- */
+const COOKIE_MAX = () => Math.floor(config.adminSessionMs / 1000)
+const delay = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+/** Zugang per Session-Cookie (Browser-Login) oder – falls konfiguriert – per `X-Admin-Token` (Skripte). */
 function admin(c: Ctx) {
-  if (!config.adminToken) throw new HttpError(404, 'not_found')
-  const a = Buffer.from(sha256(String(c.req.headers['x-admin-token'] ?? '')))
-  const b = Buffer.from(sha256(config.adminToken))
+  if (!adminEnabled()) throw new HttpError(404, 'not_found')
   rateLimit(`admin:${c.ip}`, 120, 60_000)
-  if (!crypto.timingSafeEqual(a, b)) throw new HttpError(401, 'unauthorized')
+  if (validSession(parseCookie(c.req.headers.cookie, COOKIE))) {
+    if (c.req.method !== 'GET' && !sameOriginOk(c.req)) throw new HttpError(403, 'forbidden_origin')
+    return
+  }
+  const tok = c.req.headers['x-admin-token']
+  if (config.adminToken && typeof tok === 'string' && safeEqual(tok, config.adminToken)) return
+  throw new HttpError(401, 'unauthorized')
 }
+
+router.post('/api/admin/login', async (c) => {
+  if (!loginEnabled()) throw new HttpError(404, 'not_found')
+  if (loginBlocked(c.ip)) throw new HttpError(429, 'rate_limited')
+  const user = String(c.body?.username ?? '').slice(0, 200)
+  const pass = String(c.body?.password ?? '').slice(0, 200)
+  if (!credentialsOk(user, pass)) {
+    recordFailure(c.ip)
+    await delay(400) // bremst automatisierte Versuche zusätzlich
+    throw new HttpError(401, 'bad_credentials')
+  }
+  clearFailures(c.ip)
+  c.res.setHeader('set-cookie', sessionCookie(openSession(), c.req, COOKIE_MAX()))
+  return { ok: true, user: config.adminUser }
+}, { auth: false })
+
+router.post('/api/admin/logout', (c) => {
+  closeSession(parseCookie(c.req.headers.cookie, COOKIE))
+  c.res.setHeader('set-cookie', `${COOKIE}=; Path=/api/admin; HttpOnly; SameSite=Strict; Max-Age=0`)
+  return { ok: true }
+}, { auth: false })
+
+router.get('/api/admin/me', (c) => {
+  admin(c)
+  return { ok: true, user: config.adminUser || 'token', login: loginEnabled() }
+}, { auth: false })
 
 router.get('/api/admin/queue', (c) => {
   admin(c)

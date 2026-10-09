@@ -4,8 +4,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      # Moderation unter /admin; ohne Token ist sie abgeschaltet.
-      ADMIN_TOKEN: ${ADMIN_TOKEN:-}
+      # Moderations-Login unter /admin (fester Benutzer + Passwort); ohne beides ist sie abgeschaltet.
+      ADMIN_USER: ${ADMIN_USER:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}   # mind. 12 Zeichen; ohne beides ist /admin abgeschaltet
       # Auf 1 setzen, wenn ein Reverse-Proxy (Caddy/nginx/Traefik) davor steht.
       TRUST_PROXY: ${TRUST_PROXY:-0}
     volumes:

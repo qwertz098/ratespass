@@ -3,23 +3,32 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex">
+  <meta name="robots" content="noindex, nofollow">
   <title>Ratespaß · Moderation</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
   <div id="app">
-    <div class="top"><h1>Moderation</h1></div>
-    <div class="card stack">
-      <label class="field">Admin-Token<input id="token" type="password" autocomplete="off"></label>
-      <div class="row">
-        <div class="seg" id="tabs"><button data-s="pending" aria-pressed="true">Eingereicht</button><button data-s="disabled" aria-pressed="false">Gemeldet/deaktiviert</button></div>
-        <button class="btn small" id="load">Laden</button>
-        <button class="btn small" id="export" title="Freigegebene Community-Fragen als Batch-Datei herunterladen und als exportiert markieren">Batch exportieren</button>
+    <div class="top"><h1>Moderation</h1><button class="btn small" id="logout" hidden>Abmelden</button></div>
+
+    <form id="login" class="card stack" hidden autocomplete="on">
+      <label class="field">Benutzername<input id="user" name="username" type="text" autocomplete="username" required></label>
+      <label class="field">Passwort<input id="pass" name="password" type="password" autocomplete="current-password" required></label>
+      <button class="btn primary block" type="submit">Anmelden</button>
+      <p class="hint" id="login-msg" role="alert"></p>
+    </form>
+
+    <div id="panel" hidden>
+      <div class="card stack">
+        <div class="row">
+          <div class="seg" id="tabs"><button data-s="pending" aria-pressed="true">Eingereicht</button><button data-s="disabled" aria-pressed="false">Gemeldet/deaktiviert</button></div>
+          <button class="btn small" id="load">Laden</button>
+          <button class="btn small" id="export" title="Freigegebene Community-Fragen als Batch-Datei herunterladen und als exportiert markieren">Batch exportieren</button>
+        </div>
       </div>
+      <div id="list" class="stack"></div>
+      <div id="stats" class="hint"></div>
     </div>
-    <div id="list" class="stack"></div>
-    <div id="stats" class="hint"></div>
   </div>
   <div id="toast" role="status" aria-live="polite"></div>
   <script type="module" src="/admin.js"></script>

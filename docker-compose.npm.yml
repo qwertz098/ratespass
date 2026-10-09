@@ -1,7 +1,7 @@
 # Ratespaß hinter Nginx Proxy Manager (NPM). Der Container veröffentlicht KEINEN Port – nur NPM erreicht ihn über ein gemeinsames Docker-Netzwerk.
 #
 #   1. Netzwerkname von NPM herausfinden:   docker network ls      (oft „npm_default“ oder „<ordner>_default“)
-#   2. .env anlegen (Vorlage: .env.example) und NPM_NETWORK, ADMIN_TOKEN, VAPID_SUBJECT setzen
+#   2. .env anlegen (Vorlage: .env.example) und NPM_NETWORK, ADMIN_USER, ADMIN_PASSWORD (mind. 12 Zeichen), VAPID_SUBJECT setzen
 #   3. Start:                               docker compose -f docker-compose.npm.yml up -d --build
 #   4. In NPM einen Proxy Host anlegen: Forward Hostname „ratespass“, Port 3000, Scheme http (siehe docs/DEPLOY.md, Abschnitt C)
 services:
@@ -13,7 +13,8 @@ services:
     expose:
       - "3000"
     environment:
-      ADMIN_TOKEN: ${ADMIN_TOKEN:?bitte in .env setzen (Moderation unter /admin)}
+      ADMIN_USER: ${ADMIN_USER:?bitte in .env setzen (Moderations-Login unter /admin)}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?bitte in .env setzen (mind. 12 Zeichen, sonst bleibt der Login aus)}
       VAPID_SUBJECT: ${VAPID_SUBJECT:?bitte in .env setzen (mailto:… oder https://…)}
       TRUST_PROXY: "1"                                            # Client-IP aus X-Forwarded-For (für Rate-Limits)
       PROXY_HOPS: ${PROXY_HOPS:-1}                                # 1 = nur NPM; 2 = Cloudflare-Proxy (orange Wolke) → NPM

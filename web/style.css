@@ -118,3 +118,4 @@ input[type=checkbox] { width: 20px; height: 20px; margin-top: 2px; accent-color:
 .scanbox.live::after { content: ""; position: absolute; inset: 16%; border: 3px solid #fff; border-radius: 18px; box-shadow: 0 0 0 999px rgba(0, 0, 0, .35); pointer-events: none; }
 .seg[role=tablist] { display: flex; }
 .seg[role=tablist] button { flex: 1; }
+[hidden] { display: none !important; }

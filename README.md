@@ -15,7 +15,7 @@ Minimalistischer Quizduell-Clon als **PWA**, betrieben als **ein Docker-Containe
 ## Schnellstart
 
 ```bash
-ADMIN_TOKEN=$(openssl rand -hex 16) docker compose up -d --build
+ADMIN_USER=moderator ADMIN_PASSWORD=$(openssl rand -base64 18) docker compose up -d --build
 # → http://localhost:3000   Moderation: http://localhost:3000/admin
 ```
 
@@ -26,7 +26,7 @@ Entwicklung ohne Docker (Node ≥ 22.18):
 ```bash
 npm install          # nur typescript + @types/node für `npm run check`
 npm run dev          # http://localhost:3000, Seed-Fragen werden beim Start importiert
-npm test             # Server-, Spiel-, Import-, Push- und i18n-Tests (29)
+npm test             # Server-, Spiel-, Import-, Push- und i18n-Tests (39)
 npm run backup -- ./backup   # konsistente DB-Sicherung + VAPID-Schlüssel
 npm run check        # Typprüfung
 ```
@@ -35,13 +35,24 @@ npm run check        # Typprüfung
 
 GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Varianten (eigener Rechner + Cloudflare Tunnel, Oracle-VM, Image in der GitHub Container Registry) steht in [`docs/DEPLOY.md`](docs/DEPLOY.md). Für **Nginx Proxy Manager** gibt es `docker-compose.npm.yml` (Abschnitt C).
 
+## Absicherung des Admin-Bereichs (`/admin`)
+
+- **Fester Login aus der Umgebung** (`ADMIN_USER`, `ADMIN_PASSWORD`); das Passwort muss mindestens 12 Zeichen haben, sonst bleibt der Login aus (fail-closed, das Startlog sagt es). Ohne Konfiguration ist der Bereich komplett abgeschaltet (404).
+- Nach dem Login gibt es ein **Session-Cookie**: `HttpOnly` (für JavaScript unlesbar), `SameSite=Strict`, nur für den Pfad `/api/admin`, `Secure` sobald HTTPS erkannt wird, Laufzeit `ADMIN_SESSION_HOURS` (8 h). Die Sitzung liegt serverseitig im Speicher; Abmelden oder Neustart macht sie ungültig. Das Passwort wird nirgends im Browser gespeichert.
+- **Brute-Force-Schutz:** Vergleich in konstanter Zeit, 400 ms Verzögerung je Fehlversuch, **Sperre nach 5 Fehlversuchen je IP für 15 Minuten** (auch mit richtigem Passwort; mit `TRUST_PROXY`/`PROXY_HOPS` korrekt eingestellt, damit die echte Client-IP zählt).
+- **CSRF:** zusätzlich zu `SameSite=Strict` müssen ändernde Anfragen mit Cookie einen passenden `Origin` (oder `Sec-Fetch-Site: same-origin`) mitbringen.
+- Die statische Seite `/admin` ist öffentlich erreichbar, enthält aber keine Daten; alles Sensible steckt hinter der API.
+- Empfehlung zusätzlich: HTTPS erzwingen und `/admin` bei Bedarf im Reverse-Proxy auf bekannte IPs beschränken (NPM: *Access List*).
+
 ## Konfiguration (Umgebungsvariablen)
 
 | Variable | Standard | Bedeutung |
 |---|---|---|
 | `PORT` | 3000 | HTTP-Port |
 | `DATA_DIR` | `./data` (Docker: `/data`) | SQLite-Datenbank |
-| `ADMIN_TOKEN` | – | aktiviert Moderation (`/admin`, `/api/admin/*`) |
+| `ADMIN_USER` / `ADMIN_PASSWORD` | – | fester Moderations-Login unter `/admin` (Passwort **mind. 12 Zeichen**, sonst bleibt der Login aus) |
+| `ADMIN_SESSION_HOURS` | 8 | Laufzeit der Admin-Sitzung |
+| `ADMIN_TOKEN` | – | optional: Zugang für Skripte per Header `X-Admin-Token` |
 | `TRUST_PROXY` | 0 | `1`: Client-IP aus `X-Forwarded-For` (Rate-Limits) |
 | `PROXY_HOPS` | 1 | Anzahl Proxys vor der App (NPM/Caddy: 1, Cloudflare davor: 2); gezählt von rechts, damit gefälschte Header nichts bringen |
 | `BATCH_DIR` | `./batches` | Fragen-Batches, die beim Start automatisch importiert werden |
