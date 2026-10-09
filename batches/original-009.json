@@ -28,7 +28,8 @@
       "Metz"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "geography",
@@ -796,7 +797,8 @@
       "The cauldron"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "art",
@@ -820,7 +822,8 @@
       "Nürnberg"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "games",
@@ -1300,7 +1303,8 @@
       "Severin Freund"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "film_tv",
@@ -1396,7 +1400,8 @@
       "Linz"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "games",
@@ -1420,7 +1425,8 @@
       "Egg and spoon race"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "tech",
@@ -1468,7 +1474,8 @@
       "450"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "geography",
@@ -1636,7 +1643,8 @@
       "Harp"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "literature",
@@ -1684,7 +1692,8 @@
       "Köln"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "games",
@@ -2236,7 +2245,8 @@
       "Carl Zuckmayer"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "art",
@@ -2332,7 +2342,8 @@
       "3"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "geography",
@@ -3124,7 +3135,8 @@
       "Zurich"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "games",
@@ -3148,7 +3160,8 @@
       "Skat"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "tech",
@@ -3220,7 +3233,8 @@
       "Neither"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "history",
@@ -3436,7 +3450,8 @@
       "Egg and spoon race"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "tech",
@@ -3724,7 +3739,8 @@
       "Elastics"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "tech",
@@ -4300,7 +4316,8 @@
       "Poker"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "tech",
@@ -4732,7 +4749,8 @@
       "Kurt Tucholsky"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "art",

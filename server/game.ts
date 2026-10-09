@@ -2,6 +2,7 @@ import crypto from 'node:crypto'
 import { all, get, run, tx, now } from './db.ts'
 import { createPlayer, type PlayerRow } from './auth.ts'
 import { config } from './config.ts'
+import { SERVABLE_SQL } from './categories.ts'
 import { HttpError } from './http.ts'
 import { notifyPlayer, type PushKind } from './push.ts'
 import type { QRow } from './questions.ts'
@@ -48,12 +49,12 @@ export function ensureBot(): number {
 /** Kategorien mit genug noch nicht in diesem Spiel verwendeten Fragen; sonst (kleiner Pool) alle mit genug Fragen. */
 function categoriesFor(g: GameRow): string[] {
   const fresh = all<{ category: string }>(
-    `SELECT category FROM questions WHERE lang=? AND status='active'
+    `SELECT category FROM questions WHERE lang=? AND status='active' AND ${SERVABLE_SQL}
        AND group_id NOT IN (SELECT q.group_id FROM round_questions rq JOIN questions q ON q.id=rq.question_id WHERE rq.game_id=?)
      GROUP BY category HAVING COUNT(*)>=?`, g.lang, g.id, PER_ROUND).map((r) => r.category)
   if (fresh.length) return fresh
   return all<{ category: string }>(
-    "SELECT category FROM questions WHERE lang=? AND status='active' GROUP BY category HAVING COUNT(*)>=?", g.lang, PER_ROUND).map((r) => r.category)
+    `SELECT category FROM questions WHERE lang=? AND status='active' AND ${SERVABLE_SQL} GROUP BY category HAVING COUNT(*)>=?`, g.lang, PER_ROUND).map((r) => r.category)
 }
 
 function startRound(g: GameRow, n: number) {
@@ -131,7 +132,7 @@ function selectQuestions(g: GameRow, category: string) {
     new Set(pid ? all<{ group_id: string }>('SELECT group_id FROM seen WHERE player_id=?', pid).map((r) => r.group_id) : [])
   const s1 = seen(g.p1), s2 = seen(g.p2)
   const allCands = all<Pick<QRow, 'id' | 'group_id' | 'difficulty'>>(
-    "SELECT id, group_id, difficulty FROM questions WHERE lang=? AND category=? AND status='active'", g.lang, category)
+    `SELECT id, group_id, difficulty FROM questions WHERE lang=? AND category=? AND status='active' AND ${SERVABLE_SQL}`, g.lang, category)
   const fresh = allCands.filter((q) => !used.has(q.group_id))
   const cands = fresh.length >= PER_ROUND ? fresh : allCands
   const score = (q: { group_id: string }) => +s1.has(q.group_id) + +s2.has(q.group_id)
@@ -271,16 +272,22 @@ export function resign(gameId: number, me: PlayerRow) {
   })
 }
 
-export function reportQuestion(gameId: number, me: PlayerRow, round: unknown, idx: unknown, reason: unknown) {
+/** Frage-ID einer Frage, die `me` in diesem Spiel bereits beantwortet hat (Voraussetzung für Meldungen). */
+export function answeredQuestionId(gameId: number, me: PlayerRow, round: unknown, idx: unknown): number {
   const g = mustGame(gameId, me.id)
   if (!Number.isInteger(round) || !Number.isInteger(idx)) throw new HttpError(400, 'bad_report')
   const answered = get('SELECT 1 FROM answers WHERE game_id=? AND round=? AND idx=? AND player_id=? AND choice IS NOT NULL', g.id, round as number, idx as number, me.id)
   const rq = roundQuestions(g.id, round as number)[idx as number]
   if (!answered || !rq) throw new HttpError(400, 'bad_report')
+  return rq.question_id
+}
+
+export function reportQuestion(gameId: number, me: PlayerRow, round: unknown, idx: unknown, reason: unknown) {
+  const questionId = answeredQuestionId(gameId, me, round, idx)
   run('INSERT OR IGNORE INTO reports(question_id,player_id,reason,created_at) VALUES(?,?,?,?)',
-    rq.question_id, me.id, String(reason ?? '').slice(0, 200), now())
-  const n = get<{ n: number }>('SELECT COUNT(*) n FROM reports WHERE question_id=?', rq.question_id)!.n
-  if (n >= 3) run("UPDATE questions SET status='disabled' WHERE id=? AND status='active'", rq.question_id)
+    questionId, me.id, String(reason ?? '').slice(0, 200), now())
+  const n = get<{ n: number }>('SELECT COUNT(*) n FROM reports WHERE question_id=?', questionId)!.n
+  if (n >= 3) run("UPDATE questions SET status='disabled' WHERE id=? AND status='active'", questionId)
 }
 
 /* ---------- Bot ---------- */

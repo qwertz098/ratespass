@@ -323,9 +323,22 @@ async function play(id, my) {
         const next = h('button', { class: 'btn small', onclick: () => resolve({ r }) }, t('play.next'))
         const report = h('button', { class: 'btn small', onclick: guard(async () => {
           await api('POST', `/api/games/${id}/report`, { round: q.round, idx: q.idx, reason: '' }); report.disabled = true; toast(t('play.reported')) }), title: t('play.report'), 'aria-label': t('play.report') }, '⚑')
-        feedback.append(h('strong', {}, label), h('span', { class: 'row' }, report, next))
+        let autoNext
+        const review = S.me?.reviewer ? h('button', { class: 'btn small', title: t('play.review'), 'aria-label': t('play.review'), onclick: () => {
+          clearTimeout(autoNext) // beim Formular nicht automatisch weiterspringen
+          const part = h('select', { 'aria-label': t('review.part.question') }, ['question', 'answers'].map((v) => h('option', { value: v }, t('review.part.' + v))))
+          const kind = h('select', { 'aria-label': t('review.kind.wrong') }, ['wrong', 'wording'].map((v) => h('option', { value: v }, t('review.kind.' + v))))
+          const note = h('input', { type: 'text', maxLength: 300, placeholder: t('review.note') })
+          const form = h('div', { class: 'stack' }, h('div', { class: 'row' }, part, kind), note, h('div', { class: 'row' },
+            h('button', { class: 'btn small primary', onclick: guard(async () => {
+              await api('POST', `/api/games/${id}/review`, { round: q.round, idx: q.idx, part: part.value, kind: kind.value, note: note.value })
+              form.remove(); review.disabled = true; toast(t('review.sent')) }) }, t('review.send')),
+            h('button', { class: 'btn small', onclick: () => form.remove() }, t('review.cancel'))))
+          feedback.append(form); note.focus()
+        } }, '✎') : null
+        feedback.append(h('strong', {}, label), h('span', { class: 'row' }, review, report, next))
         if (r.explanation) feedback.before(h('p', { class: 'muted' }, r.explanation))
-        setTimeout(() => resolve({ r }), r.explanation ? 3500 : 1600)
+        autoNext = setTimeout(() => resolve({ r }), r.explanation ? 3500 : 1600)
       }
     })
     if (keyHandler) document.removeEventListener('keydown', keyHandler)
@@ -389,6 +402,7 @@ async function profile() {
       h('div', { class: 'row' }, avatar(p), h('div', { class: 'grow' }, h('label', { class: 'field' }, t('profile.name'), name))),
       h('button', { class: 'btn block', onclick: guard(async () => { await api('PATCH', '/api/me', { name: name.value }); await refreshMe(); toast(t('profile.saved')) }) }, t('profile.save')),
       h('label', { class: 'field' }, t('profile.uiLang'), uiLang)),
+    p.reviewer ? h('p', { class: 'hint' }, t('profile.reviewer')) : null,
     h('h2', {}, t('profile.code')),
     h('div', { class: 'card stack' }, h('div', { class: 'code' }, p.public_id), h('button', { class: 'btn block', onclick: () => share(inviteUrl(), t('app.name')) }, '🔗 ' + t('profile.share'))),
     h('h2', {}, t('profile.contacts')), contacts,

@@ -139,8 +139,36 @@ CREATE TABLE push_subs(
 CREATE INDEX push_subs_player ON push_subs(player_id);
 `
 
+// v3: Reviewer-Rolle, Region je Frage, Überarbeitungs-Meldungen und Protokoll der Admin-Korrekturen
+const SCHEMA_V3 = `
+ALTER TABLE players ADD COLUMN reviewer INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE questions ADD COLUMN region TEXT NOT NULL DEFAULT 'global';
+CREATE TABLE reviews(
+  id INTEGER PRIMARY KEY,
+  question_id INTEGER NOT NULL REFERENCES questions(id) ON DELETE CASCADE,
+  player_id INTEGER REFERENCES players(id) ON DELETE SET NULL,
+  part TEXT NOT NULL,
+  kind TEXT NOT NULL,
+  note TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'open',
+  created_at INTEGER NOT NULL,
+  resolved_at INTEGER
+);
+CREATE INDEX reviews_status ON reviews(status, question_id);
+CREATE TABLE edits(
+  id INTEGER PRIMARY KEY,
+  question_id INTEGER REFERENCES questions(id) ON DELETE SET NULL,
+  group_id TEXT NOT NULL,
+  lang TEXT NOT NULL,
+  batch TEXT,
+  old TEXT NOT NULL,
+  new TEXT NOT NULL,
+  created_at INTEGER NOT NULL
+);
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)

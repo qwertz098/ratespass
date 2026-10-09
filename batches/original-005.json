@@ -52,7 +52,8 @@
       "Ludwigshafen"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "history",
@@ -148,7 +149,8 @@
       "Green and white"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "film_tv",
@@ -220,7 +222,8 @@
       "Wilhelm Raabe"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "art",
@@ -244,7 +247,8 @@
       "Erfurt"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "games",
@@ -340,7 +344,8 @@
       "Danube"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "history",
@@ -460,7 +465,8 @@
       "Otto Waalkes"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "music",
@@ -628,7 +634,8 @@
       "Darmstadt"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "history",
@@ -916,7 +923,8 @@
       "Freiburg"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "history",
@@ -1300,7 +1308,8 @@
       "BFC Dynamo"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "film_tv",
@@ -1396,7 +1405,8 @@
       "Regensburg"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "games",
@@ -1492,7 +1502,8 @@
       "Zwickau"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "history",
@@ -1684,7 +1695,8 @@
       "Frankfurt"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "games",
@@ -1756,7 +1768,8 @@
       "Copperplate"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "geography",
@@ -1780,7 +1793,8 @@
       "Fehmarn"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "history",
@@ -2044,7 +2058,8 @@
       "24"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "geography",
@@ -2068,7 +2083,8 @@
       "Göttingen"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "history",
@@ -2620,7 +2636,8 @@
       "To help someone"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "geography",
@@ -2740,7 +2757,8 @@
       "Green and yellow"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "film_tv",
@@ -2908,7 +2926,8 @@
       "To be very hungry"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "geography",
@@ -3316,7 +3335,8 @@
       "Volksparkstadion"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "film_tv",
@@ -3700,7 +3720,8 @@
       "Mainz Cathedral"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "games",
@@ -3796,7 +3817,8 @@
       "Isar"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "history",
@@ -3988,7 +4010,8 @@
       "Schwerin"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "games",
@@ -4060,7 +4083,8 @@
       "I am next"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "geography",
@@ -4084,7 +4108,8 @@
       "Müritz"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "history",
@@ -4180,7 +4205,8 @@
       "Jupp Heynckes"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "film_tv",
@@ -4276,7 +4302,8 @@
       "Stuttgart"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "games",
@@ -4372,7 +4399,8 @@
       "Hamburg"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "history",
@@ -4756,7 +4784,8 @@
       "Rostock"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "games",

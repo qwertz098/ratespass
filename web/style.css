@@ -119,3 +119,5 @@ input[type=checkbox] { width: 20px; height: 20px; margin-top: 2px; accent-color:
 .seg[role=tablist] { display: flex; }
 .seg[role=tablist] button { flex: 1; }
 [hidden] { display: none !important; }
+
+.row.wrap, .seg.wrap { flex-wrap: wrap; }

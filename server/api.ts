@@ -1,5 +1,5 @@
 import crypto from 'node:crypto'
-import { CATEGORIES, isCategory, LICENSES } from './categories.ts'
+import { CATEGORIES, isCategory, LICENSES, REGIONS, SERVABLE_SQL } from './categories.ts'
 import { config } from './config.ts'
 import { all, get, run, tx, now } from './db.ts'
 import { HttpError, Router, rateLimit, type Ctx } from './http.ts'
@@ -12,7 +12,8 @@ import {
   recordFailure, sameOriginOk, sessionCookie, tokenOk, validSession,
 } from './admin.ts'
 import { deliver, validEndpoint, validKeys, vapidPublicKey } from './push.ts'
-import { datasetLines, exportCommunityBatch, insertQuestion, licenseSummary, questionUid, validateContent, type QContent, type QRow } from './questions.ts'
+import { applyPatch, datasetLines, exportCommunityBatch, insertQuestion, licenseSummary, questionUid, validateContent, type QContent, type QPatch, type QRow } from './questions.ts'
+import { fileReview, listReviews, questionOut, resolveReview } from './reviews.ts'
 
 export const router = new Router()
 const me = (c: Ctx) => c.player!
@@ -21,7 +22,7 @@ const LANG_RE = /^[a-z]{2,3}$/
 
 function supportedLangs() {
   return all<{ lang: string; n: number }>(
-    "SELECT lang, COUNT(*) n FROM questions WHERE status='active' GROUP BY lang HAVING n>=? ORDER BY n DESC", config.minLangQuestions)
+    `SELECT lang, COUNT(*) n FROM questions WHERE status='active' AND ${SERVABLE_SQL} GROUP BY lang HAVING n>=? ORDER BY n DESC`, config.minLangQuestions)
 }
 function pickLang(want: unknown, fallback: string) {
   const langs = supportedLangs().map((l) => l.lang)
@@ -32,12 +33,12 @@ function pickLang(want: unknown, fallback: string) {
 }
 
 const profile = (p: PlayerRow) => ({
-  ...pub(p), lang: p.lang, has_account: !!p.username, username: p.username, created_at: p.created_at,
+  ...pub(p), lang: p.lang, has_account: !!p.username, username: p.username, created_at: p.created_at, reviewer: !!p.reviewer,
 })
 
 /* ---------- Öffentliches ---------- */
 router.get('/api/meta', () => ({
-  categories: CATEGORIES,
+  categories: CATEGORIES, regions: REGIONS,
   langs: supportedLangs(),
   time_limit_ms: game.TIME_LIMIT_MS, rounds: game.ROUNDS, per_round: game.PER_ROUND,
 }), { auth: false })
@@ -99,6 +100,8 @@ router.delete('/api/me', (c) => {
     run('DELETE FROM contacts WHERE player_id=? OR contact_id=?', p.id, p.id)
     run('DELETE FROM seen WHERE player_id=?', p.id)
     run('DELETE FROM reports WHERE player_id=?', p.id)
+    run('UPDATE reviews SET player_id=NULL WHERE player_id=?', p.id)
+    run('UPDATE players SET reviewer=0 WHERE id=?', p.id)
     run('UPDATE questions SET submitted_by=NULL WHERE submitted_by=?', p.id)
   })
   return { ok: true }
@@ -232,6 +235,16 @@ router.post('/api/games/:id/report', (c) => {
   return { ok: true }
 })
 
+/** Überarbeitungs-Meldung (nur Reviewer): Frage oder Antworten sind „falsch“ oder die „Formulierung“ soll geändert werden. */
+router.post('/api/games/:id/review', (c) => {
+  const p = me(c)
+  if (!p.reviewer) throw new HttpError(403, 'not_reviewer')
+  rateLimit(`review:${p.id}`, 120, 3_600_000)
+  const questionId = game.answeredQuestionId(gid(c), p, c.body.round, c.body.idx)
+  fileReview(questionId, p.id, c.body.part, c.body.kind, c.body.note)
+  return { ok: true }
+})
+
 /* ---------- Web-Push ---------- */
 router.get('/api/push/key', () => ({ key: vapidPublicKey() }), { auth: false })
 
@@ -356,23 +369,12 @@ router.post('/api/admin/questions/:id', (c) => {
   const id = Number(c.params.id)
   const q = get<QRow>('SELECT * FROM questions WHERE id=?', id)
   if (!q) throw new HttpError(404, 'not_found')
-  const status = ({ approve: 'active', activate: 'active', reject: 'rejected', disable: 'disabled' } as Record<string, string>)[c.body.action]
+  const status = ({ approve: 'active', activate: 'active', reject: 'rejected', disable: 'disabled', save: q.status } as Record<string, string>)[c.body.action]
   if (!status) throw new HttpError(400, 'bad_action')
-  const patch = c.body.patch as Partial<QContent & { category: string; difficulty: number }> | undefined
-  if (patch) {
-    const content: QContent = {
-      text: patch.text ?? q.text, correct: patch.correct ?? q.correct,
-      wrong: patch.wrong ?? JSON.parse(q.wrong), explanation: patch.explanation ?? q.explanation ?? undefined,
-    }
-    const err = validateContent(content)
-    if (err) throw new HttpError(400, 'invalid_question', err)
-    if (patch.category !== undefined && !isCategory(patch.category)) throw new HttpError(400, 'bad_category')
-    run('UPDATE questions SET uid=?, text=?, correct=?, wrong=?, explanation=?, category=?, difficulty=? WHERE id=?',
-      questionUid(q.lang, content.text), content.text, content.correct, JSON.stringify(content.wrong), content.explanation ?? null,
-      patch.category ?? q.category, patch.difficulty ?? q.difficulty, id)
-  }
+  const patch = c.body.patch as QPatch | undefined
+  if (patch) applyPatch(q, patch)
   run('UPDATE questions SET status=? WHERE id=?', status, id)
-  if (status === 'active') run('DELETE FROM reports WHERE question_id=?', id)
+  if (status === 'active' && c.body.action !== 'save') run('DELETE FROM reports WHERE question_id=?', id)
   return { ok: true }
 }, { auth: false })
 
@@ -389,10 +391,83 @@ router.get('/api/admin/community-batch', (c) => {
   return undefined
 }, { auth: false })
 
+/* --- Überarbeitung: Meldungen, Suche, Reviewer, Korrektur-Export --- */
+router.get('/api/admin/reviews', (c) => {
+  admin(c)
+  const st = c.url.searchParams.get('status')
+  return { reviews: listReviews(st === 'resolved' || st === 'dismissed' ? st : 'open') }
+}, { auth: false })
+
+/** Admin markiert selbst eine Frage zur Überarbeitung. */
+router.post('/api/admin/reviews', (c) => {
+  admin(c)
+  return { id: fileReview(Number(c.body.question_id), null, c.body.part, c.body.kind, c.body.note) }
+}, { auth: false })
+
+router.post('/api/admin/reviews/:id', (c) => {
+  admin(c)
+  const id = Number(c.params.id)
+  const action = c.body.action
+  if (action !== 'resolve' && action !== 'dismiss') throw new HttpError(400, 'bad_action')
+  const rev = get<{ question_id: number }>("SELECT question_id FROM reviews WHERE id=? AND status='open'", id)
+  if (!rev) throw new HttpError(404, 'not_found')
+  tx(() => {
+    if (action === 'resolve' && c.body.patch) applyPatch(get<QRow>('SELECT * FROM questions WHERE id=?', rev.question_id)!, c.body.patch as QPatch)
+    resolveReview(id, action === 'resolve' ? 'resolved' : 'dismissed')
+  })
+  return { ok: true }
+}, { auth: false })
+
+router.get('/api/admin/search', (c) => {
+  admin(c)
+  const q = c.url.searchParams.get('q')?.trim().slice(0, 100) ?? ''
+  const lang = c.url.searchParams.get('lang')
+  const region = c.url.searchParams.get('region')
+  const where: string[] = []
+  const args: (string | number)[] = []
+  if (q) {
+    if (/^#\d+$/.test(q)) { where.push('q.id=?'); args.push(Number(q.slice(1))) }
+    else { where.push("(q.text LIKE ? ESCAPE '\\' OR q.correct LIKE ? ESCAPE '\\')"); const like = `%${q.replace(/[\\%_]/g, '\\$&')}%`; args.push(like, like) }
+  }
+  if (lang && LANG_RE.test(lang)) { where.push('q.lang=?'); args.push(lang) }
+  if (region && (REGIONS as readonly string[]).includes(region)) { where.push('q.region=?'); args.push(region) }
+  const rows = all<QRow & { open_reviews: number }>(
+    `SELECT q.*, (SELECT COUNT(*) FROM reviews r WHERE r.question_id=q.id AND r.status='open') open_reviews
+     FROM questions q ${where.length ? 'WHERE ' + where.join(' AND ') : ''} ORDER BY q.id LIMIT 30`, ...args)
+  return { questions: rows.map(questionOut) }
+}, { auth: false })
+
+router.get('/api/admin/reviewers', (c) => {
+  admin(c)
+  return { reviewers: all('SELECT public_id, name FROM players WHERE reviewer=1 AND deleted=0 ORDER BY name') }
+}, { auth: false })
+
+router.post('/api/admin/reviewers', (c) => {
+  admin(c)
+  const r = run('UPDATE players SET reviewer=1 WHERE public_id=? AND deleted=0 AND is_bot=0', String(c.body.public_id ?? '').trim().toUpperCase())
+  if (!r.changes) throw new HttpError(404, 'unknown_player')
+  return { ok: true }
+}, { auth: false })
+
+router.delete('/api/admin/reviewers/:public_id', (c) => {
+  admin(c)
+  run('UPDATE players SET reviewer=0 WHERE public_id=?', c.params.public_id.toUpperCase())
+  return { ok: true }
+}, { auth: false })
+
+/** Alle Admin-Korrekturen seit `after` (Edit-ID); `tools/apply-edits.ts` überträgt sie in die Batch-Dateien im Repo. */
+router.get('/api/admin/edits', (c) => {
+  admin(c)
+  const after = Number(c.url.searchParams.get('after') ?? 0) || 0
+  return { edits: all<{ id: number; group_id: string; lang: string; batch: string | null; old: string; new: string; created_at: number }>(
+    'SELECT * FROM edits WHERE id>? ORDER BY id', after).map((e) => ({ ...e, old: JSON.parse(e.old), new: JSON.parse(e.new) })) }
+}, { auth: false })
+
 router.get('/api/admin/stats', (c) => {
   admin(c)
   return {
-    questions: all('SELECT lang, category, status, COUNT(*) n FROM questions GROUP BY lang, category, status'),
+    questions: all('SELECT lang, category, region, status, COUNT(*) n FROM questions GROUP BY lang, category, region, status'),
+    open_reviews: get('SELECT COUNT(*) n FROM reviews WHERE status=\'open\''),
     players: get('SELECT COUNT(*) n FROM players WHERE is_bot=0 AND deleted=0'),
     games: all('SELECT status, COUNT(*) n FROM games GROUP BY status'),
     batches: all('SELECT * FROM batches ORDER BY imported_at'),

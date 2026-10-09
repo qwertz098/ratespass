@@ -1,8 +1,9 @@
 import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
-import { CATEGORIES, LICENSES, SOURCES, isCategory } from './categories.ts'
+import { CATEGORIES, LICENSES, REGIONS, SOURCES, isCategory, isRegion } from './categories.ts'
 import { all, get, run, tx, now } from './db.ts'
+import { HttpError } from './http.ts'
 
 export interface QContent { text: string; correct: string; wrong: string[]; explanation?: string }
 export interface BatchEntry {
@@ -10,6 +11,8 @@ export interface BatchEntry {
   group?: string
   category?: string
   difficulty?: number
+  /** `global` (Standard) oder `dach`; regionale Fragen werden nur in den Sprachen aus REGION_LANGS ausgespielt. */
+  region?: string
   source?: string
   license?: string
   attribution?: string
@@ -50,7 +53,7 @@ export function validateContent(c: QContent): string | null {
 }
 
 export interface InsertInput {
-  group: string; lang: string; category: string; difficulty: number
+  group: string; lang: string; category: string; difficulty: number; region?: string
   content: QContent; source: string; license: string
   attribution?: string | null; source_ref?: string | null; batch?: string | null
   status?: 'active' | 'pending'; submitted_by?: number | null
@@ -62,9 +65,9 @@ export function insertQuestion(q: InsertInput): boolean {
   if (get('SELECT 1 FROM questions WHERE uid=?', uid)) return false
   if (get('SELECT 1 FROM questions WHERE group_id=? AND lang=?', q.group, q.lang)) return false
   run(
-    `INSERT INTO questions(uid,group_id,lang,category,difficulty,text,correct,wrong,explanation,source,license,attribution,source_ref,batch,status,submitted_by,created_at)
-     VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-    uid, q.group, q.lang, q.category, q.difficulty, q.content.text.trim(), q.content.correct.trim(),
+    `INSERT INTO questions(uid,group_id,lang,category,difficulty,region,text,correct,wrong,explanation,source,license,attribution,source_ref,batch,status,submitted_by,created_at)
+     VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+    uid, q.group, q.lang, q.category, q.difficulty, q.region ?? 'global', q.content.text.trim(), q.content.correct.trim(),
     JSON.stringify(q.content.wrong.map((w) => w.trim())), q.content.explanation?.trim() ?? null,
     q.source, q.license, q.attribution ?? null, q.source_ref ?? null, q.batch ?? null,
     q.status ?? 'active', q.submitted_by ?? null, now(),
@@ -72,7 +75,7 @@ export function insertQuestion(q: InsertInput): boolean {
   return true
 }
 
-interface GroupMeta { category: string; difficulty: number; source: string; license: string; attribution: string | null; source_ref: string | null }
+interface GroupMeta { category: string; difficulty: number; region: string; source: string; license: string; attribution: string | null; source_ref: string | null }
 
 export function importBatch(batch: Batch, opts: { dryRun?: boolean; lenient?: boolean } = {}): ImportReport {
   const report: ImportReport = { batch: batch?.batch, inserted: 0, translated: 0, duplicates: 0, errors: [] }
@@ -93,11 +96,13 @@ export function importBatch(batch: Batch, opts: { dryRun?: boolean; lenient?: bo
       const first = e.i18n[langs.includes('en') ? 'en' : langs[0]]
       const group = e.group ?? 'g:' + sha1(normalize(first?.text ?? '')).slice(0, 16)
       const existing = get<GroupMeta>(
-        'SELECT category,difficulty,source,license,attribution,source_ref FROM questions WHERE group_id=? LIMIT 1', group)
+        'SELECT category,difficulty,region,source,license,attribution,source_ref FROM questions WHERE group_id=? LIMIT 1', group)
       const category = e.category ?? existing?.category
       const difficulty = e.difficulty ?? existing?.difficulty
       if (!isCategory(category)) return report.errors.push(`${where}: Kategorie fehlt/ungültig (${category}); erlaubt: ${CATEGORIES.join(', ')}`)
       if (![1, 2, 3].includes(difficulty as number)) return report.errors.push(`${where}: difficulty muss 1–3 sein`)
+      const region = e.region ?? existing?.region ?? 'global'
+      if (!isRegion(region)) return report.errors.push(`${where}: Region ungültig (${region}); erlaubt: ${REGIONS.join(', ')}`)
       const license = e.license ?? existing?.license ?? batch.license
       const source = e.source ?? existing?.source ?? batch.source
       if (!LICENSES[license]) return report.errors.push(`${where}: Lizenz nicht erlaubt: ${license}`)
@@ -108,7 +113,7 @@ export function importBatch(batch: Batch, opts: { dryRun?: boolean; lenient?: bo
         if (err) { report.errors.push(`${where} [${lang}]: ${err}`); continue }
         const had = !!existing
         const ok = insertQuestion({
-          group, lang, category, difficulty: difficulty as number, content: e.i18n[lang], source, license,
+          group, lang, category, difficulty: difficulty as number, region, content: e.i18n[lang], source, license,
           attribution, source_ref: e.source_ref ?? existing?.source_ref ?? null, batch: batch.batch,
         })
         if (!ok) report.duplicates++
@@ -147,13 +152,13 @@ export interface QRow {
   id: number; uid: string; group_id: string; lang: string; category: string; difficulty: number
   text: string; correct: string; wrong: string; explanation: string | null
   source: string; license: string; attribution: string | null; source_ref: string | null
-  batch: string | null; status: string; submitted_by: number | null; created_at: number
+  batch: string | null; status: string; submitted_by: number | null; created_at: number; region: string
 }
 
 export function datasetLines(): string[] {
   return all<QRow>("SELECT * FROM questions WHERE status='active' ORDER BY id").map((q) =>
     JSON.stringify({
-      group: q.group_id, lang: q.lang, category: q.category, difficulty: q.difficulty,
+      group: q.group_id, lang: q.lang, category: q.category, difficulty: q.difficulty, region: q.region,
       text: q.text, correct: q.correct, wrong: JSON.parse(q.wrong), explanation: q.explanation,
       source: q.source, license: q.license, attribution: q.attribution, source_ref: q.source_ref,
     }))
@@ -188,7 +193,7 @@ export function exportCommunityBatch(opts: { mark: boolean; dir: string }): Batc
     for (const r of rows) groups.set(r.group_id, [...(groups.get(r.group_id) ?? []), r])
     const name = nextCommunityName(opts.dir)
     const questions: BatchEntry[] = [...groups.entries()].map(([group, rs]) => ({
-      group, category: rs[0].category, difficulty: rs[0].difficulty,
+      group, category: rs[0].category, difficulty: rs[0].difficulty, ...(rs[0].region !== 'global' ? { region: rs[0].region } : {}),
       source: 'community', license: rs[0].license, attribution: rs[0].attribution ?? 'Community contribution',
       i18n: Object.fromEntries(rs.map((r) => [r.lang, {
         text: r.text, correct: r.correct, wrong: JSON.parse(r.wrong) as string[], ...(r.explanation ? { explanation: r.explanation } : {}),
@@ -200,5 +205,43 @@ export function exportCommunityBatch(opts: { mark: boolean; dir: string }): Batc
       run('INSERT INTO batches(name,source,license,inserted,imported_at) VALUES(?,?,?,?,?)', name, 'community', 'CC-BY-SA-4.0', rows.length, now())
     }
     return batch
+  })
+}
+
+/* ---------- Korrekturen durch Admins ---------- */
+export interface QPatch extends Partial<QContent> { category?: string; difficulty?: number; region?: string }
+const snapshot = (q: QRow) => ({
+  text: q.text, correct: q.correct, wrong: JSON.parse(q.wrong) as string[], explanation: q.explanation ?? undefined,
+  category: q.category, difficulty: q.difficulty, region: q.region,
+})
+
+/**
+ * Ändert Inhalt/Metadaten einer Frage (mit denselben Prüfregeln wie beim Import) und protokolliert die Änderung in `edits`.
+ * Kategorie, Schwierigkeit und Region gelten für die ganze Gruppe (alle Sprachen). Der Status bleibt unberührt.
+ */
+export function applyPatch(q: QRow, patch: QPatch): void {
+  const content: QContent = {
+    text: patch.text ?? q.text, correct: patch.correct ?? q.correct,
+    wrong: patch.wrong ?? JSON.parse(q.wrong), explanation: patch.explanation ?? q.explanation ?? undefined,
+  }
+  const err = validateContent(content)
+  if (err) throw new HttpError(400, 'invalid_question', err)
+  const category = patch.category ?? q.category
+  const difficulty = patch.difficulty ?? q.difficulty
+  const region = patch.region ?? q.region
+  if (!isCategory(category)) throw new HttpError(400, 'bad_category')
+  if (![1, 2, 3].includes(difficulty)) throw new HttpError(400, 'bad_difficulty')
+  if (!isRegion(region)) throw new HttpError(400, 'bad_region')
+  const uid = questionUid(q.lang, content.text)
+  if (uid !== q.uid && get('SELECT 1 FROM questions WHERE uid=?', uid)) throw new HttpError(409, 'duplicate')
+  const before = snapshot(q)
+  tx(() => {
+    run('UPDATE questions SET uid=?, text=?, correct=?, wrong=?, explanation=? WHERE id=?',
+      uid, content.text.trim(), content.correct.trim(), JSON.stringify(content.wrong.map((w) => w.trim())), content.explanation?.trim() ?? null, q.id)
+    run('UPDATE questions SET category=?, difficulty=?, region=? WHERE group_id=?', category, difficulty, region, q.group_id)
+    const after = snapshot(get<QRow>('SELECT * FROM questions WHERE id=?', q.id)!)
+    if (JSON.stringify(before) !== JSON.stringify(after))
+      run('INSERT INTO edits(question_id,group_id,lang,batch,old,new,created_at) VALUES(?,?,?,?,?,?,?)',
+        q.id, q.group_id, q.lang, q.batch, JSON.stringify(before), JSON.stringify(after), now())
   })
 }

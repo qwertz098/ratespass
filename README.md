@@ -9,7 +9,7 @@ Minimalistischer Quizduell-Clon als **PWA**, betrieben als **ein Docker-Containe
 - **Kontakte lokal + zentral:** Sie liegen auf dem Server (an den anonymen Zugangsschlüssel bzw. das Konto gebunden) und zusätzlich als lokale Kopie im Browser; ist die Server-Liste leer, werden sie aus der lokalen Kopie wiederhergestellt
 - **Optionaler Account** (Benutzername + Passwort): Login auf jedem Gerät, Kontakte zentral gespeichert
 - Mehrsprachig (UI und Fragen: de/en; weitere Sprachen = zusätzliche Texte bzw. Fragen-Batches)
-- Fragen aus mehreren Quellen mit **Lizenz je Frage**, Community-Einreichungen mit Moderation, „Frage melden“-Button
+- Fragen aus mehreren Quellen mit **Lizenz je Frage**, Community-Einreichungen mit Moderation, „Frage melden“-Button, Reviewer-Rolle für Überarbeitungs-Meldungen („falsch“ / „Formulierung“)
 - Keine Laufzeit-Abhängigkeiten (Node 24 führt TypeScript direkt aus, SQLite via `node:sqlite`), kein Build-Schritt fürs Frontend
 
 ## Schnellstart
@@ -26,7 +26,7 @@ Entwicklung ohne Docker (Node ≥ 22.18):
 ```bash
 npm install          # nur typescript + @types/node für `npm run check`
 npm run dev          # http://localhost:3000, Seed-Fragen werden beim Start importiert
-npm test             # Server-, Spiel-, Import-, Push- und i18n-Tests (43)
+npm test             # Server-, Spiel-, Import-, Push-, Review- und i18n-Tests (48)
 npm run backup -- ./backup   # konsistente DB-Sicherung + VAPID-Schlüssel
 npm run check        # Typprüfung
 ```
@@ -66,7 +66,7 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 
 Beim Start werden alle neuen Dateien aus `batches/` importiert (idempotent, dedupliziert, Lizenz geprüft). Neue Batches = Datei ablegen, Container neu starten. Freigegebene Community-Fragen lassen sich per `npm run export:community` (oder `/admin` → „Batch exportieren“) als Batch ins Repo zurückschreiben. Details, Workflow für „200er-Batches auf Abruf“ und die **Lizenzregeln** stehen in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
 
-Aktueller Bestand: **1778 Fragen × de/en** (`seed-000` 72, `original-001` 200, `original-002` 106, `original-003` 200, `original-004` 200, `original-005` 200, `original-006` 200, `original-007` 200, `original-008` 200, `original-009` 200), selbst formuliert, CC BY-SA 4.0, über alle 12 Kategorien und Schwierigkeitsgrade verteilt. Zielbestand 4000 folgt in weiteren Batches; `test/batches.test.ts` prüft bei jedem Lauf alle Dateien auf Format, Lizenz und Dubletten.
+Aktueller Bestand: **1978 Fragen** (`seed-000` 72, `original-001` 200, `original-002` 106, `original-003` 200, `original-004` 200, `original-005` 200, `original-006` 200, `original-007` 200, `original-008` 200, `original-009` 200, `original-010` 200), selbst formuliert, CC BY-SA 4.0, über alle 12 Kategorien und Schwierigkeitsgrade verteilt; Englisch bekommt nur *globale* Fragen, rein deutschsprachig relevante (`region: dach`) laufen nur auf Deutsch. Zielbestand 4000 folgt in weiteren Batches; `test/batches.test.ts` prüft bei jedem Lauf alle Dateien auf Format, Lizenz und Dubletten.
 
 ## Architektur
 

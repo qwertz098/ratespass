@@ -1516,7 +1516,8 @@
       "Hamburg"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "science",
@@ -1612,7 +1613,8 @@
       "Johannes B. Kerner"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "music",
@@ -2452,7 +2454,8 @@
       "Lausitzring"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "film_tv",
@@ -2524,7 +2527,8 @@
       "Peter Weiss"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "art",
@@ -2764,7 +2768,8 @@
       "Frank Elstner"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "music",
@@ -3052,7 +3057,8 @@
       "Collien Fernandes"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "music",
@@ -3700,7 +3706,8 @@
       "Hesse"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "games",
@@ -3820,7 +3827,8 @@
       "Otto von Bismarck"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "science",
@@ -3916,7 +3924,8 @@
       "Sarah Connor"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "music",
@@ -4204,7 +4213,8 @@
       "Ein Fall für zwei"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "music",
@@ -4516,7 +4526,8 @@
       "Regensburg"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "literature",
@@ -4684,7 +4695,8 @@
       "Potsdam"
      ]
     }
-   }
+   },
+   "region": "dach"
   },
   {
    "category": "science",

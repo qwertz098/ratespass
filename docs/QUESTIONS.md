@@ -61,7 +61,7 @@ Gleiche Pipeline, nur automatisiert: Generator (strukturierte Ausgabe im Batch-F
 
 - Einreichen: Profil → „Frage einreichen“ (max. 10/Tag), landet als `pending` – nie direkt im Spiel.
 - Moderation unter `/admin` (Anmeldung mit dem `ADMIN_TOKEN`; Skripte nutzen den Header `X-Admin-Token`): freigeben (mit Korrekturen), ablehnen.
-- Spieler können beantwortete Fragen melden; ab **3 Meldungen verschiedener Spieler** wird die Frage automatisch deaktiviert und erscheint in der Moderationsliste „Gemeldet/deaktiviert“.
+- Spieler können beantwortete Fragen melden (⚑); ab **3 Meldungen verschiedener Spieler** wird die Frage automatisch deaktiviert und erscheint in der Moderationsliste „Gemeldet“.
 
 ### Community-Fragen zurück ins Repo (Single Source of Truth)
 
@@ -76,5 +76,36 @@ git add batches && git commit           # Datei einchecken
 - Ohne Shell-Zugriff (z. B. gehosteter Container): `/admin` → **Batch exportieren** lädt dieselbe Datei herunter und markiert die Fragen als exportiert; sie dann unter `batches/` ins Repo legen.
 - Exportiert werden nur Fragen mit Status `active` und ohne bisherigen Batch. Die Fragen werden danach dem Batch zugeordnet: kein zweiter Export, kein Doppelimport beim Neustart. Der Einreicher (`submitted_by`) wird **nicht** exportiert.
 - Wiederherstellung: Datenbank neu aufgebaut → Server importiert beim Start alle `batches/*.json`, auch `community-NNN.json` (Quelle `community`, Lizenz CC BY-SA 4.0).
-- **Grenze:** Admin-Korrekturen an Fragen aus *anderen* Batches (z. B. ein verbesserter Text) fließen noch nicht zurück; dafür bitte die Batch-Datei selbst anpassen.
+- Korrekturen an Fragen aus *anderen* Batches (z. B. ein verbesserter Text) werden in der Tabelle `edits` protokolliert und mit `apply:edits` in die Batch-Dateien übernommen (siehe „Überarbeitung“).
 
+
+## Überarbeitung: Reviewer melden, Admin korrigiert
+
+Neben dem ⚑-Knopf für alle gibt es eine feinere Rückmeldung für **Reviewer** – vom Admin bestimmte Spieler:
+
+- **Reviewer bestimmen:** `/admin` → Tab **Reviewer** → Freundescode der Person (Profil → „Dein Freundescode“) eintragen. Entfernen geht dort ebenfalls. Reviewer sehen im Profil einen Hinweis und beim Spielen nach jeder beantworteten Frage den Knopf **✎**.
+- **Melden:** ✎ öffnet ein kleines Formular: *Was?* **Frage** oder **Antworten**, *Warum?* **Falsch** oder **Formulierung**, dazu ein optionaler Hinweis (max. 300 Zeichen). Die Frage bleibt im Spiel; mehrfaches Melden derselben Sache aktualisiert nur den Hinweis.
+- **Admin selbst:** `/admin` → Tab **Suche** (Text, Antwort oder `#ID`, Filter Sprache/Region) → eine Frage direkt bearbeiten („Speichern“, Status bleibt) oder mit Teil/Grund **markieren**.
+- **Abarbeiten:** Tab **Überarbeiten** (Zähler = offene Meldungen) zeigt die Meldung mit **allen Sprachfassungen** der Frage zum Mitkorrigieren. *Korrigiert / erledigt* speichert die Änderungen der gemeldeten Fassung und schließt die Meldung; *Verwerfen* schließt sie ohne Änderung. Die andere Sprachfassung wird über „… speichern“ angepasst. Schwierigkeit und Region gelten für die ganze Gruppe.
+- **Zurück ins Repo:** Jede Änderung landet in `edits` (alt/neu, Sprache, Batch). `/admin` → **Korrekturen exportieren** lädt `edits.json`; danach
+
+```bash
+npm run apply:edits -- edits.json --dry-run   # zeigt, was übernommen würde
+npm run apply:edits -- edits.json             # schreibt die Korrekturen in batches/*.json (idempotent)
+```
+
+  So bekommen auch Neuinstallationen die korrigierte Fassung; die Fragen werden über ihren alten Text gefunden.
+
+## Regionen: Englisch = internationales Wissen
+
+Fragen werden nicht nur nach Sprache, sondern auch nach **Region** einsortiert (`region` je Eintrag im Batch, Standard `global`):
+
+| Region | Bedeutung | Wird ausgespielt in |
+|---|---|---|
+| `global` | weltweit geläufiges Wissen (Hauptstädte, Wissenschaft, internationale Filme/Musik/Sport, Märchen …) | allen Sprachen |
+| `dach` | vor allem im deutschsprachigen Raum geläufig (Bundesländer, Bundesliga, deutsche Redewendungen/Grammatik, Brettspiele wie Skat, regionale Bauwerke, Kinderbuch-Klassiker …) | nur **Deutsch** |
+
+- **Regel für neue Fragen:** Englisch soll internationales/globales Wissen abbilden. Rein deutschsprachig relevante Fragen bekommen `"region": "dach"` und brauchen nur eine deutsche Fassung (`i18n` mit nur `de`); globale Fragen kommen in beiden Sprachen. Test: *Würde man das in London, New York oder Delhi erkennen?* Wenn nein → `dach`.
+- Die Zuordnung steckt in `server/categories.ts` (`REGIONS`, `REGION_LANGS`, `SERVABLE_SQL`). Weitere Regionen (z. B. eine Region für Frankreich) = Eintrag in `REGIONS` und `REGION_LANGS`.
+- Der Import erbt die Region einer Gruppe bei Übersetzungen; im Admin lässt sie sich pro Frage ändern (gilt für alle Sprachen der Gruppe). Der Pool-Export (`/api/dataset.jsonl`) enthält `region`.
+- Bestehende Fragen wurden einmalig per Stichwortliste vorsortiert und gesichtet (rund 10 % `dach`); Einzelfälle korrigiert man im Admin und überträgt sie per `apply:edits`.

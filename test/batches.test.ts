@@ -4,7 +4,7 @@ import fs from 'node:fs'
 process.env.DB_PATH = ':memory:'
 const { importBatch } = await import('../server/questions.ts')
 const { all } = await import('../server/db.ts')
-const { CATEGORIES } = await import('../server/categories.ts')
+const { CATEGORIES, SERVABLE_SQL } = await import('../server/categories.ts')
 
 const dir = new URL('../batches/', import.meta.url)
 const files = fs.readdirSync(dir).filter((f) => f.endsWith('.json')).sort()
@@ -23,18 +23,21 @@ test('Alle Batch-Dateien im Repo sind gültig, lizenziert und überschneidungsfr
   }
 })
 
-test('Bestand: jede Sprache gleich groß, jede Kategorie ausreichend gefüllt, alle Schwierigkeiten vertreten', () => {
-  const perLang = Object.fromEntries(all<{ lang: string; n: number }>('SELECT lang, COUNT(*) n FROM questions GROUP BY lang').map((r) => [r.lang, r.n]))
-  assert.equal(perLang.de, perLang.en, 'de und en haben gleich viele Fragen')
-  assert.ok(perLang.de >= 500)
+test('Bestand: ausspielbare Fragen je Sprache ausreichend, Regionen konsistent, alle Schwierigkeiten vertreten', () => {
+  const servable = (lang: string) => `lang='${lang}' AND ${SERVABLE_SQL}`
+  const total = (lang: string) => all<{ n: number }>(`SELECT COUNT(*) n FROM questions WHERE ${servable(lang)}`)[0].n
+  assert.ok(total('de') >= 500)
+  assert.ok(total('en') >= 500, 'Englisch hat genug internationale (globale) Fragen')
   for (const lang of ['de', 'en']) {
-    const cat = Object.fromEntries(all<{ category: string; n: number }>('SELECT category, COUNT(*) n FROM questions WHERE lang=? GROUP BY category', lang).map((r) => [r.category, r.n]))
-    for (const c of CATEGORIES) assert.ok((cat[c] ?? 0) >= 40, `${lang}/${c}: nur ${cat[c] ?? 0} Fragen`)
-    const diff = all<{ difficulty: number; n: number }>('SELECT difficulty, COUNT(*) n FROM questions WHERE lang=? GROUP BY difficulty', lang)
+    const cat = Object.fromEntries(all<{ category: string; n: number }>(`SELECT category, COUNT(*) n FROM questions WHERE ${servable(lang)} GROUP BY category`).map((r) => [r.category, r.n]))
+    for (const c of CATEGORIES) assert.ok((cat[c] ?? 0) >= 40, `${lang}/${c}: nur ${cat[c] ?? 0} ausspielbare Fragen`)
+    const diff = all<{ difficulty: number; n: number }>(`SELECT difficulty, COUNT(*) n FROM questions WHERE ${servable(lang)} GROUP BY difficulty`)
     assert.deepEqual(diff.map((d) => d.difficulty).sort(), [1, 2, 3])
-    assert.ok(diff.every((d) => d.n / perLang[lang] > 0.15), `${lang}: Schwierigkeiten unausgewogen ${JSON.stringify(diff.map((d) => ({ ...d })))}`)
+    assert.ok(diff.every((d) => d.n / total(lang) > 0.15), `${lang}: Schwierigkeiten unausgewogen ${JSON.stringify(diff.map((d) => ({ ...d })))}`)
   }
-  // Jede Gruppe hat beide Sprachen, und die richtige Antwort steht nie zusätzlich bei den falschen
-  assert.equal(all('SELECT group_id FROM questions GROUP BY group_id HAVING COUNT(DISTINCT lang) < 2').length, 0, 'Gruppe ohne Übersetzung')
+  // Globale Fragen gibt es in beiden Sprachen; regionale (dach) mindestens auf Deutsch. Die richtige Antwort steht nie zusätzlich bei den falschen.
+  assert.equal(all("SELECT group_id FROM questions WHERE region='global' GROUP BY group_id HAVING COUNT(DISTINCT lang) < 2").length, 0, 'globale Gruppe ohne Übersetzung')
+  assert.equal(all("SELECT group_id FROM questions WHERE region<>'global' GROUP BY group_id HAVING SUM(lang='de') = 0").length, 0, 'regionale Gruppe ohne deutsche Fassung')
+  assert.equal(all('SELECT group_id FROM questions GROUP BY group_id HAVING COUNT(DISTINCT region) > 1').length, 0, 'Region je Gruppe einheitlich')
   for (const q of all<{ correct: string; wrong: string }>('SELECT correct, wrong FROM questions')) assert.ok(!(JSON.parse(q.wrong) as string[]).includes(q.correct))
 })
