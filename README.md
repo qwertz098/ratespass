@@ -66,7 +66,7 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 
 Beim Start werden alle neuen Dateien aus `batches/` importiert (idempotent, dedupliziert, Lizenz geprüft). Neue Batches = Datei ablegen, Container neu starten. Freigegebene Community-Fragen lassen sich per `npm run export:community` (oder `/admin` → „Batch exportieren“) als Batch ins Repo zurückschreiben. Details, Workflow für „200er-Batches auf Abruf“ und die **Lizenzregeln** stehen in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
 
-Aktueller Bestand: **1578 Fragen × de/en** (`seed-000` 72, `original-001` 200, `original-002` 106, `original-003` 200, `original-004` 200, `original-005` 200, `original-006` 200, `original-007` 200, `original-008` 200), selbst formuliert, CC BY-SA 4.0, über alle 12 Kategorien und Schwierigkeitsgrade verteilt. Zielbestand 4000 folgt in weiteren Batches; `test/batches.test.ts` prüft bei jedem Lauf alle Dateien auf Format, Lizenz und Dubletten.
+Aktueller Bestand: **1778 Fragen × de/en** (`seed-000` 72, `original-001` 200, `original-002` 106, `original-003` 200, `original-004` 200, `original-005` 200, `original-006` 200, `original-007` 200, `original-008` 200, `original-009` 200), selbst formuliert, CC BY-SA 4.0, über alle 12 Kategorien und Schwierigkeitsgrade verteilt. Zielbestand 4000 folgt in weiteren Batches; `test/batches.test.ts` prüft bei jedem Lauf alle Dateien auf Format, Lizenz und Dubletten.
 
 ## Architektur
 
