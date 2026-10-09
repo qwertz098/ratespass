@@ -52,6 +52,10 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 | `DATA_DIR` | `./data` (Docker: `/data`) | SQLite-Datenbank |
 | `ADMIN_TOKEN` | – | Zugang zu `/admin` und `/api/admin/*` (**mind. 16 Zeichen**, z. B. `openssl rand -hex 16`; leer oder kürzer = abgeschaltet) |
 | `ADMIN_SESSION_HOURS` | 8 | Laufzeit der Admin-Sitzung nach dem Login |
+| `ANTHROPIC_API_KEY` | – | aktiviert die KI-Schnittstelle (Fragen erzeugen/prüfen, Schwierigkeit schätzen); nie ins Repo, nur als Umgebungsvariable |
+| `AI_MODEL` | `claude-sonnet-5-5` | Modell für die KI-Schnittstelle |
+| `AI_DAILY_LIMIT` | 100 | Kostenbremse: höchstens so viele neu erzeugte Fragen pro Tag |
+| `AI_AUTO` / `AI_AUTO_INTERVAL_HOURS` / `AI_AUTO_BATCH` | 0 / 24 / 20 | Auto-Lauf füllt regelmäßig die größten Lücken (Ergebnis landet immer in der Moderation); auch im Admin-Tab „KI“ schaltbar |
 | `PLAYER_REPORTS` | 1 | `0` schaltet den Melde-Knopf ⚑ für alle Spieler ab (Reviewer-Meldungen und Admin bleiben); jede Person kann ihn zusätzlich im Profil ausblenden |
 | `PLAYER_CREATE_LIMIT_PER_HOUR` | 60 | neue anonyme Profile pro IP und Stunde (Missbrauchsschutz; hinter NAT/Schul-WLAN teilen sich viele Nutzer eine IP) |
 | `HOST_PORT` / `BIND_ADDRESS` | 3007 / 0.0.0.0 | nur Compose: veröffentlichter Host-Port bzw. Bindeadresse (der Container hört intern auf 3000) |
@@ -76,6 +80,10 @@ Aktueller Bestand: **3178 Fragen** (davon 2986 auch auf Englisch spielbar) (`see
 ### Spielstufen und Extra-Kategorien
 
 Jeder Spieler wählt im Profil sein **Level** – Basis, Nerd (Sci-Fi & Fantasy, Programmieren & IT, Anime & Manga, Retro-Games) oder Experte (MINT & Ingenieurwesen, Geisteswissenschaften, Kunst & Literatur, Informatik) – und kann einzelne Extra-Kategorien abwählen. Im Duell zählt immer die **niedrigste Einstellung** beider Spieler (niedrigstes Level, Schnitt der aktiven Kategorien); beim Spielstart wird die Auswahl im Spiel festgehalten. Details in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
+
+### KI-Schnittstelle (Fragen-Nachschub und Schwierigkeit)
+
+Mit `ANTHROPIC_API_KEY` bietet der Admin-Tab **KI** (Code: `server/ai.ts`, Tests: `test/ai.test.ts`): einen **Plan** (Soll-Ist je Kategorie und Schwierigkeit aus einer einstellbaren Zielverteilung, Standard 25/40/35 % leicht/mittel/schwer und mindestens 100 Fragen je Kategorie – „mehr schwere Fragen“ = Prozentwerte verschieben), **Lücken füllen** (Fragen auf Deutsch und Englisch erzeugen, danach ein getrennter Prüfdurchlauf für Fakten/Eindeutigkeit/Zeitlosigkeit; alles Zweifelhafte wird verworfen), **Schwierigkeit schätzen** (KI-Einschätzung mit Sicherheitswert für bestehende Fragen) und **Schätzungen übernehmen** (ab wählbarer Sicherheit, wird in `edits` protokolliert). Neue KI-Fragen sind immer `pending` in der Moderation und lassen sich nach der Freigabe als `ai-NNN`-Batch exportieren (`source: llm`, CC BY-SA 4.0). Ein optionaler Auto-Lauf arbeitet die größten Lücken ab; ein Tageslimit begrenzt die Kosten. Gemessene Lösungsquoten (Statistik-Tab) und KI-Schätzungen ergänzen sich: Ab genug Antworten gilt die Messung. In der Entwicklungsumgebung nicht gegen die echte API getestet (Tests nutzen eine Fake-API).
 
 ### Geburtsjahr und Statistik „Lösungen vs. Alter“
 

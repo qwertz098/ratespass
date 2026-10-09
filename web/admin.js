@@ -48,6 +48,8 @@ async function load() {
       list.push(await reviewersCard())
     } else if (status === 'stats') {
       list.push(...(await statsCards()))
+    } else if (status === 'ai') {
+      list.push(...(await aiCards()))
     } else {
       const { questions } = await call('GET', `/api/admin/queue?status=${status}`)
       list.push(...questions.map(card))
@@ -154,6 +156,41 @@ async function statsCards() {
   return [head, ...(rows.length ? rows : [el('div', { className: 'empty', textContent: 'Noch keine Frage mit genug Antworten' })]), el('div', { className: 'hint', textContent: `${questions.length} von ${total} Fragen` })]
 }
 
+/** KI-Schnittstelle: Lücken füllen, Schwierigkeit schätzen, Zielverteilung. Neue Fragen erscheinen unter „Eingereicht“. */
+let lastGen = null
+async function aiCards() {
+  const s = await call('GET', '/api/admin/ai/status')
+  const num = (v, min, max) => el('input', { type: 'number', value: v, min, max, style: 'width:72px' })
+  const d1 = num(s.target.diff[0], 0, 100), d2 = num(s.target.diff[1], 0, 100), d3 = num(s.target.diff[2], 0, 100), minc = num(s.target.min_per_category, 10, 5000)
+  const auto = el('input', { type: 'checkbox', checked: s.auto })
+  const run = (label, path, body, done) => el('button', { className: 'btn small', textContent: label, onclick: guarded(async (e) => {
+    toast(label + ' …'); const r = await call('POST', path, body); done?.(r); load() }) })
+  const head = el('div', { className: 'card stack' },
+    el('div', { className: 'hint', textContent: s.enabled ? `Modell ${s.model} · heute ${s.used_today}/${s.daily_limit} Fragen · ${s.pending_ai} KI-Fragen warten auf Freigabe · ${s.unrated} Fragen ohne KI-Schätzung`
+      : 'KI ist aus: Auf dem Server fehlt ANTHROPIC_API_KEY. Der Plan unten funktioniert trotzdem.' }),
+    el('div', { className: 'row wrap' }, run('Lücken füllen (20)', '/api/admin/ai/generate', { count: 20 }, (r) => { lastGen = r.results }),
+      run('Schwierigkeit schätzen (30)', '/api/admin/ai/estimate', { limit: 30 }, (r) => toast(`${r.rated} bewertet`)),
+      run('Schätzungen übernehmen (≥ 0,7)', '/api/admin/ai/apply', { min_confidence: 0.7 }, (r) => toast(`${r.changed} angepasst`)),
+      el('button', { className: 'btn small', textContent: 'KI-Fragen als Batch exportieren', onclick: guarded(async () => {
+        const res = await fetch('/api/admin/community-batch?source=llm&mark=1')
+        if (res.status === 404) return toast('Nichts zu exportieren')
+        const name = /filename="([^"]+)"/.exec(res.headers.get('content-disposition') ?? '')?.[1] ?? 'ai.json'
+        const a = el('a', { href: URL.createObjectURL(await res.blob()), download: name }); document.body.append(a); a.click(); a.remove() }) })),
+    el('div', { className: 'hint', textContent: 'KI-Fragen gehen nie automatisch ins Spiel: Sie landen unter „Eingereicht“, werden dort geprüft und freigegeben.' }))
+  const settings = el('div', { className: 'card stack' },
+    el('div', { className: 'hint', textContent: 'Zielverteilung je Kategorie (Prozent leicht / mittel / schwer) und Mindestgröße – daraus ergibt sich der Plan.' }),
+    el('div', { className: 'row wrap' }, d1, d2, d3, el('span', { className: 'muted', textContent: '% · min.' }), minc,
+      el('label', { className: 'row' }, auto, el('span', { className: 'hint', textContent: `Auto-Lauf (alle ${s.auto_interval_hours} h)` })),
+      el('button', { className: 'btn small primary', textContent: 'Speichern', onclick: guarded(async () => {
+        await call('POST', '/api/admin/ai/settings', { diff: [d1, d2, d3].map((x) => Number(x.value)), min_per_category: Number(minc.value), auto: auto.checked }); toast('Gespeichert'); load() }) })))
+  const plan = el('div', { className: 'card stack' }, el('div', { className: 'hint', textContent: `Plan: ${s.total_deficit} Fragen fehlen insgesamt (größte Lücken zuerst)` }),
+    ...s.plan.slice(0, 12).map((g) => el('div', { className: 'row' }, el('span', { className: 'grow', textContent: `${g.category} · ${DIFF[g.difficulty]}` }), el('span', { className: 'muted', textContent: `${g.have}/${g.want}` }),
+      s.enabled ? el('button', { className: 'btn small', textContent: `+${Math.min(10, g.deficit)}`, onclick: guarded(async () => {
+        toast('Erzeuge …'); lastGen = (await call('POST', '/api/admin/ai/generate', { category: g.category, difficulty: g.difficulty, count: Math.min(10, g.deficit) })).results; load() }) }) : null)))
+  const result = lastGen ? el('div', { className: 'card stack' }, ...lastGen.map((r) => el('div', { className: 'hint', textContent: `${r.created}/${r.requested} angelegt` + (r.rejected.length ? ' · verworfen: ' + r.rejected.map((x) => x.reason).join('; ') : '') }))) : null
+  return [head, result, settings, plan].filter(Boolean)
+}
+
 function card(q) {
   const field = (v, rows) => (rows ? el('textarea', { value: v, rows }) : el('input', { type: 'text', value: v }))
   const text = field(q.text, 2), correct = field(q.correct), wrong = q.wrong.map((w) => field(w))
@@ -167,6 +204,7 @@ function card(q) {
     el('div', { className: 'row' }, el('span', { className: 'badge', textContent: `${q.lang} · ${q.category} · d${q.difficulty} · ${q.region}` }), el('span', { className: 'muted grow', textContent: `${q.source} · ${q.license}` }),
       q.reports ? el('span', { className: 'badge bad', textContent: `${q.reports} Meldungen` }) : null),
     q.reasons ? el('div', { className: 'hint', textContent: 'Gründe: ' + q.reasons }) : null,
+    q.ai_difficulty ? el('div', { className: 'hint', textContent: `KI-Schätzung: ${DIFF[q.ai_difficulty]}${q.ai_confidence != null ? ' (Sicherheit ' + q.ai_confidence + ')' : ''}${q.ai_note ? ' – ' + q.ai_note : ''}` }) : null,
     text, correct, wrong, el('div', { className: 'row' }, act('approve', 'Freigeben', 'primary'), act('reject', 'Ablehnen', 'danger')))
 }
 

@@ -33,4 +33,16 @@ export const config = {
   /** Melde-Knopf (⚑) für alle Spieler; mit PLAYER_REPORTS=0 abschaltbar (Reviewer und Admin bleiben unberührt). */
   playerReports: env.PLAYER_REPORTS !== '0',
   inactiveDaysForfeit: 7,
+  /** KI-Schnittstelle (Anthropic Messages API): Fragen erzeugen, Schwierigkeit schätzen. Ohne ANTHROPIC_API_KEY deaktiviert. */
+  ai: {
+    key: env.ANTHROPIC_API_KEY ?? '',
+    model: env.AI_MODEL ?? 'claude-sonnet-5-5',
+    baseUrl: (env.AI_BASE_URL ?? 'https://api.anthropic.com').replace(/\/+$/, ''),
+    /** Obergrenze neu erzeugter Fragen pro Tag (Kostenbremse, gilt auch für den Auto-Lauf). */
+    dailyLimit: Math.max(1, Number(env.AI_DAILY_LIMIT ?? 100) || 100),
+    /** Auto-Lauf: erzeugt regelmäßig Fragen für die größten Lücken (landen immer in der Moderation). */
+    auto: env.AI_AUTO === '1',
+    autoIntervalHours: Math.max(1, Number(env.AI_AUTO_INTERVAL_HOURS ?? 24) || 24),
+    autoBatch: Math.max(1, Number(env.AI_AUTO_BATCH ?? 20) || 20),
+  },
 }

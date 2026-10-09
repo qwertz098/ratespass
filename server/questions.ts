@@ -153,6 +153,7 @@ export interface QRow {
   text: string; correct: string; wrong: string; explanation: string | null
   source: string; license: string; attribution: string | null; source_ref: string | null
   batch: string | null; status: string; submitted_by: number | null; created_at: number; region: string
+  ai_difficulty?: number | null; ai_confidence?: number | null; ai_note?: string | null
 }
 
 export function datasetLines(): string[] {
@@ -170,14 +171,16 @@ export function licenseSummary() {
   return rows.map((r) => ({ ...r, license_url: LICENSES[r.license] }))
 }
 
-/** Nächster freier Batch-Name `community-NNN` (Datenbank und Dateien im Batch-Verzeichnis berücksichtigt). */
-function nextCommunityName(dir: string): string {
+const ATTRIBUTION = { community: 'Community contribution', llm: 'Ratespaß-Projekt (KI-gestützt erstellt, redaktionell geprüft)' } as const
+
+/** Nächster freier Batch-Name `<prefix>-NNN` (Datenbank und Dateien im Batch-Verzeichnis berücksichtigt). */
+function nextCommunityName(dir: string, prefix: 'community' | 'ai' = 'community'): string {
   const used = [
-    ...all<{ name: string }>("SELECT name FROM batches WHERE name LIKE 'community-%'").map((r) => r.name),
+    ...all<{ name: string }>('SELECT name FROM batches WHERE name LIKE ?', prefix + '-%').map((r) => r.name),
     ...(fs.existsSync(dir) ? fs.readdirSync(dir).map((f) => f.replace(/\.json$/, '')) : []),
   ]
-  const max = Math.max(0, ...used.map((n) => Number(/^community-(\d+)$/.exec(n)?.[1] ?? 0)))
-  return `community-${String(max + 1).padStart(3, '0')}`
+  const max = Math.max(0, ...used.map((n) => Number(new RegExp(`^${prefix}-(\\d+)$`).exec(n)?.[1] ?? 0)))
+  return `${prefix}-${String(max + 1).padStart(3, '0')}`
 }
 
 /**
@@ -185,24 +188,25 @@ function nextCommunityName(dir: string): string {
  * Mit mark=true werden sie danach dem Batch zugeordnet und in `batches` vermerkt, sodass sie nicht erneut
  * exportiert und beim Neustart nicht doppelt importiert werden. Personenbezug (submitted_by) wird nicht exportiert.
  */
-export function exportCommunityBatch(opts: { mark: boolean; dir: string }): Batch | null {
+export function exportCommunityBatch(opts: { mark: boolean; dir: string; source?: 'community' | 'llm' }): Batch | null {
+  const source = opts.source ?? 'community'
   return tx(() => {
-    const rows = all<QRow>("SELECT * FROM questions WHERE source='community' AND status='active' AND batch IS NULL ORDER BY id")
+    const rows = all<QRow>("SELECT * FROM questions WHERE source=? AND status='active' AND batch IS NULL ORDER BY id", source)
     if (!rows.length) return null
     const groups = new Map<string, QRow[]>()
     for (const r of rows) groups.set(r.group_id, [...(groups.get(r.group_id) ?? []), r])
-    const name = nextCommunityName(opts.dir)
+    const name = nextCommunityName(opts.dir, source === 'llm' ? 'ai' : 'community')
     const questions: BatchEntry[] = [...groups.entries()].map(([group, rs]) => ({
       group, category: rs[0].category, difficulty: rs[0].difficulty, ...(rs[0].region !== 'global' ? { region: rs[0].region } : {}),
-      source: 'community', license: rs[0].license, attribution: rs[0].attribution ?? 'Community contribution',
+      source, license: rs[0].license, attribution: rs[0].attribution ?? ATTRIBUTION[source],
       i18n: Object.fromEntries(rs.map((r) => [r.lang, {
         text: r.text, correct: r.correct, wrong: JSON.parse(r.wrong) as string[], ...(r.explanation ? { explanation: r.explanation } : {}),
       }])),
     }))
-    const batch: Batch = { format: 'ratespass-batch', version: 1, batch: name, source: 'community', license: 'CC-BY-SA-4.0', attribution: 'Community contribution', questions }
+    const batch: Batch = { format: 'ratespass-batch', version: 1, batch: name, source, license: 'CC-BY-SA-4.0', attribution: ATTRIBUTION[source], questions }
     if (opts.mark) {
       for (const r of rows) run('UPDATE questions SET batch=? WHERE id=?', name, r.id)
-      run('INSERT INTO batches(name,source,license,inserted,imported_at) VALUES(?,?,?,?,?)', name, 'community', 'CC-BY-SA-4.0', rows.length, now())
+      run('INSERT INTO batches(name,source,license,inserted,imported_at) VALUES(?,?,?,?,?)', name, source, 'CC-BY-SA-4.0', rows.length, now())
     }
     return batch
   })

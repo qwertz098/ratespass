@@ -279,8 +279,24 @@ const SCHEMA_V8 = `
 ALTER TABLE players ADD COLUMN birth_year INTEGER;
 `
 
+// v9: KI-Schnittstelle: Schwierigkeits-Schätzung je Frage, Einstellungen (kv) und Protokoll der KI-Aufrufe
+const SCHEMA_V9 = `
+ALTER TABLE questions ADD COLUMN ai_difficulty INTEGER;
+ALTER TABLE questions ADD COLUMN ai_confidence REAL;
+ALTER TABLE questions ADD COLUMN ai_note TEXT;
+CREATE TABLE kv(key TEXT PRIMARY KEY, value TEXT NOT NULL);
+CREATE TABLE ai_log(
+  id INTEGER PRIMARY KEY,
+  kind TEXT NOT NULL,
+  model TEXT NOT NULL,
+  n INTEGER NOT NULL DEFAULT 0,
+  detail TEXT,
+  created_at INTEGER NOT NULL
+);
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)

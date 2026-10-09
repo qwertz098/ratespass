@@ -19,6 +19,10 @@ services:
       VAPID_SUBJECT: ${VAPID_SUBJECT:?bitte in .env setzen (mailto:… oder https://…)}
       PLAYER_CREATE_LIMIT_PER_HOUR: ${PLAYER_CREATE_LIMIT_PER_HOUR:-60}   # neue Profile pro IP und Stunde
       PLAYER_REPORTS: ${PLAYER_REPORTS:-1}   # 0 = Melde-Knopf für alle Spieler aus
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}   # KI-Schnittstelle (optional)
+      AI_MODEL: ${AI_MODEL:-claude-sonnet-5-5}
+      AI_DAILY_LIMIT: ${AI_DAILY_LIMIT:-100}
+      AI_AUTO: ${AI_AUTO:-0}
       TRUST_PROXY: "1"                                            # Client-IP aus X-Forwarded-For (für Rate-Limits)
       PROXY_HOPS: ${PROXY_HOPS:-1}                                # 1 = nur NPM; 2 = Cloudflare-Proxy (orange Wolke) → NPM
     volumes:

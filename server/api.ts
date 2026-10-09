@@ -9,6 +9,7 @@ import {
 import * as game from './game.ts'
 import * as ladder from './ladder.ts'
 import * as rooms from './rooms.ts'
+import * as ai from './ai.ts'
 import {
   adminEnabled, clearFailures, closeSession, COOKIE, loginBlocked, openSession, parseCookie,
   recordFailure, sameOriginOk, sessionCookie, tokenOk, validSession,
@@ -462,7 +463,7 @@ router.post('/api/admin/questions/:id', (c) => {
 /** Freigegebene, noch nicht exportierte Community-Fragen als Batch-Datei (zum Einchecken ins Repo). ?mark=1 vermerkt sie als exportiert. */
 router.get('/api/admin/community-batch', (c) => {
   admin(c)
-  const batch = exportCommunityBatch({ mark: c.url.searchParams.get('mark') === '1', dir: config.batchDir })
+  const batch = exportCommunityBatch({ mark: c.url.searchParams.get('mark') === '1', dir: config.batchDir, source: c.url.searchParams.get('source') === 'llm' ? 'llm' : 'community' })
   if (!batch) throw new HttpError(404, 'nothing_to_export')
   c.res.writeHead(200, {
     'content-type': 'application/json; charset=utf-8',
@@ -542,6 +543,37 @@ router.get('/api/admin/edits', (c) => {
   const after = Number(c.url.searchParams.get('after') ?? 0) || 0
   return { edits: all<{ id: number; group_id: string; lang: string; batch: string | null; old: string; new: string; created_at: number }>(
     'SELECT * FROM edits WHERE id>? ORDER BY id', after).map((e) => ({ ...e, old: JSON.parse(e.old), new: JSON.parse(e.new) })) }
+}, { auth: false })
+
+/* --- KI-Schnittstelle: Fragen erzeugen, Schwierigkeit schätzen, Verteilung steuern --- */
+router.get('/api/admin/ai/status', (c) => {
+  admin(c)
+  return ai.status()
+}, { auth: false })
+
+router.post('/api/admin/ai/settings', (c) => {
+  admin(c)
+  if (c.body?.diff !== undefined || c.body?.min_per_category !== undefined) ai.setTarget(c.body.diff, c.body.min_per_category)
+  if (c.body?.auto !== undefined) ai.setAuto(!!c.body.auto)
+  return ai.status()
+}, { auth: false })
+
+router.post('/api/admin/ai/generate', async (c) => {
+  admin(c)
+  rateLimit('ai:admin', 60, 3_600_000)
+  if (c.body?.category) return { results: [await ai.generate({ category: String(c.body.category), difficulty: Number(c.body.difficulty) || 2, count: Number(c.body.count) || 10 })] }
+  return { results: await ai.fillGaps(Math.min(100, Number(c.body?.count) || 20)) } // ohne Angabe: größte Lücken des Plans füllen
+}, { auth: false })
+
+router.post('/api/admin/ai/estimate', async (c) => {
+  admin(c)
+  rateLimit('ai:admin', 60, 3_600_000)
+  return ai.estimate({ limit: Number(c.body?.limit) || 30, category: c.body?.category ? String(c.body.category) : undefined })
+}, { auth: false })
+
+router.post('/api/admin/ai/apply', (c) => {
+  admin(c)
+  return ai.applyEstimates(Math.min(1, Math.max(0, Number(c.body?.min_confidence ?? 0.7))))
 }, { auth: false })
 
 /** Lösungen vs. Alter: Auswertung der Antworten aller Spieler (ohne Bots), Altersgruppen nur ab 5 Antworten. */

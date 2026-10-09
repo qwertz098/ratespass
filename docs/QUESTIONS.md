@@ -62,9 +62,9 @@ npm run import -- batches/original-001.json --dry-run   # prüfen
 3. Für die Open Trivia DB: `npm run fetch:opentdb -- --amount 200 --name otdb-001` (englisch; API-Limit 1 Anfrage/5 s, Session-Token verhindert Wiederholungen), danach `npm run todo:translate -- --from en --to de --limit 200 --out tmp/todo.json` → Übersetzungsbatch (Einträge mit `group` + `i18n.de`) erstellen und importieren.
 4. Für Geografie aus Wikidata: `npm run gen:wikidata` (Hauptstädte, Kontinente; deterministisch, de+en).
 
-## Eigener LLM-Nachschub (später)
+## KI-Nachschub (umgesetzt: Admin-Tab „KI“)
 
-Gleiche Pipeline, nur automatisiert: Generator (strukturierte Ausgabe im Batch-Format) → **zweiter Prüf-Durchlauf** (Faktencheck, Eindeutigkeit, plausible Distraktoren) → `import --dry-run` → Import mit `source: llm`. Faustregel: Fragen mit unsicherem Fakt verwerfen statt raten; Schwierigkeitsgrad aus den Spielstatistiken nachkalibrieren.
+Die Pipeline ist in `server/ai.ts` umgesetzt (siehe README → „KI-Schnittstelle“). Prinzip, das weiter gilt: Generator (strukturierte Ausgabe im Batch-Format) → **zweiter Prüf-Durchlauf** (Faktencheck, Eindeutigkeit, plausible Distraktoren) → `import --dry-run` → Import mit `source: llm`. Faustregel: Fragen mit unsicherem Fakt verwerfen statt raten; Schwierigkeitsgrad aus den Spielstatistiken nachkalibrieren.
 
 ## Community & Moderation
 
