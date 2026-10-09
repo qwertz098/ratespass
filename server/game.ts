@@ -3,6 +3,7 @@ import { all, get, run, tx, now } from './db.ts'
 import { createPlayer, type PlayerRow } from './auth.ts'
 import { config } from './config.ts'
 import { HttpError } from './http.ts'
+import { notifyPlayer, type PushKind } from './push.ts'
 import type { QRow } from './questions.ts'
 
 export const ROUNDS = 6
@@ -25,6 +26,8 @@ const shuffle = <T>(a: T[]): T[] => {
   }
   return r
 }
+
+const nameOf = (id: number | null) => (id ? get<{ name: string }>('SELECT name FROM players WHERE id=?', id)?.name ?? '' : '')
 
 export const getGame = (id: number) => get<GameRow>('SELECT * FROM games WHERE id=?', id)
 function mustGame(id: number, pid: number): GameRow {
@@ -86,11 +89,12 @@ export function createGame(me: PlayerRow, opponent: string, lang: string): numbe
     let id: number
     if (opponent === 'bot') id = insertGame(me.id, ensureBot(), lang)
     else if (opponent === 'random') {
-      const w = get<{ id: number }>(
-        "SELECT id FROM games WHERE status='waiting' AND lang=? AND p1<>? ORDER BY created_at LIMIT 1", lang, me.id)
+      const w = get<{ id: number; p1: number }>(
+        "SELECT id, p1 FROM games WHERE status='waiting' AND lang=? AND p1<>? ORDER BY created_at LIMIT 1", lang, me.id)
       if (w) {
         run("UPDATE games SET p2=?, status='active' WHERE id=?", me.id, w.id)
         startRound(getGame(w.id)!, 1)
+        notifyPlayer(w.p1, 'matched', w.id, me.name)
         id = w.id
       } else id = insertGame(me.id, null, lang)
     } else {
@@ -98,6 +102,7 @@ export function createGame(me: PlayerRow, opponent: string, lang: string): numbe
       if (!o || o.id === me.id) throw new HttpError(404, 'unknown_player')
       if (!knows(me.id, o.id)) throw new HttpError(403, 'not_a_contact')
       id = insertGame(me.id, o.id, lang)
+      notifyPlayer(o.id, 'challenge', id, me.name)
     }
     settle(id)
     return id
@@ -231,8 +236,9 @@ function endTurn(g: GameRow, pid: number) {
   const round = get<{ picker: number }>('SELECT picker FROM rounds WHERE game_id=? AND n=?', g.id, g.round)!
   if (pid === round.picker) {
     run("UPDATE games SET turn=?, phase='play', updated_at=? WHERE id=?", other(g, pid), now(), g.id)
+    notifyPlayer(other(g, pid), 'turn', g.id, nameOf(pid))
   } else if (g.round >= ROUNDS) {
-    finishGame(g, 'completed')
+    finishGame(g, 'completed', undefined, pid)
   } else {
     startRound(g, g.round + 1)
   }
@@ -243,19 +249,24 @@ function totals(gid: number) {
     'SELECT player_id, SUM(correct) c, SUM(ms) ms FROM answers WHERE game_id=? AND choice IS NOT NULL GROUP BY player_id', gid)
 }
 
-function finishGame(g: GameRow, reason: string, forcedWinner?: number) {
+function finishGame(g: GameRow, reason: string, forcedWinner?: number, actor?: number) {
   const t = totals(g.id)
   const a = t.find((x) => x.player_id === g.p1)?.c ?? 0
   const b = t.find((x) => x.player_id === g.p2)?.c ?? 0
   const winner = forcedWinner ?? (a === b ? null : a > b ? g.p1 : g.p2)
   run("UPDATE games SET status='finished', turn=NULL, phase=NULL, winner=?, end_reason=?, updated_at=? WHERE id=?", winner, reason, now(), g.id)
+  for (const pid of [g.p1, g.p2]) {
+    if (!pid || pid === actor) continue
+    const kind: PushKind = reason === 'resigned' ? 'resigned' : reason === 'timeout' ? 'timeout' : winner === null ? 'draw' : winner === pid ? 'won' : 'lost'
+    notifyPlayer(pid, kind, g.id, nameOf(other(g, pid)))
+  }
 }
 
 export function resign(gameId: number, me: PlayerRow) {
   tx(() => {
     const g = mustGame(gameId, me.id)
     if (g.status === 'waiting') run("UPDATE games SET status='abandoned', turn=NULL, phase=NULL, updated_at=? WHERE id=?", now(), g.id)
-    else if (g.status === 'active') finishGame(g, 'resigned', other(g, me.id)!)
+    else if (g.status === 'active') finishGame(g, 'resigned', other(g, me.id)!, me.id)
     else throw new HttpError(409, 'already_over')
   })
 }

@@ -1,5 +1,6 @@
 process.env.DB_PATH = ':memory:'
 process.env.ADMIN_TOKEN = 'test-admin-token'
+process.env.PUSH_ALLOW_INSECURE = '1' // erlaubt nur http://127.0.0.1 für den Fake-Push-Dienst im Test
 
 export const { createApp } = await import('../server/app.ts')
 export const { db, all, get, run } = await import('../server/db.ts')
@@ -28,7 +29,7 @@ export async function boot(seed = true) {
     const r = await call('POST', '/api/players', { name, lang: 'de' })
     return { token: r.json.token as string, player: r.json.player }
   }
-  return { server, base, call, newPlayer, close: () => server.close() }
+  return { server, base, call, newPlayer, close: () => { server.close(); server.closeAllConnections() } }
 }
 
 /** Findet im Test per DB die richtige Antwort-Position der aktuellen Frage (nur für Tests). */

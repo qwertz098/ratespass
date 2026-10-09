@@ -126,12 +126,27 @@ CREATE TABLE reports(
 );
 `
 
+const SCHEMA_V2 = `
+CREATE TABLE push_subs(
+  endpoint TEXT PRIMARY KEY,
+  player_id INTEGER NOT NULL REFERENCES players(id) ON DELETE CASCADE,
+  p256dh TEXT NOT NULL,
+  auth TEXT NOT NULL,
+  created_at INTEGER NOT NULL,
+  last_ok INTEGER,
+  fails INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX push_subs_player ON push_subs(player_id);
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-if (version < 1) {
-  db.exec('BEGIN')
-  db.exec(SCHEMA_V1)
-  db.exec('PRAGMA user_version = 1')
-  db.exec('COMMIT')
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2]] as const) {
+  if (version < v) {
+    db.exec('BEGIN')
+    db.exec(sql)
+    db.exec(`PRAGMA user_version = ${v}`)
+    db.exec('COMMIT')
+  }
 }
 
 type P = null | number | bigint | string
@@ -146,21 +161,33 @@ export const all = <T>(sql: string, ...p: P[]) => stmt(sql).all(...p) as unknown
 export const run = (sql: string, ...p: P[]) => stmt(sql).run(...p)
 
 let depth = 0
+const hooks: Array<() => void> = []
+/** Führt fn nach erfolgreichem Commit der äußersten Transaktion aus (außerhalb einer Transaktion sofort). */
+export function afterCommit(fn: () => void) {
+  if (depth > 0) hooks.push(fn)
+  else fn()
+}
+
 /** Transaktion; verschachtelte Aufrufe laufen in der äußeren mit. */
 export function tx<T>(fn: () => T): T {
   if (depth > 0) return fn()
+  let result: T
   db.exec('BEGIN IMMEDIATE')
   depth++
   try {
-    const r = fn()
+    result = fn()
     db.exec('COMMIT')
-    return r
   } catch (e) {
     db.exec('ROLLBACK')
+    hooks.length = 0
     throw e
   } finally {
     depth--
   }
+  for (const h of hooks.splice(0)) {
+    try { h() } catch (e) { console.error('afterCommit', e) }
+  }
+  return result
 }
 
 export const now = () => Date.now()

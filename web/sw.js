@@ -1,5 +1,5 @@
 // Service Worker: App-Shell offline verfügbar, API immer live.
-const VERSION = 'rp-v1'
+const VERSION = 'rp-v2'
 const SHELL = ['/', '/app.js', '/i18n.js', '/style.css', '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png']
 
 self.addEventListener('install', (e) => {
@@ -21,4 +21,30 @@ self.addEventListener('fetch', (e) => {
     const net = fetch(e.request).then((r) => { if (r.ok) c.put(e.request, r.clone()); return r }).catch(() => hit)
     return hit || net
   }))
+})
+
+// --- Web Push ---
+self.addEventListener('push', (e) => {
+  let data = {}
+  try { data = e.data ? e.data.json() : {} } catch { data = { body: e.data ? e.data.text() : '' } }
+  e.waitUntil((async () => {
+    const wins = await self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+    const visible = wins.filter((w) => w.visibilityState === 'visible')
+    if (visible.length) { visible.forEach((w) => w.postMessage({ type: 'push-refresh' })); return }
+    await self.registration.showNotification(data.title || 'Ratespaß', {
+      body: data.body || '', tag: data.tag || 'ratespass', renotify: true,
+      icon: '/icons/icon-192.png', badge: '/icons/icon-192.png', data: { url: data.url || '/' },
+    })
+  })())
+})
+
+self.addEventListener('notificationclick', (e) => {
+  e.notification.close()
+  const url = new URL(e.notification.data?.url || '/', self.location.origin).href
+  e.waitUntil((async () => {
+    const wins = await self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+    const win = wins.find((w) => new URL(w.url).origin === self.location.origin)
+    if (win) { await win.focus(); if ('navigate' in win) await win.navigate(url).catch(() => {}); return }
+    await self.clients.openWindow(url)
+  })())
 })

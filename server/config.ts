@@ -19,5 +19,11 @@ export const config = {
   /** Sprachen mit weniger aktiven Fragen werden nicht zum Spielen angeboten. */
   minLangQuestions: Number(env.MIN_LANG_QUESTIONS ?? 30),
   maxActiveGames: 25,
+  /** VAPID-Kontakt (mailto: oder https-URL), von Push-Diensten verlangt. */
+  vapidSubject: env.VAPID_SUBJECT ?? 'https://github.com/qwertz098/ratespass',
+  /** Nur für Tests/lokale Fake-Push-Server: erlaubt http://127.0.0.1 als Endpoint. */
+  pushAllowInsecure: env.PUSH_ALLOW_INSECURE === '1',
+  /** Zusätzlich erlaubte Push-Dienst-Hosts (kommagetrennt), z. B. für selbst gehostetes UnifiedPush. */
+  pushExtraHosts: (env.PUSH_EXTRA_HOSTS ?? '').split(',').map((h) => h.trim().toLowerCase()).filter(Boolean),
   inactiveDaysForfeit: 7,
 }

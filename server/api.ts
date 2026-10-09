@@ -7,6 +7,7 @@ import {
   cleanName, createPlayer, createSession, hashPassword, randomCode, sha256, verifyPassword, type PlayerRow,
 } from './auth.ts'
 import * as game from './game.ts'
+import { deliver, validEndpoint, validKeys, vapidPublicKey } from './push.ts'
 import { datasetLines, insertQuestion, licenseSummary, questionUid, validateContent, type QContent, type QRow } from './questions.ts'
 
 export const router = new Router()
@@ -89,6 +90,7 @@ router.delete('/api/me', (c) => {
     for (const g of all<{ id: number }>("SELECT id FROM games WHERE (p1=? OR p2=?) AND status IN ('waiting','active')", p.id, p.id)) game.resign(g.id, p)
     run("UPDATE players SET deleted=1, name='—', username=NULL, pw_hash=NULL WHERE id=?", p.id)
     run('DELETE FROM sessions WHERE player_id=?', p.id)
+    run('DELETE FROM push_subs WHERE player_id=?', p.id)
     run('DELETE FROM transfer_codes WHERE player_id=?', p.id)
     run('DELETE FROM contacts WHERE player_id=? OR contact_id=?', p.id, p.id)
     run('DELETE FROM seen WHERE player_id=?', p.id)
@@ -224,6 +226,38 @@ router.post('/api/games/:id/resign', (c) => {
 router.post('/api/games/:id/report', (c) => {
   game.reportQuestion(gid(c), me(c), c.body.round, c.body.idx, c.body.reason)
   return { ok: true }
+})
+
+/* ---------- Web-Push ---------- */
+router.get('/api/push/key', () => ({ key: vapidPublicKey() }), { auth: false })
+
+router.post('/api/push/subscribe', (c) => {
+  const p = me(c)
+  const { endpoint, keys } = c.body ?? {}
+  if (!validEndpoint(endpoint) || !validKeys(keys?.p256dh, keys?.auth)) throw new HttpError(400, 'bad_subscription')
+  tx(() => {
+    run(`INSERT INTO push_subs(endpoint,player_id,p256dh,auth,created_at) VALUES(?,?,?,?,?)
+         ON CONFLICT(endpoint) DO UPDATE SET player_id=excluded.player_id, p256dh=excluded.p256dh, auth=excluded.auth, fails=0`,
+    endpoint, p.id, keys.p256dh, keys.auth, now())
+    run(`DELETE FROM push_subs WHERE player_id=? AND endpoint NOT IN
+         (SELECT endpoint FROM push_subs WHERE player_id=? ORDER BY created_at DESC LIMIT 10)`, p.id, p.id)
+  })
+  return { ok: true }
+})
+
+router.post('/api/push/unsubscribe', (c) => {
+  run('DELETE FROM push_subs WHERE endpoint=? AND player_id=?', String(c.body?.endpoint ?? ''), me(c).id)
+  return { ok: true }
+})
+
+router.post('/api/push/test', async (c) => {
+  const p = me(c)
+  rateLimit(`pushtest:${p.id}`, 5, 3_600_000)
+  const de = p.lang === 'de'
+  const sent = await deliver(p.id, {
+    title: 'Ratespaß', body: de ? 'Benachrichtigungen funktionieren ✅' : 'Notifications are working ✅', url: '/#/', tag: 'test',
+  })
+  return { sent }
 })
 
 /* ---------- Community ---------- */

@@ -161,6 +161,7 @@ async function boot() {
     S.token = r.token; store.set('rp.token', r.token)
   }
   try { await refreshMe(true) } catch (e) { if (e instanceof ApiError && e.status === 401) { sessionLost(); return false } throw e }
+  resyncPush()
   return true
 }
 async function refreshMe(restore = false) {
@@ -375,7 +376,7 @@ async function profile() {
     : h('div', { class: 'empty' }, t('new.noContacts'))
   const account = p.has_account
     ? h('div', { class: 'stack' }, h('div', {}, t('profile.loggedInAs', { name: p.username })),
-        h('button', { class: 'btn block', onclick: guard(async () => { await api('POST', '/api/logout', {}); forgetIdentity(); go('#/') }) }, t('profile.logout')))
+        h('button', { class: 'btn block', onclick: guard(async () => { await disablePush().catch(() => {}); await api('POST', '/api/logout', {}); forgetIdentity(); go('#/') }) }, t('profile.logout')))
     : h('div', { class: 'stack' }, h('p', { class: 'muted' }, t('profile.accountInfo')),
         h('label', { class: 'field' }, t('profile.username'), uname), h('label', { class: 'field' }, t('profile.password'), pass),
         h('button', { class: 'btn primary block', onclick: guard(async () => { await api('POST', '/api/account', { username: uname.value, password: pass.value }); await refreshMe(); toast(t('profile.saved')); route() }) }, t('profile.createAccount')),
@@ -393,6 +394,7 @@ async function profile() {
     h('h2', {}, t('profile.contacts')), contacts,
     h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend')),
     h('p', { class: 'hint' }, t('friends.localNote')),
+    h('h2', {}, t('push.title')), h('div', { class: 'card' }, pushCard()),
     h('h2', {}, t('profile.account')), h('div', { class: 'card' }, account),
     h('h2', {}, t('profile.move')),
     h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('profile.moveInfo')),
@@ -408,7 +410,7 @@ async function profile() {
       h('a', { class: 'item', href: '/legal.html' }, h('div', { class: 'grow' }, t('profile.legal')))),
     h('div', {}, h('button', { class: 'btn block danger', onclick: guard(async () => {
       if (!confirm(t('profile.deleteConfirm'))) return
-      await api('DELETE', '/api/me'); forgetIdentity(); go('#/') }) }, t('profile.delete'))))
+      await api('DELETE', '/api/me'); await disablePush().catch(() => {}); forgetIdentity(); go('#/') }) }, t('profile.delete'))))
 }
 const linkItem = (label, hash) => h('button', { class: 'item', onclick: () => go(hash) }, h('div', { class: 'grow' }, label), '›')
 
@@ -574,11 +576,82 @@ async function licenses() {
   h('p', { class: 'hint' }, 'Open Trivia DB: https://opentdb.com · Wikidata: https://www.wikidata.org'))
 }
 
+/* ---------- Push-Benachrichtigungen ---------- */
+const pushSupported = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window
+const keyBytes = (b64) => Uint8Array.from(atob(b64.replace(/-/g, '+').replace(/_/g, '/')), (c) => c.charCodeAt(0))
+const sameBytes = (a, b) => !!a && a.byteLength === b.byteLength && new Uint8Array(a).every((v, i) => v === b[i])
+
+async function pushStatus() {
+  if (!pushSupported()) return 'unsupported'
+  if (Notification.permission === 'denied') return 'denied'
+  const sub = await (await navigator.serviceWorker.ready).pushManager.getSubscription()
+  return sub && Notification.permission === 'granted' ? 'on' : 'off'
+}
+async function enablePush() {
+  if ((await Notification.requestPermission()) !== 'granted') throw new ApiError(0, 'denied')
+  const { key } = await api('GET', '/api/push/key', undefined, { auth: false })
+  const appKey = keyBytes(key)
+  const reg = await navigator.serviceWorker.ready
+  let sub = await reg.pushManager.getSubscription()
+  if (sub && !sameBytes(sub.options.applicationServerKey, appKey)) { await sub.unsubscribe(); sub = null }
+  sub ??= await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: appKey })
+  await api('POST', '/api/push/subscribe', sub.toJSON())
+}
+async function disablePush() {
+  if (!pushSupported()) return
+  const sub = await (await navigator.serviceWorker.ready).pushManager.getSubscription()
+  if (!sub) return
+  await api('POST', '/api/push/unsubscribe', { endpoint: sub.endpoint }).catch(() => {})
+  await sub.unsubscribe()
+}
+/** Bindet ein bestehendes Geräte-Abo an die aktuelle Identität (nach Login, Transfer oder Neustart des Servers);
+ *  hat der Server einen neuen VAPID-Schlüssel (z. B. nach Datenverlust), wird automatisch neu abonniert. */
+async function resyncPush() {
+  if (!pushSupported() || Notification.permission !== 'granted') return
+  const reg = await navigator.serviceWorker.ready
+  let sub = await reg.pushManager.getSubscription()
+  if (!sub) return
+  try {
+    const appKey = keyBytes((await api('GET', '/api/push/key', undefined, { auth: false })).key)
+    if (!sameBytes(sub.options.applicationServerKey, appKey)) {
+      await sub.unsubscribe()
+      sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: appKey })
+    }
+    await api('POST', '/api/push/subscribe', sub.toJSON())
+  } catch { /* nächster Start versucht es erneut */ }
+}
+
+function pushCard() {
+  const box = h('div', { class: 'stack' })
+  const draw = async () => {
+    const st = await pushStatus()
+    const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.matchMedia('(display-mode: standalone)').matches
+    box.replaceChildren(...[h('p', { class: 'muted' }, t('push.info')),
+      st === 'unsupported' || ios && st !== 'on' ? h('p', { class: 'hint' }, ios ? t('push.iosHint') : t('push.unsupported')) : null,
+      st === 'denied' ? h('p', { class: 'hint' }, t('push.denied')) : null,
+      st === 'on' ? h('div', { class: 'row' }, h('span', { class: 'badge good' }, t('push.on'))) : null,
+      st === 'off' ? h('button', { class: 'btn primary block', onclick: guard(async () => { await enablePush(); toast(t('profile.saved')); draw() }) }, '🔔 ' + t('push.enable')) : null,
+      st === 'on' ? h('div', { class: 'row' },
+        h('button', { class: 'btn grow', onclick: guard(async () => { const r = await api('POST', '/api/push/test', {}); toast(r.sent ? t('push.sent') : t('push.noneSent')) }) }, t('push.test')),
+        h('button', { class: 'btn grow', onclick: guard(async () => { await disablePush(); draw() }) }, t('push.disable'))) : null].filter(Boolean))
+  }
+  draw().catch(() => {})
+  return box
+}
+
 /* ---------- Start ---------- */
 setLang(detectLang())
 if (location.pathname.startsWith('/i/')) {
   const code = location.pathname.split('/')[2]
   history.replaceState(null, '', '/#/invite/' + code)
 }
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {})
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {})
+  // Der Service Worker meldet Pushes, während die App sichtbar ist: Ansicht aktualisieren statt Benachrichtigung zeigen.
+  navigator.serviceWorker.addEventListener('message', (e) => {
+    if (e.data?.type !== 'push-refresh') return
+    const page = (location.hash.slice(1).split('/')[1] ?? '')
+    if (page === '' || page === 'game') route()
+  })
+}
 route()

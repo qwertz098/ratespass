@@ -26,9 +26,14 @@ Entwicklung ohne Docker (Node ≥ 22.18):
 ```bash
 npm install          # nur typescript + @types/node für `npm run check`
 npm run dev          # http://localhost:3000, Seed-Fragen werden beim Start importiert
-npm test             # Server-, Spiel-, Import- und i18n-Tests (17)
+npm test             # Server-, Spiel-, Import-, Push- und i18n-Tests (24)
+npm run backup -- ./backup   # konsistente DB-Sicherung + VAPID-Schlüssel
 npm run check        # Typprüfung
 ```
+
+## Online stellen
+
+GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Varianten (eigener Rechner + Cloudflare Tunnel, Oracle-VM, Image in der GitHub Container Registry) steht in [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
 ## Konfiguration (Umgebungsvariablen)
 
@@ -40,12 +45,15 @@ npm run check        # Typprüfung
 | `TRUST_PROXY` | 0 | `1`: Client-IP aus `X-Forwarded-For` (Rate-Limits) |
 | `BATCH_DIR` | `./batches` | Fragen-Batches, die beim Start automatisch importiert werden |
 | `MIN_LANG_QUESTIONS` | 30 | Sprache wird erst ab so vielen aktiven Fragen angeboten |
+| `VAPID_SUBJECT` | Repo-URL | Kontakt für Push-Dienste (`mailto:…` oder `https://…`) – für den Betrieb setzen |
+| `VAPID_FILE` | `DATA_DIR/vapid.json` | Push-Schlüssel (wird beim ersten Start erzeugt, mit dem Backup sichern) |
+| `PUSH_EXTRA_HOSTS` | – | zusätzlich erlaubte Push-Dienst-Hosts (kommagetrennt) |
 
 ## Fragen
 
 Beim Start werden alle neuen Dateien aus `batches/` importiert (idempotent, dedupliziert, Lizenz geprüft). Neue Batches = Datei ablegen, Container neu starten. Details, Workflow für „200er-Batches auf Abruf“ und die **Lizenzregeln** stehen in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
 
-Aktueller Bestand: `batches/seed-000.json` (72 Fragen × de/en) – ein Entwicklungs-Seed, damit die App sofort spielbar ist. Zielbestand 4000 Fragen folgt in Batches.
+Aktueller Bestand: **378 Fragen × de/en** (`seed-000` 72, `original-001` 200, `original-002` 106), selbst formuliert, CC BY-SA 4.0. Zielbestand 4000 folgt in weiteren Batches.
 
 ## Architektur
 
@@ -63,7 +71,7 @@ Spielregeln serverseitig: Die Lösung verlässt den Server erst nach der Antwort
 
 - Der Kamera-Scan braucht HTTPS (oder `localhost`) und die Kamera-Berechtigung; ohne beides bleibt der Link-/Code-Weg.
 - Gleichen Kontakt auf einem Gerät entfernen und auf einem anderen noch lokal gespeichert haben: die lokale Kopie stellt Kontakte nur wieder her, wenn die Server-Liste komplett leer ist.
-- **Web-Push** („Du bist dran“) fehlt noch – Spielstände aktualisieren sich per Polling, solange die App offen ist.
+- **Web-Push ist eingebaut** (Profil → Benachrichtigungen), aber die echte Zustellung über FCM/Mozilla/Apple konnte in der Entwicklungsumgebung nicht getestet werden (Netzwerk gesperrt). Verschlüsselung, VAPID und Auslöser sind gegen die Referenzbibliotheken `http_ece`/`web-push` und einen Fake-Push-Dienst getestet.
 - `/legal.html` (Impressum/Datenschutz) ist ein **Platzhalter** und muss vor einem öffentlichen Betrieb ausgefüllt und rechtlich geprüft werden.
 - `tools/fetch-opentdb.ts` und `tools/gen-wikidata.ts` sind gegen Fixtures im dokumentierten API-Format getestet, aber noch nicht gegen die Live-Dienste gelaufen (Netzwerkzugriff war in der Entwicklungsumgebung gesperrt).
 - Code-Lizenz für dieses Repository ist noch nicht festgelegt (die **Fragen** stehen unter CC BY-SA 4.0, siehe Doku).
