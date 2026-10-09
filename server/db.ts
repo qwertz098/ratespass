@@ -228,8 +228,54 @@ CREATE TABLE ladder_steps(
 );
 `
 
+// v7: Mehrspieler-Räume (asynchron): alle Teilnehmer spielen dieselben Fragen, jeder in eigenem Tempo
+const SCHEMA_V7 = `
+CREATE TABLE rooms(
+  id INTEGER PRIMARY KEY,
+  code TEXT NOT NULL UNIQUE,
+  mode TEXT NOT NULL,
+  lang TEXT NOT NULL,
+  host INTEGER NOT NULL REFERENCES players(id),
+  status TEXT NOT NULL DEFAULT 'lobby',
+  level TEXT,
+  cats TEXT,
+  total INTEGER NOT NULL DEFAULT 0,
+  created_at INTEGER NOT NULL,
+  updated_at INTEGER NOT NULL,
+  deadline INTEGER
+);
+CREATE TABLE room_players(
+  room_id INTEGER NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
+  player_id INTEGER NOT NULL REFERENCES players(id),
+  joined_at INTEGER NOT NULL,
+  pos INTEGER NOT NULL DEFAULT 0,
+  done INTEGER NOT NULL DEFAULT 0,
+  score INTEGER NOT NULL DEFAULT 0,
+  ms INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY(room_id, player_id)
+);
+CREATE INDEX room_players_player ON room_players(player_id);
+CREATE TABLE room_questions(
+  room_id INTEGER NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
+  idx INTEGER NOT NULL,
+  question_id INTEGER NOT NULL REFERENCES questions(id),
+  perm TEXT NOT NULL,
+  PRIMARY KEY(room_id, idx)
+);
+CREATE TABLE room_answers(
+  room_id INTEGER NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
+  idx INTEGER NOT NULL,
+  player_id INTEGER NOT NULL,
+  served_at INTEGER NOT NULL,
+  choice INTEGER,
+  correct INTEGER,
+  ms INTEGER,
+  PRIMARY KEY(room_id, idx, player_id)
+);
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)

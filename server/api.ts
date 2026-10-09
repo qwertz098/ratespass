@@ -8,6 +8,7 @@ import {
 } from './auth.ts'
 import * as game from './game.ts'
 import * as ladder from './ladder.ts'
+import * as rooms from './rooms.ts'
 import {
   adminEnabled, clearFailures, closeSession, COOKIE, loginBlocked, openSession, parseCookie,
   recordFailure, sameOriginOk, sessionCookie, tokenOk, validSession,
@@ -107,6 +108,7 @@ router.delete('/api/me', (c) => {
     run('DELETE FROM contacts WHERE player_id=? OR contact_id=?', p.id, p.id)
     run('DELETE FROM seen WHERE player_id=?', p.id)
     run('DELETE FROM ladders WHERE player_id=?', p.id)
+    rooms.forgetPlayer(p.id)
     run('DELETE FROM reports WHERE player_id=?', p.id)
     run('UPDATE reviews SET player_id=NULL WHERE player_id=?', p.id)
     run('UPDATE players SET reviewer=0 WHERE id=?', p.id)
@@ -277,6 +279,47 @@ router.post('/api/ladders/:id/review', (c) => {
   if (!p.reviewer) throw new HttpError(403, 'not_reviewer')
   rateLimit(`review:${p.id}`, 120, 3_600_000)
   fileReview(ladder.answeredQuestionId(gid(c), p, c.body.step), p.id, c.body.part, c.body.kind, c.body.note)
+  return { ok: true }
+})
+
+/* ---------- Mehrspieler-Räume (asynchron) ---------- */
+router.get('/api/rooms', (c) => ({ rooms: rooms.listRooms(me(c)) }))
+router.post('/api/rooms', (c) => {
+  const p = me(c)
+  rateLimit(`room:${p.id}`, 30, 3_600_000)
+  const id = rooms.createRoom(p, c.body?.mode, pickLang(c.body?.lang, p.lang))
+  return { id, room: rooms.getRoomView(id, p) }
+})
+router.post('/api/rooms/join', (c) => {
+  const p = me(c)
+  rateLimit(`roomjoin:${c.ip}`, 30, 900_000)
+  const id = rooms.joinRoom(p, c.body?.code)
+  return { id, room: rooms.getRoomView(id, p) }
+})
+router.get('/api/rooms/:id', (c) => ({ room: rooms.getRoomView(gid(c), me(c)) }))
+router.post('/api/rooms/:id/start', (c) => {
+  rooms.startRoom(me(c), gid(c))
+  return { room: rooms.getRoomView(gid(c), me(c)) }
+})
+router.post('/api/rooms/:id/leave', (c) => {
+  rooms.leaveRoom(me(c), gid(c))
+  return { ok: true }
+})
+router.get('/api/rooms/:id/question', (c) => rooms.currentQuestion(gid(c), me(c)))
+router.post('/api/rooms/:id/answer', (c) => rooms.submitAnswer(gid(c), me(c), c.body.step, c.body.choice))
+router.post('/api/rooms/:id/quit', (c) => ({ room: rooms.quit(gid(c), me(c)) }))
+router.post('/api/rooms/:id/report', (c) => {
+  if (!config.playerReports) throw new HttpError(403, 'reports_disabled')
+  const qid = rooms.answeredQuestionId(gid(c), me(c), c.body.step)
+  run('INSERT OR IGNORE INTO reports(question_id,player_id,reason,created_at) VALUES(?,?,?,?)', qid, me(c).id, String(c.body.reason ?? '').slice(0, 200), now())
+  if (get<{ n: number }>('SELECT COUNT(*) n FROM reports WHERE question_id=?', qid)!.n >= 3) run("UPDATE questions SET status='disabled' WHERE id=? AND status='active'", qid)
+  return { ok: true }
+})
+router.post('/api/rooms/:id/review', (c) => {
+  const p = me(c)
+  if (!p.reviewer) throw new HttpError(403, 'not_reviewer')
+  rateLimit(`review:${p.id}`, 120, 3_600_000)
+  fileReview(rooms.answeredQuestionId(gid(c), p, c.body.step), p.id, c.body.part, c.body.kind, c.body.note)
   return { ok: true }
 })
 

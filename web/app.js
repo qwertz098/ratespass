@@ -136,7 +136,7 @@ async function route() {
   try {
     if (!S.me) { loading(); if (!(await boot())) return }
     if (my !== runId) return
-    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay }
+    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join }
     await (pages[page] ?? home)(arg, my)
   } catch (e) {
     if (my !== runId) return
@@ -197,7 +197,7 @@ function sessionLost() {
 
 /* ---------- Startseite ---------- */
 async function home(_, my) {
-  const render = (games) => {
+  const render = (games, rooms = []) => {
     if (my !== runId) return
     const mine = games.filter((g) => g.status === 'active' && g.turn === 'me')
     const theirs = games.filter((g) => g.status === 'active' && g.turn === 'opp')
@@ -208,10 +208,11 @@ async function home(_, my) {
       h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Rates', h('b', {}, 'paß')),
         h('button', { class: 'iconbtn', 'aria-label': t('profile.title'), onclick: () => go('#/profile') }, avatar(S.me, 'sm'))),
       h('button', { class: 'btn primary block', onclick: () => go('#/new') }, '＋ ' + t('home.new')),
-      games.length ? null : h('div', { class: 'empty' }, t('home.empty')),
+      games.length || rooms.length ? null : h('div', { class: 'empty' }, t('home.empty')),
+      rooms.length ? [h('h2', {}, t('room.rounds')), h('div', { class: 'list' }, rooms.map(roomItem))] : null,
       section(t('home.yourTurn'), mine), section(t('home.theirTurn'), theirs), section(t('home.waiting'), waiting), section(t('home.finished'), done))
   }
-  const load = guard(async () => render((await api('GET', '/api/games')).games))
+  const load = guard(async () => { const [g, r] = await Promise.all([api('GET', '/api/games'), api('GET', '/api/rooms')]); render(g.games, r.rooms) })
   await load()
   poll(load, 10000)
 }
@@ -231,6 +232,7 @@ async function newGame() {
     const r = await api('POST', '/api/games', { opponent, lang: gameLang() })
     go('#/game/' + r.id)
   })
+  const roomCode = h('input', { type: 'text', maxLength: 12, autocapitalize: 'characters', autocomplete: 'off', placeholder: 'ABC123' })
   const langSel = h('select', { id: 'gl', onchange: (e) => store.set('rp.gameLang', e.target.value) },
     (S.meta.langs ?? []).map((l) => h('option', { value: l.lang, selected: l.lang === gameLang() }, langName(l.lang))))
   const option = (title, sub, icon, fn) => h('button', { class: 'item', onclick: fn },
@@ -243,6 +245,12 @@ async function newGame() {
     h('h2', {}, t('ladder.title')),
     h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
       const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),
+    h('h2', {}, t('room.multi')),
+    h('div', { class: 'list' },
+      ['quiz', 'ladder'].map((m) => option(modeName(m), t('room.sub.' + m), m === 'ladder' ? '💎' : '👥', guard(async () => {
+        const r = await api('POST', '/api/rooms', { mode: m, lang: gameLang() }); go('#/room/' + r.id) })))),
+    h('div', { class: 'card' }, h('label', { class: 'field' }, t('room.codeLabel'), h('div', { class: 'row' }, roomCode,
+      h('button', { class: 'btn', onclick: guard(async () => joinRoom(roomCode.value)) }, t('room.join'))))),
     h('h2', {}, t('new.questionLang')), h('div', { class: 'card' }, langSel),
     h('h2', {}, t('new.contacts')),
     S.contacts.length
@@ -398,26 +406,27 @@ async function ladder(id) {
     h('div', { class: 'card ladder' }, rows))
 }
 
-async function lplay(id, my) {
+/** Eine Frage der Leiter bzw. Raumrunde stellen; `base` ist der API-Pfad der Leiter oder des Raums (gleiche Unterrouten). */
+async function askOne(base, back, my, chain = false) {
   let raf = 0, keyHandler = null
   const prev = cleanup
   cleanup = () => { prev(); cancelAnimationFrame(raf); if (keyHandler) document.removeEventListener('keydown', keyHandler) }
   const alive = () => my === runId
   let q
-  try { q = await api('GET', `/api/ladders/${id}/question`) } catch (e) {
-    if (e.status === 409) return go('#/ladder/' + id)
+  try { q = await api('GET', `${base}/question`) } catch (e) {
+    if (e.status === 409) return go(back)
     throw e
   }
   if (!alive()) return
-  await new Promise((resolve) => {
+  const result = await new Promise((resolve) => {
     let done = false
     const bar = h('i')
     const buttons = q.options.map((text, i) => h('button', { class: 'opt', onclick: () => submit(i) }, h('kbd', {}, String(i + 1)), h('span', {}, text)))
     const feedback = h('div', { class: 'feedback' })
     mount(
-      topbar(t('ladder.title'), true),
+      topbar(t(base.includes('/rooms/') ? 'room.title' : 'ladder.title'), true),
       h('div', { class: 'card qcard', cat: q.category },
-        h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, t('ladder.step', { n: q.step, total: q.total }) + ' · ' + money(q.prize))),
+        h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, t('ladder.step', { n: q.step, total: q.total }) + (q.prize ? ' · ' + money(q.prize) : ''))),
         h('div', { class: 'timer' }, bar), h('div', { class: 'question' }, q.text), h('div', { class: 'opts' }, buttons), feedback))
     const deadline = performance.now() + q.remaining_ms
     const tick = () => {
@@ -435,25 +444,25 @@ async function lplay(id, my) {
       cancelAnimationFrame(raf)
       buttons.forEach((b) => (b.disabled = true))
       let r
-      try { r = await api('POST', `/api/ladders/${id}/answer`, { step: q.step, choice }) } catch (e) { toast(errText(e)); return resolve() }
+      try { r = await api('POST', `${base}/answer`, { step: q.step, choice }) } catch (e) { toast(errText(e)); return resolve() }
       buttons[r.correct_index]?.classList.add('good')
       if (choice >= 0 && !r.correct) buttons[choice].classList.add('bad')
       const label = choice === -1 ? t('play.timeUp') : r.correct ? t('play.right') : t('play.wrong')
       const showReport = S.meta?.reports !== false && store.get('rp.noReport') !== '1'
       const report = h('button', { class: 'btn small', title: t('play.report'), 'aria-label': t('play.report'), onclick: guard(async () => {
-        await api('POST', `/api/ladders/${id}/report`, { step: q.step, reason: '' }); report.disabled = true; toast(t('play.reported')) }) }, '⚑')
+        await api('POST', `${base}/report`, { step: q.step, reason: '' }); report.disabled = true; toast(t('play.reported')) }) }, '⚑')
       const review = S.me?.reviewer ? h('button', { class: 'btn small', title: t('play.review'), 'aria-label': t('play.review'), onclick: () => {
         const part = h('select', {}, ['question', 'answers'].map((v) => h('option', { value: v }, t('review.part.' + v))))
         const kind = h('select', {}, ['wrong', 'wording'].map((v) => h('option', { value: v }, t('review.kind.' + v))))
         const note = h('input', { type: 'text', maxLength: 300, placeholder: t('review.note') })
         const form = h('div', { class: 'stack' }, h('div', { class: 'row' }, part, kind), note, h('div', { class: 'row' },
           h('button', { class: 'btn small primary', onclick: guard(async () => {
-            await api('POST', `/api/ladders/${id}/review`, { step: q.step, part: part.value, kind: kind.value, note: note.value })
+            await api('POST', `${base}/review`, { step: q.step, part: part.value, kind: kind.value, note: note.value })
             form.remove(); review.disabled = true; toast(t('review.sent')) }) }, t('review.send')),
           h('button', { class: 'btn small', onclick: () => form.remove() }, t('review.cancel'))))
         feedback.append(form); note.focus()
       } }, '✎') : null
-      const over = r.ladder.status !== 'active'
+      const over = r.over
       feedback.append(h('strong', {}, label), h('span', { class: 'row' }, review, showReport ? report : null,
         h('button', { class: 'btn small primary', onclick: () => resolve(r) }, over ? t('ladder.result') : t('play.next'))))
       if (r.explanation) feedback.before(h('p', { class: 'muted' }, r.explanation))
@@ -461,7 +470,68 @@ async function lplay(id, my) {
   })
   if (keyHandler) document.removeEventListener('keydown', keyHandler)
   if (!alive()) return
-  go('#/ladder/' + id)
+  if (chain && result && !result.over) return askOne(base, back, my, chain) // Raumrunden: direkt zur nächsten Frage
+  go(back)
+}
+
+const lplay = (id, my) => askOne(`/api/ladders/${id}`, '#/ladder/' + id, my)
+const rplay = (id, my) => askOne(`/api/rooms/${id}`, '#/room/' + id, my, true)
+
+/* ---------- Mehrspieler-Räume (asynchron) ---------- */
+const modeName = (m) => t('room.mode.' + m)
+
+async function joinRoom(code) {
+  const r = await api('POST', '/api/rooms/join', { code })
+  go('#/room/' + r.id)
+}
+const roomLink = (code) => `${location.origin}/#/join/${code}`
+
+async function room(id, my) {
+  const load = async () => {
+    const { room: r } = await api('GET', `/api/rooms/${id}`)
+    if (my !== runId) return
+    const me = r.players.find((p) => p.is_me)
+    const rows = (r.status === 'finished' ? [...r.players].sort((a, b) => a.rank - b.rank) : r.players).map((p) => h('div', { class: 'item' },
+      r.status === 'finished' ? h('span', { class: 'rank' }, '#' + p.rank) : null,
+      h('div', { class: 'grow' }, h('div', { class: 'ell' }, p.name + (p.is_host ? ' 👑' : '') + (p.is_me ? ' (' + t('game.you') + ')' : '')),
+        h('div', { class: 'muted' }, r.status === 'lobby' ? '' : p.done ? t('room.done') : t('room.progress', { n: p.pos, total: r.total }))),
+      p.score !== null && r.status !== 'lobby' ? h('span', { class: 'score' }, r.mode === 'ladder' ? money(p.score) : `${p.score}/${r.total}`) : null))
+    const actions = []
+    if (r.status === 'lobby') {
+      actions.push(
+        h('div', { class: 'code' }, r.code),
+        h('button', { class: 'btn block', onclick: () => share(roomLink(r.code), t('app.name')) }, '🔗 ' + t('room.share')),
+        r.is_host
+          ? h('button', { class: 'btn primary block', disabled: r.players.length < 2, onclick: guard(async () => { await api('POST', `/api/rooms/${id}/start`, {}); route() }) }, t('room.start'))
+          : h('p', { class: 'muted' }, t('room.waitHost')),
+        h('button', { class: 'btn block danger', onclick: guard(async () => { await api('POST', `/api/rooms/${id}/leave`, {}); go('#/') }) }, t(r.is_host ? 'room.dissolve' : 'room.leave')))
+    } else if (r.status === 'active') {
+      if (!me.done) {
+        actions.push(h('button', { class: 'btn primary block', onclick: () => go('#/rplay/' + id) }, t(me.pos ? 'ladder.continue' : 'ladder.begin', { n: me.pos + 1 })))
+        if (r.mode === 'ladder' && me.pos) actions.push(h('button', { class: 'btn block danger', onclick: guard(async () => {
+          if (!confirm(t('ladder.quitConfirm', { prize: money(me.score) }))) return
+          await api('POST', `/api/rooms/${id}/quit`, {}); route() }) }, t('ladder.quit', { prize: money(me.score) })))
+      } else actions.push(h('p', { class: 'muted' }, t('room.waitOthers')))
+    } else actions.push(h('button', { class: 'btn block', onclick: () => go('#/') }, t('ladder.home')))
+    mount(topbar(modeName(r.mode) + ' · ' + r.code, true),
+      h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('room.info.' + r.mode, { n: r.total || (r.mode === 'quiz' ? 12 : 15) })),
+        r.level && r.level !== 'basic' ? h('div', { class: 'hint' }, t('level.badge', { level: t('tier.' + r.level) })) : null),
+      r.status === 'finished' ? h('h2', {}, t('room.ranking')) : h('h2', {}, t('room.players', { n: r.players.length, max: r.max_players })),
+      h('div', { class: 'list' }, rows), h('div', { class: 'card stack' }, actions))
+  }
+  await guard(load)()
+  poll(guard(load), 8000)
+}
+
+async function join(code) {
+  mount(topbar(t('app.name'), false), h('div', { class: 'card stack' }, h('p', {}, t('room.joining'))))
+  await joinRoom(code || '')
+}
+
+function roomItem(r) {
+  const badge = r.status === 'finished' ? t('room.finishedRank', { rank: r.my_rank }) : r.status === 'lobby' ? t('room.lobby') : r.my_done ? t('room.waitOthers') : t('room.yourTurn')
+  return h('button', { class: 'item', onclick: () => go('#/room/' + r.id) }, h('div', { class: 'avatar sm' }, r.mode === 'ladder' ? '💎' : '👥'),
+    h('div', { class: 'grow' }, h('div', { class: 'ell' }, modeName(r.mode) + ' · ' + r.code), h('div', { class: 'muted' }, badge)), h('span', { class: 'badge' }, t('room.playersN', { n: r.players })))
 }
 
 /* ---------- Profil ---------- */

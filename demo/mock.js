@@ -136,6 +136,31 @@ const DEMO = (() => {
     history: l.steps.filter((x) => x.choice !== undefined).map((x, i) => ({ step: i + 1, correct: !!x.correct })),
   })
 
+  /* ---------- Mehrspieler-Räume (Demo: zwei Bots sind schon beigetreten und spielen sofort durch) ---------- */
+  const RQUIZ = [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3]
+  const rview = (r) => {
+    const fin = r.status === 'finished'
+    const rank = [...r.players].sort((a, b) => b.score - a.score || a.ms - b.ms)
+    return { id: r.id, code: r.code, mode: r.mode, lang: r.lang, status: r.status, level: st.level ?? 'basic', total: r.total, is_host: true, deadline: null, max_players: 6,
+      players: r.players.map((p) => ({ name: p.name, public_id: p.public_id, is_me: !!p.is_me, is_host: !!p.is_me, pos: p.pos, done: p.done, score: fin || p.is_me ? p.score : null, ms: fin || p.is_me ? p.ms : null, rank: fin ? rank.indexOf(p) + 1 : null })),
+      ...(r.mode === 'ladder' ? { prizes: LPRIZES, safe_steps: [5, 10] } : {}), updated_at: r.updated_at }
+  }
+  function rcheck(r) { if (r.players.every((p) => p.done)) { r.status = 'finished'; save() } }
+  function rstart(r) {
+    const rank = LEVELS.indexOf(st.level ?? 'basic')
+    const open = ALL_CATS.filter((c) => !TIERS[c] || (LEVELS.indexOf(TIERS[c]) <= rank && !(st.disabled ?? []).includes(c)))
+    const diffs = r.mode === 'quiz' ? RQUIZ : LPRIZES.map((_, i) => (i < 5 ? 1 : i < 10 ? 2 : 3)), used = new Set()
+    r.qs = diffs.map((d) => {
+      let c = pool(r.lang).filter((q) => open.includes(q.c) && q.d === d && !used.has(q.i))
+      if (!c.length) c = pool(r.lang).filter((q) => open.includes(q.c) && !used.has(q.i))
+      const q = shuffle(c)[0]; used.add(q.i); return { i: q.i, perm: shuffle([0, 1, 2, 3]), served: null }
+    })
+    r.total = r.qs.length; r.status = 'active'
+    for (const p of r.players.filter((x) => !x.is_me)) { // Bots spielen sofort durch
+      p.pos = r.total; p.done = true; p.ms = 40000 + rnd(120000)
+      p.score = r.mode === 'quiz' ? 4 + rnd(8) : [0, 100, 500, 1000, 4000, 16000, 32000][rnd(7)]
+    }
+  }
   function handle(method, path, body) {
     let m
     if (path === '/api/meta') return { body: { categories: ALL_CATS, tiers: Object.fromEntries(ALL_CATS.map((c) => [c, TIERS[c] ?? 'basic'])), levels: LEVELS, regions: ['global', 'dach'], reports: true, langs: [{ lang: 'de', n: pool('de').length }, { lang: 'en', n: pool('en').length }], time_limit_ms: LIMIT, rounds: 6, per_round: 3 } }
@@ -175,6 +200,40 @@ const DEMO = (() => {
     if (path.startsWith('/api/push/')) return err(400, 'bad_subscription')
     if (path === '/api/games' && method === 'GET') {
       return { body: { games: st.games.map((g) => { const v = view(g); return { id: v.id, status: v.status, lang: v.lang, round: v.round, turn: v.turn, phase: v.phase, opp: v.opp, score: v.score, winner: v.winner, updated_at: v.updated_at } }) } }
+    }
+    /* Mehrspieler-Räume */
+    if (path === '/api/rooms' && method === 'GET') return { body: { rooms: (st.rooms ?? []).map((r) => { const v = rview(r), me = v.players.find((p) => p.is_me); return { id: r.id, code: r.code, mode: r.mode, status: r.status, players: v.players.length, my_done: me.done, my_rank: me.rank, updated_at: r.updated_at } }) } }
+    if (path === '/api/rooms' && method === 'POST') {
+      st.rooms ??= []
+      const r = { id: ++st.seq, code: code().slice(0, 6), mode: body.mode === 'ladder' ? 'ladder' : 'quiz', lang: body.lang === 'en' ? 'en' : 'de', status: 'lobby', total: 0, updated_at: Date.now(),
+        players: [{ name: st.me.name, public_id: st.me.public_id, is_me: true, pos: 0, done: false, score: 0, ms: 0 }, { name: 'Mia', public_id: 'MIA3F7HJ', pos: 0, done: false, score: 0, ms: 0 }, { name: 'Jonas', public_id: 'JON9X2KP', pos: 0, done: false, score: 0, ms: 0 }], qs: [] }
+      st.rooms.unshift(r); save(); return { body: { id: r.id, room: rview(r) } }
+    }
+    if (path === '/api/rooms/join' && method === 'POST') return err(404, 'unknown_room')
+    if ((m = path.match(/^\/api\/rooms\/(\d+)(?:\/(\w+))?$/))) {
+      const r = (st.rooms ?? []).find((x) => x.id === Number(m[1])), act = m[2], me = r && r.players.find((p) => p.is_me)
+      if (!r) return err(404, 'not_found')
+      if (!act) return { body: { room: rview(r) } }
+      if (act === 'report' || act === 'review') return { body: { ok: true } }
+      if (act === 'leave') { st.rooms = st.rooms.filter((x) => x !== r); save(); return { body: { ok: true } } }
+      if (act === 'start') { if (r.status !== 'lobby') return err(409, 'room_started'); rstart(r); save(); return { body: { room: rview(r) } } }
+      if (r.status !== 'active' || me.done) return err(409, 'room_over')
+      const idx = me.pos, lim = r.mode === 'quiz' ? 20000 : llimit(idx + 1)
+      if (act === 'quit') { if (r.mode !== 'ladder') return err(400, 'bad_mode'); me.done = true; me.score = LPRIZES[me.pos - 1] ?? 0; rcheck(r); return { body: { room: rview(r) } } }
+      if (act === 'question') {
+        const x = r.qs[idx]; if (!x.served) { x.served = Date.now(); save() }
+        const q = QS[x.i], c = content(q, r.lang)
+        return { body: { step: idx + 1, total: r.total, prize: r.mode === 'ladder' ? LPRIZES[idx] : null, category: q.c, text: c.text, options: x.perm.map((k) => c.answers[k]), limit_ms: lim, remaining_ms: Math.max(0, lim - (Date.now() - x.served)) } }
+      }
+      if (act === 'answer') {
+        if (body.step !== idx + 1 || !r.qs[idx].served) return err(409, 'wrong_question')
+        const x = r.qs[idx], correctIdx = x.perm.indexOf(0), choice = Date.now() - x.served > lim + 4000 ? -1 : body.choice, ok = choice === correctIdx
+        me.pos = idx + 1; me.ms += Math.min(lim, Date.now() - x.served)
+        if (r.mode === 'quiz') { if (ok) me.score++; me.done = me.pos >= r.total }
+        else if (ok) { me.score = LPRIZES[idx]; me.done = me.pos >= r.total } else { me.score = lguar(idx); me.done = true }
+        r.updated_at = Date.now(); rcheck(r); save()
+        return { body: { correct: ok, correct_index: correctIdx, explanation: null, over: me.done, room: rview(r) } }
+      }
     }
     /* Millionen-Leiter (Solo): gleiche Regeln wie server/ladder.ts */
     if (path === '/api/ladders' && method === 'POST') {

@@ -147,6 +147,8 @@ input[type=checkbox] { width: 20px; height: 20px; margin-top: 2px; accent-color:
 .lresult { text-align: center }
 .lresult .big { font-size: 2rem; font-weight: 800 }
 
+.rank { font-weight: 800; color: var(--accent); min-width: 28px }
+
 .demo-bar{max-width:520px;margin:0 auto;padding:12px 16px 0;display:grid;gap:10px}
 .demo-bar .row{justify-content:space-between}
 .demo-note{font-size:13px;color:var(--muted);margin:0}
@@ -313,6 +315,31 @@ const DEMO = (() => {
     history: l.steps.filter((x) => x.choice !== undefined).map((x, i) => ({ step: i + 1, correct: !!x.correct })),
   })
 
+  /* ---------- Mehrspieler-Räume (Demo: zwei Bots sind schon beigetreten und spielen sofort durch) ---------- */
+  const RQUIZ = [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3]
+  const rview = (r) => {
+    const fin = r.status === 'finished'
+    const rank = [...r.players].sort((a, b) => b.score - a.score || a.ms - b.ms)
+    return { id: r.id, code: r.code, mode: r.mode, lang: r.lang, status: r.status, level: st.level ?? 'basic', total: r.total, is_host: true, deadline: null, max_players: 6,
+      players: r.players.map((p) => ({ name: p.name, public_id: p.public_id, is_me: !!p.is_me, is_host: !!p.is_me, pos: p.pos, done: p.done, score: fin || p.is_me ? p.score : null, ms: fin || p.is_me ? p.ms : null, rank: fin ? rank.indexOf(p) + 1 : null })),
+      ...(r.mode === 'ladder' ? { prizes: LPRIZES, safe_steps: [5, 10] } : {}), updated_at: r.updated_at }
+  }
+  function rcheck(r) { if (r.players.every((p) => p.done)) { r.status = 'finished'; save() } }
+  function rstart(r) {
+    const rank = LEVELS.indexOf(st.level ?? 'basic')
+    const open = ALL_CATS.filter((c) => !TIERS[c] || (LEVELS.indexOf(TIERS[c]) <= rank && !(st.disabled ?? []).includes(c)))
+    const diffs = r.mode === 'quiz' ? RQUIZ : LPRIZES.map((_, i) => (i < 5 ? 1 : i < 10 ? 2 : 3)), used = new Set()
+    r.qs = diffs.map((d) => {
+      let c = pool(r.lang).filter((q) => open.includes(q.c) && q.d === d && !used.has(q.i))
+      if (!c.length) c = pool(r.lang).filter((q) => open.includes(q.c) && !used.has(q.i))
+      const q = shuffle(c)[0]; used.add(q.i); return { i: q.i, perm: shuffle([0, 1, 2, 3]), served: null }
+    })
+    r.total = r.qs.length; r.status = 'active'
+    for (const p of r.players.filter((x) => !x.is_me)) { // Bots spielen sofort durch
+      p.pos = r.total; p.done = true; p.ms = 40000 + rnd(120000)
+      p.score = r.mode === 'quiz' ? 4 + rnd(8) : [0, 100, 500, 1000, 4000, 16000, 32000][rnd(7)]
+    }
+  }
   function handle(method, path, body) {
     let m
     if (path === '/api/meta') return { body: { categories: ALL_CATS, tiers: Object.fromEntries(ALL_CATS.map((c) => [c, TIERS[c] ?? 'basic'])), levels: LEVELS, regions: ['global', 'dach'], reports: true, langs: [{ lang: 'de', n: pool('de').length }, { lang: 'en', n: pool('en').length }], time_limit_ms: LIMIT, rounds: 6, per_round: 3 } }
@@ -352,6 +379,40 @@ const DEMO = (() => {
     if (path.startsWith('/api/push/')) return err(400, 'bad_subscription')
     if (path === '/api/games' && method === 'GET') {
       return { body: { games: st.games.map((g) => { const v = view(g); return { id: v.id, status: v.status, lang: v.lang, round: v.round, turn: v.turn, phase: v.phase, opp: v.opp, score: v.score, winner: v.winner, updated_at: v.updated_at } }) } }
+    }
+    /* Mehrspieler-Räume */
+    if (path === '/api/rooms' && method === 'GET') return { body: { rooms: (st.rooms ?? []).map((r) => { const v = rview(r), me = v.players.find((p) => p.is_me); return { id: r.id, code: r.code, mode: r.mode, status: r.status, players: v.players.length, my_done: me.done, my_rank: me.rank, updated_at: r.updated_at } }) } }
+    if (path === '/api/rooms' && method === 'POST') {
+      st.rooms ??= []
+      const r = { id: ++st.seq, code: code().slice(0, 6), mode: body.mode === 'ladder' ? 'ladder' : 'quiz', lang: body.lang === 'en' ? 'en' : 'de', status: 'lobby', total: 0, updated_at: Date.now(),
+        players: [{ name: st.me.name, public_id: st.me.public_id, is_me: true, pos: 0, done: false, score: 0, ms: 0 }, { name: 'Mia', public_id: 'MIA3F7HJ', pos: 0, done: false, score: 0, ms: 0 }, { name: 'Jonas', public_id: 'JON9X2KP', pos: 0, done: false, score: 0, ms: 0 }], qs: [] }
+      st.rooms.unshift(r); save(); return { body: { id: r.id, room: rview(r) } }
+    }
+    if (path === '/api/rooms/join' && method === 'POST') return err(404, 'unknown_room')
+    if ((m = path.match(/^\/api\/rooms\/(\d+)(?:\/(\w+))?$/))) {
+      const r = (st.rooms ?? []).find((x) => x.id === Number(m[1])), act = m[2], me = r && r.players.find((p) => p.is_me)
+      if (!r) return err(404, 'not_found')
+      if (!act) return { body: { room: rview(r) } }
+      if (act === 'report' || act === 'review') return { body: { ok: true } }
+      if (act === 'leave') { st.rooms = st.rooms.filter((x) => x !== r); save(); return { body: { ok: true } } }
+      if (act === 'start') { if (r.status !== 'lobby') return err(409, 'room_started'); rstart(r); save(); return { body: { room: rview(r) } } }
+      if (r.status !== 'active' || me.done) return err(409, 'room_over')
+      const idx = me.pos, lim = r.mode === 'quiz' ? 20000 : llimit(idx + 1)
+      if (act === 'quit') { if (r.mode !== 'ladder') return err(400, 'bad_mode'); me.done = true; me.score = LPRIZES[me.pos - 1] ?? 0; rcheck(r); return { body: { room: rview(r) } } }
+      if (act === 'question') {
+        const x = r.qs[idx]; if (!x.served) { x.served = Date.now(); save() }
+        const q = QS[x.i], c = content(q, r.lang)
+        return { body: { step: idx + 1, total: r.total, prize: r.mode === 'ladder' ? LPRIZES[idx] : null, category: q.c, text: c.text, options: x.perm.map((k) => c.answers[k]), limit_ms: lim, remaining_ms: Math.max(0, lim - (Date.now() - x.served)) } }
+      }
+      if (act === 'answer') {
+        if (body.step !== idx + 1 || !r.qs[idx].served) return err(409, 'wrong_question')
+        const x = r.qs[idx], correctIdx = x.perm.indexOf(0), choice = Date.now() - x.served > lim + 4000 ? -1 : body.choice, ok = choice === correctIdx
+        me.pos = idx + 1; me.ms += Math.min(lim, Date.now() - x.served)
+        if (r.mode === 'quiz') { if (ok) me.score++; me.done = me.pos >= r.total }
+        else if (ok) { me.score = LPRIZES[idx]; me.done = me.pos >= r.total } else { me.score = lguar(idx); me.done = true }
+        r.updated_at = Date.now(); rcheck(r); save()
+        return { body: { correct: ok, correct_index: correctIdx, explanation: null, over: me.done, room: rview(r) } }
+      }
     }
     /* Millionen-Leiter (Solo): gleiche Regeln wie server/ladder.ts */
     if (path === '/api/ladders' && method === 'POST') {
@@ -474,6 +535,15 @@ const dict = {
     'ladder.begin': 'Los mit Frage {n}', 'ladder.continue': 'Weiter mit Frage {n}', 'ladder.quit': 'Aussteigen mit {prize}', 'ladder.quitConfirm': 'Jetzt aussteigen und {prize} mitnehmen?',
     'ladder.step': 'Frage {n}/{total}', 'ladder.result': 'Ergebnis', 'ladder.again': 'Neue Leiter', 'ladder.home': 'Zur Startseite', 'ladder.best': 'Deine Bestleistung: {prize}',
     'ladder.won': 'Geschafft – Millionär!', 'ladder.lost': 'Leider verloren – du nimmst mit:', 'ladder.abandoned': 'Leiter abgelaufen – gesichert:', 'ladder.status_quit': 'Ausgestiegen – du nimmst mit:',
+    'room.title': 'Runde', 'room.multi': 'Mehrspieler', 'room.rounds': 'Runden', 'room.mode.quiz': 'Quiz-Runde', 'room.mode.ladder': 'Leiter-Wettkampf',
+    'room.sub.quiz': '2–6 Spieler, gleiche 12 Fragen – wer ist am besten?', 'room.sub.ladder': '2–6 Spieler steigen dieselbe Millionen-Leiter hoch',
+    'room.info.quiz': 'Alle beantworten dieselben {n} Fragen, jeder in seinem Tempo. Die Rangliste siehst du, sobald alle fertig sind (spätestens nach 48 Stunden).',
+    'room.info.ladder': 'Alle steigen dieselbe Millionen-Leiter ({n} Fragen) hoch. Wer am höchsten kommt, gewinnt. Ergebnisse siehst du, sobald alle fertig sind (spätestens nach 48 Stunden).',
+    'room.share': 'Einladungslink teilen', 'room.start': 'Runde starten', 'room.waitHost': 'Warte, bis der Gastgeber startet …', 'room.leave': 'Raum verlassen', 'room.dissolve': 'Raum auflösen',
+    'room.players': 'Spieler {n}/{max}', 'room.ranking': 'Rangliste', 'room.done': 'Fertig', 'room.progress': 'Frage {n}/{total}', 'room.waitOthers': 'Warte auf die anderen …', 'room.yourTurn': 'Du bist dran',
+    'room.lobby': 'Lobby', 'room.finishedRank': 'Beendet – Platz {rank}', 'room.playersN': '{n} Spieler', 'room.codeLabel': 'Raumcode eingeben', 'room.join': 'Beitreten', 'room.joining': 'Du trittst bei …',
+    'err.room_over': 'Für dich ist diese Runde beendet.', 'err.unknown_room': 'Raumcode unbekannt.', 'err.room_started': 'Die Runde läuft bereits.', 'err.room_full': 'Der Raum ist voll.',
+    'err.room_too_small': 'Zum Starten braucht es mindestens 2 Spieler.', 'err.not_host': 'Nur der Gastgeber kann starten.', 'err.too_many_rooms': 'Zu viele offene Runden.',
     'play.question': 'Frage {n}/{total}', 'play.report': 'Frage melden', 'play.reported': 'Danke, wir prüfen die Frage.', 'play.next': 'Weiter',
     'play.right': 'Richtig!', 'play.wrong': 'Leider falsch', 'play.timeUp': 'Zeit abgelaufen',
     'profile.title': 'Profil', 'profile.name': 'Anzeigename', 'profile.save': 'Speichern', 'profile.saved': 'Gespeichert',
@@ -550,6 +620,15 @@ const dict = {
     'ladder.begin': 'Start with question {n}', 'ladder.continue': 'Continue with question {n}', 'ladder.quit': 'Quit with {prize}', 'ladder.quitConfirm': 'Quit now and take {prize}?',
     'ladder.step': 'Question {n}/{total}', 'ladder.result': 'Result', 'ladder.again': 'New ladder', 'ladder.home': 'Back home', 'ladder.best': 'Your best: {prize}',
     'ladder.won': 'You did it – millionaire!', 'ladder.lost': 'Too bad – you take home:', 'ladder.abandoned': 'Ladder expired – secured:', 'ladder.status_quit': 'You quit – you take home:',
+    'room.title': 'Round', 'room.multi': 'Multiplayer', 'room.rounds': 'Rounds', 'room.mode.quiz': 'Quiz round', 'room.mode.ladder': 'Ladder contest',
+    'room.sub.quiz': '2–6 players, same 12 questions – who is best?', 'room.sub.ladder': '2–6 players climb the same million ladder',
+    'room.info.quiz': 'Everyone answers the same {n} questions at their own pace. You see the ranking once everyone has finished (after 48 hours at the latest).',
+    'room.info.ladder': 'Everyone climbs the same million ladder ({n} questions). The highest climber wins. Results show once everyone has finished (after 48 hours at the latest).',
+    'room.share': 'Share invite link', 'room.start': 'Start round', 'room.waitHost': 'Waiting for the host to start …', 'room.leave': 'Leave room', 'room.dissolve': 'Dissolve room',
+    'room.players': 'Players {n}/{max}', 'room.ranking': 'Ranking', 'room.done': 'Finished', 'room.progress': 'Question {n}/{total}', 'room.waitOthers': 'Waiting for the others …', 'room.yourTurn': 'Your turn',
+    'room.lobby': 'Lobby', 'room.finishedRank': 'Finished – place {rank}', 'room.playersN': '{n} players', 'room.codeLabel': 'Enter room code', 'room.join': 'Join', 'room.joining': 'Joining …',
+    'err.room_over': 'This round is over for you.', 'err.unknown_room': 'Unknown room code.', 'err.room_started': 'The round is already running.', 'err.room_full': 'The room is full.',
+    'err.room_too_small': 'At least 2 players are needed to start.', 'err.not_host': 'Only the host can start.', 'err.too_many_rooms': 'Too many open rounds.',
     'play.question': 'Question {n}/{total}', 'play.report': 'Report question', 'play.reported': "Thanks, we'll review it.", 'play.next': 'Next',
     'play.right': 'Correct!', 'play.wrong': 'Not quite', 'play.timeUp': "Time's up",
     'profile.title': 'Profile', 'profile.name': 'Display name', 'profile.save': 'Save', 'profile.saved': 'Saved',
@@ -746,7 +825,7 @@ async function route() {
   try {
     if (!S.me) { loading(); if (!(await boot())) return }
     if (my !== runId) return
-    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay }
+    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join }
     await (pages[page] ?? home)(arg, my)
   } catch (e) {
     if (my !== runId) return
@@ -807,7 +886,7 @@ function sessionLost() {
 
 /* ---------- Startseite ---------- */
 async function home(_, my) {
-  const render = (games) => {
+  const render = (games, rooms = []) => {
     if (my !== runId) return
     const mine = games.filter((g) => g.status === 'active' && g.turn === 'me')
     const theirs = games.filter((g) => g.status === 'active' && g.turn === 'opp')
@@ -818,10 +897,11 @@ async function home(_, my) {
       h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Rates', h('b', {}, 'paß')),
         h('button', { class: 'iconbtn', 'aria-label': t('profile.title'), onclick: () => go('#/profile') }, avatar(S.me, 'sm'))),
       h('button', { class: 'btn primary block', onclick: () => go('#/new') }, '＋ ' + t('home.new')),
-      games.length ? null : h('div', { class: 'empty' }, t('home.empty')),
+      games.length || rooms.length ? null : h('div', { class: 'empty' }, t('home.empty')),
+      rooms.length ? [h('h2', {}, t('room.rounds')), h('div', { class: 'list' }, rooms.map(roomItem))] : null,
       section(t('home.yourTurn'), mine), section(t('home.theirTurn'), theirs), section(t('home.waiting'), waiting), section(t('home.finished'), done))
   }
-  const load = guard(async () => render((await api('GET', '/api/games')).games))
+  const load = guard(async () => { const [g, r] = await Promise.all([api('GET', '/api/games'), api('GET', '/api/rooms')]); render(g.games, r.rooms) })
   await load()
   poll(load, 10000)
 }
@@ -841,6 +921,7 @@ async function newGame() {
     const r = await api('POST', '/api/games', { opponent, lang: gameLang() })
     go('#/game/' + r.id)
   })
+  const roomCode = h('input', { type: 'text', maxLength: 12, autocapitalize: 'characters', autocomplete: 'off', placeholder: 'ABC123' })
   const langSel = h('select', { id: 'gl', onchange: (e) => store.set('rp.gameLang', e.target.value) },
     (S.meta.langs ?? []).map((l) => h('option', { value: l.lang, selected: l.lang === gameLang() }, langName(l.lang))))
   const option = (title, sub, icon, fn) => h('button', { class: 'item', onclick: fn },
@@ -853,6 +934,12 @@ async function newGame() {
     h('h2', {}, t('ladder.title')),
     h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
       const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),
+    h('h2', {}, t('room.multi')),
+    h('div', { class: 'list' },
+      ['quiz', 'ladder'].map((m) => option(modeName(m), t('room.sub.' + m), m === 'ladder' ? '💎' : '👥', guard(async () => {
+        const r = await api('POST', '/api/rooms', { mode: m, lang: gameLang() }); go('#/room/' + r.id) })))),
+    h('div', { class: 'card' }, h('label', { class: 'field' }, t('room.codeLabel'), h('div', { class: 'row' }, roomCode,
+      h('button', { class: 'btn', onclick: guard(async () => joinRoom(roomCode.value)) }, t('room.join'))))),
     h('h2', {}, t('new.questionLang')), h('div', { class: 'card' }, langSel),
     h('h2', {}, t('new.contacts')),
     S.contacts.length
@@ -1008,26 +1095,27 @@ async function ladder(id) {
     h('div', { class: 'card ladder' }, rows))
 }
 
-async function lplay(id, my) {
+/** Eine Frage der Leiter bzw. Raumrunde stellen; `base` ist der API-Pfad der Leiter oder des Raums (gleiche Unterrouten). */
+async function askOne(base, back, my, chain = false) {
   let raf = 0, keyHandler = null
   const prev = cleanup
   cleanup = () => { prev(); cancelAnimationFrame(raf); if (keyHandler) document.removeEventListener('keydown', keyHandler) }
   const alive = () => my === runId
   let q
-  try { q = await api('GET', `/api/ladders/${id}/question`) } catch (e) {
-    if (e.status === 409) return go('#/ladder/' + id)
+  try { q = await api('GET', `${base}/question`) } catch (e) {
+    if (e.status === 409) return go(back)
     throw e
   }
   if (!alive()) return
-  await new Promise((resolve) => {
+  const result = await new Promise((resolve) => {
     let done = false
     const bar = h('i')
     const buttons = q.options.map((text, i) => h('button', { class: 'opt', onclick: () => submit(i) }, h('kbd', {}, String(i + 1)), h('span', {}, text)))
     const feedback = h('div', { class: 'feedback' })
     mount(
-      topbar(t('ladder.title'), true),
+      topbar(t(base.includes('/rooms/') ? 'room.title' : 'ladder.title'), true),
       h('div', { class: 'card qcard', cat: q.category },
-        h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, t('ladder.step', { n: q.step, total: q.total }) + ' · ' + money(q.prize))),
+        h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, t('ladder.step', { n: q.step, total: q.total }) + (q.prize ? ' · ' + money(q.prize) : ''))),
         h('div', { class: 'timer' }, bar), h('div', { class: 'question' }, q.text), h('div', { class: 'opts' }, buttons), feedback))
     const deadline = performance.now() + q.remaining_ms
     const tick = () => {
@@ -1045,25 +1133,25 @@ async function lplay(id, my) {
       cancelAnimationFrame(raf)
       buttons.forEach((b) => (b.disabled = true))
       let r
-      try { r = await api('POST', `/api/ladders/${id}/answer`, { step: q.step, choice }) } catch (e) { toast(errText(e)); return resolve() }
+      try { r = await api('POST', `${base}/answer`, { step: q.step, choice }) } catch (e) { toast(errText(e)); return resolve() }
       buttons[r.correct_index]?.classList.add('good')
       if (choice >= 0 && !r.correct) buttons[choice].classList.add('bad')
       const label = choice === -1 ? t('play.timeUp') : r.correct ? t('play.right') : t('play.wrong')
       const showReport = S.meta?.reports !== false && store.get('rp.noReport') !== '1'
       const report = h('button', { class: 'btn small', title: t('play.report'), 'aria-label': t('play.report'), onclick: guard(async () => {
-        await api('POST', `/api/ladders/${id}/report`, { step: q.step, reason: '' }); report.disabled = true; toast(t('play.reported')) }) }, '⚑')
+        await api('POST', `${base}/report`, { step: q.step, reason: '' }); report.disabled = true; toast(t('play.reported')) }) }, '⚑')
       const review = S.me?.reviewer ? h('button', { class: 'btn small', title: t('play.review'), 'aria-label': t('play.review'), onclick: () => {
         const part = h('select', {}, ['question', 'answers'].map((v) => h('option', { value: v }, t('review.part.' + v))))
         const kind = h('select', {}, ['wrong', 'wording'].map((v) => h('option', { value: v }, t('review.kind.' + v))))
         const note = h('input', { type: 'text', maxLength: 300, placeholder: t('review.note') })
         const form = h('div', { class: 'stack' }, h('div', { class: 'row' }, part, kind), note, h('div', { class: 'row' },
           h('button', { class: 'btn small primary', onclick: guard(async () => {
-            await api('POST', `/api/ladders/${id}/review`, { step: q.step, part: part.value, kind: kind.value, note: note.value })
+            await api('POST', `${base}/review`, { step: q.step, part: part.value, kind: kind.value, note: note.value })
             form.remove(); review.disabled = true; toast(t('review.sent')) }) }, t('review.send')),
           h('button', { class: 'btn small', onclick: () => form.remove() }, t('review.cancel'))))
         feedback.append(form); note.focus()
       } }, '✎') : null
-      const over = r.ladder.status !== 'active'
+      const over = r.over
       feedback.append(h('strong', {}, label), h('span', { class: 'row' }, review, showReport ? report : null,
         h('button', { class: 'btn small primary', onclick: () => resolve(r) }, over ? t('ladder.result') : t('play.next'))))
       if (r.explanation) feedback.before(h('p', { class: 'muted' }, r.explanation))
@@ -1071,7 +1159,68 @@ async function lplay(id, my) {
   })
   if (keyHandler) document.removeEventListener('keydown', keyHandler)
   if (!alive()) return
-  go('#/ladder/' + id)
+  if (chain && result && !result.over) return askOne(base, back, my, chain) // Raumrunden: direkt zur nächsten Frage
+  go(back)
+}
+
+const lplay = (id, my) => askOne(`/api/ladders/${id}`, '#/ladder/' + id, my)
+const rplay = (id, my) => askOne(`/api/rooms/${id}`, '#/room/' + id, my, true)
+
+/* ---------- Mehrspieler-Räume (asynchron) ---------- */
+const modeName = (m) => t('room.mode.' + m)
+
+async function joinRoom(code) {
+  const r = await api('POST', '/api/rooms/join', { code })
+  go('#/room/' + r.id)
+}
+const roomLink = (code) => `${location.origin}/#/join/${code}`
+
+async function room(id, my) {
+  const load = async () => {
+    const { room: r } = await api('GET', `/api/rooms/${id}`)
+    if (my !== runId) return
+    const me = r.players.find((p) => p.is_me)
+    const rows = (r.status === 'finished' ? [...r.players].sort((a, b) => a.rank - b.rank) : r.players).map((p) => h('div', { class: 'item' },
+      r.status === 'finished' ? h('span', { class: 'rank' }, '#' + p.rank) : null,
+      h('div', { class: 'grow' }, h('div', { class: 'ell' }, p.name + (p.is_host ? ' 👑' : '') + (p.is_me ? ' (' + t('game.you') + ')' : '')),
+        h('div', { class: 'muted' }, r.status === 'lobby' ? '' : p.done ? t('room.done') : t('room.progress', { n: p.pos, total: r.total }))),
+      p.score !== null && r.status !== 'lobby' ? h('span', { class: 'score' }, r.mode === 'ladder' ? money(p.score) : `${p.score}/${r.total}`) : null))
+    const actions = []
+    if (r.status === 'lobby') {
+      actions.push(
+        h('div', { class: 'code' }, r.code),
+        h('button', { class: 'btn block', onclick: () => share(roomLink(r.code), t('app.name')) }, '🔗 ' + t('room.share')),
+        r.is_host
+          ? h('button', { class: 'btn primary block', disabled: r.players.length < 2, onclick: guard(async () => { await api('POST', `/api/rooms/${id}/start`, {}); route() }) }, t('room.start'))
+          : h('p', { class: 'muted' }, t('room.waitHost')),
+        h('button', { class: 'btn block danger', onclick: guard(async () => { await api('POST', `/api/rooms/${id}/leave`, {}); go('#/') }) }, t(r.is_host ? 'room.dissolve' : 'room.leave')))
+    } else if (r.status === 'active') {
+      if (!me.done) {
+        actions.push(h('button', { class: 'btn primary block', onclick: () => go('#/rplay/' + id) }, t(me.pos ? 'ladder.continue' : 'ladder.begin', { n: me.pos + 1 })))
+        if (r.mode === 'ladder' && me.pos) actions.push(h('button', { class: 'btn block danger', onclick: guard(async () => {
+          if (!(()=>true)(t('ladder.quitConfirm', { prize: money(me.score) }))) return
+          await api('POST', `/api/rooms/${id}/quit`, {}); route() }) }, t('ladder.quit', { prize: money(me.score) })))
+      } else actions.push(h('p', { class: 'muted' }, t('room.waitOthers')))
+    } else actions.push(h('button', { class: 'btn block', onclick: () => go('#/') }, t('ladder.home')))
+    mount(topbar(modeName(r.mode) + ' · ' + r.code, true),
+      h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('room.info.' + r.mode, { n: r.total || (r.mode === 'quiz' ? 12 : 15) })),
+        r.level && r.level !== 'basic' ? h('div', { class: 'hint' }, t('level.badge', { level: t('tier.' + r.level) })) : null),
+      r.status === 'finished' ? h('h2', {}, t('room.ranking')) : h('h2', {}, t('room.players', { n: r.players.length, max: r.max_players })),
+      h('div', { class: 'list' }, rows), h('div', { class: 'card stack' }, actions))
+  }
+  await guard(load)()
+  poll(guard(load), 8000)
+}
+
+async function join(code) {
+  mount(topbar(t('app.name'), false), h('div', { class: 'card stack' }, h('p', {}, t('room.joining'))))
+  await joinRoom(code || '')
+}
+
+function roomItem(r) {
+  const badge = r.status === 'finished' ? t('room.finishedRank', { rank: r.my_rank }) : r.status === 'lobby' ? t('room.lobby') : r.my_done ? t('room.waitOthers') : t('room.yourTurn')
+  return h('button', { class: 'item', onclick: () => go('#/room/' + r.id) }, h('div', { class: 'avatar sm' }, r.mode === 'ladder' ? '💎' : '👥'),
+    h('div', { class: 'grow' }, h('div', { class: 'ell' }, modeName(r.mode) + ' · ' + r.code), h('div', { class: 'muted' }, badge)), h('span', { class: 'badge' }, t('room.playersN', { n: r.players })))
 }
 
 /* ---------- Profil ---------- */

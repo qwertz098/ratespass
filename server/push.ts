@@ -123,7 +123,7 @@ function bumpFail(endpoint: string, why: string) {
 }
 
 /* ---------- Texte & Auslöser ---------- */
-export type PushKind = 'challenge' | 'turn' | 'matched' | 'won' | 'lost' | 'draw' | 'resigned' | 'timeout'
+export type PushKind = 'challenge' | 'turn' | 'matched' | 'won' | 'lost' | 'draw' | 'resigned' | 'timeout' | 'room_start' | 'room_done'
 const TEXT: Record<'de' | 'en', Record<PushKind, [string, string]>> = {
   de: {
     challenge: ['Neue Herausforderung', '{name} fordert dich zu einem Duell heraus.'],
@@ -134,6 +134,8 @@ const TEXT: Record<'de' | 'en', Record<PushKind, [string, string]>> = {
     draw: ['Spiel beendet', 'Unentschieden gegen {name}.'],
     resigned: ['Gegner hat aufgegeben', '{name} hat aufgegeben – du gewinnst!'],
     timeout: ['Spiel beendet', 'Das Spiel gegen {name} wurde wegen Inaktivität beendet.'],
+    room_start: ['Raum gestartet', '{name} hat die Runde gestartet – jetzt spielen!'],
+    room_done: ['Runde beendet', 'Die Runde von {name} ist beendet – sieh dir die Rangliste an.'],
   },
   en: {
     challenge: ['New challenge', '{name} challenges you to a duel.'],
@@ -144,12 +146,15 @@ const TEXT: Record<'de' | 'en', Record<PushKind, [string, string]>> = {
     draw: ['Game over', 'A draw against {name}.'],
     resigned: ['Opponent resigned', '{name} resigned – you win!'],
     timeout: ['Game over', 'The game against {name} ended due to inactivity.'],
+    room_start: ['Room started', '{name} has started the round – play now!'],
+    room_done: ['Round finished', '{name}’s round is over – check the ranking.'],
   },
 }
 
 export function messageFor(lang: string, kind: PushKind, gameId: number, name: string): PushMessage {
   const [title, body] = TEXT[lang === 'de' ? 'de' : 'en'][kind]
-  return { title, body: body.replace('{name}', name), url: `/#/game/${gameId}`, tag: `game-${gameId}` }
+  const room = kind.startsWith('room_')
+  return { title, body: body.replace('{name}', name), url: `/#/${room ? 'room' : 'game'}/${gameId}`, tag: `${room ? 'room' : 'game'}-${gameId}` }
 }
 
 /** Benachrichtigt einen Spieler nach dem Commit der laufenden Transaktion. Bots und Spieler ohne Abo werden ausgelassen. */

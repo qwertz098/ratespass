@@ -12,7 +12,7 @@ import type { QRow } from './questions.ts'
 export const PRIZES = [100, 200, 300, 500, 1_000, 2_000, 4_000, 8_000, 16_000, 32_000, 64_000, 125_000, 250_000, 500_000, 1_000_000] as const
 export const STEPS = PRIZES.length
 export const SAFE_STEPS = [5, 10] as const
-const GRACE_MS = 4_000
+export const GRACE_MS = 4_000
 /** Zeit je Frage in ms: Fragen 1–5 30 s, 6–10 45 s, 11–15 60 s. */
 export const limitMs = (step: number) => (step <= 5 ? 30_000 : step <= 10 ? 45_000 : 60_000)
 /** Schwierigkeit der Frage: 1–5 leicht, 6–10 mittel, 11–15 schwer. */
@@ -23,13 +23,13 @@ export interface LadderRow {
   step: number; status: 'active' | 'won' | 'lost' | 'quit' | 'abandoned'; prize: number | null; created_at: number; updated_at: number
 }
 
-const shuffle = <T>(a: T[]): T[] => {
+export const shuffle = <T>(a: T[]): T[] => {
   const r = [...a]
   for (let i = r.length - 1; i > 0; i--) { const j = crypto.randomInt(i + 1); [r[i], r[j]] = [r[j], r[i]] }
   return r
 }
 
-const prizeAt = (answered: number) => (answered > 0 ? PRIZES[answered - 1] : 0)
+export const prizeAt = (answered: number) => (answered > 0 ? PRIZES[answered - 1] : 0)
 /** Gesicherter Betrag, wenn die nächste Frage (Nr. answered+1) falsch beantwortet wird. */
 export const guaranteed = (answered: number) => prizeAt(Math.max(0, ...SAFE_STEPS.filter((s) => s <= answered)))
 
@@ -72,7 +72,7 @@ function pickQuestion(l: LadderRow, step: number): QRow {
   throw new HttpError(503, 'no_questions')
 }
 
-const shown = (q: QRow, perm: number[]) => {
+export const shown = (q: QRow, perm: number[]) => {
   const all4 = [q.correct, ...(JSON.parse(q.wrong) as string[])]
   return perm.map((i) => all4[i])
 }
@@ -137,7 +137,8 @@ export function submitAnswer(id: number, me: PlayerRow, step: unknown, choice: u
     const ms = now() - s.served_at
     const lim = limitMs(step as number)
     const res = recordAnswer(l, step as number, ms > lim + GRACE_MS ? -1 : (choice as number), Math.min(ms, lim))
-    return { ...res, ladder: ladderView(get<LadderRow>('SELECT * FROM ladders WHERE id=?', id)!) }
+    const ladder = ladderView(get<LadderRow>('SELECT * FROM ladders WHERE id=?', id)!)
+    return { ...res, over: ladder.status !== 'active', ladder }
   })
 }
 

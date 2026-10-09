@@ -143,3 +143,5 @@ input[type=checkbox] { width: 20px; height: 20px; margin-top: 2px; accent-color:
 .lrow.now { background: color-mix(in srgb, var(--accent) 16%, transparent); outline: 2px solid var(--accent) }
 .lresult { text-align: center }
 .lresult .big { font-size: 2rem; font-weight: 800 }
+
+.rank { font-weight: 800; color: var(--accent); min-width: 28px }

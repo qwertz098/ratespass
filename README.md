@@ -81,6 +81,10 @@ Jeder Spieler wählt im Profil sein **Level** – Basis, Nerd (Sci-Fi & Fantasy,
 
 Quiz-Modus „Millionen-Leiter“ (Neues Spiel → Millionen-Leiter): 15 Fragen mit steigender Schwierigkeit (1–5 leicht, 6–10 mittel, 11–15 schwer), Beträge von 100 bis 1.000.000 „Ratetaler“, Sicherheitsstufen bei Frage 5 und 10, **Aussteigen** sichert den aktuellen Betrag, eine falsche Antwort wirft auf die letzte Sicherheitsstufe zurück. Zeit je Frage 30/45/60 s, vom Server überwacht; Joker gibt es bewusst (noch) nicht. Der Fragenpool folgt deiner Spielstufe und deinen Extra-Kategorien. Name und Währung sind eigene Wortschöpfungen – das Fernsehformat und seine Fragen sind geschützt und werden nicht verwendet. Code: `server/ladder.ts`, Tests: `test/ladder.test.ts`.
 
+### Mehrspieler-Runden (asynchron)
+
+Unter „Neues Spiel → Mehrspieler“ legt man eine **Quiz-Runde** (12 Fragen, je 4 leicht/mittel/schwer; Wertung = richtige Antworten, bei Gleichstand die schnellere Zeit) oder einen **Leiter-Wettkampf** (alle steigen dieselbe Millionen-Leiter hoch; Wertung = erreichter Betrag) an. 2–6 Spieler treten per Raumcode oder Link (`/#/join/CODE`) bei; der Gastgeber startet. Alle spielen dieselben Fragen im eigenen Tempo (Zeit je Frage serverseitig); bis zum Ende sehen die anderen nur den Fortschritt, nicht Antworten oder Punkte. Die Runde endet, sobald alle fertig sind, spätestens nach 48 Stunden (dann zählt der aktuelle Stand; Lobbys verfallen nach 24 Stunden). Es gilt die niedrigste Einstellung aller Teilnehmer (Level, Schnitt der Extra-Kategorien). Push-Nachrichten: „Runde gestartet“ und „Runde beendet“. Code: `server/rooms.ts`, Tests: `test/rooms.test.ts`. Live-Räume in Echtzeit sind als nächste Phase geplant.
+
 ## Architektur
 
 ```
