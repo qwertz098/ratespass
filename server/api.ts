@@ -241,7 +241,9 @@ router.post('/api/games/:id/answer', (c) => {
   return { ...result, game: game.getGameView(gid(c), me(c)) }
 })
 router.post('/api/games/:id/bot', (c) => {
-  game.convertToBot(gid(c), me(c))
+  const g = game.getGame(gid(c))
+  if (g?.status === 'active') game.takeOverWithBot(gid(c), me(c)) // untätigen Gegner im laufenden Duell durch einen Bot ersetzen
+  else game.convertToBot(gid(c), me(c)) // wartendes Zufallsspiel sofort gegen den Bot spielen
   return { game: game.getGameView(gid(c), me(c)) }
 })
 router.post('/api/games/:id/resign', (c) => {

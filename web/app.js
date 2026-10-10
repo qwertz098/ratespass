@@ -348,7 +348,11 @@ function actions(g, id) {
     h('div', { class: 'cats' }, g.options.map((c) => h('button', { class: 'cat-btn', cat: c,
       onclick: guard(async () => { await api('POST', `/api/games/${id}/pick`, { category: c }); go('#/play/' + id) }) }, t('cat.' + c))))]
   if (g.turn === 'me') return [h('button', { class: 'btn primary block', onclick: () => go('#/play/' + id) }, t(g.rounds.find((r) => r.n === g.round)?.me.some((x) => x !== null) ? 'game.continue' : 'game.play'))]
-  return [h('div', { class: 'row' }, avatar(g.opp, 'sm'), h('div', {}, t('game.oppTurn', { name: g.opp?.name })))]
+  return [h('div', { class: 'row' }, avatar(g.opp, 'sm'), h('div', {}, t('game.oppTurn', { name: g.opp?.name }))),
+    g.idle_hours >= 1 ? h('p', { class: 'hint' }, t('game.idle', { name: g.opp?.name, h: g.idle_hours })) : null,
+    g.can_takeover ? h('button', { class: 'btn block', onclick: guard(async () => {
+      if (!confirm(t('game.takeoverConfirm', { name: g.opp?.name }))) return
+      await api('POST', `/api/games/${id}/bot`, {}); route() }) }, t('game.takeover')) : null]
 }
 
 /* ---------- Frage-Screen ---------- */

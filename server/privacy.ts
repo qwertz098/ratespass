@@ -22,6 +22,7 @@ function vars(): Record<string, string> {
     CONTROLLER_NAME: p.controllerName, CONTROLLER_ADDRESS: p.controllerAddress, CONTROLLER_EMAIL: p.controllerEmail, CONTROLLER_PHONE: p.controllerPhone,
     CONTROLLER_REPRESENTATIVE: p.representative, CONTROLLER_REGISTER: p.register, CONTROLLER_VAT_ID: p.vatId, DPO_CONTACT: p.dpoContact,
     SUPERVISORY_AUTHORITY: p.supervisoryAuthority, HOSTING_PROVIDER: p.hosting, PRIVACY_RETENTION_DAYS: String(p.retentionDays),
+    DUEL_FORFEIT_DAYS: String(config.duel.forfeitDays), DUEL_TAKEOVER_HOURS: String(config.duel.takeoverHours),
     ai: config.ai.key ? '1' : '',
   }
 }

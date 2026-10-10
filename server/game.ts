@@ -127,6 +127,33 @@ export function createGame(me: PlayerRow, opponent: string, lang: string): numbe
   })
 }
 
+const isBot = (id: number | null) => !!id && !!get('SELECT 1 FROM players WHERE id=? AND is_bot=1', id)
+const takeoverMs = () => config.duel.takeoverHours * 3_600_000
+
+/** Darf `viewer` ein laufendes Duell mit einem Bot im Namen des untätigen Gegners fortsetzen? */
+const canTakeOver = (g: GameRow, viewer: number) => {
+  const opp = other(g, viewer)
+  return g.status === 'active' && !!opp && g.turn === opp && !isBot(opp) && now() - g.updated_at >= takeoverMs()
+}
+
+/**
+ * Wartet man seit `takeoverHours` auf den Gegner, kann man mit einem Bot weiterspielen: Der Bot ersetzt den Gegner im Spiel,
+ * der bisherige Verlauf (Antworten, Rundenwahl) geht auf den Bot über. Der ersetzte Spieler wird benachrichtigt.
+ */
+export function takeOverWithBot(gameId: number, me: PlayerRow) {
+  tx(() => {
+    const g = mustGame(gameId, me.id)
+    if (g.status !== 'active') throw new HttpError(409, 'not_waiting')
+    if (!canTakeOver(g, me.id)) throw new HttpError(409, 'too_early')
+    const opp = other(g, me.id)!, bot = ensureBot()
+    run(g.p1 === opp ? 'UPDATE games SET p1=?, turn=?, updated_at=? WHERE id=?' : 'UPDATE games SET p2=?, turn=?, updated_at=? WHERE id=?', bot, bot, now(), g.id)
+    run('UPDATE answers SET player_id=? WHERE game_id=? AND player_id=?', bot, g.id, opp)
+    run('UPDATE rounds SET picker=? WHERE game_id=? AND picker=?', bot, g.id, opp)
+    notifyPlayer(opp, 'replaced', g.id, me.name)
+    settle(g.id)
+  })
+}
+
 export function convertToBot(gameId: number, me: PlayerRow) {
   tx(() => {
     const g = mustGame(gameId, me.id)
@@ -371,6 +398,7 @@ export function gameView(g: GameRow, viewer: number) {
     rounds: view, score: { me: sum('me'), opp: sum('opp') },
     winner: g.status !== 'finished' ? null : g.winner === null ? 'draw' : g.winner === viewer ? 'me' : 'opp',
     end_reason: g.end_reason, created_at: g.created_at, updated_at: g.updated_at,
+    can_takeover: canTakeOver(g, viewer), idle_hours: g.status === 'active' && oppId && g.turn === oppId ? Math.floor((now() - g.updated_at) / 3_600_000) : 0,
   }
 }
 
@@ -396,7 +424,13 @@ export function sweep() {
   tx(() => {
     const t = now()
     run("UPDATE games SET status='abandoned', turn=NULL, phase=NULL WHERE status='waiting' AND created_at<?", t - 86_400_000)
-    const stale = all<GameRow>("SELECT * FROM games WHERE status='active' AND updated_at<?", t - config.inactiveDaysForfeit * 86_400_000)
+    const stale = all<GameRow>("SELECT * FROM games WHERE status='active' AND updated_at<?", t - config.duel.forfeitDays * 86_400_000)
     for (const g of stale) finishGame(g, 'timeout', other(g, g.turn!)!)
+    // Erinnerung an die Person am Zug: einmal je Zug (`reminded_at` merkt sich den `updated_at`-Stand, für den erinnert wurde)
+    const idle = all<GameRow>("SELECT * FROM games WHERE status='active' AND turn IS NOT NULL AND updated_at<? AND (reminded_at IS NULL OR reminded_at<>updated_at)", t - config.duel.remindHours * 3_600_000)
+    for (const g of idle) {
+      run('UPDATE games SET reminded_at=updated_at WHERE id=?', g.id)
+      if (!isBot(g.turn)) notifyPlayer(g.turn, 'remind', g.id, nameOf(other(g, g.turn!)))
+    }
   })
 }

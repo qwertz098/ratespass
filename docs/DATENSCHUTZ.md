@@ -24,7 +24,7 @@ Der Text der Datenschutzerklärung steht **vorbereitet** in `legal/datenschutz.d
 5. Widerruf (Art. 7 Abs. 3): Profil → „Zustimmung widerrufen und Profil löschen“. Das entfernt Zugang, Kontakte, Konto, Geburtsjahr, Bestenlisten-Name und die Zustimmungszeilen des Profils.
 
 ## Speicherbegrenzung
-Anonyme Profile ohne Konto werden nach `PRIVACY_RETENTION_DAYS` ohne Aktivität automatisch gelöscht (`server/erase.ts`, stündlicher Sweep). Wartende Spiele verfallen nach 24 h, Mehrspieler-Runden werden nach 48 h ausgewertet, inaktive Duelle nach 7 Tagen beendet.
+Anonyme Profile ohne Konto werden nach `PRIVACY_RETENTION_DAYS` ohne Aktivität automatisch gelöscht (`server/erase.ts`, stündlicher Sweep). Wartende Spiele verfallen nach 24 h, Mehrspieler-Runden werden nach 48 h ausgewertet, inaktive Duelle nach `DUEL_FORFEIT_DAYS` (Standard 3) Tagen beendet; nach `DUEL_TAKEOVER_HOURS` kann der Wartende das Duell mit einem Bot fortsetzen (Verlauf des untätigen Spielers geht auf den Bot über).
 
 ## Auskunft / Löschung auf Anfrage
 Spieler laden ihr Profil selbst herunter (Profil → „Profil & Verlauf herunterladen“). Für Anfragen per E-Mail: öffentliche ID aus dem Profil verlangen, Zeilen in `players`, `games`, `answers`, `ladders`, `room_*`, `consents` zuordnen; Löschen entspricht „Profil löschen“ (`erasePlayer`).

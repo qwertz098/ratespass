@@ -47,7 +47,7 @@ Push-Nachrichten laufen über den Push-Dienst deines Browsers/Betriebssystems, s
 
 ## Speicherdauer
 - Anonyme Profile ohne Anmeldung werden nach {{PRIVACY_RETENTION_DAYS}} Tagen ohne Aktivität gelöscht.
-- Wartende Spiele verfallen nach 24 Stunden, Mehrspieler-Runden werden spätestens nach 48 Stunden ausgewertet, inaktive Spiele nach 7 Tagen beendet.
+- Wartende Spiele verfallen nach 24 Stunden, Mehrspieler-Runden werden spätestens nach 48 Stunden ausgewertet, inaktive Duelle nach {{DUEL_FORFEIT_DAYS}} Tagen beendet. Reagiert dein Gegner {{DUEL_TAKEOVER_HOURS}} Stunden nicht, kann das Duell mit einem Bot fortgesetzt werden; dein bisheriger Spielverlauf in diesem Duell geht dann auf den Bot über.
 - Mit „Profil löschen“ werden Zugang, Kontakte, Konto, Geburtsjahr, Bestenlisten-Name und deine Zustimmungsdokumentation sofort entfernt; abgeschlossene Spiele bleiben für Gegner anonymisiert (Name „—“).
 
 ## Deine Rechte

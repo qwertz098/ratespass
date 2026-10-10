@@ -13,6 +13,9 @@ services:
       # Auf 1 setzen, wenn ein Reverse-Proxy (Caddy/nginx/NPM/Traefik) davor steht; PROXY_HOPS = Anzahl der Proxys.
       PLAYER_CREATE_LIMIT_PER_HOUR: ${PLAYER_CREATE_LIMIT_PER_HOUR:-60}   # neue Profile pro IP und Stunde
       PLAYER_REPORTS: ${PLAYER_REPORTS:-1}   # 0 = Melde-Knopf für alle Spieler aus
+      DUEL_FORFEIT_DAYS: ${DUEL_FORFEIT_DAYS:-3}
+      DUEL_REMIND_HOURS: ${DUEL_REMIND_HOURS:-24}
+      DUEL_TAKEOVER_HOURS: ${DUEL_TAKEOVER_HOURS:-24}
       # Verantwortlicher für Impressum und Datenschutzerklärung (Pflicht: Name, Anschrift, E-Mail)
       CONTROLLER_NAME: ${CONTROLLER_NAME:-}
       CONTROLLER_ADDRESS: ${CONTROLLER_ADDRESS:-}

@@ -32,7 +32,12 @@ export const config = {
   pushExtraHosts: (env.PUSH_EXTRA_HOSTS ?? '').split(',').map((h) => h.trim().toLowerCase()).filter(Boolean),
   /** Melde-Knopf (⚑) für alle Spieler; mit PLAYER_REPORTS=0 abschaltbar (Reviewer und Admin bleiben unberührt). */
   playerReports: env.PLAYER_REPORTS !== '0',
-  inactiveDaysForfeit: 7,
+  /** Duelle: Aufgabe bei Inaktivität, Erinnerung (Push) an den Spieler am Zug, Bot-Übernahme durch den Wartenden (Stunden bzw. Tage). */
+  duel: {
+    forfeitDays: Math.max(1, Number(env.DUEL_FORFEIT_DAYS ?? 3) || 3),
+    remindHours: Math.max(1, Number(env.DUEL_REMIND_HOURS ?? 24) || 24),
+    takeoverHours: Math.max(1, Number(env.DUEL_TAKEOVER_HOURS ?? 24) || 24),
+  },
   /** Live-Gesellschaftsspiel (Zeiten in ms; in Tests verkürzt). */
   live: {
     maxPlayers: Math.max(2, Number(env.LIVE_MAX_PLAYERS ?? 30) || 30),

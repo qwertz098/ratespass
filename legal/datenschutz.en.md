@@ -47,7 +47,7 @@ Push messages go through your browser’s/operating system’s push service if y
 
 ## Retention
 - Anonymous profiles without an account are deleted after {{PRIVACY_RETENTION_DAYS}} days without activity.
-- Waiting games expire after 24 hours, multiplayer rounds are evaluated after 48 hours at the latest, inactive games end after 7 days.
+- Waiting games expire after 24 hours, multiplayer rounds are evaluated after 48 hours at the latest, inactive duels end after {{DUEL_FORFEIT_DAYS}} days. If your opponent does not respond for {{DUEL_TAKEOVER_HOURS}} hours, the duel can be continued with a bot; your previous play history in that duel then passes to the bot.
 - With “Delete profile”, access, contacts, account, birth year, leaderboard name and your consent record are removed immediately; finished games remain anonymised for opponents (name “—”).
 
 ## Your rights

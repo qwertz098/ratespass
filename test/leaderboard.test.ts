@@ -86,7 +86,8 @@ test('Bot-Schutz Basis: zu schnelle Antworten, Tageslimit, Mindestalter und Mind
   for (const p of [fast, many, young, few]) await call('POST', '/api/leaderboard/join', { name: p.player.name.replace(/ /g, '·') }, p.token)
   ladderAnswers(pf, 200, 200, { ms: 150 }) // schneller als jede Lesezeit
   // 450 Antworten an einem Tag, verteilt auf 10 Stunden (je 45): Tageslimit 400 greift
-  let k = 0; ladderAnswers(pm, 450, 450, { at: () => Date.now() - (k++ % 10) * HOUR - 60_000 })
+  const day0 = Math.floor(Date.now() / DAY) * DAY // heutiger UTC-Tag, unabhängig von der Uhrzeit des Testlaufs
+  let k = 0; ladderAnswers(pm, 450, 450, { at: () => day0 + (k++ % 10) * HOUR + 60_000 })
   ladderAnswers(py, 80, 80)
   ladderAnswers(pw, 20, 20)
   clearCache()

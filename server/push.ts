@@ -123,7 +123,7 @@ function bumpFail(endpoint: string, why: string) {
 }
 
 /* ---------- Texte & Auslöser ---------- */
-export type PushKind = 'challenge' | 'turn' | 'matched' | 'won' | 'lost' | 'draw' | 'resigned' | 'timeout' | 'room_start' | 'room_done'
+export type PushKind = 'challenge' | 'turn' | 'matched' | 'won' | 'lost' | 'draw' | 'resigned' | 'timeout' | 'room_start' | 'room_done' | 'remind' | 'replaced'
 const TEXT: Record<'de' | 'en', Record<PushKind, [string, string]>> = {
   de: {
     challenge: ['Neue Herausforderung', '{name} fordert dich zu einem Duell heraus.'],
@@ -134,6 +134,8 @@ const TEXT: Record<'de' | 'en', Record<PushKind, [string, string]>> = {
     draw: ['Spiel beendet', 'Unentschieden gegen {name}.'],
     resigned: ['Gegner hat aufgegeben', '{name} hat aufgegeben – du gewinnst!'],
     timeout: ['Spiel beendet', 'Das Spiel gegen {name} wurde wegen Inaktivität beendet.'],
+    remind: ['Du bist dran', '{name} wartet auf deinen Zug.'],
+    replaced: ['Duell mit Bot fortgesetzt', '{name} hat euer Duell mit einem Bot fortgesetzt, weil du länger nicht gespielt hast.'],
     room_start: ['Raum gestartet', '{name} hat die Runde gestartet – jetzt spielen!'],
     room_done: ['Runde beendet', 'Die Runde von {name} ist beendet – sieh dir die Rangliste an.'],
   },
@@ -146,6 +148,8 @@ const TEXT: Record<'de' | 'en', Record<PushKind, [string, string]>> = {
     draw: ['Game over', 'A draw against {name}.'],
     resigned: ['Opponent resigned', '{name} resigned – you win!'],
     timeout: ['Game over', 'The game against {name} ended due to inactivity.'],
+    remind: ['Your turn', '{name} is waiting for your move.'],
+    replaced: ['Duel continued with a bot', '{name} continued your duel with a bot because you have not played for a while.'],
     room_start: ['Room started', '{name} has started the round – play now!'],
     room_done: ['Round finished', '{name}’s round is over – check the ranking.'],
   },

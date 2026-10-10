@@ -61,6 +61,7 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 | `AI_MODEL` | `claude-sonnet-5-5` | Modell für die KI-Schnittstelle |
 | `AI_DAILY_LIMIT` | 100 | Kostenbremse: höchstens so viele neu erzeugte Fragen pro Tag |
 | `AI_AUTO` / `AI_AUTO_INTERVAL_HOURS` / `AI_AUTO_BATCH` | 0 / 24 / 20 | Auto-Lauf füllt regelmäßig die größten Lücken (Ergebnis landet immer in der Moderation); auch im Admin-Tab „KI“ schaltbar |
+| `DUEL_FORFEIT_DAYS` / `DUEL_REMIND_HOURS` / `DUEL_TAKEOVER_HOURS` | 3 / 24 / 24 | Duelle: Aufgabe bei Inaktivität nach X Tagen (Wartender gewinnt), Push-Erinnerung an den Spieler am Zug nach X Stunden, Bot-Übernahme durch den Wartenden nach X Stunden („Gegen Bot weiterspielen“) |
 | `PLAYER_REPORTS` | 1 | `0` schaltet den Melde-Knopf ⚑ für alle Spieler ab (Reviewer-Meldungen und Admin bleiben); jede Person kann ihn zusätzlich im Profil ausblenden |
 | `PLAYER_CREATE_LIMIT_PER_HOUR` | 60 | neue anonyme Profile pro IP und Stunde (Missbrauchsschutz; hinter NAT/Schul-WLAN teilen sich viele Nutzer eine IP) |
 | `HOST_PORT` / `BIND_ADDRESS` | 3007 / 0.0.0.0 | nur Compose: veröffentlichter Host-Port bzw. Bindeadresse (der Container hört intern auf 3000) |
