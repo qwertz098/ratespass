@@ -92,10 +92,11 @@ export function cleanLbName(raw: unknown): string {
   return n
 }
 
-export function join(playerId: number, rawName: unknown) {
-  const p = get<{ lb_banned: number }>('SELECT lb_banned FROM players WHERE id=?', playerId)!
+/** Freiwillig: entweder ein eigener Bestenlisten-Name oder – nur auf ausdrücklichen Wunsch – der Anzeigename (Momentaufnahme, folgt späteren Umbenennungen nicht). */
+export function join(playerId: number, rawName: unknown, useDisplayName = false) {
+  const p = get<{ lb_banned: number; name: string }>('SELECT lb_banned, name FROM players WHERE id=?', playerId)!
   if (p.lb_banned) throw new HttpError(403, 'lb_banned')
-  const name = cleanLbName(rawName)
+  const name = cleanLbName(useDisplayName ? p.name : rawName)
   try { run('UPDATE players SET lb_name=?, lb_key=?, lb_optin_at=COALESCE(lb_optin_at, ?) WHERE id=?', name, name.toLocaleLowerCase('de'), now(), playerId) } catch (e: any) {
     if (String(e?.message).includes('UNIQUE')) throw new HttpError(409, 'lb_name_taken')
     throw e

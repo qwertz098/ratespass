@@ -297,7 +297,7 @@ router.get('/api/leaderboard', (c) => {
 })
 router.post('/api/leaderboard/join', (c) => {
   rateLimit(`lbjoin:${me(c).id}`, 20, 3_600_000)
-  return { name: lb.join(me(c).id, c.body?.name) }
+  return { name: lb.join(me(c).id, c.body?.name, c.body?.use_display_name === true) }
 })
 router.delete('/api/leaderboard/join', (c) => {
   lb.leave(me(c).id)

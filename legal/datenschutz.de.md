@@ -36,7 +36,7 @@ E-Mail: {{CONTROLLER_EMAIL}}
 
 ## Was andere sehen
 - Gegner und Mitspieler in Duellen, Runden und Live-Spielen sehen deinen Anzeigenamen und das Spielergebnis.
-- In der Bestenliste erscheint nur der eigene Bestenlisten-Name – und nur, wenn du aktiv teilnimmst. Du kannst die Teilnahme jederzeit beenden; der Name wird sofort entfernt.
+- In der Bestenliste erscheint nur der eigene Bestenlisten-Name – oder, wenn du es bei der Anmeldung ausdrücklich wählst, dein Anzeigename (dann für alle Besucher der Bestenliste sichtbar) – und nur, wenn du aktiv teilnimmst. Du kannst die Teilnahme jederzeit beenden; der Name wird sofort entfernt.
 - Von dir eingereichte Community-Fragen werden mit deiner Zustimmung unter CC BY-SA 4.0 veröffentlicht; dein Name wird nicht genannt.
 
 ## Empfänger und Hosting

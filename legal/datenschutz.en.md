@@ -36,7 +36,7 @@ Email: {{CONTROLLER_EMAIL}}
 
 ## What others can see
 - Opponents and fellow players in duels, rounds and live games see your display name and the result.
-- The leaderboard shows only your leaderboard name – and only if you actively take part. You can stop at any time; the name is removed immediately.
+- The leaderboard shows only your leaderboard name – or, if you explicitly choose so when joining, your display name (then visible to all visitors of the leaderboard) – and only if you actively take part. You can stop at any time; the name is removed immediately.
 - Community questions you submit are published under CC BY-SA 4.0 with your consent; your name is not mentioned.
 
 ## Recipients and hosting

@@ -565,6 +565,7 @@ async function live(id, my) {
 async function top(_, my) {
   const st = { kind: store.get('rp.lbKind') || 'abs', bots: store.get('rp.lbBots') || 'incl', scope: store.get('rp.lbScope') || 'week' }
   const name = h('input', { type: 'text', maxLength: 20, placeholder: t('lb.namePlaceholder'), autocomplete: 'off' })
+  const useOwn = h('input', { type: 'checkbox', onchange: () => { name.disabled = useOwn.checked } })
   const seg = (key, opts, storeKey) => h('div', { class: 'seg wrap' }, opts.map(([v, label]) => h('button', { 'aria-pressed': String(st[key] === v), onclick: () => { st[key] = v; store.set(storeKey, v); load() } }, t(label))))
   const render = (r) => {
     if (my !== runId) return
@@ -575,7 +576,8 @@ async function top(_, my) {
       : r.participating
         ? h('div', { class: 'stack' }, h('p', { class: 'muted' }, t('lb.participating', { name: r.name })), h('button', { class: 'btn block', onclick: guard(async () => { await api('DELETE', '/api/leaderboard/join'); await refreshMe(); load() }) }, t('lb.leave')))
         : h('div', { class: 'stack' }, h('p', { class: 'muted' }, t('lb.joinInfo')), h('label', { class: 'field' }, t('lb.name'), name),
-          h('button', { class: 'btn primary block', onclick: guard(async () => { await api('POST', '/api/leaderboard/join', { name: name.value }); await refreshMe(); load() }) }, t('lb.join')))
+          h('label', { class: 'row' }, useOwn, h('span', { class: 'hint' }, t('lb.useDisplay', { name: S.me.name }))),
+          h('button', { class: 'btn primary block', onclick: guard(async () => { await api('POST', '/api/leaderboard/join', useOwn.checked ? { use_display_name: true } : { name: name.value }); await refreshMe(); load() }) }, t('lb.join')))
     mount(topbar(t('lb.title')),
       h('div', { class: 'card stack' }, seg('kind', [['abs', 'lb.abs'], ['rel', 'lb.rel']], 'rp.lbKind'), seg('bots', [['incl', 'lb.botsIncl'], ['excl', 'lb.botsExcl']], 'rp.lbBots'), seg('scope', [['week', 'lb.week'], ['month', 'lb.month'], ['all', 'lb.all']], 'rp.lbScope'), mine),
       rows.length ? h('div', { class: 'list' }, rows) : h('div', { class: 'empty' }, t('lb.empty')),

@@ -55,6 +55,17 @@ test('Teilnahme ist Opt-in: Name prüfen, eindeutig, Teilnahme beenden', async (
   assert.equal((await join(b.token, 'Quizkönig')).status, 200, 'Name wieder frei')
 })
 
+test('Teilnahme mit dem Anzeigenamen nur auf ausdrücklichen Wunsch (Momentaufnahme)', async () => {
+  const a = await newPlayer('Anzeigename Eins'), b = await newPlayer('Anzeigename Eins'), c = await newPlayer('Zu')
+  assert.equal((await call('POST', '/api/leaderboard/join', { use_display_name: true }, a.token)).status, 200)
+  assert.equal((await call('GET', '/api/me', undefined, a.token)).json.player.lb_name, 'Anzeigename Eins')
+  assert.equal((await call('POST', '/api/leaderboard/join', { use_display_name: true }, b.token)).status, 409, 'gleicher Name ist belegt')
+  assert.equal((await call('POST', '/api/leaderboard/join', { use_display_name: true }, c.token)).status, 400, 'zu kurz für die Bestenliste')
+  assert.equal((await call('PATCH', '/api/me', { name: 'Neu Benannt' }, a.token)).status, 200)
+  assert.equal((await call('GET', '/api/me', undefined, a.token)).json.player.lb_name, 'Anzeigename Eins', 'Momentaufnahme')
+  assert.equal((await call('POST', '/api/leaderboard/join', { name: 'Anderer Name' }, b.token)).status, 200, 'ohne Flag zählt weiter der eigene Name')
+})
+
 test('Zählweise: mit Bots vs. nur Menschen, absolut vs. relativ, nur Teilnehmer', async () => {
   const a = await newPlayer('Zähler Eins'), b = await newPlayer('Zähler Zwei'), c = await newPlayer('Heimlich'), human = await newPlayer('Gegner')
   const [pa, pb, pc, ph] = [a, b, c, human].map((p) => pidOf(p.player.public_id)); [pa, pb, pc].forEach(old)

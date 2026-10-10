@@ -223,7 +223,7 @@ const DEMO = (() => {
       return { body: { top, me: mine ? { rank: top.find((x) => x.is_me)?.rank ?? null, ok: mine.ok, n: mine.n, rate: mine.n ? Math.round((mine.ok / mine.n) * 1000) / 10 : null, needs: Math.max(0, minN - mine.n), young: false } : null,
         total: top.length, rules: { min_answers: 50, min_relative: 100, day_cap: 400 }, participating: !!st.lb, name: st.lb ?? null, banned: false } }
     }
-    if (path === '/api/leaderboard/join' && method === 'POST') { const n = String(body?.name ?? '').trim(); if (n.length < 3 || n.length > 20) return err(400, 'bad_lb_name'); st.lb = n; save(); return { body: { name: n } } }
+    if (path === '/api/leaderboard/join' && method === 'POST') { const n = String(body?.use_display_name ? st.me.name : body?.name ?? '').trim(); if (n.length < 3 || n.length > 20) return err(400, 'bad_lb_name'); st.lb = n; save(); return { body: { name: n } } }
     if (path === '/api/leaderboard/join' && method === 'DELETE') { st.lb = null; save(); return { body: { ok: true } } }
     /* Mehrspieler-Räume */
     if (path === '/api/rooms' && method === 'GET') return { body: { rooms: (st.rooms ?? []).map((r) => { const v = rview(r), me = v.players.find((p) => p.is_me); return { id: r.id, code: r.code, mode: r.mode, status: r.status, players: v.players.length, my_done: me.done, my_rank: me.rank, updated_at: r.updated_at } }) } }
