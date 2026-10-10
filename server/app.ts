@@ -67,6 +67,7 @@ function serveStatic(req: http.IncomingMessage, res: http.ServerResponse, pathna
 export function createApp() {
   return http.createServer(async (req, res) => {
     res.setHeader('content-security-policy', CSP)
+    res.setHeader('x-app-version', VERSION)
     res.setHeader('x-content-type-options', 'nosniff')
     res.setHeader('referrer-policy', 'same-origin')
     res.setHeader('permissions-policy', 'camera=(self), microphone=(), geolocation=()')

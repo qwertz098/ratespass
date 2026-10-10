@@ -1,4 +1,5 @@
 const $ = (id) => document.getElementById(id)
+fetch('/api/meta').then((r) => r.json()).then((m) => { if (m.version) $('ver').textContent = 'Version ' + m.version }).catch(() => {}) // zeigt, welches Image läuft
 let status = 'pending'
 
 const toast = (m) => { $('toast').textContent = m; $('toast').classList.add('show'); setTimeout(() => $('toast').classList.remove('show'), 2800) }

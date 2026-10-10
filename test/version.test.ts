@@ -13,5 +13,6 @@ test('Version: eine Quelle (Server), automatisch – /api/meta, /version.js und 
   const app = await fetch(`${base}/version.js`), sw = await fetch(`${base}/sw-version.js`)
   assert.equal(await app.text(), `export const VERSION = '${VERSION}'\n`)
   assert.equal(await sw.text(), `self.APP_VERSION = '${VERSION}'\n`)
+  assert.equal((await fetch(`${base}/healthz`)).headers.get('x-app-version'), VERSION, 'Header auf jeder Antwort')
   for (const r of [app, sw]) { assert.match(r.headers.get('content-type') ?? '', /javascript/); assert.match(r.headers.get('cache-control') ?? '', /no-store/) }
 })

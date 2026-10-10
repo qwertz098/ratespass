@@ -255,11 +255,16 @@ if "%OK%"=="0" (
 :done
 echo.
 echo === Fertig: %IMAGE%:%TAG% ===
+set "DIGEST="
+if "%PUSHED%"=="1" for /f "delims=" %%d in ('docker image inspect --format "{{index .RepoDigests 0}}" "%IMAGE%:latest" 2^>nul') do set "DIGEST=%%d"
 if "%PUSHED%"=="1" (
-  echo Erfolgreich gepusht: %IMAGE%:%TAG%  und  %IMAGE%:latest
+  echo Erfolgreich gepusht: %IMAGE%:%TAG%  und  %IMAGE%:latest  ^(App-Version %APP_VERSION%^)
+  if defined DIGEST echo Registry-Stand: !DIGEST!
   echo.
-  echo In Dockge verwenden:  image: %IMAGE%:%TAG%
-  echo   Stack-compose: Inhalt von docker-compose.dockge.yml (Repo) einfuegen, Stack-.env: RATESPASS_IMAGE=%IMAGE%:%TAG%
+  echo In Dockge verwenden:  image: %IMAGE%:latest   ^(immer :latest, dann reicht dort "Update"^)
+  echo   Stack-compose: Inhalt von docker-compose.dockge.yml (Repo) einfuegen, Stack-.env: RATESPASS_IMAGE=%IMAGE%:latest
+  echo   Ein fester Tag ^(%TAG%^) zieht bei "Update" immer wieder dasselbe Image - nur fuer einen Rollback.
+  echo   Pruefen, ob der Server neu ist:  http://SERVER:3007/version.js  zeigt 0.0.%COUNT% oder hoeher
   echo   NICHT docker-compose.yml / docker-compose.npm.yml nehmen: sie enthalten "build:" und scheitern im Dockge-Ordner
   echo   mit "failed to read dockerfile". Danach im Stack "Update" bzw. "Pull & Redeploy".
   echo   Der Server braucht die Registry als insecure-registry.

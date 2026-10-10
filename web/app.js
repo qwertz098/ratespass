@@ -1404,6 +1404,7 @@ async function profile() {
   const uiLang = h('div', { class: 'seg', role: 'group' }, languages().map((l) => h('button', { 'aria-pressed': String(l === getLang()), onclick: () => {
     store.set('rp.lang', l); setLang(l); api('PATCH', '/api/me', { lang: l }).catch(() => {}); route() } }, dict[l]['lang.name'])))
   const transfer = h('div', { class: 'stack' })
+  const installBox = h('div', { class: 'stack' }) // Installationsanleitung: erst nach Antippen des Knopfs ganz unten
   const contacts = S.contacts.length
     ? h('div', { class: 'list' }, S.contacts.map((c) => h('div', { class: 'item' }, avatar(c), h('div', { class: 'grow ell' }, c.name),
       h('button', { class: 'btn small', onclick: guard(async () => { const r = await api('POST', '/api/games', { opponent: c.public_id, lang: gameLang() }); go('#/game/' + r.id) }) }, t('profile.challenge')),
@@ -1434,7 +1435,6 @@ async function profile() {
     h('h2', {}, t('profile.contacts')), contacts,
     h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend')),
     h('p', { class: 'hint' }, t('friends.localNote')),
-    h('h2', {}, t('install.title')), h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('install.sub')), installGuide(h)),
     h('h2', {}, t('push.title')), h('div', { class: 'card' }, pushCard()),
     h('h2', {}, t('privacy.title')),
     h('div', { class: 'card stack' }, h('p', { class: 'muted' }, S.consent?.at ? t('privacy.accepted', { date: new Date(S.consent.at).toLocaleDateString(getLang()), v: String(S.consent.accepted).slice(0, 8) }) : t('privacy.none')),
@@ -1453,11 +1453,12 @@ async function profile() {
     h('h2', {}, t('profile.more')),
     h('div', { class: 'list' },
       linkItem(t('profile.contribute'), '#/contribute'), linkItem(t('profile.licenses'), '#/licenses'),
-      h('a', { class: 'item', href: '/api/dataset.jsonl', download: 'ratespass-questions.jsonl' }, h('div', { class: 'grow' }, t('profile.dataset'))),
       h('a', { class: 'item', href: '/legal.html' }, h('div', { class: 'grow' }, t('profile.legal')))),
     h('div', {}, h('button', { class: 'btn block danger', onclick: guard(async () => {
       if (!confirm(t('profile.deleteConfirm'))) return
       await api('DELETE', '/api/me'); await disablePush().catch(() => {}); forgetIdentity(); go('#/') }) }, t('profile.delete'))),
+    h('button', { class: 'btn block', onclick: () => { installBox.childNodes.length ? installBox.replaceChildren() : installBox.replaceChildren(h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('install.sub')), installGuide(h))) } }, '📲 ' + t('install.title')),
+    installBox,
     h('div', { class: 'versionbox' }, h('span', {}, t('profile.version', { v: VERSION }) + (S.serverVersion && S.serverVersion !== VERSION ? ' · ' + t('update.server', { v: S.serverVersion }) : '')),
       h('button', { class: 'btn small', onclick: guard(async () => { if (!(await checkVersion(true))) toast(t('update.latest')) }) }, '↻ ' + t('update.check'))))
 }
@@ -1622,7 +1623,10 @@ async function licenses() {
   mount(topbar(t('lic.title')), h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('lic.intro')),
     r.sources.map((s) => h('div', { class: 'row' }, h('div', { class: 'grow' }, h('strong', {}, t('src.' + s.source)),
       h('div', { class: 'muted' }, s.attribution || ''), h('a', { href: s.license_url, target: '_blank', rel: 'noopener' }, s.license)), h('span', { class: 'badge' }, t('lic.count', { n: s.n }))))),
-  h('p', { class: 'hint' }, 'Open Trivia DB: https://opentdb.com · Wikidata: https://www.wikidata.org'))
+  h('p', { class: 'hint' }, 'Open Trivia DB: https://opentdb.com · Wikidata: https://www.wikidata.org'),
+  h('h2', {}, t('lic.datasetTitle')),
+  h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('lic.datasetInfo')),
+    h('a', { class: 'btn block', href: '/api/dataset.jsonl', download: 'ratespass-questions.jsonl' }, '⬇ ' + t('profile.dataset'))))
 }
 
 /* ---------- Push-Benachrichtigungen ---------- */

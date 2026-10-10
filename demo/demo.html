@@ -771,7 +771,7 @@ const DEMO = (() => {
   return { reset: () => { try { localStorage.removeItem(KEY) } catch { /* ignorieren */ } location.reload() } }
 })()
 
-const VERSION = "0.0.79"
+const VERSION = "0.0.81"
 // UI-Texte. Neue Sprache = neues Objekt hinzufügen (Schlüssel wie in `de`); Fragen-Sprachen kommen unabhängig vom Server.
 const dict = {
   de: {
@@ -889,7 +889,7 @@ const dict = {
     'profile.move': 'Gerätewechsel & Verlauf', 'profile.moveInfo': 'Nimm dein Profil mit: als Datei (enthält deinen geheimen Schlüssel – nicht teilen) oder per Einmal-Code.',
     'profile.export': 'Profil & Verlauf herunterladen', 'profile.import': 'Profil aus Datei laden', 'profile.transferMake': 'Transfer-Code erzeugen',
     'profile.transferEnter': 'Code vom alten Gerät eingeben', 'profile.transferUse': 'Übernehmen', 'profile.transferValid': 'Gültig für 10 Minuten, einmal nutzbar.',
-    'profile.contribute': 'Frage einreichen', 'profile.licenses': 'Lizenzen & Quellen', 'profile.dataset': 'Alle Fragen herunterladen', 'profile.legal': 'Impressum & Datenschutz', 'profile.more': 'Mehr',
+    'profile.contribute': 'Frage einreichen', 'profile.licenses': 'Lizenzen, Quellen & Fragen-Download', 'profile.dataset': 'Alle Fragen herunterladen', 'profile.legal': 'Impressum & Datenschutz', 'profile.more': 'Mehr',
     'profile.delete': 'Profil löschen', 'profile.deleteConfirm': 'Profil endgültig löschen? Laufende Spiele werden aufgegeben.',
     'invite.title': '{name} fordert dich heraus', 'invite.accept': 'Annehmen & spielen', 'invite.unknown': 'Dieser Einladungslink ist ungültig.',
     'contrib.title': 'Frage einreichen', 'contrib.info': 'Eingereichte Fragen werden geprüft, bevor sie ins Spiel kommen.', 'contrib.lang': 'Sprache', 'contrib.category': 'Kategorie',
@@ -897,7 +897,7 @@ const dict = {
     'contrib.wrong': 'Falsche Antwort {n}', 'contrib.explanation': 'Erklärung (optional)', 'contrib.ack': 'Ich bin Urheber:in dieser Frage und stelle sie unter CC BY-SA 4.0 zur Verfügung.',
     'contrib.send': 'Einreichen', 'contrib.thanks': 'Danke! Deine Frage wird geprüft.', 'contrib.mine': 'Deine Einreichungen',
     'status.pending': 'in Prüfung', 'status.active': 'freigegeben', 'status.rejected': 'abgelehnt', 'status.disabled': 'deaktiviert',
-    'lic.title': 'Lizenzen & Quellen', 'lic.intro': 'Die Fragen stammen aus folgenden Quellen. Der gesamte Fragenpool steht unter CC BY-SA 4.0 und kann heruntergeladen werden.', 'lic.count': '{n} Fragen',
+    'lic.title': 'Lizenzen & Quellen', 'lic.datasetTitle': 'Fragen herunterladen', 'lic.datasetInfo': 'Alle Fragen als eine Datei (JSON Lines) unter CC BY-SA 4.0 – inklusive Quelle und Lizenz je Frage.', 'lic.intro': 'Die Fragen stammen aus folgenden Quellen. Der gesamte Fragenpool steht unter CC BY-SA 4.0 und kann heruntergeladen werden.', 'lic.count': '{n} Fragen',
     'src.opentdb': 'Open Trivia DB', 'src.wikidata': 'Wikidata', 'src.original': 'Ratespaß-Projekt', 'src.community': 'Community', 'src.llm': 'KI-generiert (geprüft)',
     'friends.title': 'Freunde hinzufügen', 'friends.mine': 'Mein Code', 'friends.enter': 'Code eingeben', 'friends.scan': 'Scannen',
     'friends.qrHint': 'Dein Freund scannt diesen QR-Code – mit der Kamera-App oder hier unter „Scannen“.', 'friends.copyCode': 'Code kopieren', 'friends.codeCopied': 'Code kopiert',
@@ -1035,7 +1035,7 @@ const dict = {
     'profile.move': 'Switch device & history', 'profile.moveInfo': 'Take your profile along: as a file (contains your secret key – do not share) or with a one-time code.',
     'profile.export': 'Download profile & history', 'profile.import': 'Load profile from file', 'profile.transferMake': 'Create transfer code',
     'profile.transferEnter': 'Enter code from old device', 'profile.transferUse': 'Apply', 'profile.transferValid': 'Valid for 10 minutes, single use.',
-    'profile.contribute': 'Submit a question', 'profile.licenses': 'Licenses & sources', 'profile.dataset': 'Download all questions', 'profile.legal': 'Legal notice & privacy', 'profile.more': 'More',
+    'profile.contribute': 'Submit a question', 'profile.licenses': 'Licenses, sources & question download', 'profile.dataset': 'Download all questions', 'profile.legal': 'Legal notice & privacy', 'profile.more': 'More',
     'profile.delete': 'Delete profile', 'profile.deleteConfirm': 'Delete your profile permanently? Running games will be forfeited.',
     'invite.title': '{name} challenges you', 'invite.accept': 'Accept & play', 'invite.unknown': 'This invite link is not valid.',
     'contrib.title': 'Submit a question', 'contrib.info': 'Submitted questions are reviewed before they appear in games.', 'contrib.lang': 'Language', 'contrib.category': 'Category',
@@ -1043,7 +1043,7 @@ const dict = {
     'contrib.wrong': 'Wrong answer {n}', 'contrib.explanation': 'Explanation (optional)', 'contrib.ack': 'I am the author of this question and release it under CC BY-SA 4.0.',
     'contrib.send': 'Submit', 'contrib.thanks': 'Thanks! Your question will be reviewed.', 'contrib.mine': 'Your submissions',
     'status.pending': 'in review', 'status.active': 'approved', 'status.rejected': 'rejected', 'status.disabled': 'disabled',
-    'lic.title': 'Licenses & sources', 'lic.intro': 'Questions come from the sources below. The whole question pool is licensed CC BY-SA 4.0 and can be downloaded.', 'lic.count': '{n} questions',
+    'lic.title': 'Licenses & sources', 'lic.datasetTitle': 'Download questions', 'lic.datasetInfo': 'All questions as one file (JSON Lines) under CC BY-SA 4.0 – with source and license per question.', 'lic.intro': 'Questions come from the sources below. The whole question pool is licensed CC BY-SA 4.0 and can be downloaded.', 'lic.count': '{n} questions',
     'src.opentdb': 'Open Trivia DB', 'src.wikidata': 'Wikidata', 'src.original': 'Ratespaß project', 'src.community': 'Community', 'src.llm': 'AI-generated (reviewed)',
     'friends.title': 'Add friends', 'friends.mine': 'My code', 'friends.enter': 'Enter code', 'friends.scan': 'Scan',
     'friends.qrHint': 'Your friend scans this QR code – with their camera app or here under “Scan”.', 'friends.copyCode': 'Copy code', 'friends.codeCopied': 'Code copied',
@@ -2589,6 +2589,7 @@ async function profile() {
   const uiLang = h('div', { class: 'seg', role: 'group' }, languages().map((l) => h('button', { 'aria-pressed': String(l === getLang()), onclick: () => {
     store.set('rp.lang', l); setLang(l); api('PATCH', '/api/me', { lang: l }).catch(() => {}); route() } }, dict[l]['lang.name'])))
   const transfer = h('div', { class: 'stack' })
+  const installBox = h('div', { class: 'stack' }) // Installationsanleitung: erst nach Antippen des Knopfs ganz unten
   const contacts = S.contacts.length
     ? h('div', { class: 'list' }, S.contacts.map((c) => h('div', { class: 'item' }, avatar(c), h('div', { class: 'grow ell' }, c.name),
       h('button', { class: 'btn small', onclick: guard(async () => { const r = await api('POST', '/api/games', { opponent: c.public_id, lang: gameLang() }); go('#/game/' + r.id) }) }, t('profile.challenge')),
@@ -2619,7 +2620,6 @@ async function profile() {
     h('h2', {}, t('profile.contacts')), contacts,
     h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend')),
     h('p', { class: 'hint' }, t('friends.localNote')),
-    h('h2', {}, t('install.title')), h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('install.sub')), installGuide(h)),
     h('h2', {}, t('push.title')), h('div', { class: 'card' }, pushCard()),
     h('h2', {}, t('privacy.title')),
     h('div', { class: 'card stack' }, h('p', { class: 'muted' }, S.consent?.at ? t('privacy.accepted', { date: new Date(S.consent.at).toLocaleDateString(getLang()), v: String(S.consent.accepted).slice(0, 8) }) : t('privacy.none')),
@@ -2638,11 +2638,12 @@ async function profile() {
     h('h2', {}, t('profile.more')),
     h('div', { class: 'list' },
       linkItem(t('profile.contribute'), '#/contribute'), linkItem(t('profile.licenses'), '#/licenses'),
-      h('a', { class: 'item', href: '/api/dataset.jsonl', download: 'ratespass-questions.jsonl' }, h('div', { class: 'grow' }, t('profile.dataset'))),
       h('a', { class: 'item', href: '/legal.html' }, h('div', { class: 'grow' }, t('profile.legal')))),
     h('div', {}, h('button', { class: 'btn block danger', onclick: guard(async () => {
       if (!(()=>true)(t('profile.deleteConfirm'))) return
       await api('DELETE', '/api/me'); await disablePush().catch(() => {}); forgetIdentity(); go('#/') }) }, t('profile.delete'))),
+    h('button', { class: 'btn block', onclick: () => { installBox.childNodes.length ? installBox.replaceChildren() : installBox.replaceChildren(h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('install.sub')), installGuide(h))) } }, '📲 ' + t('install.title')),
+    installBox,
     h('div', { class: 'versionbox' }, h('span', {}, t('profile.version', { v: VERSION }) + (S.serverVersion && S.serverVersion !== VERSION ? ' · ' + t('update.server', { v: S.serverVersion }) : '')),
       h('button', { class: 'btn small', onclick: guard(async () => { if (!(await checkVersion(true))) toast(t('update.latest')) }) }, '↻ ' + t('update.check'))))
 }
@@ -2807,7 +2808,10 @@ async function licenses() {
   mount(topbar(t('lic.title')), h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('lic.intro')),
     r.sources.map((s) => h('div', { class: 'row' }, h('div', { class: 'grow' }, h('strong', {}, t('src.' + s.source)),
       h('div', { class: 'muted' }, s.attribution || ''), h('a', { href: s.license_url, target: '_blank', rel: 'noopener' }, s.license)), h('span', { class: 'badge' }, t('lic.count', { n: s.n }))))),
-  h('p', { class: 'hint' }, 'Open Trivia DB: https://opentdb.com · Wikidata: https://www.wikidata.org'))
+  h('p', { class: 'hint' }, 'Open Trivia DB: https://opentdb.com · Wikidata: https://www.wikidata.org'),
+  h('h2', {}, t('lic.datasetTitle')),
+  h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('lic.datasetInfo')),
+    h('a', { class: 'btn block', href: '/api/dataset.jsonl', download: 'ratespass-questions.jsonl' }, '⬇ ' + t('profile.dataset'))))
 }
 
 /* ---------- Push-Benachrichtigungen ---------- */

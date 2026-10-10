@@ -7,7 +7,14 @@ self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()))
 })
 self.addEventListener('activate', (e) => {
-  e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== VERSION).map((k) => caches.delete(k)))).then(() => self.clients.claim()))
+  e.waitUntil((async () => {
+    const keys = await caches.keys()
+    const updated = keys.some((k) => k.startsWith('rp-') && k !== VERSION) // vorher lief schon eine andere Version → Update (nicht Erstinstallation)
+    await Promise.all(keys.filter((k) => k !== VERSION).map((k) => caches.delete(k)))
+    await self.clients.claim()
+    // Bei einem Update alle offenen Fenster sofort mit der neuen Oberfläche neu laden (sonst bliebe eine laufende App bis zum nächsten Start alt)
+    if (updated) for (const c of await self.clients.matchAll({ type: 'window' })) { try { await c.navigate(c.url) } catch { /* Fenster nicht navigierbar */ } }
+  })())
 })
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url)

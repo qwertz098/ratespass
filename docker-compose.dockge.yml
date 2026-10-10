@@ -1,7 +1,8 @@
 # Dockge-/Server-Variante OHNE Build: Das Image kommt aus der eigenen Registry (build+deploy.bat pusht es), Anbindung an Nginx Proxy Manager (NPM).
 # In Dockge als compose.yaml des Stacks einfuegen. Es gibt bewusst weder `build:` noch Bind-Mounts (kein Dockerfile/keine batches im Stack-Ordner noetig:
 # Fragen und Wortlisten stecken im Image). Die .env des Stacks braucht mindestens:
-#   RATESPASS_IMAGE=100.68.13.43:5000/ratespass:latest      (genau der Tag, den build+deploy.bat am Ende ausgibt)
+#   RATESPASS_IMAGE=100.68.13.43:5000/ratespass:latest      (immer :latest verwenden, dann genuegt in Dockge "Update"; ein fester Datum-Tag zieht nach jedem
+#                                                            Update wieder dasselbe alte Image - nur fuer einen Rollback sinnvoll)
 #   ADMIN_TOKEN=...  (mind. 16 Zeichen)   VAPID_SUBJECT=mailto:du@example.org   CONTROLLER_NAME / CONTROLLER_ADDRESS / CONTROLLER_EMAIL
 #   NPM_NETWORK=npm_default   (docker network ls: Netzwerk, in dem Nginx Proxy Manager haengt)
 # Der Server muss die Registry als "insecure-registries" kennen, wenn sie ohne TLS laeuft (daemon.json bzw. Unraid: Docker-Einstellungen).
@@ -9,6 +10,7 @@
 services:
   ratespass:
     image: ${RATESPASS_IMAGE:?RATESPASS_IMAGE fehlt - in die .env des Stacks eintragen, z. B. 100.68.13.43:5000/ratespass:latest}
+    pull_policy: always                                       # Deploy/Restart/Update ziehen immer den aktuellen Stand der Registry
     container_name: ratespass                                 # fester Name = Forward Hostname in NPM
     ports:
       # Host-Port per HOST_PORT änderbar (Standard 3007). BIND_ADDRESS=127.0.0.1 → nur vom Host selbst erreichbar
