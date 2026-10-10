@@ -89,7 +89,7 @@ Jeder Spieler wählt im Profil sein **Level** – Basis, Nerd (Sci-Fi & Fantasy,
 
 ### Sofa-Modus
 
-„Neues Spiel → Sofa-Modus“: ein Gerät, 2–8 Spieler reihum (3/5/8 Fragen pro Person), ohne QR, ohne Konten und ohne Spielzustand auf dem Server. `GET /api/sofa?lang&n` liefert nur den Fragensatz mit Lösung (der Bestand ist ohnehin über `/api/dataset.jsonl` öffentlich); Namen und Punkte bleiben im Browser, nichts wird gespeichert oder für Statistik/Bestenliste gezählt. Läuft auch in der Demo. Code: `server/sofa.ts`, `sofa()` in `web/app.js`.
+„Neues Spiel → Sofa-Modus“: ein Gerät, 2–8 Spieler; wahlweise **dieselbe Frage für alle** (Standard: nacheinander verdeckt antworten, danach gemeinsame Auflösung, Startspieler rotiert) oder **jeder eine eigene Frage** (3/5/8 Fragen pro Person), ohne QR, ohne Konten und ohne Spielzustand auf dem Server. `GET /api/sofa?lang&n` liefert nur den Fragensatz mit Lösung (der Bestand ist ohnehin über `/api/dataset.jsonl` öffentlich); Namen und Punkte bleiben im Browser, nichts wird gespeichert oder für Statistik/Bestenliste gezählt. Läuft auch in der Demo. Code: `server/sofa.ts`, `sofa()` in `web/app.js`.
 
 ### Live-Spielabend (Echtzeit, Beitritt per QR)
 

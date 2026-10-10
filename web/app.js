@@ -314,27 +314,77 @@ async function sofa() {
   names = names.filter((n) => typeof n === 'string').slice(0, MAX)
   while (names.length < 2) names.push('')
   let rounds = Number(store.get('rp.sofaRounds')) || 5
+  let share = store.get('rp.sofaShare') !== '0' // gleiche Frage für alle (Standard)
   let raf = 0
   const prev = cleanup
   cleanup = () => { prev(); cancelAnimationFrame(raf) }
 
   const setup = () => {
     const inputs = names.map((n, i) => h('input', { type: 'text', maxLength: 20, value: n, placeholder: t('sofa.name', { n: i + 1 }), autocomplete: 'off', oninput: (e) => { names[i] = e.target.value } }))
-    const roundSeg = h('div', { class: 'seg wrap' }, [3, 5, 8].map((n) => h('button', { 'aria-pressed': String(rounds === n), onclick: (e) => {
+    const opts = share ? [5, 10, 15] : [3, 5, 8]
+    if (!opts.includes(rounds)) rounds = opts[1]
+    const roundSeg = h('div', { class: 'seg wrap' }, opts.map((n) => h('button', { 'aria-pressed': String(rounds === n), onclick: (e) => {
       rounds = n; store.set('rp.sofaRounds', String(n)); roundSeg.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === e.currentTarget))) } }, t('sofa.rounds', { n }))))
+    const shareSeg = h('div', { class: 'seg wrap' }, [[true, 'sofa.share'], [false, 'sofa.own']].map(([v, label]) => h('button', { 'aria-pressed': String(share === v), onclick: () => { share = v; store.set('rp.sofaShare', v ? '1' : '0'); setup() } }, t(label))))
     mount(topbar(t('sofa.title')),
       h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('sofa.info')),
         h('div', { class: 'stack' }, inputs.map((i, idx) => h('div', { class: 'row' }, i, names.length > 2 ? h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: () => { names.splice(idx, 1); setup() } }, '✕') : null))),
         names.length < MAX ? h('button', { class: 'btn small', onclick: () => { names.push(''); setup() } }, '＋ ' + t('sofa.add')) : null,
-        h('label', { class: 'field' }, t('sofa.roundsLabel'), roundSeg),
+        h('label', { class: 'field' }, t('sofa.shareLabel'), shareSeg), h('p', { class: 'hint' }, t(share ? 'sofa.shareInfo' : 'sofa.ownInfo')),
+        h('label', { class: 'field' }, t(share ? 'sofa.roundsShared' : 'sofa.roundsLabel'), roundSeg),
         h('button', { class: 'btn primary block', onclick: guard(start) }, t('sofa.start'))))
   }
 
   async function start() {
     const players = names.map((n, i) => ({ name: n.trim() || t('sofa.name', { n: i + 1 }), score: 0 }))
     store.set('rp.sofaNames', JSON.stringify(names.map((n) => n.trim())))
-    const r = await api('GET', `/api/sofa?lang=${gameLang()}&n=${players.length * rounds}`)
-    turn(players, r.questions, 0)
+    const r = await api('GET', `/api/sofa?lang=${gameLang()}&n=${share ? rounds : players.length * rounds}`)
+    if (share) sharedTurn(players, r.questions, 0, 0, [])
+    else turn(players, r.questions, 0)
+  }
+
+  /** Gleiche Frage für alle: reihum verdeckt antworten, danach gemeinsame Auflösung. Der Startspieler rotiert je Frage. */
+  function sharedTurn(players, qs, k, i, picks) {
+    const p = players[(k + i) % players.length]
+    mount(topbar(t('sofa.title')),
+      h('div', { class: 'card stack lresult' }, h('p', { class: 'muted' }, t('sofa.pass')), h('div', { class: 'big' }, p.name),
+        h('p', { class: 'hint' }, t('ladder.step', { n: k + 1, total: qs.length }) + ' · ' + t('sofa.hidden')),
+        h('button', { class: 'btn primary block', onclick: () => sharedAsk(players, qs, k, i, picks) }, t('sofa.ready', { name: p.name }))),
+      h('div', { class: 'card stack' }, players.map((x) => h('div', { class: 'row' }, h('div', { class: 'grow ell' }, x.name), h('span', { class: 'score' }, String(x.score))))))
+  }
+
+  function sharedAsk(players, qs, k, i, picks) {
+    const p = players[(k + i) % players.length], q = qs[k]
+    let chosen = -1, done = false
+    const bar = h('i')
+    const deadline = performance.now() + SECS * 1000
+    const confirm = h('button', { class: 'btn primary block', disabled: true, onclick: () => lock(chosen) }, t('sofa.lock'))
+    const buttons = q.options.map((text, n) => h('button', { class: 'opt', onclick: () => { if (done) return; chosen = n; buttons.forEach((b, m) => b.classList.toggle('sel', m === n)); confirm.disabled = false } }, h('kbd', {}, String(n + 1)), h('span', {}, text)))
+    const lock = (choice) => {
+      if (done) return
+      done = true; cancelAnimationFrame(raf)
+      picks.push({ player: p, choice })
+      if (i + 1 < players.length) sharedTurn(players, qs, k, i + 1, picks)
+      else sharedReveal(players, qs, k, picks)
+    }
+    const tick = () => { const left = deadline - performance.now(); bar.style.transform = `scaleX(${Math.max(0, left / (SECS * 1000))})`; if (left <= 0) lock(chosen); else raf = requestAnimationFrame(tick) }
+    mount(topbar(t('sofa.turn', { name: p.name })),
+      h('div', { class: 'card qcard', cat: q.category }, h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, t('ladder.step', { n: k + 1, total: qs.length }))),
+        h('div', { class: 'timer' }, bar), h('div', { class: 'question' }, q.text), h('div', { class: 'opts' }, buttons), h('div', { class: 'feedback' }, confirm)))
+    raf = requestAnimationFrame(tick)
+  }
+
+  function sharedReveal(players, qs, k, picks) {
+    const q = qs[k]
+    for (const pk of picks) if (pk.choice === q.correct_index) pk.player.score++
+    mount(topbar(t('sofa.title')),
+      h('div', { class: 'card qcard', cat: q.category }, h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, t('ladder.step', { n: k + 1, total: qs.length }))),
+        h('div', { class: 'question' }, q.text),
+        h('div', { class: 'opts' }, q.options.map((text, n) => h('button', { class: 'opt ' + (n === q.correct_index ? 'good' : 'dim'), disabled: true }, h('kbd', {}, String(n + 1)), h('span', {}, text)))),
+        q.explanation ? h('p', { class: 'muted' }, q.explanation) : null),
+      h('div', { class: 'list' }, picks.map((pk) => h('div', { class: 'item' }, h('div', { class: 'grow ell' }, pk.player.name),
+        h('span', { class: 'badge ' + (pk.choice === q.correct_index ? 'good' : 'bad') }, pk.choice < 0 ? t('play.timeUp') : (pk.choice === q.correct_index ? '✓ ' : '✗ ') + (pk.choice < 0 ? '' : q.options[pk.choice].slice(0, 24))), h('span', { class: 'score' }, String(pk.player.score))))),
+      h('button', { class: 'btn primary block', onclick: () => (k + 1 >= qs.length ? result(players, qs) : sharedTurn(players, qs, k + 1, 0, [])) }, k + 1 >= qs.length ? t('sofa.result') : t('play.next')))
   }
 
   function turn(players, qs, k) {
