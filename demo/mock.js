@@ -24,7 +24,7 @@ const DEMO = (() => {
 
   const pool = (lang) => QS.filter((q) => q[lang] && (q.r === 0 || lang === 'de'))
   const content = (q, lang) => ({ text: q[lang][0], answers: q[lang].slice(1) })
-  const profile = () => ({ ...st.me, has_account: false, username: null, reviewer: true, level: st.level ?? 'basic', disabled_cats: st.disabled ?? [], best_ladder: st.best ?? 0, birth_year: st.birth ?? null, lb_name: st.lb ?? null })
+  const profile = () => ({ ...st.me, has_account: false, username: null, reviewer: true, level: st.level ?? 'basic', disabled_cats: st.disabled ?? [], best_ladder: st.best ?? 0, birth_year: st.birth ?? null, lb_name: st.lb ?? null, lb_follow: !!st.lbFollow })
   const err = (status, error, message) => ({ status, body: { error, message } })
 
   const used = (g) => new Set(g.rounds.flatMap((r) => r.qs.map((x) => x.i)))
@@ -176,12 +176,13 @@ const DEMO = (() => {
       if (body?.name) st.me.name = String(body.name).slice(0, 24); if (body?.lang) st.me.lang = body.lang; save(); return { body: { token: 'demo-token', player: profile() } } }
     if (path === '/api/me' && method === 'GET') return { body: { player: profile(), contacts: st.contacts, consent: { current: 'demo-version', accepted: st.consent ? 'demo-version' : null, at: st.consent ?? null } } }
     if (path === '/api/me' && method === 'PATCH') {
-      if (body.name !== undefined) { const n = String(body.name).trim(); if (n.length < 2 || n.length > 24) return err(400, 'bad_name'); st.me.name = n }
+      let lost = false
+      if (body.name !== undefined) { const n = String(body.name).trim(); if (n.length < 2 || n.length > 24) return err(400, 'bad_name'); st.me.name = n; if (st.lbFollow && st.lb) { if (n.length >= 3 && n.length <= 20) st.lb = n; else { st.lbFollow = false; lost = true } } }
       if (body.lang) st.me.lang = body.lang
       if (body.birth_year !== undefined) st.birth = body.birth_year || null
       if (body.level !== undefined) { if (!LEVELS.includes(body.level)) return err(400, 'bad_level'); st.level = body.level }
       if (body.disabled_cats !== undefined) st.disabled = body.disabled_cats.filter((c) => TIERS[c])
-      save(); return { body: { player: profile() } }
+      save(); return { body: { player: profile(), ...(lost ? { lb_follow_lost: true } : {}) } }
     }
     if (path === '/api/licenses') return { body: { sources: [{ source: 'original', license: 'CC-BY-SA-4.0', attribution: 'Ratespaß-Projekt (eigene Formulierungen, Faktenwissen)', n: QS.length, license_url: 'https://creativecommons.org/licenses/by-sa/4.0/' }], licenses: { 'CC-BY-SA-4.0': 'https://creativecommons.org/licenses/by-sa/4.0/' } } }
     if (path === '/api/contacts' && method === 'POST') {
@@ -223,8 +224,8 @@ const DEMO = (() => {
       return { body: { top, me: mine ? { rank: top.find((x) => x.is_me)?.rank ?? null, ok: mine.ok, n: mine.n, rate: mine.n ? Math.round((mine.ok / mine.n) * 1000) / 10 : null, needs: Math.max(0, minN - mine.n), young: false } : null,
         total: top.length, rules: { min_answers: 50, min_relative: 100, day_cap: 400 }, participating: !!st.lb, name: st.lb ?? null, banned: false } }
     }
-    if (path === '/api/leaderboard/join' && method === 'POST') { const n = String(body?.use_display_name ? st.me.name : body?.name ?? '').trim(); if (n.length < 3 || n.length > 20) return err(400, 'bad_lb_name'); st.lb = n; save(); return { body: { name: n } } }
-    if (path === '/api/leaderboard/join' && method === 'DELETE') { st.lb = null; save(); return { body: { ok: true } } }
+    if (path === '/api/leaderboard/join' && method === 'POST') { const n = String(body?.use_display_name ? st.me.name : body?.name ?? '').trim(); if (n.length < 3 || n.length > 20) return err(400, 'bad_lb_name'); st.lb = n; st.lbFollow = !!body?.use_display_name; save(); return { body: { name: n } } }
+    if (path === '/api/leaderboard/join' && method === 'DELETE') { st.lb = null; st.lbFollow = false; save(); return { body: { ok: true } } }
     /* Mehrspieler-Räume */
     if (path === '/api/rooms' && method === 'GET') return { body: { rooms: (st.rooms ?? []).map((r) => { const v = rview(r), me = v.players.find((p) => p.is_me); return { id: r.id, code: r.code, mode: r.mode, status: r.status, players: v.players.length, my_done: me.done, my_rank: me.rank, updated_at: r.updated_at } }) } }
     if (path === '/api/rooms' && method === 'POST') {

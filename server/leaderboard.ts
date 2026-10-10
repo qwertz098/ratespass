@@ -92,12 +92,12 @@ export function cleanLbName(raw: unknown): string {
   return n
 }
 
-/** Freiwillig: entweder ein eigener Bestenlisten-Name oder – nur auf ausdrücklichen Wunsch – der Anzeigename (Momentaufnahme, folgt späteren Umbenennungen nicht). */
+/** Freiwillig: entweder ein eigener Bestenlisten-Name oder – nur auf ausdrücklichen Wunsch – der Anzeigename (folgt dann Umbenennungen, siehe followRename). */
 export function join(playerId: number, rawName: unknown, useDisplayName = false) {
   const p = get<{ lb_banned: number; name: string }>('SELECT lb_banned, name FROM players WHERE id=?', playerId)!
   if (p.lb_banned) throw new HttpError(403, 'lb_banned')
   const name = cleanLbName(useDisplayName ? p.name : rawName)
-  try { run('UPDATE players SET lb_name=?, lb_key=?, lb_optin_at=COALESCE(lb_optin_at, ?) WHERE id=?', name, name.toLocaleLowerCase('de'), now(), playerId) } catch (e: any) {
+  try { run('UPDATE players SET lb_name=?, lb_key=?, lb_follow=?, lb_optin_at=COALESCE(lb_optin_at, ?) WHERE id=?', name, name.toLocaleLowerCase('de'), useDisplayName ? 1 : 0, now(), playerId) } catch (e: any) {
     if (String(e?.message).includes('UNIQUE')) throw new HttpError(409, 'lb_name_taken')
     throw e
   }
@@ -105,8 +105,27 @@ export function join(playerId: number, rawName: unknown, useDisplayName = false)
   return name
 }
 export function leave(playerId: number) {
-  run('UPDATE players SET lb_name=NULL, lb_key=NULL, lb_optin_at=NULL WHERE id=?', playerId)
+  run('UPDATE players SET lb_name=NULL, lb_key=NULL, lb_follow=0, lb_optin_at=NULL WHERE id=?', playerId)
   clearCache()
+}
+
+/**
+ * Nach einer Umbenennung: Wer mit dem Anzeigenamen teilnimmt, behält ihn auch in der Bestenliste.
+ * Ist der neue Name dort ungültig oder vergeben, bleibt der bisherige Bestenlisten-Name stehen und die Verknüpfung endet
+ * (Rückgabe false, damit die App es melden kann). Ohne Verknüpfung passiert nichts (true).
+ */
+export function followRename(playerId: number): boolean {
+  const p = get<{ name: string; lb_name: string | null; lb_follow: number }>('SELECT name, lb_name, lb_follow FROM players WHERE id=?', playerId)
+  if (!p?.lb_name || !p.lb_follow) return true
+  try {
+    const name = cleanLbName(p.name)
+    run('UPDATE players SET lb_name=?, lb_key=? WHERE id=?', name, name.toLocaleLowerCase('de'), playerId)
+    clearCache()
+    return true
+  } catch {
+    run('UPDATE players SET lb_follow=0 WHERE id=?', playerId)
+    return false
+  }
 }
 
 /* ---------- Auffälligkeiten (nur Anzeige für den Admin) ---------- */

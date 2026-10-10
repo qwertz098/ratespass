@@ -8,7 +8,7 @@ import type { PlayerRow } from './auth.ts'
 export function erasePlayer(p: PlayerRow) {
   tx(() => {
     for (const g of all<{ id: number }>("SELECT id FROM games WHERE (p1=? OR p2=?) AND status IN ('waiting','active')", p.id, p.id)) resign(g.id, p)
-    run("UPDATE players SET deleted=1, name='—', username=NULL, pw_hash=NULL, birth_year=NULL, lb_name=NULL, lb_key=NULL, lb_optin_at=NULL WHERE id=?", p.id)
+    run("UPDATE players SET deleted=1, name='—', username=NULL, pw_hash=NULL, birth_year=NULL, lb_name=NULL, lb_key=NULL, lb_follow=0, lb_optin_at=NULL WHERE id=?", p.id)
     run('DELETE FROM sessions WHERE player_id=?', p.id)
     run('DELETE FROM push_subs WHERE player_id=?', p.id)
     run('DELETE FROM transfer_codes WHERE player_id=?', p.id)

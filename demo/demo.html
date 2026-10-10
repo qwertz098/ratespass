@@ -238,7 +238,7 @@ const DEMO = (() => {
 
   const pool = (lang) => QS.filter((q) => q[lang] && (q.r === 0 || lang === 'de'))
   const content = (q, lang) => ({ text: q[lang][0], answers: q[lang].slice(1) })
-  const profile = () => ({ ...st.me, has_account: false, username: null, reviewer: true, level: st.level ?? 'basic', disabled_cats: st.disabled ?? [], best_ladder: st.best ?? 0, birth_year: st.birth ?? null, lb_name: st.lb ?? null })
+  const profile = () => ({ ...st.me, has_account: false, username: null, reviewer: true, level: st.level ?? 'basic', disabled_cats: st.disabled ?? [], best_ladder: st.best ?? 0, birth_year: st.birth ?? null, lb_name: st.lb ?? null, lb_follow: !!st.lbFollow })
   const err = (status, error, message) => ({ status, body: { error, message } })
 
   const used = (g) => new Set(g.rounds.flatMap((r) => r.qs.map((x) => x.i)))
@@ -390,12 +390,13 @@ const DEMO = (() => {
       if (body?.name) st.me.name = String(body.name).slice(0, 24); if (body?.lang) st.me.lang = body.lang; save(); return { body: { token: 'demo-token', player: profile() } } }
     if (path === '/api/me' && method === 'GET') return { body: { player: profile(), contacts: st.contacts, consent: { current: 'demo-version', accepted: st.consent ? 'demo-version' : null, at: st.consent ?? null } } }
     if (path === '/api/me' && method === 'PATCH') {
-      if (body.name !== undefined) { const n = String(body.name).trim(); if (n.length < 2 || n.length > 24) return err(400, 'bad_name'); st.me.name = n }
+      let lost = false
+      if (body.name !== undefined) { const n = String(body.name).trim(); if (n.length < 2 || n.length > 24) return err(400, 'bad_name'); st.me.name = n; if (st.lbFollow && st.lb) { if (n.length >= 3 && n.length <= 20) st.lb = n; else { st.lbFollow = false; lost = true } } }
       if (body.lang) st.me.lang = body.lang
       if (body.birth_year !== undefined) st.birth = body.birth_year || null
       if (body.level !== undefined) { if (!LEVELS.includes(body.level)) return err(400, 'bad_level'); st.level = body.level }
       if (body.disabled_cats !== undefined) st.disabled = body.disabled_cats.filter((c) => TIERS[c])
-      save(); return { body: { player: profile() } }
+      save(); return { body: { player: profile(), ...(lost ? { lb_follow_lost: true } : {}) } }
     }
     if (path === '/api/licenses') return { body: { sources: [{ source: 'original', license: 'CC-BY-SA-4.0', attribution: 'Ratespaß-Projekt (eigene Formulierungen, Faktenwissen)', n: QS.length, license_url: 'https://creativecommons.org/licenses/by-sa/4.0/' }], licenses: { 'CC-BY-SA-4.0': 'https://creativecommons.org/licenses/by-sa/4.0/' } } }
     if (path === '/api/contacts' && method === 'POST') {
@@ -437,8 +438,8 @@ const DEMO = (() => {
       return { body: { top, me: mine ? { rank: top.find((x) => x.is_me)?.rank ?? null, ok: mine.ok, n: mine.n, rate: mine.n ? Math.round((mine.ok / mine.n) * 1000) / 10 : null, needs: Math.max(0, minN - mine.n), young: false } : null,
         total: top.length, rules: { min_answers: 50, min_relative: 100, day_cap: 400 }, participating: !!st.lb, name: st.lb ?? null, banned: false } }
     }
-    if (path === '/api/leaderboard/join' && method === 'POST') { const n = String(body?.use_display_name ? st.me.name : body?.name ?? '').trim(); if (n.length < 3 || n.length > 20) return err(400, 'bad_lb_name'); st.lb = n; save(); return { body: { name: n } } }
-    if (path === '/api/leaderboard/join' && method === 'DELETE') { st.lb = null; save(); return { body: { ok: true } } }
+    if (path === '/api/leaderboard/join' && method === 'POST') { const n = String(body?.use_display_name ? st.me.name : body?.name ?? '').trim(); if (n.length < 3 || n.length > 20) return err(400, 'bad_lb_name'); st.lb = n; st.lbFollow = !!body?.use_display_name; save(); return { body: { name: n } } }
+    if (path === '/api/leaderboard/join' && method === 'DELETE') { st.lb = null; st.lbFollow = false; save(); return { body: { ok: true } } }
     /* Mehrspieler-Räume */
     if (path === '/api/rooms' && method === 'GET') return { body: { rooms: (st.rooms ?? []).map((r) => { const v = rview(r), me = v.players.find((p) => p.is_me); return { id: r.id, code: r.code, mode: r.mode, status: r.status, players: v.players.length, my_done: me.done, my_rank: me.rank, updated_at: r.updated_at } }) } }
     if (path === '/api/rooms' && method === 'POST') {
@@ -613,7 +614,7 @@ const dict = {
     'err.consent_required': 'Bitte bestätige zuerst Datenschutzerklärung und Mindestalter.',
     'lb.title': 'Bestenliste', 'lb.abs': 'Absolut', 'lb.rel': 'Quote', 'lb.botsIncl': 'Mit Bot-Spielen', 'lb.botsExcl': 'Nur gegen Menschen', 'lb.week': 'Woche', 'lb.month': 'Monat', 'lb.all': 'Gesamt',
     'lb.empty': 'Noch niemand in der Wertung.', 'lb.myRank': 'Dein Platz: {rank} von {total}', 'lb.young': 'Dein Profil ist noch keine 24 Stunden alt – danach erscheinst du in der Liste.', 'lb.needs': 'Noch {n} gewertete Antworten bis zur Wertung.',
-    'lb.joinInfo': 'Freiwillig: Du erscheinst mit einem eigenen Bestenlisten-Namen – oder, wenn du es ausdrücklich wählst, mit deinem Anzeigenamen. Du kannst jederzeit aussteigen.', 'lb.useDisplay': 'Stattdessen meinen Anzeigenamen „{name}“ verwenden (dann für alle in der Bestenliste sichtbar; spätere Umbenennungen ändern ihn dort nicht).', 'lb.name': 'Bestenlisten-Name', 'lb.namePlaceholder': '3–20 Zeichen', 'lb.join': 'Mitmachen', 'lb.leave': 'Teilnahme beenden', 'lb.participating': 'Du nimmst teil als „{name}“.',
+    'lb.joinInfo': 'Freiwillig: Du erscheinst mit einem eigenen Bestenlisten-Namen – oder, wenn du es ausdrücklich wählst, mit deinem Anzeigenamen. Du kannst jederzeit aussteigen.', 'lb.useDisplay': 'Stattdessen meinen Anzeigenamen „{name}“ verwenden (dann für alle in der Bestenliste sichtbar; Umbenennungen werden dort übernommen).', 'lb.followLost': 'Gespeichert. Der neue Name ist in der Bestenliste ungültig oder vergeben – dort bleibt dein bisheriger Name.', 'lb.name': 'Bestenlisten-Name', 'lb.namePlaceholder': '3–20 Zeichen', 'lb.join': 'Mitmachen', 'lb.leave': 'Teilnahme beenden', 'lb.participating': 'Du nimmst teil als „{name}“.',
     'lb.rules': 'Absolut = richtig beantwortete Fragen, Quote = richtig/gewusst ab {rel} Antworten. Es zählen Antworten mit plausibler Lesezeit, höchstens {cap} pro Tag; Wertung ab {abs} Antworten und 24 Stunden Profilalter. „Nur gegen Menschen“ ohne Bot-Duelle und Solo-Leiter.',
     'err.bad_lb_name': 'Name: 3–20 Zeichen (Buchstaben, Ziffern, Leerzeichen, . _ · -), nicht reserviert.', 'err.lb_name_taken': 'Dieser Name ist schon vergeben.', 'err.lb_banned': 'Du wurdest von der Bestenliste ausgeschlossen.',
     'live.title': 'Live-Spielabend', 'live.sub': 'Alle gleichzeitig: ein Gastgeber, Mitspieler scannen seinen QR-Code', 'live.scan': 'Mitspieler scannen diesen QR-Code mit der Kamera ihres Handys.', 'live.renew': 'QR-Code erneuern',
@@ -717,7 +718,7 @@ const dict = {
     'err.consent_required': 'Please confirm the privacy policy and minimum age first.',
     'lb.title': 'Leaderboard', 'lb.abs': 'Absolute', 'lb.rel': 'Rate', 'lb.botsIncl': 'Incl. bot games', 'lb.botsExcl': 'Humans only', 'lb.week': 'Week', 'lb.month': 'Month', 'lb.all': 'All time',
     'lb.empty': 'Nobody ranked yet.', 'lb.myRank': 'Your rank: {rank} of {total}', 'lb.young': 'Your profile is not yet 24 hours old – you will appear in the list afterwards.', 'lb.needs': '{n} more counted answers until you are ranked.',
-    'lb.joinInfo': 'Optional: you appear under a leaderboard name of your own – or, if you explicitly choose so, under your display name. You can leave at any time.', 'lb.useDisplay': 'Use my display name “{name}” instead (then visible to everyone on the leaderboard; later renames do not change it there).', 'lb.name': 'Leaderboard name', 'lb.namePlaceholder': '3–20 characters', 'lb.join': 'Join', 'lb.leave': 'Leave leaderboard', 'lb.participating': 'You take part as “{name}”.',
+    'lb.joinInfo': 'Optional: you appear under a leaderboard name of your own – or, if you explicitly choose so, under your display name. You can leave at any time.', 'lb.useDisplay': 'Use my display name “{name}” instead (then visible to everyone on the leaderboard; renames carry over).', 'lb.followLost': 'Saved. The new name is invalid or taken on the leaderboard – your previous name stays there.', 'lb.name': 'Leaderboard name', 'lb.namePlaceholder': '3–20 characters', 'lb.join': 'Join', 'lb.leave': 'Leave leaderboard', 'lb.participating': 'You take part as “{name}”.',
     'lb.rules': 'Absolute = correctly answered questions, rate = right/known from {rel} answers. Answers with a plausible reading time count, at most {cap} per day; ranked from {abs} answers and a 24-hour-old profile. “Humans only” excludes bot duels and the solo ladder.',
     'err.bad_lb_name': 'Name: 3–20 characters (letters, digits, spaces, . _ · -), not reserved.', 'err.lb_name_taken': 'That name is already taken.', 'err.lb_banned': 'You have been excluded from the leaderboard.',
     'live.title': 'Live party game', 'live.sub': 'Everyone at once: one host, players scan the host’s QR code', 'live.scan': 'Players scan this QR code with their phone camera.', 'live.renew': 'Renew QR code',
@@ -1599,7 +1600,7 @@ async function profile() {
     h('div', { class: 'card stack' },
       h('div', { class: 'row' }, avatar(p), h('div', { class: 'grow' }, h('label', { class: 'field' }, t('profile.name'), name))),
       h('label', { class: 'field' }, t('profile.birthYear'), birth), h('p', { class: 'hint' }, t('profile.birthHint')),
-      h('button', { class: 'btn block', onclick: guard(async () => { await api('PATCH', '/api/me', { name: name.value, birth_year: birth.value ? Number(birth.value) : null }); await refreshMe(); toast(t('profile.saved')) }) }, t('profile.save')),
+      h('button', { class: 'btn block', onclick: guard(async () => { const r = await api('PATCH', '/api/me', { name: name.value, birth_year: birth.value ? Number(birth.value) : null }); await refreshMe(); toast(t(r.lb_follow_lost ? 'lb.followLost' : 'profile.saved')) }) }, t('profile.save')),
       h('label', { class: 'field' }, t('profile.uiLang'), uiLang)),
     S.meta?.reports !== false ? h('label', { class: 'row' }, h('input', { type: 'checkbox', checked: store.get('rp.noReport') !== '1',
       onchange: (e) => { e.target.checked ? store.del('rp.noReport') : store.set('rp.noReport', '1') } }), h('span', { class: 'hint' }, t('profile.reportBtn'))) : null,

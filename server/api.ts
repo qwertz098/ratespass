@@ -43,7 +43,7 @@ function pickLang(want: unknown, fallback: string) {
 
 const profile = (p: PlayerRow) => ({
   ...pub(p), lang: p.lang, has_account: !!p.username, username: p.username, created_at: p.created_at, reviewer: !!p.reviewer,
-  level: p.level, disabled_cats: JSON.parse(p.disabled_cats) as string[], best_ladder: p.best_ladder, birth_year: p.birth_year, lb_name: p.lb_name, lb_banned: !!p.lb_banned,
+  level: p.level, disabled_cats: JSON.parse(p.disabled_cats) as string[], best_ladder: p.best_ladder, birth_year: p.birth_year, lb_name: p.lb_name, lb_follow: !!p.lb_follow, lb_banned: !!p.lb_banned,
 })
 
 /* ---------- Öffentliches ---------- */
@@ -107,7 +107,11 @@ router.get('/api/me', (c) => ({
 
 router.patch('/api/me', (c) => {
   const p = me(c)
-  if (c.body.name !== undefined) run('UPDATE players SET name=? WHERE id=?', cleanName(c.body.name), p.id)
+  let lbFollowLost = false
+  if (c.body.name !== undefined) {
+    run('UPDATE players SET name=? WHERE id=?', cleanName(c.body.name), p.id)
+    lbFollowLost = !lb.followRename(p.id)
+  }
   if (c.body.lang !== undefined) {
     if (!LANG_RE.test(c.body.lang)) throw new HttpError(400, 'bad_lang')
     run('UPDATE players SET lang=? WHERE id=?', c.body.lang, p.id)
@@ -117,7 +121,7 @@ router.patch('/api/me', (c) => {
     const s = cleanSettings(c.body.level ?? p.level, c.body.disabled_cats ?? JSON.parse(p.disabled_cats))
     run('UPDATE players SET level=?, disabled_cats=? WHERE id=?', s.level, JSON.stringify(s.disabled), p.id)
   }
-  return { player: profile(get<PlayerRow>('SELECT * FROM players WHERE id=?', p.id)!) }
+  return { player: profile(get<PlayerRow>('SELECT * FROM players WHERE id=?', p.id)!), ...(lbFollowLost ? { lb_follow_lost: true } : {}) }
 })
 
 router.delete('/api/me', (c) => {

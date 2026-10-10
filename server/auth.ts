@@ -17,6 +17,7 @@ export interface PlayerRow {
   lb_name: string | null
   lb_key: string | null
   lb_optin_at: number | null
+  lb_follow: number
   lb_banned: number
   deleted: number
   username: string | null

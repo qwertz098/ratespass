@@ -55,15 +55,28 @@ test('Teilnahme ist Opt-in: Name prüfen, eindeutig, Teilnahme beenden', async (
   assert.equal((await join(b.token, 'Quizkönig')).status, 200, 'Name wieder frei')
 })
 
-test('Teilnahme mit dem Anzeigenamen nur auf ausdrücklichen Wunsch (Momentaufnahme)', async () => {
+test('Teilnahme mit dem Anzeigenamen nur auf ausdrücklichen Wunsch – folgt Umbenennungen', async () => {
   const a = await newPlayer('Anzeigename Eins'), b = await newPlayer('Anzeigename Eins'), c = await newPlayer('Zu')
+  const lbName = async (tok: string) => (await call('GET', '/api/me', undefined, tok)).json.player.lb_name
   assert.equal((await call('POST', '/api/leaderboard/join', { use_display_name: true }, a.token)).status, 200)
-  assert.equal((await call('GET', '/api/me', undefined, a.token)).json.player.lb_name, 'Anzeigename Eins')
+  assert.equal(await lbName(a.token), 'Anzeigename Eins')
   assert.equal((await call('POST', '/api/leaderboard/join', { use_display_name: true }, b.token)).status, 409, 'gleicher Name ist belegt')
   assert.equal((await call('POST', '/api/leaderboard/join', { use_display_name: true }, c.token)).status, 400, 'zu kurz für die Bestenliste')
-  assert.equal((await call('PATCH', '/api/me', { name: 'Neu Benannt' }, a.token)).status, 200)
-  assert.equal((await call('GET', '/api/me', undefined, a.token)).json.player.lb_name, 'Anzeigename Eins', 'Momentaufnahme')
-  assert.equal((await call('POST', '/api/leaderboard/join', { name: 'Anderer Name' }, b.token)).status, 200, 'ohne Flag zählt weiter der eigene Name')
+  const r = await call('PATCH', '/api/me', { name: 'Neu Benannt' }, a.token)
+  assert.equal(r.status, 200); assert.equal(r.json.lb_follow_lost, undefined)
+  assert.equal(await lbName(a.token), 'Neu Benannt', 'Name zieht mit')
+  assert.equal((await call('GET', '/api/me', undefined, a.token)).json.player.lb_follow, true)
+  // eigener Name: kein Mitziehen
+  assert.equal((await call('POST', '/api/leaderboard/join', { name: 'Anderer Name' }, b.token)).status, 200)
+  assert.equal((await call('PATCH', '/api/me', { name: 'Umbenannt Zwei' }, b.token)).status, 200)
+  assert.equal(await lbName(b.token), 'Anderer Name')
+  // Konflikt: neuer Anzeigename ist in der Bestenliste vergeben → alter Name bleibt, Verknüpfung endet
+  const r2 = await call('PATCH', '/api/me', { name: 'ANDERER NAME' }, a.token)
+  assert.equal(r2.status, 200); assert.equal(r2.json.lb_follow_lost, true)
+  assert.equal(await lbName(a.token), 'Neu Benannt')
+  assert.equal((await call('GET', '/api/me', undefined, a.token)).json.player.lb_follow, false)
+  // erneuter Beitritt mit dem (inzwischen vergebenen) Anzeigenamen schlägt fehl
+  assert.equal((await call('POST', '/api/leaderboard/join', { use_display_name: true }, a.token)).status, 409, 'Name vergeben')
 })
 
 test('Zählweise: mit Bots vs. nur Menschen, absolut vs. relativ, nur Teilnehmer', async () => {

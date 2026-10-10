@@ -812,7 +812,7 @@ async function profile() {
     h('div', { class: 'card stack' },
       h('div', { class: 'row' }, avatar(p), h('div', { class: 'grow' }, h('label', { class: 'field' }, t('profile.name'), name))),
       h('label', { class: 'field' }, t('profile.birthYear'), birth), h('p', { class: 'hint' }, t('profile.birthHint')),
-      h('button', { class: 'btn block', onclick: guard(async () => { await api('PATCH', '/api/me', { name: name.value, birth_year: birth.value ? Number(birth.value) : null }); await refreshMe(); toast(t('profile.saved')) }) }, t('profile.save')),
+      h('button', { class: 'btn block', onclick: guard(async () => { const r = await api('PATCH', '/api/me', { name: name.value, birth_year: birth.value ? Number(birth.value) : null }); await refreshMe(); toast(t(r.lb_follow_lost ? 'lb.followLost' : 'profile.saved')) }) }, t('profile.save')),
       h('label', { class: 'field' }, t('profile.uiLang'), uiLang)),
     S.meta?.reports !== false ? h('label', { class: 'row' }, h('input', { type: 'checkbox', checked: store.get('rp.noReport') !== '1',
       onchange: (e) => { e.target.checked ? store.del('rp.noReport') : store.set('rp.noReport', '1') } }), h('span', { class: 'hint' }, t('profile.reportBtn'))) : null,
