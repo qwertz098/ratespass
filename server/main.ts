@@ -27,7 +27,7 @@ if (miss.length) console.warn(`Datenschutz: Pflichtangaben fehlen (${miss.join('
 
 const server = createApp()
 server.listen(config.port, '0.0.0.0', () => {
-  console.log(`Ratespaß läuft auf http://0.0.0.0:${config.port} (Admin: ${adminStatus()})`)
+  console.log(`Quissel läuft auf http://0.0.0.0:${config.port} (Admin: ${adminStatus()})`)
 })
 const stop = () => server.close(() => process.exit(0))
 process.on('SIGTERM', stop)

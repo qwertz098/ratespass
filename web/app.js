@@ -195,7 +195,7 @@ function askConsent(priv, changed) {
       const ok = h('button', { class: 'btn primary block', disabled: true, onclick: () => resolve(priv.version) }, t('consent.accept'))
       box.addEventListener('change', () => { ok.disabled = !box.checked })
       const langs = h('div', { class: 'seg' }, Object.keys(dict).map((l) => h('button', { 'aria-pressed': String(l === getLang()), onclick: () => { store.set('rp.lang', l); setLang(l); view(declined) } }, dict[l]['lang.name'])))
-      mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Rates', h('b', {}, 'paß')), langs),
+      mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Quis', h('b', {}, 'sel')), langs),
         declined
           ? h('div', { class: 'card stack' }, h('h3', {}, t('consent.declinedTitle')), h('p', { class: 'muted' }, t('consent.declinedInfo')), h('button', { class: 'btn primary block', onclick: () => view(false) }, t('consent.back')))
           : h('div', { class: 'card stack' }, h('h3', {}, t(changed ? 'consent.changedTitle' : 'consent.title')),
@@ -219,7 +219,7 @@ function askName() {
       resolve(v)
     }
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit() })
-    mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Rates', h('b', {}, 'paß'))),
+    mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Quis', h('b', {}, 'sel'))),
       h('div', { class: 'card stack' }, h('h3', {}, t('welcome.title')), h('p', { class: 'muted' }, t('welcome.hint')), input,
         h('button', { class: 'btn primary block', onclick: submit }, t('welcome.go')),
         h('button', { class: 'btn block', onclick: () => resolve('') }, t('welcome.random'))))
@@ -250,7 +250,7 @@ async function home(_, my) {
     const done = games.filter((g) => g.status === 'finished')
     const section = (title, list) => list.length ? [h('h2', {}, title), h('div', { class: 'list' }, list.map(gameItem))] : []
     mount(
-      h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Rates', h('b', {}, 'paß')),
+      h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Quis', h('b', {}, 'sel')),
         h('button', { class: 'iconbtn', 'aria-label': t('profile.title'), onclick: () => go('#/profile') }, avatar(S.me, 'sm'))),
       h('div', { class: 'tiles' },
         h('button', { class: 'tile quiz', onclick: () => go('#/new') }, h('span', { class: 'ti' }, '⚔️'), h('b', {}, t('home.quizduell')), h('span', { class: 'ts' }, '＋ ' + t('home.new'))),
@@ -531,7 +531,7 @@ async function wordlePlay(id, my) {
   const shake = () => { const r = rows[g.guesses.length][0].parentNode; r.classList.remove('shake'); void r.offsetWidth; r.classList.add('shake') }
   const result = h('div', { class: 'stack' })
   const share = () => {
-    const text = `Ratespaß Wordle ${g.lang.toUpperCase()} ${g.day} ${g.status === 'won' ? g.guesses.length : 'X'}/${g.max}\n` + g.guesses.map((gu) => [...gu.marks].map((m) => ({ c: '🟩', p: '🟨', a: '⬛' })[m]).join('')).join('\n')
+    const text = `Quissel Wordle ${g.lang.toUpperCase()} ${g.day} ${g.status === 'won' ? g.guesses.length : 'X'}/${g.max}\n` + g.guesses.map((gu) => [...gu.marks].map((m) => ({ c: '🟩', p: '🟨', a: '⬛' })[m]).join('')).join('\n')
     if (navigator.share) navigator.share({ text }).catch(() => {}); else navigator.clipboard?.writeText(text).then(() => toast(t('wordle.copied'))).catch(() => toast(text))
   }
   const picker = h('div', { class: 'stack' })

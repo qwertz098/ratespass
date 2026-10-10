@@ -31,7 +31,7 @@ self.addEventListener('push', (e) => {
     const wins = await self.clients.matchAll({ type: 'window', includeUncontrolled: true })
     const visible = wins.filter((w) => w.visibilityState === 'visible')
     if (visible.length) { visible.forEach((w) => w.postMessage({ type: 'push-refresh' })); return }
-    await self.registration.showNotification(data.title || 'Ratespaß', {
+    await self.registration.showNotification(data.title || 'Quissel', {
       body: data.body || '', tag: data.tag || 'ratespass', renotify: true,
       icon: '/icons/icon-192.png', badge: '/icons/icon-192.png', data: { url: data.url || '/' },
     })

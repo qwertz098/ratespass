@@ -1,6 +1,6 @@
-# Ratespaß
+# Quissel (früher Ratespaß)
 
-Minimalistischer Quizduell-Clon als **PWA**, betrieben als **ein Docker-Container**. Ohne Anmeldung spielbar, optionaler Account, offener und lizenzsauberer Fragenpool.
+Minimalistisches Duell-Quiz mit Wordle als **PWA**, betrieben als **ein Docker-Container**. Ohne Anmeldung spielbar, optionaler Account, offener und lizenzsauberer Fragenpool.
 
 - 2 Spieler, 6 Runden à 3 Fragen, Kategorie-Wahl aus 3 Vorschlägen, 4 Antworten, 20 s pro Frage – rundenbasiert (asynchron)
 - Gegner: Freunde per Einladungslink/Freundescode, zufälliger Gegner (Warteliste), Bot
@@ -144,7 +144,7 @@ Spielregeln serverseitig: Die Lösung verlässt den Server erst nach der Antwort
 - `/legal.html` (Impressum/Datenschutz) ist ein **Platzhalter** und muss vor einem öffentlichen Betrieb ausgefüllt und rechtlich geprüft werden.
 - `tools/fetch-opentdb.ts` und `tools/gen-wikidata.ts` sind gegen Fixtures im dokumentierten API-Format getestet, aber noch nicht gegen die Live-Dienste gelaufen (Netzwerkzugriff war in der Entwicklungsumgebung gesperrt).
 - Code-Lizenz für dieses Repository ist noch nicht festgelegt (die **Fragen** stehen unter CC BY-SA 4.0, siehe Doku).
-- Für „Quizduell“ als Name bestehen Markenrechte – deshalb „Ratespaß“.
+- Für „Quizduell“ als Name bestehen Markenrechte – deshalb heißt die App nicht so und nennt die Spielart „Duell“/„Quiz“. Der Name „Quissel“ ist nicht rechtlich geprüft (DPMA/EUIPO/Domain/Stores vor einer Veröffentlichung prüfen). Interne Kennungen (Datenbankdatei, `rp.*`, Image-/Compose-Namen) heißen weiter „ratespass“.
 
 ## Drittbibliotheken
 

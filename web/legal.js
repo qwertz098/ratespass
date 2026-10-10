@@ -5,7 +5,7 @@ try { lang = localStorage.getItem('rp.lang') || (navigator.language || 'de').sli
 const priv = await fetch('/api/privacy').then((r) => r.json())
 const doc = priv[lang] ?? priv.de
 document.documentElement.lang = priv[lang] ? lang : 'de'
-document.title = doc.title + ' · Ratespaß'
+document.title = doc.title + ' · Quissel'
 document.querySelector('h1').textContent = doc.title
 document.getElementById('doc').replaceChildren(
   ...doc.sections.map((s) => el('div', { className: 'stack' }, el('h3', { textContent: s.title }), ...(s.paras ?? []).map((p) => el('p', { textContent: p })), s.items ? el('ul', {}, ...s.items.map((i) => el('li', { textContent: i }))) : null)),

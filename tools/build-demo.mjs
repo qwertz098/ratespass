@@ -37,7 +37,7 @@ const shots = [
   ['admin-reviewers.jpg', 'Reviewer', 'Reviewer per Freundescode bestimmen oder entfernen.'],
 ].map(([f, t, c]) => `<figure><img src="${img(f)}" alt="Admin-Ansicht ${t}"><figcaption><b>${t}.</b> ${c}</figcaption></figure>`).join('')
 
-const html = `<title>Ratespaß Demo</title>
+const html = `<title>Quissel Demo</title>
 <style>
 ${css}
 ${rd('demo/shell.css')}

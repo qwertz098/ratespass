@@ -12,7 +12,7 @@ Jede Frage trägt ihre Herkunft: `source`, `license`, `attribution`, optional `s
 | Selbst geschrieben / KI-generiert & geprüft | CC BY-SA 4.0 (Projektentscheidung) | Fakten vor Import prüfen; KI-Texte nicht blind übernehmen | `source: original` bzw. `llm` |
 | Community | CC BY-SA 4.0 | Einreicher bestätigt Urheberschaft + Lizenz (Pflicht-Checkbox), Moderation vor Freigabe | `source: community`, Status `pending` → `active` |
 
-Nicht erlaubt: Fragen aus kommerziellen Quiz-Apps (auch dem Original-Quizduell), Scraping fremder Quizseiten, NC-lizenzierte Datensätze. *Das ist keine Rechtsberatung; bei öffentlichem Betrieb bitte prüfen lassen.*
+Nicht erlaubt: Fragen aus kommerziellen Quiz-Apps (auch kommerziellen Duell-Apps), Scraping fremder Quizseiten, NC-lizenzierte Datensätze. *Das ist keine Rechtsberatung; bei öffentlichem Betrieb bitte prüfen lassen.*
 
 ## Batch-Format
 

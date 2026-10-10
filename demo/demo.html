@@ -1,4 +1,4 @@
-<title>Ratespaß Demo</title>
+<title>Quissel Demo</title>
 <style>
 :root {
   --bg: #f5f6fa; --surface: #ffffff; --text: #14161c; --muted: #6b7280; --line: #e6e8ef;
@@ -236,7 +236,7 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
 /* Startseite: beide Bestenlisten unten */
 .lbrow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px }
 
-/* Startseite: Quizduell und Wordle gleichberechtigt */
+/* Startseite: Duell und Wordle gleichberechtigt */
 .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
 .tile { display: grid; gap: 4px; justify-items: center; align-content: center; min-height: 112px; padding: 14px 10px; border: 0; border-radius: 18px; color: #fff; cursor: pointer; font: inherit; text-align: center }
 .tile:active { transform: scale(.98) }
@@ -677,7 +677,7 @@ const DEMO = (() => {
 // UI-Texte. Neue Sprache = neues Objekt hinzufügen (Schlüssel wie in `de`); Fragen-Sprachen kommen unabhängig vom Server.
 const dict = {
   de: {
-    'app.name': 'Ratespaß', 'lang.name': 'Deutsch',
+    'app.name': 'Quissel', 'lang.name': 'Deutsch',
     'cat.scifi_fantasy': 'Sci-Fi & Fantasy', 'cat.coding': 'Programmieren & IT', 'cat.anime': 'Anime & Manga', 'cat.retro_games': 'Retro-Games',
     'cat.expert_mint': 'MINT & Ingenieurwesen', 'cat.expert_humanities': 'Geisteswissenschaften', 'cat.expert_arts': 'Kunst & Literatur (Experte)', 'cat.expert_it': 'Informatik (Experte)',
     'level.title': 'Spielstufe', 'level.info': 'Wähle selbst, wie anspruchsvoll es wird. Im Duell zählt immer die niedrigste Einstellung beider Spieler.',
@@ -688,7 +688,7 @@ const dict = {
     'cat.general': 'Allgemeinwissen', 'cat.geography': 'Geografie', 'cat.history': 'Geschichte', 'cat.science': 'Wissenschaft',
     'cat.nature': 'Natur & Tiere', 'cat.sports': 'Sport', 'cat.film_tv': 'Film & TV', 'cat.music': 'Musik',
     'cat.literature': 'Literatur', 'cat.art': 'Kunst & Kultur', 'cat.games': 'Spiele', 'cat.tech': 'Technik',
-    'home.new': 'Neues Spiel', 'home.quizduell': 'Quizduell', 'home.yourTurn': 'Du bist dran', 'home.theirTurn': 'Gegner ist dran', 'home.waiting': 'Suche Gegner',
+    'home.new': 'Neues Spiel', 'home.quizduell': 'Duell', 'home.yourTurn': 'Du bist dran', 'home.theirTurn': 'Gegner ist dran', 'home.waiting': 'Suche Gegner',
     'home.finished': 'Beendet', 'home.empty': 'Noch keine Spiele. Starte dein erstes Duell!', 'home.round': 'Runde {n}/{total}',
     'home.won': 'Gewonnen', 'home.lost': 'Verloren', 'home.draw': 'Unentschieden',
     'new.title': 'Neues Spiel', 'new.random': 'Zufälliger Gegner', 'new.randomSub': 'Wir suchen jemanden für dich',
@@ -723,7 +723,7 @@ const dict = {
     'err.room_too_small': 'Zum Starten braucht es mindestens 2 Spieler.', 'err.not_host': 'Nur der Gastgeber kann starten.', 'err.too_many_rooms': 'Zu viele offene Runden.',
     'consent.title': 'Bevor es losgeht', 'consent.changedTitle': 'Datenschutzerklärung aktualisiert', 'consent.changedInfo': 'Der Text hat sich geändert. Bitte lies ihn und stimme erneut zu – danach fragen wir erst wieder bei der nächsten Änderung.',
     'consent.read': 'Datenschutzerklärung & Impressum lesen', 'consent.check': 'Ich habe die Datenschutzerklärung gelesen, stimme der Verarbeitung meiner Daten wie beschrieben zu und bin mindestens 16 Jahre alt (oder habe die Zustimmung meiner Sorgeberechtigten).',
-    'consent.accept': 'Zustimmen und weiter', 'consent.decline': 'Ablehnen', 'consent.declinedTitle': 'Ohne Zustimmung geht es nicht', 'consent.declinedInfo': 'Ratespaß braucht ein (anonymes) Profil, um Spielstände zu speichern und gegen andere zu spielen. Ohne deine Zustimmung können wir es leider nicht anlegen – es werden keine Daten gespeichert.', 'consent.back': 'Zurück',
+    'consent.accept': 'Zustimmen und weiter', 'consent.decline': 'Ablehnen', 'consent.declinedTitle': 'Ohne Zustimmung geht es nicht', 'consent.declinedInfo': 'Quissel braucht ein (anonymes) Profil, um Spielstände zu speichern und gegen andere zu spielen. Ohne deine Zustimmung können wir es leider nicht anlegen – es werden keine Daten gespeichert.', 'consent.back': 'Zurück',
     'privacy.title': 'Datenschutz', 'privacy.accepted': 'Zugestimmt am {date} (Version {v}).', 'privacy.none': 'Noch keine Zustimmung gespeichert.', 'privacy.read': 'Datenschutzerklärung & Impressum', 'privacy.revoke': 'Zustimmung widerrufen und Profil löschen', 'privacy.revokeConfirm': 'Zustimmung widerrufen? Dein Profil und alle Daten werden gelöscht.',
     'err.consent_required': 'Bitte bestätige zuerst Datenschutzerklärung und Mindestalter.',
     'lb.title': 'Bestenliste', 'lb.abs': 'Absolut', 'lb.rel': 'Quote', 'lb.botsIncl': 'Mit Bot-Spielen', 'lb.botsExcl': 'Nur gegen Menschen', 'lb.week': 'Woche', 'lb.month': 'Monat', 'lb.all': 'Gesamt',
@@ -796,7 +796,7 @@ const dict = {
     'friends.placeholder': 'Code oder Link einfügen', 'friends.lookup': 'Suchen', 'friends.found': 'Gefunden', 'friends.add': 'Hinzufügen', 'friends.addPlay': 'Hinzufügen & herausfordern',
     'friends.added': '{name} wurde hinzugefügt', 'friends.notFound': 'Kein Spieler mit diesem Code.', 'friends.self': 'Das ist dein eigener Code.', 'friends.already': 'Schon in deinen Kontakten',
     'friends.challenge': 'Herausfordern', 'friends.camStart': 'Kamera starten', 'friends.camHint': 'Halte den QR-Code deines Freundes in den Rahmen.',
-    'friends.noCamera': 'Kamera nicht verfügbar. Scanne den QR-Code stattdessen mit der Kamera-App deines Handys – der Link öffnet Ratespaß direkt.',
+    'friends.noCamera': 'Kamera nicht verfügbar. Scanne den QR-Code stattdessen mit der Kamera-App deines Handys – der Link öffnet Quissel direkt.',
     'friends.localNote': 'Kontakte werden zusätzlich lokal auf diesem Gerät gespeichert.', 'friends.addFriend': 'Freund hinzufügen',
     'push.title': 'Benachrichtigungen', 'push.info': 'Du bekommst eine Nachricht, wenn du dran bist oder ein Duell endet.', 'push.enable': 'Benachrichtigungen aktivieren',
     'push.disable': 'Ausschalten', 'push.test': 'Test senden', 'push.on': 'Auf diesem Gerät aktiv', 'push.off': 'Auf diesem Gerät aus',
@@ -813,7 +813,7 @@ const dict = {
     'err.unknown_player': 'Spieler nicht gefunden.',
   },
   en: {
-    'app.name': 'Ratespaß', 'lang.name': 'English',
+    'app.name': 'Quissel', 'lang.name': 'English',
     'cat.scifi_fantasy': 'Sci-Fi & Fantasy', 'cat.coding': 'Coding & IT', 'cat.anime': 'Anime & Manga', 'cat.retro_games': 'Retro Games',
     'cat.expert_mint': 'STEM & Engineering', 'cat.expert_humanities': 'Humanities', 'cat.expert_arts': 'Arts & Literature (Expert)', 'cat.expert_it': 'Computer Science (Expert)',
     'level.title': 'Play level', 'level.info': 'Choose how demanding it gets. In a duel the lowest setting of both players applies.',
@@ -824,7 +824,7 @@ const dict = {
     'cat.general': 'General Knowledge', 'cat.geography': 'Geography', 'cat.history': 'History', 'cat.science': 'Science',
     'cat.nature': 'Nature & Animals', 'cat.sports': 'Sports', 'cat.film_tv': 'Film & TV', 'cat.music': 'Music',
     'cat.literature': 'Literature', 'cat.art': 'Art & Culture', 'cat.games': 'Games', 'cat.tech': 'Technology',
-    'home.new': 'New game', 'home.quizduell': 'Quiz duel', 'home.yourTurn': 'Your turn', 'home.theirTurn': "Opponent's turn", 'home.waiting': 'Finding opponent',
+    'home.new': 'New game', 'home.quizduell': 'Duel', 'home.yourTurn': 'Your turn', 'home.theirTurn': "Opponent's turn", 'home.waiting': 'Finding opponent',
     'home.finished': 'Finished', 'home.empty': 'No games yet. Start your first duel!', 'home.round': 'Round {n}/{total}',
     'home.won': 'Won', 'home.lost': 'Lost', 'home.draw': 'Draw',
     'new.title': 'New game', 'new.random': 'Random opponent', 'new.randomSub': "We'll find someone for you",
@@ -859,7 +859,7 @@ const dict = {
     'err.room_too_small': 'At least 2 players are needed to start.', 'err.not_host': 'Only the host can start.', 'err.too_many_rooms': 'Too many open rounds.',
     'consent.title': 'Before you start', 'consent.changedTitle': 'Privacy policy updated', 'consent.changedInfo': 'The text has changed. Please read it and agree again – we will only ask again when it changes next.',
     'consent.read': 'Read privacy policy & legal notice', 'consent.check': 'I have read the privacy policy, agree to the processing of my data as described and am at least 16 years old (or have my guardians’ consent).',
-    'consent.accept': 'Agree and continue', 'consent.decline': 'Decline', 'consent.declinedTitle': 'We need your consent', 'consent.declinedInfo': 'Ratespaß needs an (anonymous) profile to save progress and play against others. Without your consent we cannot create one – no data is stored.', 'consent.back': 'Back',
+    'consent.accept': 'Agree and continue', 'consent.decline': 'Decline', 'consent.declinedTitle': 'We need your consent', 'consent.declinedInfo': 'Quissel needs an (anonymous) profile to save progress and play against others. Without your consent we cannot create one – no data is stored.', 'consent.back': 'Back',
     'privacy.title': 'Privacy', 'privacy.accepted': 'Agreed on {date} (version {v}).', 'privacy.none': 'No consent stored yet.', 'privacy.read': 'Privacy policy & legal notice', 'privacy.revoke': 'Withdraw consent and delete profile', 'privacy.revokeConfirm': 'Withdraw consent? Your profile and all data will be deleted.',
     'err.consent_required': 'Please confirm the privacy policy and minimum age first.',
     'lb.title': 'Leaderboard', 'lb.abs': 'Absolute', 'lb.rel': 'Rate', 'lb.botsIncl': 'Incl. bot games', 'lb.botsExcl': 'Humans only', 'lb.week': 'Week', 'lb.month': 'Month', 'lb.all': 'All time',
@@ -932,7 +932,7 @@ const dict = {
     'friends.placeholder': 'Paste code or link', 'friends.lookup': 'Look up', 'friends.found': 'Found', 'friends.add': 'Add', 'friends.addPlay': 'Add & challenge',
     'friends.added': '{name} was added', 'friends.notFound': 'No player with this code.', 'friends.self': 'That is your own code.', 'friends.already': 'Already in your contacts',
     'friends.challenge': 'Challenge', 'friends.camStart': 'Start camera', 'friends.camHint': "Hold your friend's QR code inside the frame.",
-    'friends.noCamera': 'Camera not available. Scan the QR code with your phone’s camera app instead – the link opens Ratespaß directly.',
+    'friends.noCamera': 'Camera not available. Scan the QR code with your phone’s camera app instead – the link opens Quissel directly.',
     'friends.localNote': 'Contacts are also stored locally on this device.', 'friends.addFriend': 'Add friend',
     'push.title': 'Notifications', 'push.info': 'Get a message when it is your turn or a duel ends.', 'push.enable': 'Enable notifications',
     'push.disable': 'Turn off', 'push.test': 'Send test', 'push.on': 'Active on this device', 'push.off': 'Off on this device',
@@ -1161,7 +1161,7 @@ function askConsent(priv, changed) {
       const ok = h('button', { class: 'btn primary block', disabled: true, onclick: () => resolve(priv.version) }, t('consent.accept'))
       box.addEventListener('change', () => { ok.disabled = !box.checked })
       const langs = h('div', { class: 'seg' }, Object.keys(dict).map((l) => h('button', { 'aria-pressed': String(l === getLang()), onclick: () => { store.set('rp.lang', l); setLang(l); view(declined) } }, dict[l]['lang.name'])))
-      mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Rates', h('b', {}, 'paß')), langs),
+      mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Quis', h('b', {}, 'sel')), langs),
         declined
           ? h('div', { class: 'card stack' }, h('h3', {}, t('consent.declinedTitle')), h('p', { class: 'muted' }, t('consent.declinedInfo')), h('button', { class: 'btn primary block', onclick: () => view(false) }, t('consent.back')))
           : h('div', { class: 'card stack' }, h('h3', {}, t(changed ? 'consent.changedTitle' : 'consent.title')),
@@ -1185,7 +1185,7 @@ function askName() {
       resolve(v)
     }
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit() })
-    mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Rates', h('b', {}, 'paß'))),
+    mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Quis', h('b', {}, 'sel'))),
       h('div', { class: 'card stack' }, h('h3', {}, t('welcome.title')), h('p', { class: 'muted' }, t('welcome.hint')), input,
         h('button', { class: 'btn primary block', onclick: submit }, t('welcome.go')),
         h('button', { class: 'btn block', onclick: () => resolve('') }, t('welcome.random'))))
@@ -1216,7 +1216,7 @@ async function home(_, my) {
     const done = games.filter((g) => g.status === 'finished')
     const section = (title, list) => list.length ? [h('h2', {}, title), h('div', { class: 'list' }, list.map(gameItem))] : []
     mount(
-      h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Rates', h('b', {}, 'paß')),
+      h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Quis', h('b', {}, 'sel')),
         h('button', { class: 'iconbtn', 'aria-label': t('profile.title'), onclick: () => go('#/profile') }, avatar(S.me, 'sm'))),
       h('div', { class: 'tiles' },
         h('button', { class: 'tile quiz', onclick: () => go('#/new') }, h('span', { class: 'ti' }, '⚔️'), h('b', {}, t('home.quizduell')), h('span', { class: 'ts' }, '＋ ' + t('home.new'))),
@@ -1497,7 +1497,7 @@ async function wordlePlay(id, my) {
   const shake = () => { const r = rows[g.guesses.length][0].parentNode; r.classList.remove('shake'); void r.offsetWidth; r.classList.add('shake') }
   const result = h('div', { class: 'stack' })
   const share = () => {
-    const text = `Ratespaß Wordle ${g.lang.toUpperCase()} ${g.day} ${g.status === 'won' ? g.guesses.length : 'X'}/${g.max}\n` + g.guesses.map((gu) => [...gu.marks].map((m) => ({ c: '🟩', p: '🟨', a: '⬛' })[m]).join('')).join('\n')
+    const text = `Quissel Wordle ${g.lang.toUpperCase()} ${g.day} ${g.status === 'won' ? g.guesses.length : 'X'}/${g.max}\n` + g.guesses.map((gu) => [...gu.marks].map((m) => ({ c: '🟩', p: '🟨', a: '⬛' })[m]).join('')).join('\n')
     if (navigator.share) navigator.share({ text }).catch(() => {}); else navigator.clipboard?.writeText(text).then(() => toast(t('wordle.copied'))).catch(() => toast(text))
   }
   const picker = h('div', { class: 'stack' })

@@ -430,7 +430,7 @@ router.post('/api/push/test', async (c) => {
   rateLimit(`pushtest:${p.id}`, 5, 3_600_000)
   const de = p.lang === 'de'
   const sent = await deliver(p.id, {
-    title: 'Ratespaß', body: de ? 'Benachrichtigungen funktionieren ✅' : 'Notifications are working ✅', url: '/#/', tag: 'test',
+    title: 'Quissel', body: de ? 'Benachrichtigungen funktionieren ✅' : 'Notifications are working ✅', url: '/#/', tag: 'test',
   })
   return { sent }
 })

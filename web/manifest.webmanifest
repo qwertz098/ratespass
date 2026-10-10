@@ -1,7 +1,7 @@
 {
-  "name": "Ratespaß",
-  "short_name": "Ratespaß",
-  "description": "Quiz-Duell für zwischendurch – ohne Anmeldung.",
+  "name": "Quissel",
+  "short_name": "Quissel",
+  "description": "Quiz, Duell und Wordle für zwischendurch – ohne Anmeldung.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

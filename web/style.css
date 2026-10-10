@@ -233,7 +233,7 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
 /* Startseite: beide Bestenlisten unten */
 .lbrow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px }
 
-/* Startseite: Quizduell und Wordle gleichberechtigt */
+/* Startseite: Duell und Wordle gleichberechtigt */
 .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
 .tile { display: grid; gap: 4px; justify-items: center; align-content: center; min-height: 112px; padding: 14px 10px; border: 0; border-radius: 18px; color: #fff; cursor: pointer; font: inherit; text-align: center }
 .tile:active { transform: scale(.98) }

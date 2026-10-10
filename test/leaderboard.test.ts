@@ -44,7 +44,7 @@ const board = async (token: string, q: string) => (await call('GET', '/api/leade
 test('Teilnahme ist Opt-in: Name prüfen, eindeutig, Teilnahme beenden', async () => {
   const a = await newPlayer('Teilnehmer'), b = await newPlayer('Zweiter')
   const join = (tok: string, name: unknown) => call('POST', '/api/leaderboard/join', { name }, tok)
-  for (const bad of ['ab', 'x'.repeat(21), '<script>', '   ', '123', 'Admin', 'Ratespaß', '_lead']) assert.equal((await join(a.token, bad)).status, 400, String(bad))
+  for (const bad of ['ab', 'x'.repeat(21), '<script>', '   ', '123', 'Admin', 'Ratespaß', 'Quissel', '_lead']) assert.equal((await join(a.token, bad)).status, 400, String(bad))
   assert.equal((await join(a.token, 'Quizkönig')).status, 200)
   assert.equal((await join(b.token, 'QUIZKÖNIG')).status, 409, 'Groß-/Kleinschreibung zählt nicht')
   assert.equal((await call('GET', '/api/me', undefined, a.token)).json.player.lb_name, 'Quizkönig')

@@ -85,7 +85,7 @@ export function ranking(scope: Scope, humanOnly: boolean, kind: 'abs' | 'rel', v
 }
 
 /* ---------- Teilnahme (Opt-in) ---------- */
-const RESERVED = ['admin', 'administrator', 'ratespass', 'ratespaß', 'robo', 'bot', 'moderator', 'system', 'support']
+const RESERVED = ['admin', 'administrator', 'ratespass', 'ratespaß', 'quissel', 'robo', 'bot', 'moderator', 'system', 'support']
 export function cleanLbName(raw: unknown): string {
   const n = String(raw ?? '').normalize('NFC').replace(/\s+/g, ' ').trim()
   if (n.length < 3 || n.length > 20 || !/^[\p{L}\p{N}][\p{L}\p{N} ._·-]*$/u.test(n) || !/\p{L}/u.test(n) || RESERVED.includes(n.toLowerCase())) throw new HttpError(400, 'bad_lb_name')

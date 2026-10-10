@@ -176,7 +176,7 @@ test('Test-Route stellt zu; Fehlschläge zählen und entfernen defekte Abos; Lö
   const br = await subscribe(a.token, svc, 'self')
   const r = await call('POST', '/api/push/test', {}, a.token)
   assert.equal(r.json.sent, 1)
-  assert.equal(decrypt(br, svc.received.at(-1)!.body).title, 'Ratespaß')
+  assert.equal(decrypt(br, svc.received.at(-1)!.body).title, 'Quissel')
 
   // 5 aufeinanderfolgende Fehlschläge entfernen ein defektes Abo (direkt über deliver, am Rate-Limit der Route vorbei)
   svc.setStatus(500)
