@@ -212,6 +212,15 @@ const DEMO = (() => {
     if (path === '/api/games' && method === 'GET') {
       return { body: { games: st.games.map((g) => { const v = view(g); return { id: v.id, status: v.status, lang: v.lang, round: v.round, turn: v.turn, phase: v.phase, opp: v.opp, score: v.score, winner: v.winner, updated_at: v.updated_at } }) } }
     }
+    if (path === '/api/sofa' && method === 'GET') {
+      const lang = qs.get('lang') || st.me.lang || 'de', n = Math.min(60, Math.max(2, Number(qs.get('n')) || 12))
+      const rank = LEVELS.indexOf(st.level ?? 'basic'), open = ALL_CATS.filter((c) => !TIERS[c] || (LEVELS.indexOf(TIERS[c]) <= rank && !(st.disabled ?? []).includes(c)))
+      const questions = shuffle(pool(lang).filter((q) => open.includes(q.c))).slice(0, n).map((q) => {
+        const perm = shuffle([0, 1, 2, 3]), c = content(q, lang)
+        return { text: c.text, options: perm.map((i) => c.answers[i]), correct_index: perm.indexOf(0), category: q.c, explanation: q[lang][5] ?? null }
+      })
+      return { body: { questions } }
+    }
     if (path.startsWith('/api/live')) return err(501, 'demo_unavailable') // Echtzeit braucht den echten Server
     /* Bestenliste (Demo: Beispieldaten + dein eigener Stand aus der Demo) */
     if (path === '/api/leaderboard' && method === 'GET') {

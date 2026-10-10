@@ -12,6 +12,7 @@ import * as rooms from './rooms.ts'
 import * as ai from './ai.ts'
 import * as lb from './leaderboard.ts'
 import * as live from './live.ts'
+import { sofaQuestions } from './sofa.ts'
 import { consentState, consentStats, currentPrivacy, recordConsent } from './privacy.ts'
 import { erasePlayer } from './erase.ts'
 import {
@@ -337,6 +338,11 @@ router.post('/api/ladders/:id/review', (c) => {
 })
 
 /* ---------- Mehrspieler-Räume (asynchron) ---------- */
+router.get('/api/sofa', (c) => {
+  rateLimit(`sofa:${me(c).id}`, 60, 3_600_000)
+  const q = c.url.searchParams
+  return { questions: sofaQuestions(me(c), pickLang(q.get('lang') ?? undefined, me(c).lang), q.get('n')) }
+})
 router.get('/api/rooms', (c) => ({ rooms: rooms.listRooms(me(c)) }))
 router.post('/api/rooms', (c) => {
   const p = me(c)

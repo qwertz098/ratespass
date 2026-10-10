@@ -136,7 +136,7 @@ async function route() {
   try {
     if (!S.me) { loading(); if (!(await boot())) return }
     if (my !== runId) return
-    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top, live, 'live-join': liveJoin }
+    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top, live, 'live-join': liveJoin, sofa }
     await (pages[page] ?? home)(arg, my)
   } catch (e) {
     if (my !== runId) return
@@ -300,10 +300,90 @@ async function newGame() {
       h('button', { class: 'btn', onclick: guard(async () => joinRoom(roomCode.value)) }, t('room.join'))))),
     h('h2', {}, t('live.title')),
     h('div', { class: 'list' }, option(t('live.title'), t('live.sub'), '🎉', guard(async () => {
-      const r = await api('POST', '/api/live', { mode: 'tempo', screen: false, lang: gameLang() }); go('#/live/' + r.id) }))),
+      const r = await api('POST', '/api/live', { mode: 'tempo', screen: false, lang: gameLang() }); go('#/live/' + r.id) })),
+      option(t('sofa.title'), t('sofa.sub'), '🛋️', () => go('#/sofa'))),
     h('h2', {}, t('new.questionLang')), h('div', { class: 'card' }, langSel))
 }
 const langName = (code) => { try { return new Intl.DisplayNames([getLang()], { type: 'language' }).of(code) } catch { return code } }
+
+/* ---------- Sofa-Modus: ein Gerät, reihum ---------- */
+async function sofa() {
+  const MAX = 8, SECS = 20
+  let names = []
+  try { names = JSON.parse(store.get('rp.sofaNames') || '[]') } catch { /* leer */ }
+  names = names.filter((n) => typeof n === 'string').slice(0, MAX)
+  while (names.length < 2) names.push('')
+  let rounds = Number(store.get('rp.sofaRounds')) || 5
+  let raf = 0
+  const prev = cleanup
+  cleanup = () => { prev(); cancelAnimationFrame(raf) }
+
+  const setup = () => {
+    const inputs = names.map((n, i) => h('input', { type: 'text', maxLength: 20, value: n, placeholder: t('sofa.name', { n: i + 1 }), autocomplete: 'off', oninput: (e) => { names[i] = e.target.value } }))
+    const roundSeg = h('div', { class: 'seg wrap' }, [3, 5, 8].map((n) => h('button', { 'aria-pressed': String(rounds === n), onclick: (e) => {
+      rounds = n; store.set('rp.sofaRounds', String(n)); roundSeg.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === e.currentTarget))) } }, t('sofa.rounds', { n }))))
+    mount(topbar(t('sofa.title')),
+      h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('sofa.info')),
+        h('div', { class: 'stack' }, inputs.map((i, idx) => h('div', { class: 'row' }, i, names.length > 2 ? h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: () => { names.splice(idx, 1); setup() } }, '✕') : null))),
+        names.length < MAX ? h('button', { class: 'btn small', onclick: () => { names.push(''); setup() } }, '＋ ' + t('sofa.add')) : null,
+        h('label', { class: 'field' }, t('sofa.roundsLabel'), roundSeg),
+        h('button', { class: 'btn primary block', onclick: guard(start) }, t('sofa.start'))))
+  }
+
+  async function start() {
+    const players = names.map((n, i) => ({ name: n.trim() || t('sofa.name', { n: i + 1 }), score: 0 }))
+    store.set('rp.sofaNames', JSON.stringify(names.map((n) => n.trim())))
+    const r = await api('GET', `/api/sofa?lang=${gameLang()}&n=${players.length * rounds}`)
+    turn(players, r.questions, 0)
+  }
+
+  function turn(players, qs, k) {
+    if (k >= qs.length) return result(players, qs)
+    const p = players[k % players.length], q = qs[k]
+    mount(topbar(t('sofa.title')),
+      h('div', { class: 'card stack lresult' }, h('p', { class: 'muted' }, t('sofa.pass')), h('div', { class: 'big' }, p.name),
+        h('p', { class: 'hint' }, t('ladder.step', { n: k + 1, total: qs.length })),
+        h('button', { class: 'btn primary block', onclick: () => ask(players, qs, k) }, t('sofa.ready', { name: p.name }))),
+      h('div', { class: 'card stack' }, players.map((x) => h('div', { class: 'row' }, h('div', { class: 'grow ell' }, x.name), h('span', { class: 'score' }, String(x.score))))))
+  }
+
+  function ask(players, qs, k) {
+    const p = players[k % players.length], q = qs[k]
+    let done = false
+    const bar = h('i'), feedback = h('div', { class: 'feedback' })
+    const deadline = performance.now() + SECS * 1000
+    const buttons = q.options.map((text, i) => h('button', { class: 'opt', onclick: () => submit(i) }, h('kbd', {}, String(i + 1)), h('span', {}, text)))
+    const submit = (choice) => {
+      if (done) return
+      done = true; cancelAnimationFrame(raf)
+      const ok = choice === q.correct_index
+      if (ok) p.score++
+      buttons.forEach((b) => (b.disabled = true))
+      buttons[q.correct_index].classList.add('good')
+      if (choice >= 0 && !ok) buttons[choice].classList.add('bad')
+      feedback.append(h('strong', {}, choice === -1 ? t('play.timeUp') : ok ? t('play.right') : t('play.wrong')),
+        h('button', { class: 'btn small primary', onclick: () => turn(players, qs, k + 1) }, k + 1 >= qs.length ? t('sofa.result') : t('play.next')))
+      if (q.explanation) feedback.before(h('p', { class: 'muted' }, q.explanation))
+    }
+    const tick = () => { const left = deadline - performance.now(); bar.style.transform = `scaleX(${Math.max(0, left / (SECS * 1000))})`; if (left <= 0) submit(-1); else raf = requestAnimationFrame(tick) }
+    mount(topbar(t('sofa.turn', { name: p.name })),
+      h('div', { class: 'card qcard', cat: q.category }, h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, t('ladder.step', { n: k + 1, total: qs.length }))),
+        h('div', { class: 'timer' }, bar), h('div', { class: 'question' }, q.text), h('div', { class: 'opts' }, buttons), feedback))
+    raf = requestAnimationFrame(tick)
+  }
+
+  function result(players, qs) {
+    const rank = [...players].sort((a, b) => b.score - a.score)
+    const top = rank.filter((p) => p.score === rank[0].score).map((p) => p.name).join(' & ')
+    mount(topbar(t('sofa.title')),
+      h('div', { class: 'card stack lresult' }, h('h3', {}, t('live.finished')), h('div', { class: 'big' }, '🏆 ' + top)),
+      h('div', { class: 'list' }, rank.map((p, i) => h('div', { class: 'item' }, h('span', { class: 'rank' }, '#' + (i + 1)), h('div', { class: 'grow ell' }, p.name), h('span', { class: 'score' }, String(p.score))))),
+      h('button', { class: 'btn primary block', onclick: guard(start) }, t('sofa.again')),
+      h('button', { class: 'btn block', onclick: () => go('#/') }, t('ladder.home')))
+  }
+
+  setup()
+}
 
 /* ---------- Spielansicht ---------- */
 async function gameView(id, my) {

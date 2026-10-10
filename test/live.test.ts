@@ -230,3 +230,16 @@ test('Teams: Teamwahl in der Lobby, automatischer Ausgleich, Teamwertung als Dur
   assert.ok(big.value < 2 * Math.min(...r0.players.map((p: any) => p.score)) + 1000)
   await call('POST', `/api/live/${c.id}/end`, {}, h.token); w.close()
 })
+
+test('Sofa-Modus: liefert Fragen mit Lösung, speichert nichts, begrenzt die Anzahl', async () => {
+  const p = await newPlayer('Sofa Spieler')
+  const before = all('SELECT 1 FROM seen').length
+  const r = await call('GET', '/api/sofa?n=9', undefined, p.token)
+  assert.equal(r.status, 200); assert.equal(r.json.questions.length, 9)
+  for (const q of r.json.questions) { assert.equal(q.options.length, 4); assert.ok(q.correct_index >= 0 && q.correct_index < 4); assert.ok(q.text && q.category) }
+  assert.equal(new Set(r.json.questions.map((q: any) => q.text)).size, 9, 'keine doppelten Fragen')
+  assert.equal((await call('GET', '/api/sofa?n=500', undefined, p.token)).json.questions.length, 60, 'Obergrenze')
+  assert.equal((await call('GET', '/api/sofa', undefined, p.token)).json.questions.length, 12, 'Standard')
+  assert.equal(all('SELECT 1 FROM seen').length, before, 'zählt nicht als gesehen/Statistik')
+  assert.equal((await call('GET', '/api/sofa')).status, 401, 'nur mit Profil (Lastbegrenzung)')
+})
