@@ -347,7 +347,8 @@ router.get('/api/sofa', (c) => {
   return { questions: sofaQuestions(me(c), pickLang(q.get('lang') ?? undefined, me(c).lang), q.get('n')) }
 })
 /* ---------- Wordle ---------- */
-router.get('/api/wordle', (c) => { ensureWords(); return hub(me(c)) })
+router.get('/api/wordle', (c) => { ensureWords(); wordle.rememberTz(me(c).id, c.url.searchParams.get('tz')); return hub(me(c)) })
+router.post('/api/wordle/push', (c) => wordle.setPush(me(c), c.body?.key, c.body?.on, c.body?.tz))
 router.post('/api/wordle/games', (c) => { rateLimit(`wstart:${me(c).id}`, 120, 3_600_000); ensureWords(); return { game: wordle.startGame(me(c), c.body?.kind, c.body?.lang, c.body?.group_id) } })
 router.get('/api/wordle/games/:id', (c) => ({ game: wordle.getGame(me(c), Number(c.params.id)) }))
 router.post('/api/wordle/games/:id/guess', (c) => { rateLimit(`wguess:${me(c).id}`, 600, 3_600_000); return { game: wordle.guess(me(c), Number(c.params.id), c.body?.word) } })

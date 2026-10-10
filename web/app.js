@@ -446,6 +446,12 @@ const WLANGS = ['de', 'en']
 const wlangs = () => [getLang(), ...WLANGS.filter((l) => l !== getLang())].filter((l, i, a) => WLANGS.includes(l) && a.indexOf(l) === i)
 const wstatus = (s) => !s ? t('wordle.status.none') : s.status === 'won' ? t('wordle.status.won', { n: s.guesses }) : s.status === 'lost' ? t('wordle.status.lost') : t('wordle.status.playing', { n: s.guesses })
 const wbadge = (s) => h('span', { class: 'badge ' + (s?.status === 'won' ? 'good' : s?.status === 'lost' ? 'bad' : '') }, s ? (s.status === 'won' ? '✓ ' + s.guesses + '/6' : s.status === 'lost' ? '✗' : '…') : t('wordle.new'))
+const localTz = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || '' } catch { return '' } }
+/** Erinnerung um 9 Uhr (lokale Zeit) für ein Wordle ein-/ausschalten; schaltet bei Bedarf zuerst die Push-Benachrichtigungen des Geräts ein. */
+const wordleBell = (key, on, after) => h('button', { class: 'btn small' + (on ? ' primary' : ''), 'aria-pressed': String(on), title: t('wordle.bell'), onclick: guard(async () => {
+  if (!on && (await pushStatus()) !== 'on') { if (!pushSupported()) return toast(t('push.unsupported')); await enablePush() }
+  await api('POST', '/api/wordle/push', { key, on: !on, tz: localTz() }); toast(t(on ? 'wordle.bellOff' : 'wordle.bellOn')); after()
+}) }, '🔔 ' + t(on ? 'wordle.bellIs' : 'wordle.bellAsk'))
 const wInviteLink = (code) => location.origin + '/#/wordle/join/' + code
 
 async function wordle(arg, my, arg2) {
@@ -470,7 +476,7 @@ async function wordleHub(my) {
     mount(topbar(t('wordle.title')),
       h('p', { class: 'hint' }, t('wordle.sub')),
       wlangs().map((lang) => h('div', { class: 'card stack' },
-        h('div', { class: 'row' }, h('h3', { class: 'grow' }, langName(lang)), d.langs.find((x) => x.lang === lang).streak ? h('span', { class: 'badge' }, '🔥 ' + t('wordle.streak', { n: d.langs.find((x) => x.lang === lang).streak })) : null),
+        h('div', { class: 'row' }, h('h3', { class: 'grow' }, langName(lang)), d.langs.find((x) => x.lang === lang).streak ? h('span', { class: 'badge' }, '🔥 ' + t('wordle.streak', { n: d.langs.find((x) => x.lang === lang).streak })) : null, wordleBell('daily:' + lang, d.langs.find((x) => x.lang === lang).push, load)),
         h('button', { class: 'item', onclick: () => startGame('daily', lang) }, h('div', { class: 'avatar sm' }, '🟩'), h('div', { class: 'grow' }, h('div', {}, t('wordle.today')), h('div', { class: 'muted' }, wstatus(d.langs.find((x) => x.lang === lang).daily))), wbadge(d.langs.find((x) => x.lang === lang).daily)),
         h('button', { class: 'item', onclick: () => startGame('bonus', lang) }, h('div', { class: 'avatar sm' }, '➕'), h('div', { class: 'grow' }, h('div', {}, t('wordle.bonus')), h('div', { class: 'muted' }, wstatus(d.langs.find((x) => x.lang === lang).bonus) + ' · ' + t('wordle.bonusSub'))), wbadge(d.langs.find((x) => x.lang === lang).bonus)))),
       h('h2', {}, t('wordle.groups')),
@@ -483,7 +489,7 @@ async function wordleHub(my) {
       h('button', { class: 'btn block', onclick: () => go('#/wordle/board') }, '🏆 ' + t('wordle.board')))
     function setExtra() { const box = document.getElementById('wextra'); box.replaceChildren(...(creating ? [createCard] : duel ? [duelCard] : [])) }
   }
-  const load = guard(async () => render(await api('GET', '/api/wordle')))
+  const load = guard(async () => render(await api('GET', `/api/wordle?tz=${encodeURIComponent(localTz())}`)))
   await load()
   poll(load, 60000)
 }
@@ -573,6 +579,7 @@ async function wordleGroup(id, my) {
     const scopeSeg = h('div', { class: 'seg wrap' }, [['day', 'wordle.scope.day'], ['week', 'wordle.scope.week'], ['all', 'wordle.scope.all']].map(([v, l]) => h('button', { 'aria-pressed': String(scope === v), onclick: () => { scope = v; store.set('rp.wScope', v); load() } }, t(l))))
     mount(topbar(gv.name),
       h('div', { class: 'card stack' }, h('p', { class: 'muted' }, langName(gv.lang) + ' · ' + t('wordle.members', { n: gv.members.length })),
+        wordleBell('g:' + gv.id, gv.push, load),
         h('button', { class: 'btn primary block', onclick: guard(async () => { const r = await api('POST', '/api/wordle/games', { kind: 'group', group_id: gv.id }); go('#/wordle/play/' + r.game.id) }) },
           gv.my_game ? (gv.my_game.status === 'playing' ? t('wordle.continue') : wstatus(gv.my_game)) : t('wordle.groupPlay'))),
       h('h2', {}, t('wordle.invite')),

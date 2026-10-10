@@ -129,3 +129,31 @@ test('Profil löschen entfernt Wordle-Spiele, Mitgliedschaften und leere Gruppen
   const pid = get<{ id: number }>('SELECT id FROM players WHERE public_id=?', p.player.public_id)!.id
   assert.equal(all('SELECT 1 FROM wordle_games WHERE player_id=?', pid).length + all('SELECT 1 FROM wordle_members WHERE player_id=?', pid).length + all('SELECT 1 FROM wordle_groups WHERE id=?', g.id).length, 0)
 })
+
+test('Erinnerung um 9 Uhr lokale Zeit: nur mit Opt-in, einmal je Tag, nicht wenn schon gespielt, Zeitzonen und Gruppen', async () => {
+  const [a, b] = [await newPlayer('Push Frühaufsteher'), await newPlayer('Push New York')]
+  const push = (tok: string, key: string, on: boolean, tz?: string) => call('POST', '/api/wordle/push', { key, on, tz }, tok)
+  assert.equal((await push(a.token, 'daily:fr', true, 'Europe/Berlin')).status, 400); assert.equal((await push(a.token, 'daily:de', true, 'Mars/Olympus')).status, 400, 'ohne bekannte Zeitzone')
+  assert.equal((await push(a.token, 'g:99999', true, 'Europe/Berlin')).status, 404, 'nur eigene Gruppen')
+  assert.equal((await push(a.token, 'daily:de', true, 'Europe/Berlin')).status, 200); assert.equal((await push(b.token, 'daily:en', true, 'America/New_York')).status, 200)
+  const grp = (await call('POST', '/api/wordle/groups', { name: 'Morgenrunde', lang: 'en' }, a.token)).json.group
+  assert.equal((await push(a.token, `g:${grp.id}`, true)).status, 200)
+  assert.equal((await call('GET', '/api/wordle', undefined, a.token)).json.langs.find((l: any) => l.lang === 'de').push, true)
+  const pidA = get<{ id: number }>('SELECT id FROM players WHERE public_id=?', a.player.public_id)!.id
+  const sent: { pid: number; title: string; body: string; url: string }[] = []
+  const send = (pid: number, m: any) => sent.push({ pid, ...m })
+  const at = (iso: string) => Date.parse(iso)
+  assert.equal(wordle.wordlePushTick(at('2026-10-12T06:30:00Z'), send), 0, 'Berlin 8:30, New York 2:30 – noch nicht')
+  assert.equal(wordle.wordlePushTick(at('2026-10-12T07:30:00Z'), send), 2, 'Berlin 9:30: Daily DE + Gruppe')
+  assert.deepEqual(sent.map((s) => s.url).sort(), ['/#/wordle', `/#/wordle/group/${grp.id}`].sort()); assert.ok(sent.some((s) => /Wordle/.test(s.title)) && sent.find((s) => s.url === '/#/wordle')!.body.includes('Deutsch'))
+  assert.equal(wordle.wordlePushTick(at('2026-10-12T07:50:00Z'), send), 0, 'nur einmal je Tag')
+  assert.equal(wordle.wordlePushTick(at('2026-10-12T13:30:00Z'), send), 1, 'New York 9:30 EDT'); assert.equal(sent.at(-1)!.pid, get<{ id: number }>('SELECT id FROM players WHERE public_id=?', b.player.public_id)!.id)
+  assert.equal(wordle.wordlePushTick(at('2026-10-13T07:30:00Z'), send), 2, 'am nächsten Tag wieder')
+  // schon gespielt (beendet) → keine Erinnerung für dieses Wordle
+  const day = wordle.dayOf(at('2026-10-14T07:30:00Z'))
+  run("INSERT INTO wordle_games(player_id,kind,lang,day,group_id,word,guesses,status,points,started_at,last_at,finished_at) VALUES(?,'daily','de',?,0,'apple','[\"apple\"]','won',6,1,1,1)", pidA, day)
+  assert.equal(wordle.wordlePushTick(at('2026-10-14T07:30:00Z'), send), 1, 'Daily DE entfällt, Gruppe bleibt')
+  // ausschalten
+  await push(a.token, `g:${grp.id}`, false); await push(a.token, 'daily:de', false)
+  assert.equal(wordle.wordlePushTick(at('2026-10-15T07:30:00Z'), send), 0)
+})

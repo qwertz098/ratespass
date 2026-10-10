@@ -241,6 +241,7 @@ export function groupView(me: PlayerRow, groupId: number) {
   const today = new Map(all<GameRow>("SELECT * FROM wordle_games WHERE group_id=? AND kind='group' AND day=?", g.id, day).map((x) => [x.player_id, x]))
   return {
     id: g.id, name: g.name, lang: g.lang, code: g.code, is_owner: g.owner === me.id, day, max_members: config.wordle.groupMax,
+    push: !!get('SELECT 1 FROM wordle_push WHERE player_id=? AND key=?', me.id, `g:${g.id}`),
     members: members.map((m) => ({ name: pname(m.player_id), is_me: m.player_id === me.id, is_owner: m.player_id === g.owner, today: summary(today.get(m.player_id)) ? { status: today.get(m.player_id)!.status, guesses: guessesOf(today.get(m.player_id)!).length } : null })),
     my_game: summary(today.get(me.id)),
   }
@@ -300,4 +301,72 @@ export function board(me: PlayerRow, lang: unknown, rawScope: unknown, limit = 5
   const top = list.slice(0, limit).map((r) => ({ rank: r.rank, name: r.name, points: r.points, played: r.played, won: r.won, avg_guesses: r.avg_guesses, streak: streakOf(r.id, lang, today), is_me: r.id === me.id }))
   const mine = list.find((r) => r.id === me.id)
   return { lang, scope, top, me: { participating: !!get('SELECT 1 FROM players WHERE id=? AND lb_name IS NOT NULL AND lb_banned=0', me.id), rank: mine?.rank ?? null, points: mine?.points ?? 0, played: mine?.played ?? 0 }, total: list.length }
+}
+
+/* ---------- Erinnerung um 9 Uhr (lokale Zeit, optional) ---------- */
+const validTz = (tz: unknown): tz is string => {
+  if (typeof tz !== 'string' || !tz || tz.length > 64) return false
+  try { new Intl.DateTimeFormat('en-US', { timeZone: tz }); return true } catch { return false }
+}
+/** Merkt sich die Zeitzone des Geräts (für „9 Uhr“). Ungültige Werte werden ignoriert. */
+export function rememberTz(pid: number, tz: unknown) {
+  if (validTz(tz)) run('UPDATE players SET tz=? WHERE id=? AND (tz IS NULL OR tz<>?)', tz, pid, tz)
+}
+const PUSH_KEY = /^(daily:(de|en)|g:\d+)$/
+/** Erinnerung für ein Wordle ein- oder ausschalten (`daily:de`, `daily:en` oder `g:<Gruppe>`). */
+export function setPush(me: PlayerRow, key: unknown, on: unknown, tz: unknown) {
+  if (typeof key !== 'string' || !PUSH_KEY.test(key)) throw new HttpError(400, 'bad_key')
+  if (key.startsWith('g:')) memberGroup(me.id, Number(key.slice(2)))
+  if (on) {
+    if (!validTz(tz) && !get('SELECT 1 FROM players WHERE id=? AND tz IS NOT NULL', me.id)) throw new HttpError(400, 'bad_tz')
+    rememberTz(me.id, tz)
+    run('INSERT OR IGNORE INTO wordle_push(player_id,key) VALUES(?,?)', me.id, key)
+  } else run('DELETE FROM wordle_push WHERE player_id=? AND key=?', me.id, key)
+  return { key, on: !!on }
+}
+
+const localParts = (t: number, tz: string) => {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', hourCycle: 'h23' }).formatToParts(t).map((x) => [x.type, x.value]))
+  return { day: `${p.year}-${p.month}-${p.day}`, hour: Number(p.hour) }
+}
+const PUSH_TEXT = {
+  de: { daily: ['Dein Wordle wartet', 'Das heutige Wordle ({lang}) ist bereit – 6 Versuche, 5 Buchstaben.'], streak: ' Halte deine Serie von {n} Tagen!', group: ['Neues Wordle in „{name}“', 'Das heutige Gruppen-Wordle wartet auf dich.'], langs: { de: 'Deutsch', en: 'Englisch' } },
+  en: { daily: ['Your Wordle is waiting', 'Today’s Wordle ({lang}) is ready – 6 tries, 5 letters.'], streak: ' Keep your {n}-day streak going!', group: ['New Wordle in “{name}”', 'Today’s group Wordle is waiting for you.'], langs: { de: 'German', en: 'English' } },
+} as const
+
+export interface DuePush { pid: number; key: string; localDay: string; title: string; body: string; url: string; tag: string }
+/** Wer ist jetzt (lokal 9:00–9:59) dran, hat die Erinnerung an, noch nicht gespielt und heute noch keine bekommen? */
+export function dueNotifications(at = now()): DuePush[] {
+  const today = dayOf(at), out: DuePush[] = []
+  const rows = all<{ player_id: number; key: string; tz: string; lang: string }>(
+    'SELECT w.player_id, w.key, p.tz, p.lang FROM wordle_push w JOIN players p ON p.id=w.player_id WHERE p.deleted=0 AND p.is_bot=0 AND p.tz IS NOT NULL')
+  for (const r of rows) {
+    const local = localParts(at, r.tz)
+    if (local.hour !== 9) continue
+    if (get('SELECT 1 FROM wordle_push_log WHERE player_id=? AND key=? AND day=?', r.player_id, r.key, local.day)) continue
+    const T = PUSH_TEXT[r.lang === 'de' ? 'de' : 'en']
+    if (r.key.startsWith('daily:')) {
+      const lang = r.key.slice(6) as WordleLang, g = myGame(r.player_id, 'daily', lang, today)
+      if (g && g.status !== 'playing') continue
+      const streak = streakOf(r.player_id, lang, today)
+      out.push({ pid: r.player_id, key: r.key, localDay: local.day, title: T.daily[0], body: T.daily[1].replace('{lang}', T.langs[lang]) + (streak ? T.streak.replace('{n}', String(streak)) : ''), url: '/#/wordle', tag: `wordle-${lang}` })
+    } else {
+      const gid = Number(r.key.slice(2)), grp = get<GroupRow>('SELECT g.* FROM wordle_groups g JOIN wordle_members m ON m.group_id=g.id WHERE g.id=? AND m.player_id=?', gid, r.player_id)
+      if (!grp) continue
+      const g = myGame(r.player_id, 'group', grp.lang, today, gid)
+      if (g && g.status !== 'playing') continue
+      out.push({ pid: r.player_id, key: r.key, localDay: local.day, title: T.group[0].replace('{name}', grp.name), body: T.group[1], url: `/#/wordle/group/${gid}`, tag: `wordle-g${gid}` })
+    }
+  }
+  return out
+}
+/** Minütlich aufgerufen: sendet fällige Erinnerungen genau einmal je Wordle und lokalem Tag. */
+export function wordlePushTick(at = now(), send: (pid: number, msg: { title: string; body: string; url: string; tag: string }) => void = notifyMessage): number {
+  const due = dueNotifications(at)
+  for (const d of due) {
+    run('INSERT OR IGNORE INTO wordle_push_log(player_id,key,day,at) VALUES(?,?,?,?)', d.pid, d.key, d.localDay, at)
+    send(d.pid, { title: d.title, body: d.body, url: d.url, tag: d.tag })
+  }
+  run('DELETE FROM wordle_push_log WHERE at<?', at - 3 * 86_400_000)
+  return due.length
 }
