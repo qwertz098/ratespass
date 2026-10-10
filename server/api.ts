@@ -660,6 +660,13 @@ router.post('/api/admin/lb/ban', (c) => {
   return { ok: true }
 }, { auth: false })
 
+/* --- Wordle: Statistik und Wortlisten --- */
+router.get('/api/admin/wordle', (c) => { admin(c); ensureWords(); return wordle.adminOverview(Number(c.url.searchParams.get('days')) || 14) }, { auth: false })
+router.get('/api/admin/wordle/words', (c) => { admin(c); ensureWords(); return wordle.adminWords(c.url.searchParams.get('lang'), c.url.searchParams.get('q')) }, { auth: false })
+router.post('/api/admin/wordle/ban', (c) => { admin(c); return wordle.adminBan(c.body?.lang, c.body?.word, c.body?.banned) }, { auth: false })
+router.post('/api/admin/wordle/force', (c) => { admin(c); ensureWords(); return wordle.adminForce(c.body?.lang, c.body?.day, c.body?.word) }, { auth: false })
+router.post('/api/admin/wordle/reload', (c) => { admin(c); wordle.loadWordlists(); return { ok: true } }, { auth: false })
+
 /** Lösungen vs. Alter: Auswertung der Antworten aller Spieler (ohne Bots), Altersgruppen nur ab 5 Antworten. */
 router.get('/api/admin/stats/overview', (c) => {
   admin(c)

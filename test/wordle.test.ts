@@ -157,3 +157,38 @@ test('Erinnerung um 9 Uhr lokale Zeit: nur mit Opt-in, einmal je Tag, nicht wenn
   await push(a.token, `g:${grp.id}`, false); await push(a.token, 'daily:de', false)
   assert.equal(wordle.wordlePushTick(at('2026-10-15T07:30:00Z'), send), 0)
 })
+
+test('Admin: Statistik je Sprache und Tag, Wortlisten sperren/freigeben, Wort für einen künftigen Tag festlegen', async () => {
+  const hdr = { 'x-forwarded-for': '203.0.113.77' }
+  assert.equal((await call('GET', '/api/admin/wordle', undefined, undefined, hdr)).status, 401, 'ohne Anmeldung gesperrt')
+  config.trustProxy = true
+  const cookie = ((await call('POST', '/api/admin/login', { token: config.adminToken }, undefined, hdr)).headers.get('set-cookie') ?? '').split(';')[0]
+  const admin = (method: string, path: string, body?: unknown) => call(method, path, body, undefined, { ...hdr, cookie, 'sec-fetch-site': 'same-origin' })
+  const [p1, p2] = [await newPlayer('Statistik Eins'), await newPlayer('Statistik Zwei')]
+  for (const [p, tries] of [[p1, 2], [p2, 7]] as const) {
+    const g = (await start(p.token, 'daily', 'en')).json.game, ans = wordOf(g.id)
+    if (tries === 2) { await guess(p.token, g.id, others('en', ans, 1)[0]); await guess(p.token, g.id, ans) } else for (const w of others('en', ans, 6)) await guess(p.token, g.id, w)
+  }
+  const o = (await admin('GET', '/api/admin/wordle')).json
+  const en = o.langs.find((l: any) => l.lang === 'en'), today = en.daily[0]
+  assert.equal(today.day, o.today); assert.ok(today.plays >= today.finished && today.finished >= 2 && today.won >= 1 && today.lost >= 1)
+  assert.ok(today.dist[1] >= 1, 'mindestens ein Spieler im 2. Versuch gelöst'); assert.ok(today.word && today.win_rate !== null)
+  assert.ok(en.words.solutions >= 1000 && en.words.valid > en.words.solutions); assert.ok(o.players.active_7 >= 2 && o.groups.total >= 0); assert.equal(en.upcoming.length, 7)
+  // Wörter: suchen, sperren, freigeben
+  const w = others('en', '', 1)[0]
+  assert.equal((await admin('POST', '/api/admin/wordle/ban', { lang: 'en', word: 'zzzzz' })).status, 404)
+  assert.equal((await admin('POST', '/api/admin/wordle/ban', { lang: 'en', word: w, banned: true })).status, 200)
+  assert.equal((await guess(p1.token, (await start(p1.token, 'bonus', 'en')).json.game.id, w)).status, 422, 'gesperrtes Wort ist keine gültige Eingabe')
+  assert.equal((await admin('GET', '/api/admin/wordle/words?lang=en')).json.words.some((x: any) => x.word === w && x.banned === 1), true)
+  assert.equal((await admin('GET', `/api/admin/wordle/words?lang=en&q=${w.slice(0, 3)}`)).json.words.some((x: any) => x.word === w), true)
+  await admin('POST', '/api/admin/wordle/ban', { lang: 'en', word: w, banned: false })
+  // Wort festlegen: nur für Tage ohne Spiel, nur gültige Wörter
+  const tomorrow = wordle.addDays(wordle.dayOf(), 1), pick = others('en', '', 3)[2]
+  assert.equal((await admin('POST', '/api/admin/wordle/force', { lang: 'en', day: wordle.dayOf(), word: pick })).status, 409, 'heute läuft schon')
+  assert.equal((await admin('POST', '/api/admin/wordle/force', { lang: 'en', day: wordle.addDays(wordle.dayOf(), -1), word: pick })).status, 400, 'nicht rückwirkend')
+  assert.equal((await admin('POST', '/api/admin/wordle/force', { lang: 'en', day: tomorrow, word: 'zzzzz' })).status, 404)
+  assert.equal((await admin('POST', '/api/admin/wordle/force', { lang: 'en', day: tomorrow, word: pick })).status, 200)
+  assert.equal(wordle.wordFor('en', tomorrow, 'global'), pick)
+  assert.deepEqual((await admin('GET', '/api/admin/wordle')).json.langs.find((l: any) => l.lang === 'en').upcoming[1], { day: tomorrow, word: pick, forced: true })
+  assert.equal((await admin('POST', '/api/admin/wordle/reload', {})).status, 200)
+})

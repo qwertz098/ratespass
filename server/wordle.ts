@@ -370,3 +370,65 @@ export function wordlePushTick(at = now(), send: (pid: number, msg: { title: str
   run('DELETE FROM wordle_push_log WHERE at<?', at - 3 * 86_400_000)
   return due.length
 }
+
+/* ---------- Admin: Statistik und Wortlisten ---------- */
+const guessDist = (rows: { n: number; c: number }[]) => { const d = [0, 0, 0, 0, 0, 0]; for (const r of rows) if (r.n >= 1 && r.n <= 6) d[r.n - 1] = r.c; return d }
+
+export function adminOverview(days = 14) {
+  const today = dayOf(), from = addDays(today, -(Math.min(60, Math.max(1, days)) - 1))
+  const active = (d: number) => get<{ n: number }>('SELECT COUNT(DISTINCT player_id) n FROM wordle_games WHERE day>=?', addDays(today, -(d - 1)))!.n
+  const langs = WORDLE_LANGS.map((lang) => {
+    const words = get<{ total: number; sol: number; banned: number }>('SELECT COUNT(*) total, SUM(solution) sol, SUM(banned) banned FROM wordle_words WHERE lang=?', lang)!
+    const daily = all<{ day: string; plays: number; finished: number; won: number; avg: number | null }>(
+      `SELECT day, COUNT(*) plays, SUM(status<>'playing') finished, SUM(status='won') won, AVG(CASE WHEN status='won' THEN json_array_length(guesses) END) avg
+       FROM wordle_games WHERE kind='daily' AND lang=? AND day>=? GROUP BY day ORDER BY day DESC`, lang, from).map((r) => {
+      const dist = guessDist(all<{ n: number; c: number }>("SELECT json_array_length(guesses) n, COUNT(*) c FROM wordle_games WHERE kind='daily' AND lang=? AND day=? AND status='won' GROUP BY n", lang, r.day))
+      return { day: r.day, word: get<{ word: string }>("SELECT word FROM wordle_daily WHERE lang=? AND day=? AND scope='global'", lang, r.day)?.word ?? null, plays: r.plays, finished: r.finished, won: r.won, win_rate: r.finished ? Math.round((r.won / r.finished) * 100) : null, avg_guesses: r.avg ? Math.round(r.avg * 10) / 10 : null, dist, lost: r.finished - r.won }
+    })
+    const upcoming = Array.from({ length: 7 }, (_, i) => addDays(today, i)).map((day) => {
+      const w = get<{ word: string; forced: number }>("SELECT word, forced FROM wordle_daily WHERE lang=? AND day=? AND scope='global'", lang, day)
+      return { day, word: w?.word ?? null, forced: !!w?.forced }
+    })
+    return { lang, words: { valid: words.total, solutions: words.sol ?? 0, banned: words.banned ?? 0 }, daily, upcoming, bonus_today: get<{ n: number }>("SELECT COUNT(*) n FROM wordle_games WHERE kind='bonus' AND lang=? AND day=?", lang, today)!.n }
+  })
+  const groups = all<{ id: number; name: string; lang: string; members: number; plays7: number }>(
+    `SELECT g.id, g.name, g.lang, (SELECT COUNT(*) FROM wordle_members m WHERE m.group_id=g.id) members,
+            (SELECT COUNT(*) FROM wordle_games x WHERE x.group_id=g.id AND x.day>=?) plays7 FROM wordle_groups g ORDER BY plays7 DESC, members DESC LIMIT 15`, addDays(today, -6))
+  const push = Object.fromEntries(all<{ k: string; n: number }>("SELECT CASE WHEN key LIKE 'g:%' THEN 'groups' ELSE key END k, COUNT(*) n FROM wordle_push GROUP BY k").map((r) => [r.k, r.n]))
+  const flags = all<{ player_id: number; n: number; ones: number; fast: number }>(
+    `SELECT player_id, COUNT(*) n, SUM(status='won' AND json_array_length(guesses)=1) ones, SUM(status='won' AND json_array_length(guesses)>=3 AND finished_at-started_at<5000) fast
+     FROM wordle_games WHERE kind='daily' AND status<>'playing' GROUP BY player_id HAVING n>=5 AND (ones*2>=n OR fast*2>=n) ORDER BY n DESC LIMIT 30`).map((r) => {
+    const p = get<{ public_id: string; name: string; lb_name: string | null }>('SELECT public_id, name, lb_name FROM players WHERE id=?', r.player_id)
+    return { public_id: p?.public_id, name: p?.lb_name ?? p?.name, games: r.n, solved_first_try: r.ones, solved_fast: r.fast }
+  })
+  return {
+    today, tz: config.wordle.tz, langs, flags, push,
+    players: { active_1: active(1), active_7: active(7), active_30: active(30), games_today: get<{ n: number }>('SELECT COUNT(*) n FROM wordle_games WHERE day=?', today)!.n },
+    groups: { total: get<{ n: number }>('SELECT COUNT(*) n FROM wordle_groups')!.n, members: get<{ n: number }>('SELECT COUNT(*) n FROM wordle_members')!.n, top: groups },
+    pushes_sent_3d: get<{ n: number }>('SELECT COUNT(*) n FROM wordle_push_log')!.n,
+  }
+}
+
+export function adminWords(lang: unknown, query: unknown) {
+  if (!isWordleLang(lang)) throw new HttpError(400, 'bad_lang')
+  const q = String(query ?? '').toLowerCase().replace(/[^a-z]/g, '').slice(0, 5)
+  return { words: q ? all('SELECT word, solution, banned FROM wordle_words WHERE lang=? AND word LIKE ? ORDER BY word LIMIT 50', lang, q + '%') : all('SELECT word, solution, banned FROM wordle_words WHERE lang=? AND banned=1 ORDER BY word LIMIT 100', lang) }
+}
+/** Wort sperren (weder Lösung noch Eingabe) oder wieder freigeben. */
+export function adminBan(lang: unknown, word: unknown, banned: unknown) {
+  if (!isWordleLang(lang)) throw new HttpError(400, 'bad_lang')
+  const w = normalizeWord(lang, word)
+  if (!w || !get('SELECT 1 FROM wordle_words WHERE lang=? AND word=?', lang, w)) throw new HttpError(404, 'unknown_word')
+  run('UPDATE wordle_words SET banned=? WHERE lang=? AND word=?', banned === false ? 0 : 1, lang, w)
+  return { word: w, banned: banned !== false }
+}
+/** Globales Tageswort für einen künftigen Tag festlegen (oder heute, solange noch niemand gespielt hat). */
+export function adminForce(lang: unknown, day: unknown, word: unknown) {
+  if (!isWordleLang(lang)) throw new HttpError(400, 'bad_lang')
+  if (typeof day !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(day) || day < dayOf()) throw new HttpError(400, 'bad_day')
+  const w = normalizeWord(lang, word)
+  if (!w || !isValidWord(lang, w)) throw new HttpError(404, 'unknown_word')
+  if (get('SELECT 1 FROM wordle_games WHERE kind=\'daily\' AND lang=? AND day=? LIMIT 1', lang, day)) throw new HttpError(409, 'day_started')
+  run("INSERT INTO wordle_daily(lang,day,scope,word,forced) VALUES(?,?,'global',?,1) ON CONFLICT(lang,day,scope) DO UPDATE SET word=excluded.word, forced=1", lang, day, w)
+  return { lang, day, word: w }
+}

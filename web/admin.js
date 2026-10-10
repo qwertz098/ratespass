@@ -50,6 +50,8 @@ async function load() {
       list.push(...(await statsCards()))
     } else if (status === 'lb') {
       list.push(...(await lbCards()))
+    } else if (status === 'wordle') {
+      list.push(...(await wordleCards()))
     } else if (status === 'ai') {
       list.push(...(await aiCards()))
     } else {
@@ -170,6 +172,41 @@ async function lbCards() {
     el('button', { className: 'btn small ' + (f.banned ? '' : 'danger'), textContent: f.banned ? 'Sperre aufheben' : 'Aus Bestenliste sperren', onclick: ban(f.public_id, !f.banned) })))
   const bl = banned.length ? el('div', { className: 'card stack' }, el('div', { className: 'hint', textContent: 'Gesperrt' }), ...banned.map((b) => el('div', { className: 'row' }, el('span', { className: 'grow', textContent: `${b.name} · ${b.public_id}` }), el('button', { className: 'btn small', textContent: 'Entsperren', onclick: ban(b.public_id, false) })))) : null
   return [head, ...(cards.length ? cards : [el('div', { className: 'empty', textContent: 'Keine Auffälligkeiten 🎉' })]), bl].filter(Boolean)
+}
+
+/** Wordle: Kennzahlen, Verlauf je Sprache, Wortlisten (sperren), Wort für einen künftigen Tag festlegen, Gruppen, Auffälligkeiten. */
+let wordleQuery = { lang: 'de', q: '' }
+async function wordleCards() {
+  const o = await call('GET', '/api/admin/wordle?days=14')
+  const tile = (label, value) => el('div', { className: 'card' }, el('div', { className: 'hint', textContent: label }), el('div', { style: 'font-size:1.6rem;font-weight:800', textContent: String(value) }))
+  const tiles = el('div', { style: 'display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px' },
+    tile('Spieler heute', o.players.active_1), tile('aktiv 7 Tage', o.players.active_7), tile('aktiv 30 Tage', o.players.active_30), tile('Spiele heute', o.players.games_today),
+    tile('Gruppen', o.groups.total), tile('Gruppen-Mitglieder', o.groups.members), tile('9-Uhr-Erinnerungen', Object.values(o.push).reduce((a, b) => a + b, 0)), tile('Push gesendet (3 Tage)', o.pushes_sent_3d))
+  const bars = (d) => { const max = Math.max(1, ...d.dist, d.lost); return el('div', { style: 'display:flex;gap:3px;align-items:flex-end;height:28px' }, ...[...d.dist, d.lost].map((n, i) => el('i', { title: (i < 6 ? (i + 1) + ' Versuche' : 'nicht gelöst') + ': ' + n, style: `display:block;width:12px;border-radius:2px;height:${Math.max(2, Math.round((n / max) * 28))}px;background:${i < 6 ? 'var(--accent)' : 'var(--bad)'}` }))) }
+  const langCards = o.langs.map((l) => el('div', { className: 'card stack' },
+    el('div', { className: 'row wrap' }, el('strong', { className: 'grow', textContent: `Wordle ${l.lang.toUpperCase()}` }), el('span', { className: 'hint', textContent: `${l.words.solutions} Lösungen · ${l.words.valid} gültige Wörter · ${l.words.banned} gesperrt · Bonus heute: ${l.bonus_today}` })),
+    el('div', { style: 'overflow-x:auto' }, el('table', { className: 'stat' },
+      el('thead', {}, el('tr', {}, ...['Tag', 'Wort', 'Spiele', 'Gelöst', 'Ø Versuche', '1 … 6 | ✗'].map((h) => el('th', { textContent: h })))),
+      el('tbody', {}, ...l.daily.map((d) => el('tr', {}, el('td', { textContent: d.day }), el('td', { textContent: d.word ?? '–' }), el('td', { textContent: `${d.finished}/${d.plays}` }), el('td', { textContent: d.win_rate === null ? '–' : d.win_rate + ' %' }), el('td', { textContent: d.avg_guesses ?? '–' }), el('td', {}, bars(d))))))),
+    el('div', { className: 'hint', textContent: 'Kommende Tageswörter: ' + l.upcoming.map((u) => `${u.day.slice(5)} ${u.word ? u.word + (u.forced ? ' ★' : '') : '…'}`).join(' · ') })))
+  // Wort festlegen
+  const fLang = el('select', {}, ...['de', 'en'].map((x) => el('option', { value: x, textContent: x }))), fDay = el('input', { type: 'date', value: o.today }), fWord = el('input', { type: 'text', maxLength: 5, placeholder: 'Wort', style: 'width:110px' })
+  const force = el('div', { className: 'card stack' }, el('div', { className: 'hint', textContent: 'Tageswort für einen künftigen Tag festlegen (heute nur, solange noch niemand gespielt hat). ★ = von dir festgelegt.' }),
+    el('div', { className: 'row wrap' }, fLang, fDay, fWord, el('button', { className: 'btn small primary', textContent: 'Festlegen', onclick: guarded(async () => { const r = await call('POST', '/api/admin/wordle/force', { lang: fLang.value, day: fDay.value, word: fWord.value }); toast(`${r.day}: ${r.word}`); load() }) })))
+  // Wortlisten
+  const { words } = await call('GET', `/api/admin/wordle/words?lang=${wordleQuery.lang}&q=${encodeURIComponent(wordleQuery.q)}`)
+  const wl = el('select', {}, ...['de', 'en'].map((x) => el('option', { value: x, textContent: x, selected: x === wordleQuery.lang }))), wq = el('input', { type: 'search', value: wordleQuery.q, placeholder: 'Wortanfang suchen (leer = gesperrte)', maxLength: 5, style: 'width:200px' })
+  const ban = (w, b) => guarded(async () => { await call('POST', '/api/admin/wordle/ban', { lang: wordleQuery.lang, word: w, banned: b }); toast(b ? 'Gesperrt' : 'Freigegeben'); load() })
+  const list = el('div', { className: 'card stack' }, el('div', { className: 'row wrap' }, wl, wq,
+    el('button', { className: 'btn small', textContent: 'Suchen', onclick: () => { wordleQuery = { lang: wl.value, q: wq.value }; load() } }),
+    el('button', { className: 'btn small', textContent: 'Listen neu laden', title: 'wordlists/*.txt erneut einlesen (Sperren bleiben)', onclick: guarded(async () => { await call('POST', '/api/admin/wordle/reload', {}); toast('Neu geladen'); load() }) })),
+    ...(words.length ? words.map((w) => el('div', { className: 'row' }, el('span', { className: 'grow', textContent: w.word.toUpperCase() }), w.solution ? el('span', { className: 'badge', textContent: 'Lösung' }) : null, w.banned ? el('span', { className: 'badge bad', textContent: 'gesperrt' }) : null,
+      el('button', { className: 'btn small' + (w.banned ? '' : ' danger'), textContent: w.banned ? 'Freigeben' : 'Sperren', onclick: ban(w.word, !w.banned) }))) : [el('div', { className: 'hint', textContent: wordleQuery.q ? 'Kein Treffer' : 'Keine gesperrten Wörter' })]))
+  const groups = el('div', { className: 'card stack' }, el('div', { className: 'hint', textContent: `${o.groups.total} Gruppen · ${o.groups.members} Mitglieder (Top 15 nach Spielen der letzten 7 Tage)` }),
+    ...o.groups.top.map((g) => el('div', { className: 'row' }, el('span', { className: 'grow', textContent: `${g.name} (${g.lang})` }), el('span', { className: 'hint', textContent: `${g.members} Mitglieder · ${g.plays7} Spiele` }))))
+  const flags = o.flags.length ? el('div', { className: 'card stack' }, el('div', { className: 'hint', textContent: 'Auffällig (ab 5 Spielen): oft im 1. Versuch gelöst oder Lösungen in unter 5 Sekunden. Hinweise, keine Beweise.' }),
+    ...o.flags.map((f) => el('div', { className: 'row' }, el('span', { className: 'grow', textContent: `${f.name} · ${f.public_id}` }), el('span', { className: 'hint', textContent: `${f.games} Spiele · ${f.solved_first_try}× sofort · ${f.solved_fast}× unter 5 s` })))) : null
+  return [tiles, ...langCards, force, list, groups, flags].filter(Boolean)
 }
 
 /** KI-Schnittstelle: Lücken füllen, Schwierigkeit schätzen, Zielverteilung. Neue Fragen erscheinen unter „Eingereicht“. */
