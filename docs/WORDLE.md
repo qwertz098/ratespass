@@ -11,6 +11,9 @@ Tägliches Wortspiel in zwei Sprachen (de/en): 5 Buchstaben, 6 Versuche. Code: `
 - **Bestenlisten**: global je Sprache (nur Tages-Wordle, nur Spieler mit Bestenlisten-Namen aus der Quiz-Bestenliste, Zeiträume Tag/Woche/Monat/gesamt) und je Gruppe (alle Mitglieder, Anzeigenamen).
 - **Punkte**: gelöst im k-ten Versuch = 7 − k (6 … 1), nicht gelöst = 0; bei Gleichstand zählt der Ø der Versuche. **Serie** = aufeinanderfolgende Tage mit gelöstem Tages-Wordle.
 
+## Schrift
+Kacheln, Tastatur und Meldungen im Wordle nutzen **Clear Sans Bold** (Intel, Apache-2.0; Teilmenge als `web/fonts/ClearSans-Bold.woff2`, Lizenztext `web/fonts/ClearSans-LICENSE.txt`) statt der Systemschrift; die übrige App bleibt bei der Systemschrift.
+
 ## Regeln und Konvention
 - Das gesuchte Wort verlässt den Server erst nach Spielende; die Auswertung (richtig / falsche Stelle / nicht enthalten, Doppelbuchstaben korrekt) geschieht nur dort. Eingaben müssen in der Rateliste stehen; zwischen zwei Versuchen liegen mindestens 300 ms.
 - **Nur Buchstaben A–Z.** Deutsche Wörter mit Ä, Ö, Ü oder ß sind aus den Listen entfernt (nicht umgeschrieben); das steht auch im Spielfenster.

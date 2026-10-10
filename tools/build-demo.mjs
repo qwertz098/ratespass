@@ -23,7 +23,7 @@ for (const f of fs.readdirSync(path.join(root, 'batches')).filter((x) => x.endsW
 const words = Object.fromEntries(['de', 'en'].map((l) => [l, fs.readFileSync(path.join(root, `wordlists/${l}.solutions.txt`), 'utf8').split('\n').filter(Boolean)]))
 
 // App-Styles; explizites Theme (data-theme) zusätzlich zur System-Einstellung
-let css = rd('web/style.css')
+let css = rd('web/style.css').replace("url('/fonts/ClearSans-Bold.woff2')", `url(data:font/woff2;base64,${fs.readFileSync(path.join(root, 'web/fonts/ClearSans-Bold.woff2')).toString('base64')})`) // Wordle-Schrift eingebettet
 const m = css.match(/@media \(prefers-color-scheme: dark\) \{\n {2}:root \{(.*?)\}\n\}/s)
 css = css.replace(m[0], `@media (prefers-color-scheme: dark) {\n  :root:not([data-theme="light"]) {${m[1]}}\n}\n:root[data-theme="dark"] {${m[1]}}`)
 

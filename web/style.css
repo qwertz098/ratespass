@@ -201,6 +201,11 @@ table.stat th:first-child, table.stat td:first-child { text-align: left }
 .opt.letter .cnt i { display: none }
 .qcard > .hint { margin: 10px 0 }
 
+/* Wordle: eigene Schrift (Clear Sans Bold, Apache-2.0, Teilmenge; Lizenz in fonts/ClearSans-LICENSE.txt) statt der Systemschrift */
+@font-face { font-family: 'Clear Sans'; src: url('/fonts/ClearSans-Bold.woff2') format('woff2'); font-weight: 700 800; font-style: normal; font-display: swap }
+.wcard, .wt, .key, .wmsg { font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif }
+.wt { text-transform: uppercase }
+
 /* Wordle */
 .wcard { align-items: center }
 .wgrid { display: grid; gap: 6px; width: min(100%, 320px); margin: 0 auto }
@@ -216,7 +221,7 @@ table.stat th:first-child, table.stat td:first-child { text-align: left }
 .wmsg { min-height: 1.4em; text-align: center; color: var(--muted); font-weight: 600 }
 .kb { display: grid; gap: 6px; width: 100%; max-width: 480px }
 .krow { display: flex; gap: 4px; justify-content: center }
-.key { flex: 1 1 0; min-width: 0; height: 48px; border: 0; border-radius: 8px; background: var(--line); color: var(--text); font-weight: 700; cursor: pointer; padding: 0 }
+.key { font-size: 1.05rem; flex: 1 1 0; min-width: 0; height: 48px; border: 0; border-radius: 8px; background: var(--line); color: var(--text); font-weight: 700; cursor: pointer; padding: 0 }
 .key.wide { flex: 1.6 1 0 }
 .key.c { background: var(--good); color: #fff } .key.p { background: #c99a1a; color: #fff } .key.a { background: #6b7280; color: #fff }
 .key:active { transform: scale(.96) }
@@ -227,7 +232,7 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
 .estimate-answer strong { font-size: 2.4rem; letter-spacing: -.02em; font-variant-numeric: tabular-nums }
 
 /* Wordle: Gruppenstand */
-.wgrid { font-size: .78rem; line-height: 1.15; letter-spacing: 1px; margin-top: 4px }
+.wmini { font-size: .78rem; line-height: 1.15; letter-spacing: 1px; margin-top: 4px }
 .small { font-size: .82rem }
 .wmember { align-items: flex-start }
 

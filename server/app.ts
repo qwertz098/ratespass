@@ -10,7 +10,7 @@ import { hasConsent } from './privacy.ts'
 
 const TYPES: Record<string, string> = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
-  '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.svg': 'image/svg+xml',
+  '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2',
   '.png': 'image/png', '.ico': 'image/x-icon', '.txt': 'text/plain; charset=utf-8',
 }
 
@@ -45,7 +45,7 @@ function serveStatic(req: http.IncomingMessage, res: http.ServerResponse, pathna
   const ext = path.extname(file)
   const headers = {
     'content-type': TYPES[ext] ?? 'application/octet-stream', etag,
-    'cache-control': ext === '.png' || ext === '.svg' ? 'public, max-age=86400' : 'no-cache',
+    'cache-control': ext === '.png' || ext === '.svg' || ext === '.woff2' ? 'public, max-age=86400' : 'no-cache',
   }
   if (req.headers['if-none-match'] === etag) { res.writeHead(304, headers); res.end(); return }
   res.writeHead(200, { ...headers, 'content-length': st.size })

@@ -619,7 +619,7 @@ async function wordleInbox(my) {
     r.items.length ? h('div', { class: 'list' }, r.items.map(wShare)) : h('div', { class: 'empty' }, t('wordle.inboxEmpty')),
     h('button', { class: 'btn block', onclick: () => go('#/wordle') }, t('wordle.back')))
 }
-const wGrid = (rows) => h('div', { class: 'wgrid', 'aria-hidden': 'true' }, rows.map((r) => h('div', {}, [...r].map((m) => ({ c: '🟩', p: '🟨', a: '⬛' })[m]).join(''))))
+const wGrid = (rows) => h('div', { class: 'wmini', 'aria-hidden': 'true' }, rows.map((r) => h('div', {}, [...r].map((m) => ({ c: '🟩', p: '🟨', a: '⬛' })[m]).join(''))))
 
 async function wordleGroup(id, my) {
   let scope = store.get('rp.wScope2') || 'all'
