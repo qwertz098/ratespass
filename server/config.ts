@@ -45,7 +45,7 @@ export const config = {
     maxPlayers: Math.max(2, Number(env.LIVE_MAX_PLAYERS ?? 30) || 30),
     questionMs: Math.max(3000, Number(env.LIVE_QUESTION_MS ?? 20_000) || 20_000), revealMs: Math.max(500, Number(env.LIVE_REVEAL_MS ?? 5_000) || 5_000),
     tempoQuestions: Math.min(12, Math.max(1, Number(env.LIVE_TEMPO_QUESTIONS ?? 10) || 10)), joinTokenMs: 2 * 3_600_000,
-    raceQuestions: 14, betQuestions: 8, estimateQuestions: Math.max(1, Number(env.LIVE_ESTIMATE_QUESTIONS ?? 8) || 8), blitzLockMs: 2_000, blitzMinMs: 500, betMs: Math.max(500, Number(env.LIVE_BET_MS ?? 8_000) || 8_000),
+    raceQuestions: 14, betQuestions: 8, betweenMs: Math.max(500, Number(env.LIVE_BETWEEN_MS ?? 30_000) || 30_000), estimateQuestions: Math.max(1, Number(env.LIVE_ESTIMATE_QUESTIONS ?? 8) || 8), blitzLockMs: 2_000, blitzMinMs: 500, betMs: Math.max(500, Number(env.LIVE_BET_MS ?? 8_000) || 8_000),
   },
   /** Verzeichnis mit den Textvorlagen der Datenschutzerklärung (datenschutz.de.md / datenschutz.en.md); mit LEGAL_DIR durch eine eigene Fassung ersetzbar. */
   legalDir: env.LEGAL_DIR ?? path.join(root, 'legal'),

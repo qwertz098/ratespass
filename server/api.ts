@@ -287,7 +287,7 @@ router.post('/api/live/join', (c) => {
 })
 router.get('/api/live/:id', (c) => ({ live: live.getView(gid(c), me(c)) }))
 router.get('/api/live/:id/events', (c) => { live.subscribe(gid(c), me(c), c.res); return undefined })
-router.post('/api/live/:id/settings', (c) => { live.configure(me(c), gid(c), { mode: c.body?.mode, screen: c.body?.screen, teams: c.body?.teams, duration: c.body?.duration }); return { live: live.getView(gid(c), me(c)) } })
+router.post('/api/live/:id/settings', (c) => { live.configure(me(c), gid(c), { mode: c.body?.mode, screen: c.body?.screen, teams: c.body?.teams, duration: c.body?.duration, series: c.body?.series }); return { live: live.getView(gid(c), me(c)) } })
 router.post('/api/live/:id/renew', (c) => { live.renewToken(me(c), gid(c)); return { live: live.getView(gid(c), me(c)) } })
 router.post('/api/live/:id/start', (c) => { live.start(me(c), gid(c)); return { live: live.getView(gid(c), me(c)) } })
 router.post('/api/live/:id/next', (c) => { live.next(me(c), gid(c)); return { live: live.getView(gid(c), me(c)) } })

@@ -121,3 +121,37 @@ export function audiencePercent(counts: number[]): number[] {
   return out
 }
 export { SAFE_STEPS, difficultyOf as showDifficulty }
+
+/* ---------- Spielabend-Serie ---------- */
+/** Mehrere Modi hintereinander; nach jeder Runde gibt es Serienpunkte nach Platzierung (alle Teilnehmer mindestens 1). */
+export const SERIES_POINTS = [10, 7, 5, 4, 3, 2, 1] as const
+export const SERIES_MIN = 2
+export const seriesPoints = (rank: number) => SERIES_POINTS[rank - 1] ?? 1
+export interface SeriesState {
+  modes: Mode[]
+  seg: number // Index der laufenden Runde
+  pts: Record<string, number> // Serienpunkte je Spieler-ID
+  wins: Record<string, number>
+  hist: { mode: Mode; ranks: { pid: number; rank: number; pts: number }[] }[] // abgeschlossene Runden
+}
+/** Gültige Folge: eindeutige, bekannte Modi, mindestens zwei. */
+export const validSeries = (v: unknown): v is Mode[] => Array.isArray(v) && v.length >= SERIES_MIN && v.length <= MODES.length && v.every((m) => MODES.includes(m)) && new Set(v).size === v.length
+export const newSeries = (modes: Mode[]): SeriesState => ({ modes, seg: 0, pts: {}, wins: {}, hist: [] })
+
+/** Schreibt die Platzierung einer abgeschlossenen Runde gut (`order` = Spieler-IDs vom Ersten zum Letzten). */
+export function awardSeries(st: SeriesState, mode: Mode, order: number[]): SeriesState {
+  const pts = { ...st.pts }, wins = { ...st.wins }
+  const ranks = order.map((pid, i) => ({ pid, rank: i + 1, pts: seriesPoints(i + 1) }))
+  for (const r of ranks) pts[r.pid] = (pts[r.pid] ?? 0) + r.pts
+  if (order.length) wins[order[0]] = (wins[order[0]] ?? 0) + 1
+  return { ...st, pts, wins, hist: [...st.hist, { mode, ranks }] }
+}
+
+/** Gesamtwertung: Serienpunkte, bei Gleichstand mehr Rundensiege, dann das bessere Ergebnis der letzten Runde; nur vollständiger Gleichstand teilt den Rang. */
+export function seriesStandings(st: SeriesState, pids: number[]): { pid: number; points: number; wins: number; rank: number; last: number }[] {
+  const last = st.hist.at(-1)
+  const rows = pids.map((pid) => ({ pid, points: st.pts[pid] ?? 0, wins: st.wins[pid] ?? 0, rank: 0, last: last?.ranks.find((r) => r.pid === pid)?.pts ?? 0 }))
+  rows.sort((a, b) => b.points - a.points || b.wins - a.wins || b.last - a.last)
+  rows.forEach((r, i) => { const p = rows[i - 1]; r.rank = p && p.points === r.points && p.wins === r.wins && p.last === r.last ? p.rank : i + 1 })
+  return rows
+}

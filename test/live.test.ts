@@ -8,7 +8,7 @@ const { call, newPlayer, base } = t
 for (const f of ['original-001', 'original-002']) assert.deepEqual(importBatch(JSON.parse(fs.readFileSync(new URL(`../batches/${f}.json`, import.meta.url), 'utf8'))).errors, [])
 const { config } = await import('../server/config.ts')
 const live = await import('../server/live.ts')
-Object.assign(config.live, { questionMs: 700, revealMs: 120, tempoQuestions: 3, raceQuestions: 14, betQuestions: 3, betMs: 400, blitzMinMs: 0, blitzLockMs: 250 })
+Object.assign(config.live, { questionMs: 700, revealMs: 120, tempoQuestions: 3, raceQuestions: 14, betQuestions: 3, betMs: 400, blitzMinMs: 0, blitzLockMs: 250, betweenMs: 5000 })
 test.after(() => { live.closeAll(); t.close() })
 
 /** SSE-Client: sammelt `state`-Ereignisse. */
@@ -369,4 +369,62 @@ test('Schätzrunde: Tipp einmalig, Rang nach Abstand, 1000/700/500, Auflösung z
   assert.deepEqual(fin.players.map((p: any) => [p.name, p.score]), [['Schätz A', 1000], ['Schätz B', 700], ['Schätz C', 0]])
   assert.equal((await guess(a.token, 1, 3)).status, 409, 'nach dem Ende geschlossen')
   w.close()
+})
+
+test('Spielabend-Serie: Runden nacheinander, Serienpunkte 10/7, Zwischenwertung, Reset der Runde, Archivierung für die Statistik, Gesamtsieger', async () => {
+  Object.assign(config.live, { tempoQuestions: 3, estimateQuestions: 2 })
+  const [h, a, b] = [await newPlayer('Serie Host'), await newPlayer('Serie A'), await newPlayer('Serie B')]
+  const c = (await call('POST', '/api/live', { mode: 'tempo', screen: true }, h.token)).json
+  const set = (body: any) => call('POST', `/api/live/${c.id}/settings`, body, h.token)
+  assert.equal((await set({ series: ['tempo'] })).status, 400, 'mindestens zwei Runden'); assert.equal((await set({ series: ['tempo', 'tempo'] })).status, 400, 'Modi eindeutig'); assert.equal((await set({ series: ['tempo', 'chaos'] })).status, 400)
+  const ok = await set({ series: ['tempo', 'estimate'] }); assert.equal(ok.status, 200); assert.deepEqual(ok.json.live.series.modes, ['tempo', 'estimate']); assert.equal(ok.json.live.mode, 'tempo')
+  for (const p of [a, b]) await call('POST', '/api/live/join', { token: c.live.token }, p.token)
+  const w = await watch(a.token, c.id)
+  await call('POST', `/api/live/${c.id}/start`, {}, h.token)
+  for (let i = 0; i < 3; i++) {
+    await w.waitFor((s) => s.status === 'question' && s.idx === i && s.mode === 'tempo')
+    await answer(a.token, c.id, i, correctOf(c.id, i)); await answer(b.token, c.id, i, wrongOf(c.id, i))
+  }
+  const bt = await w.waitFor((s) => s.status === 'between')
+  assert.deepEqual(bt.series.standings.map((r: any) => [r.name, r.points, r.rank]), [['Serie A', 10, 1], ['Serie B', 7, 2]]); assert.equal(bt.series.index, 0); assert.equal(bt.series.last.mode, 'tempo')
+  assert.equal((await call('POST', `/api/live/${c.id}/next`, {}, a.token)).status, 404, 'nur der Host geht weiter')
+  assert.equal((await call('POST', `/api/live/${c.id}/next`, {}, h.token)).status, 200)
+  const e0 = await w.waitFor((s) => s.status === 'question' && s.mode === 'estimate')
+  assert.equal(e0.series.index, 1); assert.deepEqual(e0.players.map((p: any) => p.score), [0, 0], 'Rundenstand zurückgesetzt')
+  assert.equal(get<{ n: number }>('SELECT COUNT(*) n FROM live_questions WHERE game_id=? AND idx<0', c.id)!.n, 3, 'Fragen der Vorrunde archiviert'); assert.equal(get<{ n: number }>('SELECT COUNT(*) n FROM live_answers WHERE game_id=? AND idx<0', c.id)!.n, 6)
+  assert.equal(get<{ n: number }>('SELECT COUNT(*) n FROM live_questions WHERE game_id=? AND idx>=0', c.id)!.n, 0)
+  for (let i = 0; i < 2; i++) {
+    await w.waitFor((s) => s.status === 'question' && s.mode === 'estimate' && s.idx === i)
+    const truth = get<{ answer: number }>('SELECT e.answer FROM live_estimates le JOIN estimates e ON e.id=le.estimate_id WHERE le.game_id=? AND le.idx=?', c.id, i)!.answer
+    await call('POST', `/api/live/${c.id}/guess`, { idx: i, value: truth + 1 }, b.token); await call('POST', `/api/live/${c.id}/guess`, { idx: i, value: truth }, a.token)
+  }
+  const fin = await w.waitFor((s) => s.status === 'finished', 8000)
+  assert.deepEqual(fin.series.standings.map((r: any) => [r.name, r.points]), [['Serie A', 20], ['Serie B', 14]]); assert.equal(fin.series.standings[0].wins, 2)
+  assert.equal(fin.series.last.mode, 'estimate')
+  w.close()
+})
+
+test('Spielabend-Serie: Wahl eines einzelnen Modus beendet die Serie; Zwischenpause läuft von allein weiter', async () => {
+  const [h, a, b2] = [await newPlayer('Serie2 Host'), await newPlayer('Serie2 A'), await newPlayer('Serie2 B')]
+  const c = (await call('POST', '/api/live', { mode: 'tempo', screen: true }, h.token)).json
+  const s1 = await call('POST', `/api/live/${c.id}/settings`, { series: ['race', 'tempo'] }, h.token); assert.equal(s1.json.live.mode, 'race')
+  const s2 = await call('POST', `/api/live/${c.id}/settings`, { mode: 'bet' }, h.token); assert.equal(s2.json.live.series, undefined); assert.equal(s2.json.live.mode, 'bet')
+  const s3 = await call('POST', `/api/live/${c.id}/settings`, { series: ['tempo', 'bet'], teams: 2 }, h.token); assert.equal(s3.json.live.teams, 2, 'Teams bleiben, wenn mindestens eine Runde Teams kennt')
+  assert.equal((await call('POST', `/api/live/${c.id}/settings`, { series: ['race', 'survival'], teams: 2 }, h.token)).json.live.teams, 0)
+  for (const p of [a, b2]) await call('POST', '/api/live/join', { token: c.live.token }, p.token)
+  Object.assign(config.live, { betweenMs: 300 })
+  try {
+    await call('POST', `/api/live/${c.id}/settings`, { series: ['tempo', 'race'] }, h.token)
+    const w = await watch(a.token, c.id); await call('POST', `/api/live/${c.id}/start`, {}, h.token)
+    await w.waitFor((s) => s.status === 'between', 8000); await w.waitFor((s) => s.status === 'question' && s.mode === 'race', 3000) // kein Host-Klick nötig
+    w.close()
+  } finally { Object.assign(config.live, { betweenMs: 5000 }); await call('POST', `/api/live/${c.id}/end`, {}, h.token) }
+})
+
+test('Serienwertung: Gleichstand → mehr Rundensiege → besseres Ergebnis der letzten Runde', async () => {
+  const { awardSeries, newSeries, seriesStandings } = await import('../server/live-modes.ts')
+  let st = awardSeries(newSeries(['tempo', 'race']), 'tempo', [1, 2, 3]) // 1: 10, 2: 7, 3: 5
+  st = awardSeries(st, 'race', [2, 1, 3]) // 2: +10 = 17, 1: +7 = 17, 3: +5 = 10
+  assert.deepEqual(seriesStandings(st, [1, 2, 3]).map((r) => [r.pid, r.points, r.wins, r.rank]), [[2, 17, 1, 1], [1, 17, 1, 2], [3, 10, 0, 3]], 'beide ein Sieg → letzte Runde entscheidet')
+  assert.equal(seriesStandings(awardSeries(newSeries(['tempo', 'race']), 'tempo', [1, 2, 3, 4, 5, 6, 7, 8]), [1, 8]).at(-1)!.points, 1, 'jeder bekommt mindestens 1 Punkt')
 })
