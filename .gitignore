@@ -11,3 +11,6 @@ tmp/
 *.tfstate.*
 *.tfvars
 !*.tfvars.example
+
+# Lokale Deploy-Einstellungen (Registry, Server) fuer build+deploy.bat
+deploy.local.bat

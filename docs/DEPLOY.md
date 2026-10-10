@@ -32,6 +32,18 @@ Läuft bei dir schon Nginx Proxy Manager, nimm Variante C.
 
 Quellen der Recherche: [Vergleich kostenloser Docker-Hoster 2026](https://flywp.com/blog/9769/best-free-docker-hosting-platforms/), [Free-Docker-Hosting-Vergleich (SnapDeploy)](https://snapdeploy.dev/blog/free-docker-hosting-2026-platforms-compared), [Oracle Cloud Free Tier FAQ](https://www.oracle.com/cloud/free/faq/), [Cloudflare Tunnel für den Heimserver](https://benjamintseng.com/?p=1925).
 
+## Windows: Bauen und per Tailscale-Registry auf den Server (`build+deploy.bat`)
+
+Für den Weg „Windows-PC → eigene Registry im Tailnet → Server“ liegt im Repo-Wurzelverzeichnis [`build+deploy.bat`](../build+deploy.bat). Sie
+1. klont das Repo (inklusive sich selbst) nach `%USERPROFILE%\ratespass-build` und startet dann die Fassung aus dem Klon – oder nutzt das Repo, in dem sie liegt;
+2. prüft Git, Docker, SSH und die Tailscale-Verbindung;
+3. baut das Image und taggt es `REGISTRY/ratespass:<datum>-<commit>` sowie `:latest`, pusht beides;
+4. kopiert [`docker-compose.registry.yml`](../docker-compose.registry.yml) nach `REMOTE_DIR/docker-compose.yml` auf den Server, führt dort `docker compose pull && up -d` aus und wartet auf `/healthz`.
+
+Einrichtung: `deploy.local.bat.example` nach `deploy.local.bat` kopieren (wird nicht eingecheckt) und `REGISTRY`, `SSH_TARGET`, `REMOTE_DIR` setzen; optional `PLATFORM` (z. B. `linux/arm64`), `BRANCH`, `REGISTRY_USER`/`REGISTRY_PASSWORD`. Auf dem Server einmalig `REMOTE_DIR/.env` anlegen (Vorlage `.env.example`: `ADMIN_TOKEN`, `VAPID_SUBJECT`, `CONTROLLER_*`); die `.env` wird nie überschrieben. Läuft die Registry ohne TLS, muss sie auf PC und Server als `insecure-registry` in Docker eingetragen sein. Optionen: `--build-only`, `--no-deploy`, `--branch NAME`, `--tag NAME`, `--no-pull`.
+
+> Die Datei konnte in der Entwicklungsumgebung nicht auf Windows ausgeführt werden (kein cmd, kein Docker, keine Tailscale-Registry) – bitte beim ersten Lauf mit `--build-only` beginnen.
+
 ## A) Eigene VM (z. B. Oracle Always Free) mit automatischem HTTPS
 
 > **Oracle Cloud per Terraform:** Für eine Always-Free-VM bei Oracle gibt es ein fertiges Paket mit Netzwerk, Firewall, Docker, Caddy-HTTPS und Backups: [`deploy/oracle/`](../deploy/oracle/README.md). Die folgenden Schritte beschreiben die manuelle Variante für beliebige VMs.

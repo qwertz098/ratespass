@@ -1,0 +1,45 @@
+# Server-Variante fuer build+deploy.bat: Das Image kommt aus der eigenen (Tailscale-)Registry statt aus einem lokalen Build.
+# Liegt auf dem Server unter <REMOTE_DIR>/docker-compose.yml neben der .env (Vorlage: .env.example); die .env bleibt dort und wird nie ueberschrieben.
+#   RATESPASS_IMAGE=registry.<tailnet>.ts.net:5000/ratespass:<tag> docker compose up -d
+services:
+  ratespass:
+    image: ${RATESPASS_IMAGE:?RATESPASS_IMAGE fehlt (setzt build+deploy.bat; manuell z. B. registry.example.ts.net:5000/ratespass:latest)}
+    container_name: ratespass
+    ports:
+      # Host-Port per HOST_PORT änderbar (Standard 3007). BIND_ADDRESS=127.0.0.1 → nur vom Host selbst erreichbar
+      # (z. B. wenn ein Reverse-Proxy auf demselben Rechner davor läuft).
+      - "${BIND_ADDRESS:-0.0.0.0}:${HOST_PORT:-3007}:3000"
+    environment:
+      # Moderation unter /admin: Token mind. 16 Zeichen (z. B. `openssl rand -hex 16`); leer/kürzer = abgeschaltet.
+      ADMIN_TOKEN: ${ADMIN_TOKEN:-}
+      # Kontakt für Push-Dienste (mailto:… oder https://…)
+      VAPID_SUBJECT: ${VAPID_SUBJECT:-https://github.com/qwertz098/ratespass}
+      # Auf 1 setzen, wenn ein Reverse-Proxy (Caddy/nginx/NPM/Traefik) davor steht; PROXY_HOPS = Anzahl der Proxys.
+      PLAYER_CREATE_LIMIT_PER_HOUR: ${PLAYER_CREATE_LIMIT_PER_HOUR:-60}   # neue Profile pro IP und Stunde
+      PLAYER_REPORTS: ${PLAYER_REPORTS:-1}   # 0 = Melde-Knopf für alle Spieler aus
+      DUEL_FORFEIT_DAYS: ${DUEL_FORFEIT_DAYS:-3}
+      DUEL_REMIND_HOURS: ${DUEL_REMIND_HOURS:-24}
+      DUEL_TAKEOVER_HOURS: ${DUEL_TAKEOVER_HOURS:-24}
+      # Verantwortlicher für Impressum und Datenschutzerklärung (Pflicht: Name, Anschrift, E-Mail)
+      CONTROLLER_NAME: ${CONTROLLER_NAME:-}
+      CONTROLLER_ADDRESS: ${CONTROLLER_ADDRESS:-}
+      CONTROLLER_EMAIL: ${CONTROLLER_EMAIL:-}
+      CONTROLLER_PHONE: ${CONTROLLER_PHONE:-}
+      CONTROLLER_REPRESENTATIVE: ${CONTROLLER_REPRESENTATIVE:-}
+      CONTROLLER_REGISTER: ${CONTROLLER_REGISTER:-}
+      CONTROLLER_VAT_ID: ${CONTROLLER_VAT_ID:-}
+      SUPERVISORY_AUTHORITY: ${SUPERVISORY_AUTHORITY:-}
+      DPO_CONTACT: ${DPO_CONTACT:-}
+      HOSTING_PROVIDER: ${HOSTING_PROVIDER:-}
+      PRIVACY_RETENTION_DAYS: ${PRIVACY_RETENTION_DAYS:-730}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}   # KI-Schnittstelle (optional)
+      AI_MODEL: ${AI_MODEL:-claude-sonnet-5-5}
+      AI_DAILY_LIMIT: ${AI_DAILY_LIMIT:-100}
+      AI_AUTO: ${AI_AUTO:-0}
+      TRUST_PROXY: ${TRUST_PROXY:-0}
+      PROXY_HOPS: ${PROXY_HOPS:-1}
+    volumes:
+      - ratespass-data:/data
+    restart: unless-stopped
+volumes:
+  ratespass-data:

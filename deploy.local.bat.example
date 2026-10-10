@@ -1,0 +1,9 @@
+@echo off
+rem Kopie als deploy.local.bat speichern (liegt neben build+deploy.bat, wird nicht eingecheckt) und anpassen.
+set "REGISTRY=registry.dein-tailnet.ts.net:5000"
+set "SSH_TARGET=deploy@server.dein-tailnet.ts.net"
+set "REMOTE_DIR=/opt/ratespass"
+rem set "PLATFORM=linux/arm64"
+rem set "BRANCH=main"
+rem set "REGISTRY_USER=name"
+rem set "REGISTRY_PASSWORD=geheim"
