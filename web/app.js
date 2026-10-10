@@ -100,9 +100,24 @@ function parseCode(text) {
   return /^[A-HJ-NP-Z2-9]{8}$/.test(code) ? code : null
 }
 
-async function share(url, title) {
-  if (navigator.share) { try { await navigator.share({ title, url }); return } catch (e) { if (e.name === 'AbortError') return } }
+async function share(url, title, text) {
+  if (navigator.share) { try { await navigator.share(text ? { title, text, url } : { title, url }); return } catch (e) { if (e.name === 'AbortError') return } }
   try { await navigator.clipboard.writeText(url); toast(t('profile.copied')) } catch { prompt(title, url) }
+}
+/** Einladungslink teilen: gilt für alle Spiele, nicht nur fürs Quiz. */
+const shareInvite = () => share(inviteUrl(), t('app.name'), t('friends.shareText'))
+
+/** Spielauswahl für einen Freund (Blatt über der Seite): Quiz-Duell oder Wordle-Duell. Beide Spiele laufen asynchron, der Freund bekommt eine Mitteilung. */
+function pickGame(c) {
+  const close = () => document.querySelector('.sheet.pick')?.remove()
+  close()
+  const opt = (icon, title, sub, fn) => h('button', { class: 'item', onclick: guard(async () => { await fn(); close() }) },
+    h('div', { class: 'avatar sm' }, icon), h('div', { class: 'grow' }, h('div', {}, title), h('div', { class: 'muted' }, sub)))
+  document.body.append(h('div', { class: 'sheet pick' }, h('div', { class: 'card stack' },
+    h('div', { class: 'row' }, avatar(c), h('strong', { class: 'grow ell' }, t('friends.pickGame', { name: c.name })), h('button', { class: 'btn small', 'aria-label': t('review.cancel'), onclick: close }, '✕')),
+    h('div', { class: 'list' },
+      opt('🧠', t('game.quizDuel'), t('game.quizDuelSub'), async () => { const r = await api('POST', '/api/games', { opponent: c.public_id, lang: gameLang() }); go('#/game/' + r.id) }),
+      opt('🟩', t('game.wordleDuel'), t('game.wordleDuelSub'), async () => { const r = await api('POST', '/api/wordle/duel', { public_id: c.public_id, lang: wlangs()[0] ?? 'de' }); toast(t('wordle.duelSent', { name: c.name })); go('#/wordle/group/' + r.group.id) })))))
 }
 
 function gameLang() {
@@ -172,6 +187,7 @@ let updateReady = false
 async function route() {
   if (updateReady) return location.reload()
   cleanup(); cleanup = () => {}
+  document.querySelector('.sheet.pick')?.remove()
   const my = ++runId
   const [, page = '', arg, arg2] = (location.hash || '#/').slice(1).split('/')
   try {
@@ -345,8 +361,9 @@ async function newGame() {
     h('h2', {}, t('new.duel')),
     h('div', { class: 'list' },
       option(t('new.random'), t('new.randomSub'), '🎲', () => start('random')),
-      option(t('new.bot'), t('new.botSub'), '🤖', () => start('bot')),
-      option(t('friends.title'), t('new.inviteSub'), '🤝', () => go('#/friends'))),
+      option(t('new.bot'), t('new.botSub'), '🤖', () => start('bot'))),
+    h('h2', {}, t('friends.heading')),
+    h('div', { class: 'list' }, option(t('friends.title'), t('new.inviteSub'), '🤝', () => go('#/friends'))),
     h('h2', {}, t('ladder.title')),
     h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
       const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),
@@ -547,7 +564,8 @@ async function wordleHub(my) {
     const createCard = h('div', { class: 'card stack' }, h('label', { class: 'field' }, t('wordle.groupName'), newName), langSeg(() => newLang, (l) => (newLang = l)),
       h('button', { class: 'btn primary block', onclick: guard(async () => { const r = await api('POST', '/api/wordle/groups', { name: newName.value, lang: newLang }); go('#/wordle/group/' + r.group.id) }) }, t('wordle.newGroup')))
     const duelCard = h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('wordle.duelInfo')), langSeg(() => newLang, (l) => (newLang = l)),
-      S.contacts.length ? h('div', { class: 'list' }, S.contacts.map((c) => h('button', { class: 'item', onclick: guard(async () => { const r = await api('POST', '/api/wordle/duel', { public_id: c.public_id, lang: newLang }); toast(t('wordle.duelSent', { name: c.name })); go('#/wordle/group/' + r.group.id) }) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, '⚔')))) : h('p', { class: 'hint' }, t('new.noContacts')))
+      S.contacts.length ? h('div', { class: 'list' }, S.contacts.map((c) => h('button', { class: 'item', onclick: guard(async () => { const r = await api('POST', '/api/wordle/duel', { public_id: c.public_id, lang: newLang }); toast(t('wordle.duelSent', { name: c.name })); go('#/wordle/group/' + r.group.id) }) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, '⚔'))))
+        : [h('p', { class: 'hint' }, t('new.noContacts')), h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend'))])
     mount(topbar(t('wordle.title')),
       h('p', { class: 'hint' }, t('wordle.sub')),
       wlangs().map((lang) => h('div', { class: 'card stack' },
@@ -1407,7 +1425,7 @@ async function profile() {
   const installBox = h('div', { class: 'stack' }) // Installationsanleitung: erst nach Antippen des Knopfs ganz unten
   const contacts = S.contacts.length
     ? h('div', { class: 'list' }, S.contacts.map((c) => h('div', { class: 'item' }, avatar(c), h('div', { class: 'grow ell' }, c.name),
-      h('button', { class: 'btn small', onclick: guard(async () => { const r = await api('POST', '/api/games', { opponent: c.public_id, lang: gameLang() }); go('#/game/' + r.id) }) }, t('profile.challenge')),
+      h('button', { class: 'btn small', onclick: () => pickGame(c) }, t('profile.challenge')),
       h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: guard(async () => { await api('DELETE', '/api/contacts/' + c.public_id); S.contacts = S.contacts.filter((x) => x.public_id !== c.public_id); setLocalContacts(S.contacts); route() }) }, '✕'))))
     : h('div', { class: 'empty' }, t('new.noContacts'))
   const account = p.has_account
@@ -1431,7 +1449,7 @@ async function profile() {
     p.reviewer ? h('p', { class: 'hint' }, t('profile.reviewer')) : null,
     levelCard(),
     h('h2', {}, t('profile.code')),
-    h('div', { class: 'card stack' }, h('div', { class: 'code' }, p.public_id), h('button', { class: 'btn block', onclick: () => share(inviteUrl(), t('app.name')) }, '🔗 ' + t('profile.share'))),
+    h('div', { class: 'card stack' }, h('div', { class: 'code' }, p.public_id), h('p', { class: 'hint' }, t('profile.codeInfo')), h('button', { class: 'btn block', onclick: shareInvite }, '🔗 ' + t('profile.share'))),
     h('h2', {}, t('profile.contacts')), contacts,
     h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend')),
     h('p', { class: 'hint' }, t('friends.localNote')),
@@ -1532,8 +1550,8 @@ async function friends() {
       h('div', { class: 'row' }, avatar(who), h('div', { class: 'grow' }, h('strong', {}, who.name), h('div', { class: 'muted' }, known() ? t('friends.already') : t('friends.found')))),
       known() ? null : h('button', { class: 'btn block', onclick: guard(async () => { await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe(); toast(t('friends.added', { name: who.name })); draw() }) }, t('friends.add')),
       h('button', { class: 'btn primary block', onclick: guard(async () => {
-        if (!known()) { await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe() }
-        const r = await api('POST', '/api/games', { opponent: who.public_id, lang: gameLang() }); go('#/game/' + r.id) }) }, known() ? t('friends.challenge') : t('friends.addPlay'))))
+        if (!known()) { await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe(); draw() }
+        pickGame(who) }) }, known() ? t('friends.challenge') : t('friends.addPlay'))))
     draw()
   })
 
@@ -1545,7 +1563,7 @@ async function friends() {
     if (tab === 'mine') {
       const holder = h('div', { class: 'qr' }, h('div', { class: 'spinner' }))
       body.replaceChildren(holder, h('p', { class: 'hint' }, t('friends.qrHint')), h('div', { class: 'code' }, S.me.public_id),
-        h('button', { class: 'btn primary block', onclick: () => share(inviteUrl(), t('app.name')) }, '🔗 ' + t('profile.share')),
+        h('button', { class: 'btn primary block', onclick: shareInvite }, '🔗 ' + t('profile.share')),
         h('button', { class: 'btn block', onclick: guard(async () => { await navigator.clipboard.writeText(S.me.public_id); toast(t('friends.codeCopied')) }) }, t('friends.copyCode')))
       try { holder.replaceChildren(await renderQr(inviteUrl())) } catch { holder.replaceChildren(h('p', { class: 'hint' }, inviteUrl())) }
     } else if (tab === 'enter') {
@@ -1580,10 +1598,16 @@ async function invite(code) {
   let who
   try { who = await api('GET', '/api/players/' + encodeURIComponent(code), undefined, { auth: false }) } catch { who = null }
   if (!who) return mount(topbar(t('app.name'), false), h('div', { class: 'empty' }, t('invite.unknown'), h('p', {}, h('button', { class: 'btn', onclick: () => go('#/') }, t('back')))))
-  mount(topbar(t('app.name'), false), h('div', { class: 'card stack' }, h('div', { class: 'row' }, avatar(who), h('h3', {}, t('invite.title', { name: who.name }))),
-    who.public_id === S.me.public_id ? null : h('button', { class: 'btn primary block', onclick: guard(async () => {
-      await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe()
-      const r = await api('POST', '/api/games', { opponent: who.public_id, lang: gameLang() }); go('#/game/' + r.id) }) }, t('invite.accept'))))
+  const own = who.public_id === S.me.public_id
+  const known = () => S.contacts.some((c) => c.public_id === who.public_id)
+  const draw = () => mount(topbar(t('app.name'), false), h('div', { class: 'card stack' }, h('div', { class: 'row' }, avatar(who), h('h3', {}, t('invite.title', { name: who.name }))),
+    own ? null : [
+      known() ? h('p', { class: 'muted' }, t('friends.already')) : h('button', { class: 'btn block', onclick: guard(async () => { await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe(); toast(t('friends.added', { name: who.name })); draw() }) }, t('invite.add')),
+      h('button', { class: 'btn primary block', onclick: guard(async () => {
+        if (!known()) { await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe(); draw() }
+        pickGame(who) }) }, known() ? t('friends.challenge') : t('invite.accept'))],
+    h('button', { class: 'btn block', onclick: () => go('#/') }, t('back'))))
+  draw()
 }
 
 /* ---------- Frage einreichen ---------- */

@@ -82,7 +82,11 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .dots { display: flex; gap: 6px; }
 .dots.r { justify-content: flex-end; }
 .dot { width: 14px; height: 14px; border-radius: 999px; border: 2px solid var(--line); }
-.dot.good { background: var(--good); border-color: var(--good); } .dot.bad { background: var(--bad); border-color: var(--bad); }
+/* Treffer/Fehler in der Rundenübersicht: Teal gegen Orange statt Grün gegen Rot – gut unterscheidbar, auch bei Rot-Grün-Schwäche und auf dunklem Grund */
+.dot { --hit: #0d9488; --miss: #ea580c }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .dot { --hit: #2dd4bf; --miss: #fb923c } }
+:root[data-theme="dark"] .dot { --hit: #2dd4bf; --miss: #fb923c }
+.dot.good { background: var(--hit); border-color: var(--hit); } .dot.bad { background: var(--miss); border-color: var(--miss); }
 
 .cats { display: grid; gap: 10px; }
 .cat-btn { display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 16px; border: 2px solid transparent; background: color-mix(in srgb, var(--c) 14%, var(--surface)); color: var(--text);

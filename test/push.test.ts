@@ -122,7 +122,7 @@ test('Spielereignisse lösen verschlüsselte Pushes aus (Challenge, Zug, Ende) �
   assert.match(String(req.headers.authorization), /^vapid t=[\w-]+\.[\w-]+\.[\w-]+, k=/)
   assert.ok(Number(req.headers.ttl) > 0)
   const m1 = decrypt(brB, req.body)
-  assert.deepEqual(m1, { title: 'New challenge', body: 'Alice challenges you to a duel.', url: `/#/game/${gid}`, tag: `game-${gid}` })
+  assert.deepEqual(m1, { title: 'New challenge', body: 'Alice challenges you to a quiz duel.', url: `/#/game/${gid}`, tag: `game-${gid}` })
 
   // 2) Alice spielt ihre Runde zu Ende -> Bob: „Your turn“
   svc.received.length = 0

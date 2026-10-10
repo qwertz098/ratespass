@@ -126,7 +126,7 @@ function bumpFail(endpoint: string, why: string) {
 export type PushKind = 'challenge' | 'turn' | 'matched' | 'won' | 'lost' | 'draw' | 'resigned' | 'timeout' | 'room_start' | 'room_done' | 'remind' | 'replaced'
 const TEXT: Record<'de' | 'en', Record<PushKind, [string, string]>> = {
   de: {
-    challenge: ['Neue Herausforderung', '{name} fordert dich zu einem Duell heraus.'],
+    challenge: ['Neue Herausforderung', '{name} fordert dich zum Quiz-Duell heraus.'],
     turn: ['Du bist dran', '{name} hat gespielt – jetzt bist du dran.'],
     matched: ['Gegner gefunden', '{name} spielt gegen dich – leg los!'],
     won: ['Spiel beendet', 'Du hast gegen {name} gewonnen! 🎉'],
@@ -140,7 +140,7 @@ const TEXT: Record<'de' | 'en', Record<PushKind, [string, string]>> = {
     room_done: ['Runde beendet', 'Die Runde von {name} ist beendet – sieh dir die Rangliste an.'],
   },
   en: {
-    challenge: ['New challenge', '{name} challenges you to a duel.'],
+    challenge: ['New challenge', '{name} challenges you to a quiz duel.'],
     turn: ['Your turn', '{name} has played – now it’s your turn.'],
     matched: ['Opponent found', '{name} is playing you – go!'],
     won: ['Game over', 'You beat {name}! 🎉'],
