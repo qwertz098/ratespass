@@ -32,15 +32,27 @@ Läuft bei dir schon Nginx Proxy Manager, nimm Variante C.
 
 Quellen der Recherche: [Vergleich kostenloser Docker-Hoster 2026](https://flywp.com/blog/9769/best-free-docker-hosting-platforms/), [Free-Docker-Hosting-Vergleich (SnapDeploy)](https://snapdeploy.dev/blog/free-docker-hosting-2026-platforms-compared), [Oracle Cloud Free Tier FAQ](https://www.oracle.com/cloud/free/faq/), [Cloudflare Tunnel für den Heimserver](https://benjamintseng.com/?p=1925).
 
-## Windows: Bauen und per Tailscale-Registry auf den Server (`build+deploy.bat`)
+## Windows: Bauen, in die Registry pushen und per Dockge starten (`build+deploy.bat`)
 
-Für den Weg „Windows-PC → eigene Registry im Tailnet → Server“ liegt im Repo-Wurzelverzeichnis [`build+deploy.bat`](../build+deploy.bat). Sie
+Für den Weg „Windows-PC → eigene Registry im Tailnet/LAN → Server (Dockge)“ liegt im Repo-Wurzelverzeichnis [`build+deploy.bat`](../build+deploy.bat). Der Ablauf entspricht `build_docker.bat` + `deploy_docker.bat` des HandPack-Projekts:
+
+```bat
+build+deploy.bat [registry-host:port] [namespace] [Optionen]
+build+deploy.bat 100.68.13.43:5000            :: -> 100.68.13.43:5000/ratespass:<datum>-<commit> und :latest
+build+deploy.bat 100.68.13.43:5000 kristian   :: -> 100.68.13.43:5000/kristian/ratespass:...
+```
+
 1. klont das Repo (inklusive sich selbst) nach `%USERPROFILE%\ratespass-build` und startet dann die Fassung aus dem Klon – oder nutzt das Repo, in dem sie liegt;
-2. prüft Git, Docker, SSH und die Tailscale-Verbindung;
-3. baut das Image und taggt es `REGISTRY/ratespass:<datum>-<commit>` sowie `:latest`, pusht beides;
-4. kopiert [`docker-compose.registry.yml`](../docker-compose.registry.yml) nach `REMOTE_DIR/docker-compose.yml` auf den Server, führt dort `docker compose pull && up -d` aus und wartet auf `/healthz`.
+2. prüft Git, Docker und die Tailscale-Verbindung (SSH/SCP nur, wenn `SSH_TARGET` gesetzt ist);
+3. baut das Image, taggt es `REGISTRY[/NAMESPACE]/ratespass:<datum>-<commit>` sowie `:latest` und pusht beides;
+4. gibt am Ende **„In Dockge verwenden: `image: …`“** aus. In der Dockge-Stack dieses Image eintragen (oder mit [`docker-compose.registry.yml`](../docker-compose.registry.yml) in der Stack-`.env` `RATESPASS_IMAGE=…` setzen) und dort „Update“ bzw. „Pull & Redeploy“ ausführen;
+5. **optional per SSH:** ist `SSH_TARGET` gesetzt, kopiert sie die Compose-Datei nach `REMOTE_DIR/docker-compose.yml`, führt `docker compose pull && up -d` aus und wartet auf `/healthz`. Die `.env` auf dem Server wird nie überschrieben.
 
-Einrichtung: `deploy.local.bat.example` nach `deploy.local.bat` kopieren (wird nicht eingecheckt) und `REGISTRY`, `SSH_TARGET`, `REMOTE_DIR` setzen; optional `PLATFORM` (z. B. `linux/arm64`), `BRANCH`, `REGISTRY_USER`/`REGISTRY_PASSWORD`. Auf dem Server einmalig `REMOTE_DIR/.env` anlegen (Vorlage `.env.example`: `ADMIN_TOKEN`, `VAPID_SUBJECT`, `CONTROLLER_*`); die `.env` wird nie überschrieben. Läuft die Registry ohne TLS, muss sie auf PC und Server als `insecure-registry` in Docker eingetragen sein. Optionen: `--build-only`, `--no-deploy`, `--branch NAME`, `--tag NAME`, `--no-pull`.
+**Port ist Pflicht** (z. B. `:5000`), sonst versucht Docker HTTPS auf Port 443. Läuft die Registry ohne TLS, muss sie **auf PC und Server** als `insecure-registry` eingetragen sein (Docker Desktop → Settings → Docker Engine: `{ "insecure-registries": ["100.68.13.43:5000"] }` → Apply & Restart).
+
+**Verknüpfung (wie „deploy_docker.bat - 192.168.178.222:5000“):** `build+deploy.bat --make-shortcut 100.68.13.43:5000` legt auf dem Desktop `Quissel deploy - 100.68.13.43_5000.lnk` an (Ziel = die bat, Argument = `registry-host:port`, Arbeitsordner = Ordner der bat). Ein Doppelklick baut und pusht danach; das Fenster wartet am Ende auf eine Taste (`--no-pause` schaltet das ab).
+
+Einstellungen: `deploy.local.bat.example` nach `deploy.local.bat` kopieren (wird nicht eingecheckt) – dort `REGISTRY`, optional `NAMESPACE`, `SSH_TARGET`, `REMOTE_DIR`, `PLATFORM` (z. B. `linux/arm64`), `BRANCH`, `REGISTRY_USER`/`REGISTRY_PASSWORD`. Auf dem Server einmalig `.env` anlegen (Vorlage `.env.example`: `ADMIN_TOKEN`, `VAPID_SUBJECT`, `CONTROLLER_*`). Optionen: `--build-only`, `--no-deploy`, `--branch NAME`, `--tag NAME`, `--no-pull`, `--no-pause`, `--make-shortcut`.
 
 > Die Datei konnte in der Entwicklungsumgebung nicht auf Windows ausgeführt werden (kein cmd, kein Docker, keine Tailscale-Registry) – bitte beim ersten Lauf mit `--build-only` beginnen.
 

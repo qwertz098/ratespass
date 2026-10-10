@@ -1,8 +1,12 @@
 @echo off
 rem Kopie als deploy.local.bat speichern (liegt neben build+deploy.bat, wird nicht eingecheckt) und anpassen.
-set "REGISTRY=registry.dein-tailnet.ts.net:5000"
-set "SSH_TARGET=deploy@server.dein-tailnet.ts.net"
-set "REMOTE_DIR=/opt/ratespass"
+rem Registry im Tailnet/LAN (Port ist Pflicht). Kann auch als erstes Argument uebergeben werden: build+deploy.bat 100.68.13.43:5000
+set "REGISTRY=100.68.13.43:5000"
+rem Optionaler Namespace -> Image REGISTRY/NAMESPACE/ratespass (wie "kristian/handpack")
+rem set "NAMESPACE=kristian"
+rem Optional: Server nach dem Push per SSH aktualisieren (ohne SSH_TARGET gibt es nur den Dockge-Hinweis)
+rem set "SSH_TARGET=deploy@server.dein-tailnet.ts.net"
+rem set "REMOTE_DIR=/opt/ratespass"
 rem set "PLATFORM=linux/arm64"
 rem set "BRANCH=main"
 rem set "REGISTRY_USER=name"
