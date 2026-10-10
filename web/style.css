@@ -308,3 +308,27 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
   .cat-btn { padding: 11px 14px }
   .cats { gap: 8px }
 }
+
+/* Anleitung „App installieren“: selbstgezeichnete SVG-Bilder, Farben aus den App-Variablen */
+.guide .steps-guide { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px }
+.guide .steps-guide li { display: grid; gap: 8px }
+.ill-wrap { border-radius: 14px; overflow: hidden; border: 1px solid var(--line) }
+.ill { width: 100%; height: auto; display: block; background: var(--bg) }
+.i-bg { fill: var(--surface); stroke: var(--line); stroke-width: 1.5 }
+.i-pill, .i-card { fill: var(--bg); stroke: var(--line); stroke-width: 1 }
+.i-bar { fill: var(--line) }
+.i-sel { fill: color-mix(in srgb, var(--accent) 16%, transparent) }
+.i-ico { fill: none; stroke: var(--text); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
+.i-icof { fill: var(--text) }
+.i-tx { fill: var(--muted); font: 9px system-ui, sans-serif }
+.i-txb { fill: var(--text); font: 600 10px system-ui, sans-serif }
+.i-txw { fill: #fff; font: 600 10px system-ui, sans-serif }
+.i-btn, .i-app { fill: var(--accent) }
+.i-icn { fill: var(--line) }
+.i-hl { fill: none; stroke: var(--accent); stroke-width: 2.5 }
+.i-pulse { animation: ipulse 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center }
+@keyframes ipulse { 50% { transform: scale(1.12); opacity: .55 } }
+@media (prefers-reduced-motion: reduce) { .i-pulse { animation: none } }
+.install-card summary { cursor: pointer; font-weight: 600; padding: 4px 0 }
+.install-card[open] summary { margin-bottom: 8px }
+.install-card .guide { margin-top: 8px }

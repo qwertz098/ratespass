@@ -86,6 +86,8 @@ Aktueller Bestand: **3778 Fragen** (davon 3556 auch auf Englisch spielbar) (`see
 
 ### Spielstufen und Extra-Kategorien
 
+**App installieren:** Auf dem Willkommensbildschirm (erster Aufruf, aufklappbar) und im Profil steht eine bebilderte Anleitung „App auf den Startbildschirm“ (`web/install.js`, selbstgezeichnete SVG-Bilder in Hell/Dunkel): erkennt Gerät und Browser (Android: Chrome, Samsung Internet, Firefox, Edge; iPhone/iPad: Safari-Teilen-Blatt; Computer: Chrome/Edge), lässt andere Kombinationen wählen, zeigt bei Chrome-Android einen „Jetzt installieren“-Knopf (`beforeinstallprompt`) und blendet sich auf dem Willkommensbildschirm aus, wenn die App schon installiert ist.
+
 **Layout:** Spielbildschirme (Quiz-Frage, Wordle, Sofa, Live-Fragen auf dem Handy, Duell-Übersicht) sind so gebaut, dass sie auf Handys ab 360×640 ohne Scrollen passen (kompakte Abstände unter 820/700 px Höhe, höhenabhängige Größen im Wordle).
 
 **Duelle:** je Gegner läuft höchstens ein Duell (eine erneute Herausforderung öffnet das laufende); nach dem Ende ist eine Revanche möglich. Die Startseite zeigt je Gegner nur das zuletzt beendete Spiel, ältere stehen unter „Verlauf anzeigen“ (`GET /api/games/history`).

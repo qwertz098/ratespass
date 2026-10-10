@@ -28,7 +28,8 @@ const m = css.match(/@media \(prefers-color-scheme: dark\) \{\n {2}:root \{(.*?)
 css = css.replace(m[0], `@media (prefers-color-scheme: dark) {\n  :root:not([data-theme="light"]) {${m[1]}}\n}\n:root[data-theme="dark"] {${m[1]}}`)
 
 const i18n = rd('web/i18n.js').replace(/^export /gm, '')
-const app = rd('web/app.js').replace(/^import .*\n/, '').replaceAll('confirm(', '(()=>true)(') // confirm() ist im Artifact-Viewer gesperrt
+const install = rd('web/install.js').replace(/^import .*\n/gm, '').replace(/^export /gm, '')
+const app = rd('web/app.js').replace(/^import .*\n/gm, '').replaceAll('confirm(', '(()=>true)(') // confirm() ist im Artifact-Viewer gesperrt
 const mock = rd('demo/mock.js')
 const img = (f) => 'data:image/jpeg;base64,' + fs.readFileSync(path.join(root, 'demo/assets', f)).toString('base64')
 const shots = [
@@ -59,6 +60,7 @@ const WORDS = ${JSON.stringify(words)};
 <script type="module">
 ${mock}
 ${i18n}
+${install}
 ${app}
 const tabApp = document.getElementById('tab-app'), tabMod = document.getElementById('tab-mod')
 const showTab = (mod) => { document.getElementById('app').hidden = mod; document.getElementById('mod').hidden = !mod; tabApp.setAttribute('aria-pressed', String(!mod)); tabMod.setAttribute('aria-pressed', String(mod)) }

@@ -1,6 +1,6 @@
 // Service Worker: App-Shell offline verfügbar, API immer live.
-const VERSION = 'rp-v6'
-const SHELL = ['/', '/app.js', '/i18n.js', '/style.css', '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png', '/fonts/ClearSans-Bold.woff2']
+const VERSION = 'rp-v7'
+const SHELL = ['/', '/app.js', '/i18n.js', '/install.js', '/style.css', '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png', '/fonts/ClearSans-Bold.woff2']
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()))

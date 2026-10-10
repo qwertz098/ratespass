@@ -1,4 +1,5 @@
 import { t, setLang, getLang, detectLang, languages, dict } from './i18n.js'
+import { installGuide, detectEnv } from './install.js'
 
 /* ---------- Helfer ---------- */
 const $app = document.getElementById('app')
@@ -236,7 +237,8 @@ function askName() {
     mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Quis', h('b', {}, 'sel'))),
       h('div', { class: 'card stack' }, h('h3', {}, t('welcome.title')), h('p', { class: 'muted' }, t('welcome.hint')), input,
         h('button', { class: 'btn primary block', onclick: submit }, t('welcome.go')),
-        h('button', { class: 'btn block', onclick: () => resolve('') }, t('welcome.random'))))
+        h('button', { class: 'btn block', onclick: () => resolve('') }, t('welcome.random'))),
+      detectEnv().standalone ? null : h('details', { class: 'card install-card' }, h('summary', {}, t('install.welcome')), h('p', { class: 'muted' }, t('install.sub')), installGuide(h)))
     input.focus()
   })
 }
@@ -1406,6 +1408,7 @@ async function profile() {
     h('h2', {}, t('profile.contacts')), contacts,
     h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend')),
     h('p', { class: 'hint' }, t('friends.localNote')),
+    h('h2', {}, t('install.title')), h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('install.sub')), installGuide(h)),
     h('h2', {}, t('push.title')), h('div', { class: 'card' }, pushCard()),
     h('h2', {}, t('privacy.title')),
     h('div', { class: 'card stack' }, h('p', { class: 'muted' }, S.consent?.at ? t('privacy.accepted', { date: new Date(S.consent.at).toLocaleDateString(getLang()), v: String(S.consent.accepted).slice(0, 8) }) : t('privacy.none')),

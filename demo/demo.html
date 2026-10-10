@@ -312,6 +312,30 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
   .cats { gap: 8px }
 }
 
+/* Anleitung „App installieren“: selbstgezeichnete SVG-Bilder, Farben aus den App-Variablen */
+.guide .steps-guide { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px }
+.guide .steps-guide li { display: grid; gap: 8px }
+.ill-wrap { border-radius: 14px; overflow: hidden; border: 1px solid var(--line) }
+.ill { width: 100%; height: auto; display: block; background: var(--bg) }
+.i-bg { fill: var(--surface); stroke: var(--line); stroke-width: 1.5 }
+.i-pill, .i-card { fill: var(--bg); stroke: var(--line); stroke-width: 1 }
+.i-bar { fill: var(--line) }
+.i-sel { fill: color-mix(in srgb, var(--accent) 16%, transparent) }
+.i-ico { fill: none; stroke: var(--text); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
+.i-icof { fill: var(--text) }
+.i-tx { fill: var(--muted); font: 9px system-ui, sans-serif }
+.i-txb { fill: var(--text); font: 600 10px system-ui, sans-serif }
+.i-txw { fill: #fff; font: 600 10px system-ui, sans-serif }
+.i-btn, .i-app { fill: var(--accent) }
+.i-icn { fill: var(--line) }
+.i-hl { fill: none; stroke: var(--accent); stroke-width: 2.5 }
+.i-pulse { animation: ipulse 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center }
+@keyframes ipulse { 50% { transform: scale(1.12); opacity: .55 } }
+@media (prefers-reduced-motion: reduce) { .i-pulse { animation: none } }
+.install-card summary { cursor: pointer; font-weight: 600; padding: 4px 0 }
+.install-card[open] summary { margin-bottom: 8px }
+.install-card .guide { margin-top: 8px }
+
 .demo-bar{max-width:520px;margin:0 auto;padding:12px 16px 0;display:grid;gap:10px}
 .demo-bar .row{justify-content:space-between}
 .demo-note{font-size:13px;color:var(--muted);margin:0}
@@ -818,6 +842,15 @@ const dict = {
     'live.bet.title': 'Wie viel setzt du?', 'live.bet.finalTitle': 'Finale: doppelter Einsatz!', 'live.bet.capital': 'Dein Kapital: {n}', 'live.bet.allin': 'All-in', 'live.bet.info': 'Ohne Einsatz gelten 100. Richtig = Einsatz gewonnen, falsch = verloren (nie unter 0).', 'live.bet.finalInfo': 'Gewinn und Verlust zählen doppelt.',
     'wordle.bell': 'Erinnerung um 9 Uhr (deine Ortszeit), wenn du noch nicht gespielt hast', 'wordle.bellAsk': 'Erinnerung 9 Uhr', 'wordle.bellIs': '9-Uhr-Erinnerung an', 'wordle.bellOn': 'Erinnerung um 9 Uhr eingeschaltet', 'wordle.bellOff': 'Erinnerung ausgeschaltet',
     'wordle.title': 'Wordle', 'wordle.sub': 'Täglich ein Wort pro Sprache – 6 Versuche, 5 Buchstaben. Jeder bekommt dasselbe Wort, jede Gruppe ihr eigenes.', 'wordle.open': '{n} offen', 'wordle.new': 'neu',
+    'install.title': 'App auf den Startbildschirm', 'install.sub': 'So liegt Quissel wie eine App auf deinem Handy: schneller Start, Vollbild, und Benachrichtigungen (z. B. Wordle-Erinnerung) funktionieren zuverlässiger.', 'install.welcome': '📲 App auf den Startbildschirm legen – Anleitung', 'install.already': 'Quissel ist hier schon als App installiert.', 'install.now': 'Jetzt installieren',
+    'install.g.androidChrome': 'Android · Chrome', 'install.g.iosSafari': 'iPhone · Safari', 'install.g.samsung': 'Samsung Internet', 'install.g.firefox': 'Firefox', 'install.g.edge': 'Edge', 'install.g.desktop': 'Computer',
+    'install.s.menuTop': 'Tippe oben rechts auf das Menü ⋮.', 'install.s.menuBottom': 'Tippe unten rechts auf das Menü ≡.', 'install.s.chromeItem': 'Wähle „App installieren“ (manchmal heißt es „Zum Startbildschirm hinzufügen“).', 'install.s.firefoxItem': 'Wähle „Installieren“ (bzw. „Zum Startbildschirm hinzufügen“).',
+    'install.s.samsungItem': 'Wähle „Seite hinzufügen zu“ und dann „Startbildschirm“.', 'install.s.edgeItem': 'Wähle „Zum Telefon hinzufügen“.', 'install.s.confirm': 'Bestätige mit „Installieren“ bzw. „Hinzufügen“.', 'install.s.samsungConfirm': 'Bestätige mit „Hinzufügen“.',
+    'install.s.done': 'Fertig: Das Quissel-Symbol liegt auf deinem Startbildschirm – starte die App künftig von dort.', 'install.s.iosShare': 'Tippe unten auf das Teilen-Symbol (Quadrat mit Pfeil nach oben).', 'install.s.iosSheet': 'Wische im Teilen-Blatt nach oben und wähle „Zum Home-Bildschirm“.', 'install.s.iosAdd': 'Tippe oben rechts auf „Hinzufügen“.',
+    'install.s.addr': 'Klicke rechts in der Adressleiste auf das Installieren-Symbol (Monitor mit Pfeil).', 'install.s.desktopDone': 'Quissel öffnet sich in einem eigenen Fenster und liegt im Startmenü bzw. Dock.',
+    'install.l.installApp': 'App installieren', 'install.l.installBtn': 'Installieren', 'install.l.installFx': 'Installieren', 'install.l.add': 'Hinzufügen', 'install.l.addTo': 'Seite hinzufügen zu', 'install.l.addPhone': 'Zum Telefon hinzufügen', 'install.l.homeScreen': 'Zum Home-Bildschirm', 'install.l.app': 'Quissel',
+    'install.iosOtherBrowser': 'Du nutzt auf dem iPhone/iPad einen anderen Browser als Safari: Das Teilen-Symbol sitzt dort ggf. in der Adressleiste oder im Menü. Am zuverlässigsten klappt es in Safari.', 'install.iosPush': 'Hinweis: Auf dem iPhone funktionieren Benachrichtigungen (z. B. die Wordle-Erinnerung) erst, wenn die App auf dem Home-Bildschirm liegt (iOS 16.4 oder neuer).',
+    'install.desktopOther': 'Firefox (Computer) kann Webseiten nicht installieren; in Safari am Mac: Menü Ablage → „Zum Dock hinzufügen“.',
     'wordle.today': 'Heutiges Wordle', 'wordle.streak': '{n} Tage in Folge', 'wordle.groups': 'Gruppen & Duelle', 'wordle.noGroups': 'Noch keine Gruppe – lade Freunde zu einem eigenen Wordle ein.',
     'wordle.newGroup': 'Gruppe erstellen', 'wordle.groupName': 'Gruppenname', 'wordle.joinGroup': 'Gruppe beitreten', 'wordle.joinAsk': 'Mit dem Code {code} einer Wordle-Gruppe beitreten?', 'wordle.duel': 'Duell mit Bekanntem', 'wordle.duelInfo': 'Erstellt eine Gruppe und lädt die Person per Nachricht ein. Beide spielen dasselbe, eigene Wort.', 'wordle.duelSent': 'Einladung an {name} geschickt',
     'wordle.standToday': 'Stand heute', 'wordle.stillOpen': 'noch offen', 'wordle.allDone': 'heute erledigt ✓', 'wordle.gridLocked': 'Die Raster der anderen siehst du, sobald du heute selbst fertig bist.', 'wordle.boardInfo': 'Dauerwertung der Gruppe: Punkte entstehen nur durch Gruppen-Wordles; wer an einem Tag nicht spielt, bekommt dafür 0 Punkte.', 'wordle.playedWon': '{p} gespielt, {w} gelöst', 'wordle.missed': '{n} verpasst', 'wordle.standing': 'Platz {rank} · {points} Pkt.',
@@ -954,6 +987,15 @@ const dict = {
     'live.bet.title': 'How much do you stake?', 'live.bet.finalTitle': 'Final: double stakes!', 'live.bet.capital': 'Your capital: {n}', 'live.bet.allin': 'All in', 'live.bet.info': 'Without a stake 100 applies. Right = stake won, wrong = stake lost (never below 0).', 'live.bet.finalInfo': 'Gains and losses count double.',
     'wordle.bell': 'Reminder at 9 am (your local time) if you have not played yet', 'wordle.bellAsk': '9 am reminder', 'wordle.bellIs': '9 am reminder on', 'wordle.bellOn': '9 am reminder switched on', 'wordle.bellOff': 'Reminder switched off',
     'wordle.title': 'Wordle', 'wordle.sub': 'One word a day per language – 6 tries, 5 letters. Everyone gets the same word, every group its own.', 'wordle.open': '{n} open', 'wordle.new': 'new',
+    'install.title': 'Add the app to your home screen', 'install.sub': 'Put Quissel on your phone like an app: faster start, full screen, and notifications (e.g. the Wordle reminder) work more reliably.', 'install.welcome': '📲 Add the app to your home screen – guide', 'install.already': 'Quissel is already installed as an app here.', 'install.now': 'Install now',
+    'install.g.androidChrome': 'Android · Chrome', 'install.g.iosSafari': 'iPhone · Safari', 'install.g.samsung': 'Samsung Internet', 'install.g.firefox': 'Firefox', 'install.g.edge': 'Edge', 'install.g.desktop': 'Computer',
+    'install.s.menuTop': 'Tap the menu ⋮ at the top right.', 'install.s.menuBottom': 'Tap the menu ≡ at the bottom right.', 'install.s.chromeItem': 'Choose “Install app” (sometimes called “Add to Home screen”).', 'install.s.firefoxItem': 'Choose “Install” (or “Add to Home screen”).',
+    'install.s.samsungItem': 'Choose “Add page to” and then “Home screen”.', 'install.s.edgeItem': 'Choose “Add to phone”.', 'install.s.confirm': 'Confirm with “Install” or “Add”.', 'install.s.samsungConfirm': 'Confirm with “Add”.',
+    'install.s.done': 'Done: the Quissel icon is on your home screen – start the app from there from now on.', 'install.s.iosShare': 'Tap the Share icon at the bottom (square with an arrow pointing up).', 'install.s.iosSheet': 'Scroll up in the share sheet and choose “Add to Home Screen”.', 'install.s.iosAdd': 'Tap “Add” at the top right.',
+    'install.s.addr': 'Click the install icon at the right end of the address bar (monitor with an arrow).', 'install.s.desktopDone': 'Quissel opens in its own window and appears in your start menu or dock.',
+    'install.l.installApp': 'Install app', 'install.l.installBtn': 'Install', 'install.l.installFx': 'Install', 'install.l.add': 'Add', 'install.l.addTo': 'Add page to', 'install.l.addPhone': 'Add to phone', 'install.l.homeScreen': 'Add to Home Screen', 'install.l.app': 'Quissel',
+    'install.iosOtherBrowser': 'You are using a browser other than Safari on iPhone/iPad: the Share icon may be in the address bar or the menu there. It works most reliably in Safari.', 'install.iosPush': 'Note: on iPhone, notifications (e.g. the Wordle reminder) only work once the app is on the home screen (iOS 16.4 or newer).',
+    'install.desktopOther': 'Firefox (desktop) cannot install web apps; in Safari on Mac: File menu → “Add to Dock”.',
     'wordle.today': 'Today’s Wordle', 'wordle.streak': '{n} days in a row', 'wordle.groups': 'Groups & duels', 'wordle.noGroups': 'No group yet – invite friends to a Wordle of your own.',
     'wordle.newGroup': 'Create group', 'wordle.groupName': 'Group name', 'wordle.joinGroup': 'Join group', 'wordle.joinAsk': 'Join the Wordle group with code {code}?', 'wordle.duel': 'Duel a contact', 'wordle.duelInfo': 'Creates a group and invites the person by message. You both play the same word of your own.', 'wordle.duelSent': 'Invitation sent to {name}',
     'wordle.standToday': 'Today’s standing', 'wordle.stillOpen': 'still open', 'wordle.allDone': 'done today ✓', 'wordle.gridLocked': 'You see the others’ grids once you have finished today yourself.', 'wordle.boardInfo': 'Ongoing group ranking: points only come from group Wordles; if you skip a day you get 0 points for it.', 'wordle.playedWon': '{p} played, {w} solved', 'wordle.missed': '{n} missed', 'wordle.standing': 'Rank {rank} · {points} pts',
@@ -1028,6 +1070,109 @@ function detectLang() {
 function t(key, vars = {}) {
   const s = dict[lang][key] ?? dict.en[key] ?? key
   return s.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '')
+}
+
+// Bebilderte Anleitung „App auf den Startbildschirm legen“ (PWA installieren), je nach Gerät und Browser.
+// Die Bilder sind kleine selbstgezeichnete SVGs (keine Screenshots fremder Oberflächen, keine externen Dateien); Farben kommen aus den
+// CSS-Variablen der App und folgen damit Hell/Dunkel. Texte stehen in i18n.js (`install.*`).
+
+/* ---------- Umgebung erkennen ---------- */
+function detectEnv() {
+  const ua = navigator.userAgent || ''
+  const ios = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  const android = /Android/i.test(ua)
+  const os = ios ? 'ios' : android ? 'android' : 'desktop'
+  let browser = 'other'
+  if (/SamsungBrowser/i.test(ua)) browser = 'samsung'
+  else if (/EdgA|EdgiOS|Edg\//.test(ua)) browser = 'edge'
+  else if (/Firefox|FxiOS/.test(ua)) browser = 'firefox'
+  else if (/OPR|OPiOS|OPT\//.test(ua)) browser = 'opera'
+  else if (/Chrome|CriOS|Chromium/.test(ua)) browser = 'chrome'
+  else if (/Safari/.test(ua)) browser = 'safari'
+  const standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true
+  return { os, browser, standalone }
+}
+
+/* ---------- Bilder (SVG) ---------- */
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c])
+const svgEl = (inner) => {
+  const doc = new DOMParser().parseFromString(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140" class="ill" role="img" aria-hidden="true">${inner}</svg>`, 'image/svg+xml')
+  return document.importNode(doc.documentElement, true)
+}
+const ring = (x, y, r = 14) => `<circle class="i-hl i-pulse" cx="${x}" cy="${y}" r="${r}"/>`
+const ringR = (x, y, w, h) => `<rect class="i-hl i-pulse" x="${x - 3}" y="${y - 3}" width="${w + 6}" height="${h + 6}" rx="${h / 2 + 3}"/>`
+const rows = (x, y, n, w, gap = 16) => Array.from({ length: n }, (_, i) => `<rect class="i-bar" x="${x}" y="${y + i * gap}" width="${w - (i % 3) * 14}" height="6" rx="3"/>`).join('')
+const frame = (inner) => `<rect class="i-bg" x="4" y="2" width="232" height="136" rx="14"/>${inner}`
+const dots = (x, y) => `<circle class="i-icof" cx="${x}" cy="${y - 7}" r="2.4"/><circle class="i-icof" cx="${x}" cy="${y}" r="2.4"/><circle class="i-icof" cx="${x}" cy="${y + 7}" r="2.4"/>`
+const phoneIcon = (x, y) => `<rect class="i-ico" x="${x}" y="${y}" width="9" height="14" rx="2"/><path class="i-ico" d="M${x + 4.5} ${y + 6}v4M${x + 2.5} ${y + 8.5}l2 2 2-2"/>`
+const ART = {
+  // Browser-Leiste oben, Menü ⋮ rechts
+  'menu-top': () => frame(`<rect class="i-pill" x="14" y="12" width="168" height="22" rx="11"/><text class="i-tx" x="26" y="27">quissel</text>${dots(212, 23)}${ring(212, 23)}${rows(20, 56, 5, 190)}`),
+  // Browser-Leiste unten, Menü ≡ rechts (Samsung Internet, Edge)
+  'menu-bottom': () => frame(`${rows(20, 18, 5, 190)}<rect class="i-pill" x="4" y="106" width="232" height="32" rx="0"/><path class="i-ico" d="M20 122l7-6v12zM60 116v12M76 116v12"/><path class="i-ico" d="M196 117h18M196 122h18M196 127h18"/>${ring(205, 122)}`),
+  // Menü-Liste mit hervorgehobener Zeile; tx = Beschriftung der Zeile
+  'menu-list': (tx) => frame(`<rect class="i-card" x="58" y="10" width="170" height="120" rx="10"/>${rows(74, 24, 2, 120)}<rect class="i-sel" x="64" y="52" width="158" height="26" rx="8"/>${phoneIcon(72, 58)}<text class="i-txb" x="90" y="69">${esc(tx)}</text>${rows(74, 94, 2, 120)}${ringR(64, 52, 158, 26)}`),
+  // Bestätigungsdialog; tx = Beschriftung des Knopfs
+  dialog: (tx) => frame(`${rows(20, 14, 3, 190)}<rect class="i-card" x="32" y="34" width="176" height="82" rx="12"/><rect class="i-app" x="46" y="46" width="22" height="22" rx="6"/><text class="i-txb" x="76" y="56">Quissel</text><text class="i-tx" x="76" y="68">quissel…</text><text class="i-tx" x="150" y="104">…</text><rect class="i-btn" x="118" y="90" width="76" height="20" rx="10"/><text class="i-txw" x="156" y="104" text-anchor="middle">${esc(tx)}</text>${ringR(118, 90, 76, 20)}`),
+  // iPhone: Safari-Leiste unten mit Teilen-Symbol
+  'ios-share': () => frame(`${rows(20, 18, 5, 190)}<rect class="i-pill" x="4" y="100" width="232" height="38" rx="0"/><path class="i-ico" d="M30 114l-6 6 6 6M60 114l6 6-6 6"/><path class="i-ico" d="M112 120v-12M107 112l5-5 5 5M106 117h-3v13h18v-13h-3"/><path class="i-ico" d="M158 112h12v14h-12zM190 112h12v14h-12z"/>${ring(112, 119, 17)}`),
+  // iPhone: Teilen-Blatt mit „Zum Home-Bildschirm“
+  'ios-sheet': (tx) => frame(`<rect class="i-card" x="14" y="20" width="212" height="116" rx="14"/>${rows(30, 34, 2, 150)}<rect class="i-sel" x="20" y="64" width="200" height="26" rx="8"/><rect class="i-ico" x="30" y="69" width="16" height="16" rx="4"/><path class="i-ico" d="M38 73v8M34 77h8"/><text class="i-txb" x="56" y="81">${esc(tx)}</text>${rows(30, 104, 2, 150)}<path class="i-ico" d="M120 8v8M116 12l4 4 4-4"/>${ringR(20, 64, 200, 26)}`),
+  // iPhone: „Hinzufügen“ oben rechts
+  'ios-add': (tx) => frame(`<text class="i-tx" x="18" y="22">…</text><text class="i-txb" x="94" y="22" text-anchor="middle">Quissel</text><rect class="i-btn" x="160" y="9" width="66" height="20" rx="10"/><text class="i-txw" x="193" y="23" text-anchor="middle">${esc(tx)}</text>${ringR(160, 9, 66, 20)}<rect class="i-card" x="20" y="48" width="200" height="60" rx="12"/><rect class="i-app" x="32" y="60" width="32" height="32" rx="8"/><text class="i-txb" x="76" y="74">Quissel</text><text class="i-tx" x="76" y="88">quissel…</text>`),
+  // Startbildschirm mit dem App-Symbol
+  home: (tx) => frame(`${[0, 1, 2, 3].map((c) => [0, 1].map((r) => (c === 1 && r === 1 ? '' : `<rect class="i-icn" x="${22 + c * 52}" y="${16 + r * 52}" width="34" height="34" rx="9"/>`)).join('')).join('')}<rect class="i-app" x="74" y="68" width="34" height="34" rx="9"/><text class="i-txw" x="91" y="91" text-anchor="middle" font-size="18">Q</text><text class="i-tx" x="91" y="116" text-anchor="middle">${esc(tx)}</text>${ring(91, 85, 24)}`),
+  // Computer: Installieren-Symbol in der Adressleiste
+  'addr-install': () => frame(`<circle class="i-icof" cx="20" cy="18" r="3"/><circle class="i-icof" cx="30" cy="18" r="3"/><circle class="i-icof" cx="40" cy="18" r="3"/><rect class="i-pill" x="54" y="8" width="172" height="22" rx="11"/><text class="i-tx" x="70" y="23">quissel</text><rect class="i-ico" x="188" y="13" width="14" height="12" rx="2"/><path class="i-ico" d="M195 15v6M192 19l3 3 3-3"/>${ring(195, 19, 13)}${rows(20, 52, 5, 190)}`),
+}
+const art = (kind, tx) => svgEl(ART[kind](tx))
+
+/* ---------- Anleitungen ---------- */
+// Jeder Schritt: Bild + Text (i18n-Schlüssel `install.s.<key>`); `tx` ist die Beschriftung im Bild (i18n-Schlüssel `install.l.<key>`).
+const STEPS = {
+  'android-chrome': [['menu-top', 'menuTop'], ['menu-list', 'chromeItem', 'installApp'], ['dialog', 'confirm', 'installBtn'], ['home', 'done', 'app']],
+  'android-firefox': [['menu-top', 'menuTop'], ['menu-list', 'firefoxItem', 'installFx'], ['dialog', 'confirm', 'add'], ['home', 'done', 'app']],
+  'android-samsung': [['menu-bottom', 'menuBottom'], ['menu-list', 'samsungItem', 'addTo'], ['dialog', 'samsungConfirm', 'add'], ['home', 'done', 'app']],
+  'android-edge': [['menu-bottom', 'menuBottom'], ['menu-list', 'edgeItem', 'addPhone'], ['dialog', 'confirm', 'add'], ['home', 'done', 'app']],
+  'ios-safari': [['ios-share', 'iosShare'], ['ios-sheet', 'iosSheet', 'homeScreen'], ['ios-add', 'iosAdd', 'add'], ['home', 'done', 'app']],
+  'desktop-chrome': [['addr-install', 'addr'], ['dialog', 'confirm', 'installBtn'], ['home', 'desktopDone', 'app']],
+}
+const GUIDES = [
+  ['android-chrome', 'install.g.androidChrome'], ['ios-safari', 'install.g.iosSafari'], ['android-samsung', 'install.g.samsung'],
+  ['android-firefox', 'install.g.firefox'], ['android-edge', 'install.g.edge'], ['desktop-chrome', 'install.g.desktop'],
+]
+/** Welche Anleitung passt zu Gerät und Browser? */
+function guideFor(env = detectEnv()) {
+  if (env.os === 'ios') return 'ios-safari' // alle iPhone-Browser nutzen dasselbe Teilen-Blatt von iOS (Safari am zuverlässigsten)
+  if (env.os === 'android') return { samsung: 'android-samsung', firefox: 'android-firefox', edge: 'android-edge' }[env.browser] ?? 'android-chrome'
+  return 'desktop-chrome'
+}
+
+let deferredPrompt = null
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e })
+  window.addEventListener('appinstalled', () => { deferredPrompt = null })
+}
+
+/** Baut die Anleitung als DOM-Knoten (mit Auswahl „Anderes Gerät/Browser“). `h` ist der Element-Helfer der App. */
+function installGuide(h) {
+  const env = detectEnv()
+  const box = h('div', { class: 'guide stack' })
+  let key = guideFor(env)
+  const draw = () => {
+    const steps = STEPS[key]
+    const note = key === 'ios-safari' ? [env.os === 'ios' && env.browser !== 'safari' ? h('p', { class: 'hint' }, t('install.iosOtherBrowser')) : null, h('p', { class: 'hint' }, t('install.iosPush'))]
+      : key === 'desktop-chrome' ? h('p', { class: 'hint' }, t('install.desktopOther')) : null
+    box.replaceChildren(...[
+      env.standalone ? h('p', { class: 'feedback good' }, '✓ ' + t('install.already')) : null,
+      h('div', { class: 'seg wrap' }, GUIDES.map(([k, label]) => h('button', { 'aria-pressed': String(k === key), onclick: () => { key = k; draw() } }, t(label)))),
+      deferredPrompt && key === 'android-chrome' ? h('button', { class: 'btn primary block', onclick: async () => { const p = deferredPrompt; deferredPrompt = null; try { await p.prompt() } catch { /* abgebrochen */ } draw() } }, '📲 ' + t('install.now')) : null,
+      h('ol', { class: 'steps-guide' }, steps.map(([kind, text, label], i) => h('li', {}, h('div', { class: 'ill-wrap' }, art(kind, label ? t('install.l.' + label) : '')),
+        h('div', { class: 'step-text' }, h('b', {}, String(i + 1) + '. '), t('install.s.' + text))))),
+      note].flat().filter(Boolean))
+  }
+  draw()
+  return box
 }
 
 
@@ -1267,7 +1412,8 @@ function askName() {
     mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Quis', h('b', {}, 'sel'))),
       h('div', { class: 'card stack' }, h('h3', {}, t('welcome.title')), h('p', { class: 'muted' }, t('welcome.hint')), input,
         h('button', { class: 'btn primary block', onclick: submit }, t('welcome.go')),
-        h('button', { class: 'btn block', onclick: () => resolve('') }, t('welcome.random'))))
+        h('button', { class: 'btn block', onclick: () => resolve('') }, t('welcome.random'))),
+      detectEnv().standalone ? null : h('details', { class: 'card install-card' }, h('summary', {}, t('install.welcome')), h('p', { class: 'muted' }, t('install.sub')), installGuide(h)))
     input.focus()
   })
 }
@@ -2437,6 +2583,7 @@ async function profile() {
     h('h2', {}, t('profile.contacts')), contacts,
     h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend')),
     h('p', { class: 'hint' }, t('friends.localNote')),
+    h('h2', {}, t('install.title')), h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('install.sub')), installGuide(h)),
     h('h2', {}, t('push.title')), h('div', { class: 'card' }, pushCard()),
     h('h2', {}, t('privacy.title')),
     h('div', { class: 'card stack' }, h('p', { class: 'muted' }, S.consent?.at ? t('privacy.accepted', { date: new Date(S.consent.at).toLocaleDateString(getLang()), v: String(S.consent.accepted).slice(0, 8) }) : t('privacy.none')),
