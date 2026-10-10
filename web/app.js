@@ -252,12 +252,13 @@ async function home(_, my) {
     mount(
       h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Rates', h('b', {}, 'paß')),
         h('button', { class: 'iconbtn', 'aria-label': t('profile.title'), onclick: () => go('#/profile') }, avatar(S.me, 'sm'))),
-      h('button', { class: 'btn primary block', onclick: () => go('#/new') }, '＋ ' + t('home.new')),
-      h('button', { class: 'btn block', onclick: () => go('#/top') }, '🏆 ' + t('lb.title')),
-      h('button', { class: 'btn block', onclick: () => go('#/wordle') }, '🟩 ' + t('wordle.title'), wordleOpen ? h('span', { class: 'badge' }, t('wordle.open', { n: wordleOpen })) : null),
+      h('div', { class: 'tiles' },
+        h('button', { class: 'tile quiz', onclick: () => go('#/new') }, h('span', { class: 'ti' }, '⚔️'), h('b', {}, t('home.quizduell')), h('span', { class: 'ts' }, '＋ ' + t('home.new'))),
+        h('button', { class: 'tile wordle', onclick: () => go('#/wordle') }, h('span', { class: 'ti' }, '🟩'), h('b', {}, t('wordle.title')), h('span', { class: 'ts' }, wordleOpen ? t('wordle.open', { n: wordleOpen }) : t('wordle.allDone')))),
       games.length || rooms.length ? null : h('div', { class: 'empty' }, t('home.empty')),
       rooms.length ? [h('h2', {}, t('room.rounds')), h('div', { class: 'list' }, rooms.map(roomItem))] : null,
-      section(t('home.yourTurn'), mine), section(t('home.theirTurn'), theirs), section(t('home.waiting'), waiting), section(t('home.finished'), done))
+      section(t('home.yourTurn'), mine), section(t('home.theirTurn'), theirs), section(t('home.waiting'), waiting), section(t('home.finished'), done),
+      h('div', { class: 'lbrow' }, h('button', { class: 'btn', onclick: () => go('#/top') }, '🏆 ' + t('lb.title')), h('button', { class: 'btn', onclick: () => go('#/wordle/board') }, '🟩 ' + t('wordle.board'))))
   }
   const load = guard(async () => {
     const [g, r, w] = await Promise.all([api('GET', '/api/games'), api('GET', '/api/rooms'), api('GET', '/api/wordle').catch(() => null)])
@@ -612,7 +613,7 @@ async function wordleGroup(id, my) {
         h('button', { class: 'btn block', onclick: () => share(link, gv.name) }, '🔗 ' + t('wordle.inviteLink'))),
       h('h2', {}, t('wordle.standToday')),
       h('div', { class: 'list' }, gv.members.map((m) => h('div', { class: 'item wmember' + (m.is_me ? ' me' : '') }, h('div', { class: 'grow' }, h('div', { class: 'ell' }, m.name + (m.is_owner ? ' ★' : '')), m.grid ? wGrid(m.grid) : null),
-        h('span', { class: 'badge ' + (m.today?.status === 'won' ? 'good' : m.today?.status === 'lost' ? 'bad' : '') }, m.today ? (m.today.status === 'won' ? '✓ ' + m.today.guesses + '/6' : m.today.status === 'lost' ? '✗' : '… ' + m.today.guesses + '/6') : t('wordle.open'))))),
+        h('span', { class: 'badge ' + (m.today?.status === 'won' ? 'good' : m.today?.status === 'lost' ? 'bad' : '') }, m.today ? (m.today.status === 'won' ? '✓ ' + m.today.guesses + '/6' : m.today.status === 'lost' ? '✗' : '… ' + m.today.guesses + '/6') : t('wordle.stillOpen'))))),
       gv.members.some((m) => m.today?.status && m.today.status !== 'playing' && !m.grid) ? h('p', { class: 'hint' }, t('wordle.gridLocked')) : null,
       gv.feed.length ? [h('h2', {}, t('wordle.feed')), h('div', { class: 'list' }, gv.feed.map(wShare))] : null,
       h('h2', {}, t('wordle.groupBoard')), h('div', { class: 'card stack' }, scopeSeg, h('p', { class: 'hint' }, t('wordle.boardInfo')),
