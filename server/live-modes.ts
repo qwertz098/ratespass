@@ -4,10 +4,11 @@
 //  - survival: Millionen-Leiter-Schwierigkeit; wer falsch oder gar nicht antwortet, scheidet aus.
 //  - race:     jede richtige Antwort = 1 Feld, die schnellste richtige = +1 Bonusfeld; wer 12 Felder erreicht, gewinnt.
 //  - bet:      vor jeder Frage (nur Kategorie sichtbar) wird ein Einsatz gesetzt; richtig +Einsatz, falsch −Einsatz; letzte Frage doppelt.
-import { PRIZES, difficultyOf, shuffle } from './ladder.ts'
+//  - show:     Quizshow mit Publikum: ein Kandidat (Schnellster Finger) steigt die Millionen-Leiter hoch, alle anderen sind das Publikum (Publikumsjoker, 50:50).
+import { PRIZES, SAFE_STEPS, difficultyOf, guaranteed, limitMs, prizeAt, shuffle } from './ladder.ts'
 import { config } from './config.ts'
 
-export const MODES = ['tempo', 'survival', 'race', 'bet'] as const
+export const MODES = ['tempo', 'survival', 'race', 'bet', 'show'] as const
 export type Mode = (typeof MODES)[number]
 /** Teams gibt es dort, wo Punkte addierbar sind. */
 export const TEAM_MODES: readonly Mode[] = ['tempo', 'bet']
@@ -27,6 +28,7 @@ const BET_DIFFS = [1, 1, 2, 2, 2, 3, 3, 3]
 export function planDiffs(mode: Mode): number[] {
   if (mode === 'survival') return PRIZES.map((_, i) => difficultyOf(i + 1))
   if (mode === 'race') return RACE_DIFFS.slice(0, Math.max(1, config.live.raceQuestions))
+  if (mode === 'show') return [] // Fragen werden einzeln nachgezogen (Qualifikation, Leiterstufen)
   if (mode === 'bet') return BET_DIFFS.slice(-Math.max(1, config.live.betQuestions))
   return shuffle(TEMPO_DIFFS).slice(0, config.live.tempoQuestions).sort()
 }
@@ -69,3 +71,46 @@ export function balanceTeams(players: { id: number; team: number }[], teams: num
   }
   return out
 }
+
+/* ---------- Quizshow mit Publikum ---------- */
+export const SHOW_STEPS = PRIZES.length
+export const SHOW_AUDIENCE_POINTS = 100
+export interface ShowState {
+  stage: 'qualify' | 'climb'
+  candidate: number | null // Spieler-ID des aktuellen Kandidaten
+  step: number // aktuelle Leiterstufe (1–15)
+  fifty: boolean; audience: boolean // Joker bereits verbraucht
+  audienceOn: boolean // Publikumsvoten werden angezeigt (nur zur aktuellen Frage)
+  hidden: number[] // per 50:50 ausgeblendete Antwortplätze
+  quit: boolean; done: boolean // Kandidat hat ausgestiegen / sein Durchgang ist beendet
+  retries: number // Qualifikationsrunden ohne richtige Antwort
+  results: { pid: number; prize: number; step: number; how: 'won' | 'lost' | 'quit' }[]
+}
+export const newShowState = (): ShowState => ({ stage: 'qualify', candidate: null, step: 0, fifty: false, audience: false, audienceOn: false, hidden: [], quit: false, done: false, retries: 0, results: [] })
+
+/** Zeit je Leiterstufe, skaliert mit der eingestellten Fragezeit (20 s Standard = 30/45/60 s wie solo). */
+export const showLimitMs = (step: number, questionMs: number) => Math.max(500, Math.round((limitMs(step) * questionMs) / 20_000))
+
+/** Ergebnis der Leiterstufe `step` für den Kandidaten. */
+export function showOutcome(step: number, correct: boolean, quit: boolean): { done: boolean; prize: number; how?: 'won' | 'lost' | 'quit' } {
+  if (quit) return { done: true, prize: prizeAt(step - 1), how: 'quit' }
+  if (!correct) return { done: true, prize: guaranteed(step - 1), how: 'lost' }
+  if (step >= SHOW_STEPS) return { done: true, prize: PRIZES[SHOW_STEPS - 1], how: 'won' }
+  return { done: false, prize: prizeAt(step) }
+}
+
+/** 50:50: zwei falsche Antworten ausblenden (Plätze im gezeigten Fragebild). */
+export function fiftyHidden(correctIdx: number): number[] {
+  return shuffle([0, 1, 2, 3].filter((i) => i !== correctIdx)).slice(0, 2).sort()
+}
+
+/** Publikumsvotum in Prozent (rundet auf 100). */
+export function audiencePercent(counts: number[]): number[] {
+  const total = counts.reduce((a, b) => a + b, 0)
+  if (!total) return counts.map(() => 0)
+  const raw = counts.map((c) => (c / total) * 100), out = raw.map(Math.floor)
+  let rest = 100 - out.reduce((a, b) => a + b, 0)
+  for (const i of raw.map((r, i) => [r - out[i], i] as const).sort((a, b) => b[0] - a[0]).map((x) => x[1])) { if (rest-- <= 0) break; out[i]++ }
+  return out
+}
+export { SAFE_STEPS, difficultyOf as showDifficulty }

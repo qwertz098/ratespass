@@ -79,11 +79,11 @@ export function leaveRoom(me: PlayerRow, roomId: number) {
 }
 
 /** Wählt je gewünschter Schwierigkeit eine Frage aus den Kategorien (bevorzugt solchen, die keiner der Spieler schon kennt). */
-export function pickQuestions(lang: string, cats: string[], pids: number[], diffs: number[]): QRow[] {
+export function pickQuestions(lang: string, cats: string[], pids: number[], diffs: number[], exclude: Iterable<string> = []): QRow[] {
   const marks = cats.map(() => '?').join(',')
   const pool = all<QRow>(`SELECT * FROM questions WHERE lang=? AND status='active' AND ${SERVABLE_SQL} AND category IN (${marks})`, lang, ...cats)
   const seen = new Set(all<{ group_id: string }>(`SELECT DISTINCT group_id FROM seen WHERE player_id IN (${pids.map(() => '?').join(',')})`, ...pids).map((r) => r.group_id))
-  const used = new Set<string>(), out: QRow[] = []
+  const used = new Set<string>(exclude), out: QRow[] = []
   for (const want of diffs) {
     let pick: QRow | undefined
     for (const d of [want, want === 1 ? 2 : want - 1, 3, 2, 1]) {

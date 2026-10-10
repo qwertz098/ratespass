@@ -11,8 +11,8 @@ import { all, get, run, tx, now } from './db.ts'
 import { HttpError } from './http.ts'
 import { type PlayerRow } from './auth.ts'
 import { effectiveFor } from './settings.ts'
-import { PRIZES, shown, shuffle } from './ladder.ts'
-import { BET_ALL_IN, BET_CHOICES, BET_DEFAULT, BET_START, MODES, RACE_LENGTH, TEAM_COUNTS, TEAM_MODES, balanceTeams, betDelta, hasBetPhase, isFinalQuestion, planDiffs, raceFields, teamStandings, tempoPoints, validBet, type Mode } from './live-modes.ts'
+import { PRIZES, SAFE_STEPS, guaranteed, prizeAt, shown, shuffle } from './ladder.ts'
+import { SHOW_AUDIENCE_POINTS, SHOW_STEPS, audiencePercent, fiftyHidden, newShowState, showDifficulty, showLimitMs, showOutcome, type ShowState, BET_ALL_IN, BET_CHOICES, BET_DEFAULT, BET_START, MODES, RACE_LENGTH, TEAM_COUNTS, TEAM_MODES, balanceTeams, betDelta, hasBetPhase, isFinalQuestion, planDiffs, raceFields, teamStandings, tempoPoints, validBet, type Mode } from './live-modes.ts'
 import { pickQuestions } from './rooms.ts'
 import type { QRow } from './questions.ts'
 
@@ -24,6 +24,8 @@ interface Game {
   created_at: number; updated_at: number
 }
 interface LP { game_id: number; player_id: number; score: number; alive: number; pos: number; ms: number; joined_at: number; team: number }
+const showOf = (g: Game): ShowState => (JSON.parse(g.params || '{}') as { show?: ShowState }).show ?? newShowState()
+const saveShow = (id: number, st: ShowState) => run('UPDATE live_games SET params=? WHERE id=?', JSON.stringify({ teams: 0, show: st }), id)
 const teamsOf = (g: Game): number => Number((JSON.parse(g.params || '{}') as { teams?: number }).teams ?? 0)
 
 const getGame = (id: number) => get<Game>('SELECT * FROM live_games WHERE id=?', id)
@@ -153,7 +155,8 @@ export function start(me: PlayerRow, id: number) {
     const qs = pickQuestions(g.lang, eff.cats, ps.map((p) => p.player_id), diffs)
     qs.forEach((q, i) => run('INSERT INTO live_questions(game_id,idx,question_id,perm) VALUES(?,?,?,?)', id, i, q.id, JSON.stringify(shuffle([0, 1, 2, 3]))))
     run("UPDATE live_games SET level=?, cats=?, total=?, token_expires=0, updated_at=? WHERE id=?", eff.level, JSON.stringify(eff.cats), qs.length, now(), id)
-    openQuestion(id, 0)
+    if (g.mode === 'show') showNext(id)
+    else openQuestion(id, 0)
   })
   broadcast(id)
 }
@@ -174,10 +177,10 @@ function openQuestion(id: number, idx: number) {
 }
 
 /** Fragephase beginnen (bei Einsatz-Modus nach der Einsatzphase). */
-function startQuestion(id: number, idx?: number) {
+function startQuestion(id: number, idx?: number, ms = config.live.questionMs) {
   const g = getGame(id)
   if (!g || (g.status !== 'bet' && g.status !== 'lobby' && g.status !== 'reveal')) return
-  const t = now(), until = t + config.live.questionMs
+  const t = now(), until = t + ms
   run("UPDATE live_games SET status='question', idx=?, phase_started=?, phase_until=?, updated_at=? WHERE id=?", idx ?? g.idx, t, until, t, id)
   schedule(id, until, () => closeQuestion(id))
 }
@@ -196,6 +199,94 @@ export function placeBet(me: PlayerRow, id: number, idx: unknown, amount: unknow
   broadcast(id)
 }
 
+/* ---------- Quizshow mit Publikum ---------- */
+/** Zieht eine weitere Frage der gewünschten Schwierigkeit (ohne Wiederholung innerhalb des Spiels) und hängt sie an. */
+function addQuestion(g: Game, diff: number): number {
+  const used = all<{ group_id: string }>('SELECT q.group_id FROM live_questions lq JOIN questions q ON q.id=lq.question_id WHERE lq.game_id=?', g.id).map((r) => r.group_id)
+  const [q] = pickQuestions(g.lang, JSON.parse(g.cats ?? '[]'), players(g.id).map((p) => p.player_id), [diff], used)
+  const idx = (get<{ n: number | null }>('SELECT MAX(idx) n FROM live_questions WHERE game_id=?', g.id)?.n ?? -1) + 1
+  run('INSERT INTO live_questions(game_id,idx,question_id,perm) VALUES(?,?,?,?)', g.id, idx, q.id, JSON.stringify(shuffle([0, 1, 2, 3])))
+  return idx
+}
+const openAt = (id: number, idx: number, ms: number) => {
+  const t = now(), until = t + ms
+  run("UPDATE live_games SET status='question', idx=?, phase_started=?, phase_until=?, updated_at=? WHERE id=?", idx, t, until, t, id)
+  schedule(id, until, () => closeQuestion(id))
+}
+/** Nächster Kandidat: Wer noch nicht dran war, spielt eine Schnellster-Finger-Frage; bleibt nur einer übrig, ist er direkt dran. */
+function showNext(id: number) {
+  const g = getGame(id)!, st = { ...showOf(g), candidate: null as number | null, done: false, quit: false, fifty: false, audience: false, audienceOn: false, hidden: [] as number[], step: 0, retries: 0 }
+  const left = players(id).filter((p) => p.alive)
+  if (!left.length) return finishGame(id)
+  if (left.length === 1) { st.candidate = left[0].player_id; saveShow(id, st); return openClimb(id, 1) }
+  st.stage = 'qualify'; saveShow(id, st)
+  openAt(id, addQuestion(g, 1), config.live.questionMs)
+}
+function openClimb(id: number, step: number) {
+  const g = getGame(id)!, st = showOf(g)
+  st.stage = 'climb'; st.step = step; st.audienceOn = false; st.hidden = []; st.quit = false
+  saveShow(id, st)
+  openAt(id, addQuestion(g, showDifficulty(step)), showLimitMs(step, config.live.questionMs))
+}
+
+/** Kandidat: Joker (Publikum, 50:50) oder Aussteigen – nur während seiner Leiterfrage, solange er nicht geantwortet hat. */
+export function showAction(me: PlayerRow, id: number, action: unknown) {
+  tx(() => {
+    const g = mustMember(id, me.id), st = showOf(g)
+    if (g.mode !== 'show' || g.status !== 'question' || st.stage !== 'climb' || st.candidate !== me.id) throw new HttpError(409, 'live_closed')
+    if (get('SELECT 1 FROM live_answers WHERE game_id=? AND idx=? AND player_id=?', id, g.idx, me.id)) throw new HttpError(409, 'already_answered')
+    if (action === 'fifty') {
+      if (st.fifty) throw new HttpError(409, 'joker_used')
+      const rq = get<{ perm: string }>('SELECT perm FROM live_questions WHERE game_id=? AND idx=?', id, g.idx)!
+      st.fifty = true; st.hidden = fiftyHidden((JSON.parse(rq.perm) as number[]).indexOf(0)); saveShow(id, st)
+    } else if (action === 'audience') {
+      if (st.audience) throw new HttpError(409, 'joker_used')
+      st.audience = true; st.audienceOn = true; saveShow(id, st)
+    } else if (action === 'quit') {
+      st.quit = true; saveShow(id, st); closeQuestion(id)
+    } else throw new HttpError(400, 'bad_action')
+  })
+  broadcast(id)
+}
+
+/** Auflösung der Quizshow: Qualifikation bestimmt den Kandidaten, Leiterfrage wertet Kandidat und Publikum. */
+function closeShow(g: Game) {
+  const st = showOf(g)
+  const answers = all<{ player_id: number; correct: number; ms: number }>('SELECT player_id, correct, ms FROM live_answers WHERE game_id=? AND idx=?', g.id, g.idx)
+  if (st.stage === 'qualify') {
+    const left = new Set(players(g.id).filter((p) => p.alive).map((p) => p.player_id))
+    const best = answers.filter((a) => a.correct && left.has(a.player_id)).sort((a, b) => a.ms - b.ms)[0]
+    st.candidate = best?.player_id ?? null
+    if (!best) st.retries++
+  } else {
+    for (const a of answers) if (a.correct && a.player_id !== st.candidate) run('UPDATE live_players SET score=score+?, ms=ms+? WHERE game_id=? AND player_id=?', SHOW_AUDIENCE_POINTS, a.ms, g.id, a.player_id)
+    const mine = answers.find((a) => a.player_id === st.candidate)
+    const o = showOutcome(st.step, !!mine?.correct, st.quit)
+    if (o.done && st.candidate) {
+      st.done = true
+      st.results.push({ pid: st.candidate, prize: o.prize, step: st.step, how: o.how! })
+      run('UPDATE live_players SET score=score+?, pos=?, alive=0, ms=ms+? WHERE game_id=? AND player_id=?', o.prize, o.how === 'won' ? SHOW_STEPS : st.step - 1, mine?.ms ?? 0, g.id, st.candidate)
+    }
+  }
+  saveShow(g.id, st)
+  const until = now() + config.live.revealMs
+  run("UPDATE live_games SET status='reveal', phase_started=?, phase_until=?, updated_at=? WHERE id=?", now(), until, now(), g.id)
+  schedule(g.id, until, () => afterReveal(g.id))
+}
+function afterShowReveal(g: Game) {
+  const st = showOf(g)
+  if (st.stage === 'qualify') {
+    if (st.candidate) return openClimb(g.id, 1)
+    if (st.retries >= 2) { // niemand richtig: der Zufall entscheidet
+      const left = players(g.id).filter((p) => p.alive)
+      st.candidate = shuffle(left)[0].player_id; saveShow(g.id, st); return openClimb(g.id, 1)
+    }
+    return openAt(g.id, addQuestion(g, 1), config.live.questionMs)
+  }
+  if (!st.done) return openClimb(g.id, st.step + 1)
+  showNext(g.id)
+}
+
 const eligible = (g: Game) => players(g.id).filter((p) => (g.mode === 'survival' ? p.alive : true))
 
 /** Frage beenden → Auflösung: Punkte und Ausscheiden werden hier festgeschrieben. */
@@ -203,6 +294,7 @@ function closeQuestion(id: number) {
   tx(() => {
     const g = getGame(id)
     if (!g || g.status !== 'question') return
+    if (g.mode === 'show') return closeShow(g)
     const answers = new Map(all<{ player_id: number; correct: number; points: number; ms: number }>('SELECT player_id, correct, points, ms FROM live_answers WHERE game_id=? AND idx=?', id, g.idx).map((a) => [a.player_id, a]))
     const fastest = [...answers.values()].filter((a) => a.correct).sort((a, b) => a.ms - b.ms)[0]?.player_id
     for (const p of eligible(g)) {
@@ -228,6 +320,7 @@ function closeQuestion(id: number) {
 function afterReveal(id: number) {
   const g = getGame(id)
   if (!g || g.status !== 'reveal') return
+  if (g.mode === 'show') return afterShowReveal(g)
   const alive = players(id).filter((p) => p.alive).length
   const raceDone = g.mode === 'race' && players(id).some((p) => p.pos >= RACE_LENGTH)
   const last = g.idx + 1 >= g.total || (g.mode === 'survival' && alive <= 1) || raceDone
@@ -263,6 +356,9 @@ export function answer(me: PlayerRow, id: number, idx: unknown, choice: unknown)
     const p = players(id).find((x) => x.player_id === me.id)
     if (!p || g.status !== 'question' || (g.mode === 'survival' && !p.alive)) throw new HttpError(409, 'live_closed')
     if (idx !== g.idx || !Number.isInteger(choice) || (choice as number) < 0 || (choice as number) > 3) throw new HttpError(400, 'bad_answer')
+    const show = g.mode === 'show' ? showOf(g) : null
+    if (show?.stage === 'qualify' && !p.alive) throw new HttpError(409, 'live_closed') // wer schon dran war, schaut zu
+    if (show?.stage === 'climb' && show.candidate === me.id && show.hidden.includes(choice as number)) throw new HttpError(400, 'bad_answer')
     if (get('SELECT 1 FROM live_answers WHERE game_id=? AND idx=? AND player_id=?', id, g.idx, me.id)) throw new HttpError(409, 'already_answered')
     const rq = get<{ question_id: number; perm: string }>('SELECT question_id, perm FROM live_questions WHERE game_id=? AND idx=?', id, g.idx)!
     const ms = Math.min(config.live.questionMs, now() - g.phase_started!)
@@ -272,7 +368,9 @@ export function answer(me: PlayerRow, id: number, idx: unknown, choice: unknown)
     run('INSERT OR IGNORE INTO seen(player_id,group_id) SELECT ?, group_id FROM questions WHERE id=?', me.id, rq.question_id)
     // Alle Berechtigten haben geantwortet → früher auflösen
     const answered = get<{ n: number }>('SELECT COUNT(*) n FROM live_answers WHERE game_id=? AND idx=?', id, g.idx)!.n
-    if (answered >= eligible(g).length) closeQuestion(id)
+    if (show) {
+      if (show.stage === 'qualify' ? answered >= players(id).filter((x) => x.alive).length : show.candidate === me.id) closeQuestion(id)
+    } else if (answered >= eligible(g).length) closeQuestion(id)
   })
   broadcast(id)
 }
@@ -285,14 +383,24 @@ export function view(g: Game, viewer: number) {
   const q = rq && get<QRow>('SELECT * FROM questions WHERE id=?', rq.question_id)
   const answers = g.idx >= 0 ? all<{ player_id: number; choice: number; correct: number; points: number; ms: number }>('SELECT player_id, choice, correct, points, ms FROM live_answers WHERE game_id=? AND idx=?', g.id, g.idx) : []
   const reveal = g.status === 'reveal' || g.status === 'finished'
-  const rank = [...ps].sort(g.mode === 'tempo' || g.mode === 'bet' ? (a, b) => b.score - a.score || a.ms - b.ms : g.mode === 'race' ? (a, b) => b.pos - a.pos || a.ms - b.ms : (a, b) => b.pos - a.pos || b.alive - a.alive || a.ms - b.ms)
+  const rank = [...ps].sort(g.mode === 'tempo' || g.mode === 'bet' || g.mode === 'show' ? (a, b) => b.score - a.score || a.ms - b.ms : g.mode === 'race' ? (a, b) => b.pos - a.pos || a.ms - b.ms : (a, b) => b.pos - a.pos || b.alive - a.alive || a.ms - b.ms)
   const teams = teamsOf(g)
   const bets = g.mode === 'bet' && g.idx >= 0 ? all<{ player_id: number; amount: number; delta: number | null }>('SELECT player_id, amount, delta FROM live_bets WHERE game_id=? AND idx=?', g.id, g.idx) : []
   const myBet = bets.find((b) => b.player_id === viewer)
+  const showSt = g.mode === 'show' && g.status !== 'lobby' ? showOf(g) : null
   const mine = answers.find((a) => a.player_id === viewer)
   const correctIdx = rq ? (JSON.parse(rq.perm) as number[]).indexOf(0) : -1
   return {
     id: g.id, status: g.status, mode: g.mode, screen: !!g.screen, lang: g.lang, level: g.level, total: g.total, idx: g.idx, is_host: isHost,
+    show: showSt ? {
+      stage: showSt.stage, step: showSt.step, steps: SHOW_STEPS, prizes: PRIZES, safe_steps: SAFE_STEPS,
+      candidate: showSt.candidate ? { name: pname(showSt.candidate), is_me: showSt.candidate === viewer } : null, is_candidate: showSt.candidate === viewer,
+      guaranteed: showSt.stage === 'climb' ? guaranteed(showSt.step - 1) : 0, banked: showSt.stage === 'climb' ? prizeAt(showSt.step - 1) : 0,
+      jokers: { fifty: !showSt.fifty, audience: !showSt.audience },
+      audience: showSt.stage === 'climb' && (showSt.audienceOn || reveal) ? audiencePercent([0, 1, 2, 3].map((c) => answers.filter((a) => a.player_id !== showSt.candidate && a.choice === c).length)) : null,
+      done: showSt.done, results: showSt.results.map((r) => ({ name: pname(r.pid), prize: r.prize, step: r.step, how: r.how })),
+      remaining: ps.filter((p) => p.alive).length, quit: showSt.quit,
+    } : undefined,
     teams, race_length: g.mode === 'race' ? RACE_LENGTH : undefined,
     bet: g.mode === 'bet' ? { choices: BET_CHOICES, all_in: BET_ALL_IN, start: BET_START, final: g.idx >= 0 && isFinalQuestion(g.idx, g.total) } : undefined,
     team_rank: teams && g.status !== 'lobby' ? teamStandings(ps.map((p) => ({ team: p.team, value: g.mode === 'bet' || g.mode === 'tempo' ? p.score : p.pos })), teams) : undefined,
@@ -300,7 +408,7 @@ export function view(g: Game, viewer: number) {
     token: isHost && g.status === 'lobby' ? g.token : null, token_expires: isHost && g.status === 'lobby' ? g.token_expires : null,
     max_players: config.live.maxPlayers,
     players: rank.map((p, i) => ({ name: pname(p.player_id), public_id: isHost ? get<{ public_id: string }>('SELECT public_id FROM players WHERE id=?', p.player_id)!.public_id : undefined,
-      score: p.score, pos: p.pos, team: p.team || undefined, alive: !!p.alive, rank: i + 1, is_me: p.player_id === viewer,
+      score: p.score, pos: p.pos, team: p.team || undefined, candidate: showSt ? p.player_id === showSt.candidate : undefined, alive: !!p.alive, rank: i + 1, is_me: p.player_id === viewer,
       answered: g.status === 'question' ? answers.some((a) => a.player_id === p.player_id) : g.status === 'bet' ? bets.some((b) => b.player_id === p.player_id) : undefined })),
     me: ps.some((p) => p.player_id === viewer) ? {
       answered: !!mine, choice: mine && reveal ? mine.choice : undefined, correct: mine && reveal ? !!mine.correct : undefined,
@@ -310,7 +418,8 @@ export function view(g: Game, viewer: number) {
     question: q && g.status === 'bet' ? { category: q.category, difficulty: q.difficulty, bet_phase: true } : q && (g.status === 'question' || reveal) ? {
       text: q.text, options: shown(q, JSON.parse(rq!.perm)), category: q.category,
       ...(reveal ? { correct_index: correctIdx, explanation: q.explanation, counts: [0, 1, 2, 3].map((c) => answers.filter((a) => a.choice === c).length) } : {}),
-      prize: g.mode === 'survival' ? PRIZES[g.idx] : null,
+      prize: g.mode === 'survival' ? PRIZES[g.idx] : g.mode === 'show' && showSt?.stage === 'climb' ? PRIZES[showSt.step - 1] : null,
+      ...(showSt?.stage === 'climb' ? { hidden: showSt.hidden } : {}),
     } : null,
   }
 }

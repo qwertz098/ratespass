@@ -191,6 +191,15 @@ table.stat th:first-child, table.stat td:first-child { text-align: left }
 .lane { flex: 0 0 38%; height: 10px; border-radius: 999px; background: var(--line); overflow: hidden }
 .lane > i { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width .4s ease }
 
+/* Live: Quizshow */
+.opt.sel { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, var(--surface)) }
+.steps { display: flex; gap: 3px; margin: 0 0 12px }
+.steps i { flex: 1; height: 8px; border-radius: 3px; background: var(--line) }
+.steps i.done { background: var(--accent) }
+.steps i.safe { background: color-mix(in srgb, var(--warn) 55%, var(--line)) }
+.steps i.done.safe { background: var(--warn) }
+.steps i.now { outline: 2px solid var(--accent); outline-offset: 1px }
+
 .demo-bar{max-width:520px;margin:0 auto;padding:12px 16px 0;display:grid;gap:10px}
 .demo-bar .row{justify-content:space-between}
 .demo-note{font-size:13px;color:var(--muted);margin:0}
@@ -637,10 +646,15 @@ const dict = {
     'live.waiting': 'Du bist dabei!', 'live.waitHost': 'Der Gastgeber startet gleich die Runde …', 'live.start': 'Spiel starten', 'live.cancel': 'Abbrechen', 'live.end': 'Beenden', 'live.endConfirm': 'Live-Spiel jetzt beenden?', 'live.next': 'Weiter', 'live.endQuestion': 'Frage beenden',
     'live.mode.tempo': 'Tempo-Quiz', 'live.mode.survival': 'Survival-Leiter', 'live.modeInfo.tempo': 'Feste Fragenzahl: richtig und schnell bringt bis zu 1000 Punkte.', 'live.modeInfo.survival': 'Immer schwerere Fragen: wer falsch liegt, scheidet aus – der Letzte gewinnt.',
     'live.screen.on': 'Bildschirm-Modus', 'live.screen.off': 'Handy-Modus', 'live.screenInfo.on': 'Dieses Gerät zeigt Fragen und Ergebnisse groß (TV, Laptop, Tablet), die Handys zeigen nur die Antwort-Tasten A–D. Der Host spielt nicht mit.', 'live.screenInfo.off': 'Jedes Handy zeigt Frage und Antworten; der Host spielt mit und steuert.',
+    'live.mode.show': 'Quizshow', 'live.modeInfo.show': 'Wer richtig und am schnellsten antwortet, wird Kandidat und steigt die Millionen-Leiter hoch. Alle anderen sind das Publikum und stimmen mit ab. Kandidaten haben Publikumsjoker und 50:50.',
+    'show.qualify': 'Schnellster Finger: Wer richtig und am schnellsten antwortet, wird Kandidat!', 'show.candidate': 'Kandidat: {name}', 'show.safe': 'gesichert: {amount}', 'show.pick': 'Antwort antippen …', 'show.final': 'Endgültig: {letter}', 'show.audience': 'Publikum', 'show.fifty': '50:50', 'show.quit': 'Aussteigen ({amount})', 'show.quitConfirm': 'Aussteigen und {amount} mitnehmen?',
+    'show.nextCandidate': '{name} ist der nächste Kandidat!', 'show.noCandidate': 'Niemand war richtig – neue Runde', 'show.continue': 'Richtig! Weiter geht’s.', 'show.res.won': '{name} gewinnt {amount}!', 'show.res.lost': '{name} liegt falsch und nimmt {amount} mit.', 'show.res.quit': '{name} steigt aus und nimmt {amount} mit.',
+    'show.results': 'Kandidaten', 'show.how.won': 'Million', 'show.how.lost': 'falsch', 'show.how.quit': 'ausgestiegen',
     'live.mode.race': 'Rennen', 'live.mode.bet': 'Einsatz', 'live.modeInfo.race': 'Jede richtige Antwort bringt dich ein Feld weiter, die schnellste sogar zwei. Wer 12 Felder schafft, gewinnt.', 'live.modeInfo.bet': 'Vor jeder Frage siehst du nur die Kategorie und setzt einen Einsatz: richtig gewinnst du ihn, falsch verlierst du ihn. Die letzte Frage zählt doppelt.',
     'live.teams.off': 'Einzeln', 'live.teams.2': '2 Teams', 'live.teams.3': '3 Teams', 'live.teams.4': '4 Teams', 'live.teamsInfo': 'Teamwertung = Durchschnitt pro Mitglied, damit ungleich große Teams fair sind.', 'live.team': 'Team {n}', 'live.teamMembers': '{n} Mitspieler', 'live.teamPick': 'Wähle dein Team – oder lass die Zuteilung automatisch laufen.', 'live.teamAuto': 'Automatisch', 'live.teamRank': 'Teamwertung',
     'live.bet.title': 'Wie viel setzt du?', 'live.bet.finalTitle': 'Finale: doppelter Einsatz!', 'live.bet.capital': 'Dein Kapital: {n}', 'live.bet.allin': 'All-in', 'live.bet.info': 'Ohne Einsatz gelten 100. Richtig = Einsatz gewonnen, falsch = verloren (nie unter 0).', 'live.bet.finalInfo': 'Gewinn und Verlust zählen doppelt.',
     'sofa.title': 'Sofa-Modus', 'sofa.sub': 'Ein Gerät, reihum – ohne QR und ohne Anmeldung', 'sofa.info': 'Alle spielen an diesem Gerät: Jeder bekommt reihum eine Frage, das Gerät wird weitergereicht. Die Namen bleiben nur auf diesem Gerät.', 'sofa.name': 'Spieler {n}', 'sofa.add': 'Spieler hinzufügen', 'sofa.roundsLabel': 'Fragen pro Person', 'sofa.rounds': '{n} Fragen', 'sofa.start': 'Los geht’s', 'sofa.pass': 'Gerät weiterreichen an', 'sofa.ready': 'Ich bin {name} – los!', 'sofa.turn': '{name} ist dran', 'sofa.result': 'Ergebnis', 'sofa.again': 'Nochmal spielen',
+    'err.joker_used': 'Diesen Joker hast du schon eingesetzt.',
     'live.alive': 'dabei', 'live.out': 'raus', 'live.sent': 'Antwort gesendet', 'live.spectate': 'Ausgeschieden – schau zu', 'live.finished': 'Runde beendet',
     'err.demo_unavailable': 'In der Demo nicht verfügbar – dafür braucht es den echten Server.', 'err.too_early': 'Noch zu früh: Der Gegner hat noch Zeit zum Spielen.', 'err.not_found': 'Nicht gefunden.', 'err.live_closed': 'Dieses Live-Spiel nimmt gerade keine Spieler oder Antworten an.', 'err.unknown_live': 'Dieser QR-Code ist nicht mehr gültig – bitte beim Gastgeber neu scannen.', 'err.live_full': 'Das Live-Spiel ist voll.', 'err.live_too_small': 'Zum Starten braucht es mindestens 2 Spieler.', 'err.already_answered': 'Du hast schon geantwortet.',
     'play.question': 'Frage {n}/{total}', 'play.report': 'Frage melden', 'play.reported': 'Danke, wir prüfen die Frage.', 'play.next': 'Weiter',
@@ -745,10 +759,15 @@ const dict = {
     'live.waiting': 'You’re in!', 'live.waitHost': 'The host will start the round shortly …', 'live.start': 'Start game', 'live.cancel': 'Cancel', 'live.end': 'End', 'live.endConfirm': 'End the live game now?', 'live.next': 'Next', 'live.endQuestion': 'End question',
     'live.mode.tempo': 'Speed quiz', 'live.mode.survival': 'Survival ladder', 'live.modeInfo.tempo': 'Fixed number of questions: right and fast earns up to 1000 points.', 'live.modeInfo.survival': 'Ever harder questions: wrong answers are out – the last one standing wins.',
     'live.screen.on': 'Screen mode', 'live.screen.off': 'Phone mode', 'live.screenInfo.on': 'This device shows questions and results big (TV, laptop, tablet); phones only show the answer buttons A–D. The host does not play.', 'live.screenInfo.off': 'Every phone shows question and answers; the host plays along and controls.',
+    'live.mode.show': 'Quiz show', 'live.modeInfo.show': 'Whoever answers right and fastest becomes the contestant and climbs the million ladder. Everyone else is the audience and votes along. Contestants get Ask the Audience and 50:50.',
+    'show.qualify': 'Fastest finger: whoever answers right and fastest becomes the contestant!', 'show.candidate': 'Contestant: {name}', 'show.safe': 'safe: {amount}', 'show.pick': 'Tap an answer …', 'show.final': 'Final answer: {letter}', 'show.audience': 'Audience', 'show.fifty': '50:50', 'show.quit': 'Walk away ({amount})', 'show.quitConfirm': 'Walk away with {amount}?',
+    'show.nextCandidate': '{name} is the next contestant!', 'show.noCandidate': 'Nobody was right – another round', 'show.continue': 'Right! On we go.', 'show.res.won': '{name} wins {amount}!', 'show.res.lost': '{name} is wrong and takes home {amount}.', 'show.res.quit': '{name} walks away with {amount}.',
+    'show.results': 'Contestants', 'show.how.won': 'million', 'show.how.lost': 'wrong', 'show.how.quit': 'walked away',
     'live.mode.race': 'Race', 'live.mode.bet': 'Stakes', 'live.modeInfo.race': 'Every right answer moves you one square, the fastest even two. First to 12 squares wins.', 'live.modeInfo.bet': 'Before each question you only see the category and place a stake: right wins it, wrong loses it. The last question counts double.',
     'live.teams.off': 'Solo', 'live.teams.2': '2 teams', 'live.teams.3': '3 teams', 'live.teams.4': '4 teams', 'live.teamsInfo': 'Team score = average per member, so teams of different sizes stay fair.', 'live.team': 'Team {n}', 'live.teamMembers': '{n} players', 'live.teamPick': 'Pick your team – or let the assignment run automatically.', 'live.teamAuto': 'Automatic', 'live.teamRank': 'Team ranking',
     'live.bet.title': 'How much do you stake?', 'live.bet.finalTitle': 'Final: double stakes!', 'live.bet.capital': 'Your capital: {n}', 'live.bet.allin': 'All in', 'live.bet.info': 'Without a stake 100 applies. Right = stake won, wrong = stake lost (never below 0).', 'live.bet.finalInfo': 'Gains and losses count double.',
     'sofa.title': 'Sofa mode', 'sofa.sub': 'One device, taking turns – no QR, no sign-up', 'sofa.info': 'Everyone plays on this device: each person gets a question in turn and the device is passed on. Names stay on this device only.', 'sofa.name': 'Player {n}', 'sofa.add': 'Add player', 'sofa.roundsLabel': 'Questions per person', 'sofa.rounds': '{n} questions', 'sofa.start': 'Let’s go', 'sofa.pass': 'Pass the device to', 'sofa.ready': 'I’m {name} – go!', 'sofa.turn': '{name}’s turn', 'sofa.result': 'Result', 'sofa.again': 'Play again',
+    'err.joker_used': 'You have already used this lifeline.',
     'live.alive': 'in', 'live.out': 'out', 'live.sent': 'Answer sent', 'live.spectate': 'Out – watch along', 'live.finished': 'Round over',
     'err.demo_unavailable': 'Not available in the demo – this needs the real server.', 'err.too_early': 'Too early: your opponent still has time to play.', 'err.not_found': 'Not found.', 'err.live_closed': 'This live game is not accepting players or answers right now.', 'err.unknown_live': 'This QR code is no longer valid – please scan again at the host.', 'err.live_full': 'The live game is full.', 'err.live_too_small': 'At least 2 players are needed to start.', 'err.already_answered': 'You have already answered.',
     'play.question': 'Question {n}/{total}', 'play.report': 'Report question', 'play.reported': "Thanks, we'll review it.", 'play.next': 'Next',
@@ -1323,7 +1342,7 @@ async function play(id, my) {
 }
 
 /* ---------- Live-Gesellschaftsspiel (Echtzeit) ---------- */
-const LIVE_MODES = ['tempo', 'survival', 'race', 'bet'], LIVE_TEAM_MODES = ['tempo', 'bet']
+const LIVE_MODES = ['tempo', 'survival', 'race', 'bet', 'show'], LIVE_TEAM_MODES = ['tempo', 'bet']
 const LETTERS = ['A', 'B', 'C', 'D']
 const liveLink = (token) => `${location.origin}/#/live-join/${token}`
 
@@ -1390,7 +1409,8 @@ async function live(id, my) {
     s.mode === 'survival' && s.status !== 'lobby' ? h('span', { class: 'badge ' + (p.alive ? 'good' : 'bad') }, p.alive ? t('live.alive') : t('live.out')) : null,
     s.mode === 'race' && s.status !== 'lobby' ? h('div', { class: 'lane', title: String(p.pos) }, h('i', { style: `width:${Math.min(100, Math.round((p.pos / s.race_length) * 100))}%` })) : null,
     s.mode === 'race' && s.status !== 'lobby' ? h('span', { class: 'score' }, `${Math.min(p.pos, s.race_length)}/${s.race_length}`) : null,
-    (s.mode === 'tempo' || s.mode === 'bet') && s.status !== 'lobby' ? h('span', { class: 'score' }, String(p.score)) : null,
+    p.candidate ? h('span', { class: 'badge' }, '🎤') : null,
+    (s.mode === 'tempo' || s.mode === 'bet' || s.mode === 'show') && s.status !== 'lobby' ? h('span', { class: 'score' }, String(p.score)) : null,
     kick && p.public_id && !p.is_me ? h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: act('kick', { public_id: p.public_id }) }, '✕') : null)))
   const hostBar = (s) => s.is_host && s.status !== 'finished' ? h('div', { class: 'row wrap' },
     s.status !== 'lobby' ? h('button', { class: 'btn small primary', onclick: act('next') }, t(s.status === 'question' ? 'live.endQuestion' : 'live.next')) : null,
@@ -1415,6 +1435,7 @@ async function live(id, my) {
   }
 
   const question = (s) => {
+    if (s.mode === 'show') return showView(s)
     const q = s.question, reveal = s.status !== 'question'
     const display = s.is_host && s.screen // Bildschirm-Ansicht des Hosts
     const answered = s.me?.answered
@@ -1458,9 +1479,54 @@ async function live(id, my) {
       hostBar(s))
   }
 
+  /** Quizshow: Kandidat auf der Leiter, Publikum stimmt ab. */
+  let pick = { idx: -1, choice: -1 }
+  const showView = (s) => {
+    const q = s.question, sh = s.show, reveal = s.status !== 'question', display = s.is_host && s.screen
+    const climb = sh.stage === 'climb', isCand = sh.is_candidate
+    if (pick.idx !== s.idx) pick = { idx: s.idx, choice: -1 }
+    const hidden = q.hidden ?? []
+    const spectating = sh.stage === 'qualify' && s.me && s.me.alive === false
+    const canVote = !display && s.me && !s.me.answered && !reveal && !spectating
+    const maxCount = Math.max(1, ...(q.counts ?? [1]))
+    const opt = (text, i) => {
+      const mineChoice = s.me?.choice
+      const cls = 'opt lv-' + LETTERS[i].toLowerCase() + (reveal ? (i === q.correct_index ? ' good' : mineChoice === i ? ' bad' : ' dim') : hidden.includes(i) ? ' dim' : pick.choice === i ? ' sel' : '')
+      const label = display || s.screen ? [h('kbd', {}, LETTERS[i]), display ? h('span', {}, text) : null] : [h('kbd', {}, LETTERS[i]), h('span', {}, text)]
+      const choose = () => { if (climb && isCand) { pick.choice = i; showView(s) } else guard(async () => { await api('POST', `/api/live/${id}/answer`, { idx: s.idx, choice: i }) })() }
+      return h('button', { class: cls + (display ? ' big' : '') + (s.screen && !display ? ' letter' : ''), disabled: !canVote || hidden.includes(i), onclick: choose },
+        ...label, sh.audience && (display || isCand) ? h('span', { class: 'cnt' }, h('i', { style: `width:${sh.audience[i]}%` }), sh.audience[i] + ' %') : reveal && display && q.counts ? h('span', { class: 'cnt' }, h('i', { style: `width:${Math.round((q.counts[i] / maxCount) * 100)}%` }), String(q.counts[i])) : null)
+    }
+    const steps = climb ? h('div', { class: 'steps' }, Array.from({ length: sh.steps }, (_, i) => h('i', { class: (i + 1 < sh.step || (i + 1 === sh.step && reveal && sh.done && s.show.results.at(-1)?.how === 'won') ? 'done' : '') + (i + 1 === sh.step ? ' now' : '') + (sh.safe_steps.includes(i + 1) ? ' safe' : ''), title: money(sh.prizes[i]) }))) : null
+    const head = h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, climb ? t('ladder.step', { n: sh.step, total: sh.steps }) + ' · ' + money(q.prize) : t('show.qualify')))
+    const who = sh.candidate ? h('p', { class: 'hint' }, t('show.candidate', { name: sh.candidate.name }) + (climb ? ' · ' + t('show.safe', { amount: money(sh.guaranteed) }) : '')) : null
+    let msg = null
+    if (reveal) {
+      const last = sh.results.at(-1)
+      msg = sh.stage === 'qualify' ? h('strong', {}, sh.candidate ? t('show.nextCandidate', { name: sh.candidate.name }) : t('show.noCandidate'))
+        : sh.done && last ? h('strong', {}, t('show.res.' + last.how, { name: sh.candidate?.name ?? '', amount: money(last.prize) })) : h('strong', {}, t('show.continue'))
+    } else if (spectating) msg = h('strong', {}, t('live.spectate'))
+    else if (s.me?.answered) msg = h('strong', {}, t('live.sent'))
+    const controls = climb && isCand && !reveal && !s.me?.answered ? h('div', { class: 'stack' },
+      h('button', { class: 'btn primary block', disabled: pick.choice < 0, onclick: guard(async () => { await api('POST', `/api/live/${id}/answer`, { idx: s.idx, choice: pick.choice }) }) }, pick.choice < 0 ? t('show.pick') : t('show.final', { letter: LETTERS[pick.choice] })),
+      h('div', { class: 'row wrap' },
+        h('button', { class: 'btn small', disabled: !sh.jokers.audience, onclick: guard(async () => { await api('POST', `/api/live/${id}/show`, { action: 'audience' }) }) }, '👥 ' + t('show.audience')),
+        h('button', { class: 'btn small', disabled: !sh.jokers.fifty, onclick: guard(async () => { await api('POST', `/api/live/${id}/show`, { action: 'fifty' }) }) }, '½ ' + t('show.fifty')),
+        h('button', { class: 'btn small danger', onclick: guard(async () => { if ((()=>true)(t('show.quitConfirm', { amount: money(sh.banked) }))) await api('POST', `/api/live/${id}/show`, { action: 'quit' }) }) }, t('show.quit', { amount: money(sh.banked) })))) : null
+    mount(topbar(t('live.title'), false),
+      h('div', { class: 'card qcard' + (display ? ' display' : ''), cat: q.category }, head, timerBar(s), steps,
+        !s.screen || display ? h('div', { class: 'question' + (display ? ' bigq' : '') }, q.text) : null,
+        who,
+        h('div', { class: 'opts' + (display || s.screen ? ' grid' : '') }, q.options.map(opt)), msg ? h('div', { class: 'feedback' }, msg) : null, controls,
+        reveal && q.explanation ? h('p', { class: 'muted' }, q.explanation) : null),
+      reveal || display ? h('div', { class: 'card stack' }, players({ ...s, players: s.players.slice(0, display ? 8 : 5) }, false)) : null,
+      hostBar(s))
+  }
+
   const finished = (s) => mount(topbar(t('live.title'), true),
     h('div', { class: 'card stack lresult' }, h('h3', {}, t('live.finished')), s.team_rank ? h('div', { class: 'big' }, '🏆 ' + t('live.team', { n: s.team_rank[0].team })) : s.players[0] ? h('div', { class: 'big' }, '🏆 ' + s.players[0].name) : null),
     s.team_rank ? [h('h2', {}, t('live.teamRank')), teamBoard(s)] : null,
+    s.show?.results?.length ? [h('h2', {}, t('show.results')), h('div', { class: 'list' }, s.show.results.map((r) => h('div', { class: 'item' }, h('div', { class: 'grow ell' }, r.name), h('span', { class: 'badge' }, t('show.how.' + r.how)), h('span', { class: 'score' }, money(r.prize)))))] : null,
     h('h2', {}, t('room.ranking')), players(s, false),
     h('button', { class: 'btn block', onclick: () => go('#/') }, t('ladder.home')))
 

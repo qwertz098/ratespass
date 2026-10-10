@@ -187,3 +187,15 @@ table.stat th:first-child, table.stat td:first-child { text-align: left }
 .tdot.t1 { background: var(--t1) } .tdot.t2 { background: var(--t2) } .tdot.t3 { background: var(--t3) } .tdot.t4 { background: var(--t4) }
 .lane { flex: 0 0 38%; height: 10px; border-radius: 999px; background: var(--line); overflow: hidden }
 .lane > i { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width .4s ease }
+
+/* Live: Quizshow */
+.opt.sel { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, var(--surface)) }
+.steps { display: flex; gap: 3px; margin: 0 0 12px }
+.steps i { flex: 1; height: 8px; border-radius: 3px; background: var(--line) }
+.steps i.done { background: var(--accent) }
+.steps i.safe { background: color-mix(in srgb, var(--warn) 55%, var(--line)) }
+.steps i.done.safe { background: var(--warn) }
+.steps i.now { outline: 2px solid var(--accent); outline-offset: 1px }
+.opt.letter .cnt { min-width: 0; margin-left: 10px; font-size: .8rem; white-space: nowrap }
+.opt.letter .cnt i { display: none }
+.qcard > .hint { margin: 10px 0 }

@@ -293,6 +293,7 @@ router.post('/api/live/:id/end', (c) => { live.end(me(c), gid(c)); return { live
 router.post('/api/live/:id/kick', (c) => { live.kick(me(c), gid(c), c.body?.public_id); return { live: live.getView(gid(c), me(c)) } })
 router.post('/api/live/:id/team', (c) => { live.setTeam(me(c), gid(c), c.body?.team); return { live: live.getView(gid(c), me(c)) } })
 router.post('/api/live/:id/bet', (c) => { live.placeBet(me(c), gid(c), c.body?.idx, c.body?.amount); return { ok: true } })
+router.post('/api/live/:id/show', (c) => { live.showAction(me(c), gid(c), c.body?.action); return { ok: true } })
 router.post('/api/live/:id/answer', (c) => { live.answer(me(c), gid(c), c.body?.idx, c.body?.choice); return { ok: true } })
 
 /* ---------- Bestenliste (Opt-in) ---------- */

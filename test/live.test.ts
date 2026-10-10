@@ -243,3 +243,55 @@ test('Sofa-Modus: liefert Fragen mit Lösung, speichert nichts, begrenzt die Anz
   assert.equal(all('SELECT 1 FROM seen').length, before, 'zählt nicht als gesehen/Statistik')
   assert.equal((await call('GET', '/api/sofa')).status, 401, 'nur mit Profil (Lastbegrenzung)')
 })
+
+test('Quizshow: Schnellster Finger wählt den Kandidaten, Joker (50:50, Publikum), Aussteigen, Publikumspunkte, Kandidatenwechsel bis alle dran waren', async () => {
+  const [h, a, b, d] = [await newPlayer('Show Host'), await newPlayer('Kandidatin A'), await newPlayer('Publikum B'), await newPlayer('Publikum C')]
+  const c = (await call('POST', '/api/live', { mode: 'show', screen: true }, h.token)).json
+  for (const p of [a, b, d]) await call('POST', '/api/live/join', { token: c.live.token }, p.token)
+  const w = await watch(h.token, c.id)
+  const show = (tok: string, action: string) => call('POST', `/api/live/${c.id}/show`, { action }, tok)
+  await call('POST', `/api/live/${c.id}/start`, {}, h.token)
+  // Qualifikation: A ist am schnellsten richtig, B etwas später, C falsch
+  const q0 = await w.waitFor((s) => s.status === 'question' && s.idx === 0)
+  assert.equal(q0.show.stage, 'qualify'); assert.equal(q0.show.candidate, null)
+  await answer(a.token, c.id, 0, correctOf(c.id, 0)); await new Promise((r) => setTimeout(r, 20)); await answer(b.token, c.id, 0, correctOf(c.id, 0)); await answer(d.token, c.id, 0, wrongOf(c.id, 0))
+  const r0 = await w.waitFor((s) => s.status === 'reveal' && s.idx === 0)
+  assert.equal(r0.show.candidate.name, 'Kandidatin A')
+  // Leiterstufe 1: Kandidatin hat Joker, Publikum stimmt ab
+  const q1 = await w.waitFor((s) => s.status === 'question' && s.idx === 1)
+  assert.equal(q1.show.stage, 'climb'); assert.equal(q1.show.step, 1); assert.equal(q1.question.prize, 100)
+  assert.equal((await show(b.token, 'fifty')).status, 409, 'nur die Kandidatin')
+  await answer(b.token, c.id, 1, correctOf(c.id, 1)); await answer(d.token, c.id, 1, wrongOf(c.id, 1))
+  const f = await show(a.token, 'fifty'); assert.equal(f.status, 200)
+  assert.equal((await show(a.token, 'fifty')).status, 409, 'Joker nur einmal')
+  const st1 = (await call('GET', `/api/live/${c.id}`, undefined, a.token)).json.live
+  assert.equal(st1.question.hidden.length, 2); assert.ok(!st1.question.hidden.includes(correctOf(c.id, 1)), '50:50 versteckt nie die richtige Antwort')
+  assert.equal((await answer(a.token, c.id, 1, st1.question.hidden[0])).status, 400, 'ausgeblendete Antwort nicht wählbar')
+  assert.equal(st1.show.audience, null, 'Publikumsvoten erst nach dem Joker')
+  assert.equal((await show(a.token, 'audience')).status, 200)
+  const st2 = (await call('GET', `/api/live/${c.id}`, undefined, a.token)).json.live
+  assert.equal(st2.show.audience.reduce((x: number, y: number) => x + y, 0), 100); assert.equal(st2.show.audience[correctOf(c.id, 1)], 50)
+  assert.equal(st2.me.answered, false, 'Kandidatin hat noch nicht geantwortet')
+  assert.equal((await answer(a.token, c.id, 1, correctOf(c.id, 1))).status, 200, 'Antwort der Kandidatin beendet die Frage sofort')
+  const r1 = await w.waitFor((s) => s.status === 'reveal' && s.idx === 1)
+  assert.equal(r1.players.find((p: any) => p.name === 'Publikum B').score, 100, 'Publikum richtig = 100 Punkte')
+  // Stufe 2: Aussteigen → 100
+  const q2 = await w.waitFor((s) => s.status === 'question' && s.idx === 2); assert.equal(q2.show.step, 2)
+  assert.equal((await show(a.token, 'quit')).status, 200)
+  const r2 = await w.waitFor((s) => s.status === 'reveal' && s.idx === 2)
+  assert.deepEqual(r2.show.results.map((r: any) => [r.name, r.prize, r.how]), [['Kandidatin A', 100, 'quit']])
+  // Nächste Qualifikation ohne A: B ist schneller
+  const q3 = await w.waitFor((s) => s.status === 'question' && s.idx === 3); assert.equal(q3.show.stage, 'qualify')
+  assert.equal((await answer(a.token, c.id, 3, 0)).status, 409, 'wer schon dran war, schaut zu')
+  await answer(b.token, c.id, 3, correctOf(c.id, 3)); await new Promise((r) => setTimeout(r, 20)); await answer(d.token, c.id, 3, correctOf(c.id, 3))
+  await w.waitFor((s) => s.status === 'question' && s.idx === 4 && s.show.candidate?.name === 'Publikum B')
+  // B liegt falsch auf Stufe 1 → nichts gesichert → 0; C ist der Letzte und direkt dran
+  await answer(b.token, c.id, 4, wrongOf(c.id, 4))
+  const r4 = await w.waitFor((s) => s.status === 'reveal' && s.idx === 4)
+  assert.deepEqual(r4.show.results.map((r: any) => [r.name, r.prize, r.how]), [['Kandidatin A', 100, 'quit'], ['Publikum B', 0, 'lost']])
+  const q5 = await w.waitFor((s) => s.status === 'question' && s.idx === 5); assert.equal(q5.show.stage, 'climb'); assert.equal(q5.show.candidate.name, 'Publikum C')
+  await show(d.token, 'quit')
+  const fin = await w.waitFor((s) => s.status === 'finished', 4000)
+  assert.equal(fin.show.results.length, 3); assert.equal(fin.players[0].name, 'Kandidatin A', 'A hat 100 + Publikumspunkte')
+  w.close()
+})

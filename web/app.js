@@ -511,7 +511,7 @@ async function play(id, my) {
 }
 
 /* ---------- Live-Gesellschaftsspiel (Echtzeit) ---------- */
-const LIVE_MODES = ['tempo', 'survival', 'race', 'bet'], LIVE_TEAM_MODES = ['tempo', 'bet']
+const LIVE_MODES = ['tempo', 'survival', 'race', 'bet', 'show'], LIVE_TEAM_MODES = ['tempo', 'bet']
 const LETTERS = ['A', 'B', 'C', 'D']
 const liveLink = (token) => `${location.origin}/#/live-join/${token}`
 
@@ -578,7 +578,8 @@ async function live(id, my) {
     s.mode === 'survival' && s.status !== 'lobby' ? h('span', { class: 'badge ' + (p.alive ? 'good' : 'bad') }, p.alive ? t('live.alive') : t('live.out')) : null,
     s.mode === 'race' && s.status !== 'lobby' ? h('div', { class: 'lane', title: String(p.pos) }, h('i', { style: `width:${Math.min(100, Math.round((p.pos / s.race_length) * 100))}%` })) : null,
     s.mode === 'race' && s.status !== 'lobby' ? h('span', { class: 'score' }, `${Math.min(p.pos, s.race_length)}/${s.race_length}`) : null,
-    (s.mode === 'tempo' || s.mode === 'bet') && s.status !== 'lobby' ? h('span', { class: 'score' }, String(p.score)) : null,
+    p.candidate ? h('span', { class: 'badge' }, '🎤') : null,
+    (s.mode === 'tempo' || s.mode === 'bet' || s.mode === 'show') && s.status !== 'lobby' ? h('span', { class: 'score' }, String(p.score)) : null,
     kick && p.public_id && !p.is_me ? h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: act('kick', { public_id: p.public_id }) }, '✕') : null)))
   const hostBar = (s) => s.is_host && s.status !== 'finished' ? h('div', { class: 'row wrap' },
     s.status !== 'lobby' ? h('button', { class: 'btn small primary', onclick: act('next') }, t(s.status === 'question' ? 'live.endQuestion' : 'live.next')) : null,
@@ -603,6 +604,7 @@ async function live(id, my) {
   }
 
   const question = (s) => {
+    if (s.mode === 'show') return showView(s)
     const q = s.question, reveal = s.status !== 'question'
     const display = s.is_host && s.screen // Bildschirm-Ansicht des Hosts
     const answered = s.me?.answered
@@ -646,9 +648,54 @@ async function live(id, my) {
       hostBar(s))
   }
 
+  /** Quizshow: Kandidat auf der Leiter, Publikum stimmt ab. */
+  let pick = { idx: -1, choice: -1 }
+  const showView = (s) => {
+    const q = s.question, sh = s.show, reveal = s.status !== 'question', display = s.is_host && s.screen
+    const climb = sh.stage === 'climb', isCand = sh.is_candidate
+    if (pick.idx !== s.idx) pick = { idx: s.idx, choice: -1 }
+    const hidden = q.hidden ?? []
+    const spectating = sh.stage === 'qualify' && s.me && s.me.alive === false
+    const canVote = !display && s.me && !s.me.answered && !reveal && !spectating
+    const maxCount = Math.max(1, ...(q.counts ?? [1]))
+    const opt = (text, i) => {
+      const mineChoice = s.me?.choice
+      const cls = 'opt lv-' + LETTERS[i].toLowerCase() + (reveal ? (i === q.correct_index ? ' good' : mineChoice === i ? ' bad' : ' dim') : hidden.includes(i) ? ' dim' : pick.choice === i ? ' sel' : '')
+      const label = display || s.screen ? [h('kbd', {}, LETTERS[i]), display ? h('span', {}, text) : null] : [h('kbd', {}, LETTERS[i]), h('span', {}, text)]
+      const choose = () => { if (climb && isCand) { pick.choice = i; showView(s) } else guard(async () => { await api('POST', `/api/live/${id}/answer`, { idx: s.idx, choice: i }) })() }
+      return h('button', { class: cls + (display ? ' big' : '') + (s.screen && !display ? ' letter' : ''), disabled: !canVote || hidden.includes(i), onclick: choose },
+        ...label, sh.audience && (display || isCand) ? h('span', { class: 'cnt' }, h('i', { style: `width:${sh.audience[i]}%` }), sh.audience[i] + ' %') : reveal && display && q.counts ? h('span', { class: 'cnt' }, h('i', { style: `width:${Math.round((q.counts[i] / maxCount) * 100)}%` }), String(q.counts[i])) : null)
+    }
+    const steps = climb ? h('div', { class: 'steps' }, Array.from({ length: sh.steps }, (_, i) => h('i', { class: (i + 1 < sh.step || (i + 1 === sh.step && reveal && sh.done && s.show.results.at(-1)?.how === 'won') ? 'done' : '') + (i + 1 === sh.step ? ' now' : '') + (sh.safe_steps.includes(i + 1) ? ' safe' : ''), title: money(sh.prizes[i]) }))) : null
+    const head = h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, climb ? t('ladder.step', { n: sh.step, total: sh.steps }) + ' · ' + money(q.prize) : t('show.qualify')))
+    const who = sh.candidate ? h('p', { class: 'hint' }, t('show.candidate', { name: sh.candidate.name }) + (climb ? ' · ' + t('show.safe', { amount: money(sh.guaranteed) }) : '')) : null
+    let msg = null
+    if (reveal) {
+      const last = sh.results.at(-1)
+      msg = sh.stage === 'qualify' ? h('strong', {}, sh.candidate ? t('show.nextCandidate', { name: sh.candidate.name }) : t('show.noCandidate'))
+        : sh.done && last ? h('strong', {}, t('show.res.' + last.how, { name: sh.candidate?.name ?? '', amount: money(last.prize) })) : h('strong', {}, t('show.continue'))
+    } else if (spectating) msg = h('strong', {}, t('live.spectate'))
+    else if (s.me?.answered) msg = h('strong', {}, t('live.sent'))
+    const controls = climb && isCand && !reveal && !s.me?.answered ? h('div', { class: 'stack' },
+      h('button', { class: 'btn primary block', disabled: pick.choice < 0, onclick: guard(async () => { await api('POST', `/api/live/${id}/answer`, { idx: s.idx, choice: pick.choice }) }) }, pick.choice < 0 ? t('show.pick') : t('show.final', { letter: LETTERS[pick.choice] })),
+      h('div', { class: 'row wrap' },
+        h('button', { class: 'btn small', disabled: !sh.jokers.audience, onclick: guard(async () => { await api('POST', `/api/live/${id}/show`, { action: 'audience' }) }) }, '👥 ' + t('show.audience')),
+        h('button', { class: 'btn small', disabled: !sh.jokers.fifty, onclick: guard(async () => { await api('POST', `/api/live/${id}/show`, { action: 'fifty' }) }) }, '½ ' + t('show.fifty')),
+        h('button', { class: 'btn small danger', onclick: guard(async () => { if (confirm(t('show.quitConfirm', { amount: money(sh.banked) }))) await api('POST', `/api/live/${id}/show`, { action: 'quit' }) }) }, t('show.quit', { amount: money(sh.banked) })))) : null
+    mount(topbar(t('live.title'), false),
+      h('div', { class: 'card qcard' + (display ? ' display' : ''), cat: q.category }, head, timerBar(s), steps,
+        !s.screen || display ? h('div', { class: 'question' + (display ? ' bigq' : '') }, q.text) : null,
+        who,
+        h('div', { class: 'opts' + (display || s.screen ? ' grid' : '') }, q.options.map(opt)), msg ? h('div', { class: 'feedback' }, msg) : null, controls,
+        reveal && q.explanation ? h('p', { class: 'muted' }, q.explanation) : null),
+      reveal || display ? h('div', { class: 'card stack' }, players({ ...s, players: s.players.slice(0, display ? 8 : 5) }, false)) : null,
+      hostBar(s))
+  }
+
   const finished = (s) => mount(topbar(t('live.title'), true),
     h('div', { class: 'card stack lresult' }, h('h3', {}, t('live.finished')), s.team_rank ? h('div', { class: 'big' }, '🏆 ' + t('live.team', { n: s.team_rank[0].team })) : s.players[0] ? h('div', { class: 'big' }, '🏆 ' + s.players[0].name) : null),
     s.team_rank ? [h('h2', {}, t('live.teamRank')), teamBoard(s)] : null,
+    s.show?.results?.length ? [h('h2', {}, t('show.results')), h('div', { class: 'list' }, s.show.results.map((r) => h('div', { class: 'item' }, h('div', { class: 'grow ell' }, r.name), h('span', { class: 'badge' }, t('show.how.' + r.how)), h('span', { class: 'score' }, money(r.prize)))))] : null,
     h('h2', {}, t('room.ranking')), players(s, false),
     h('button', { class: 'btn block', onclick: () => go('#/') }, t('ladder.home')))
 
