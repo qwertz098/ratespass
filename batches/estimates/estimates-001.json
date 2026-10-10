@@ -1,0 +1,1459 @@
+{
+ "format": "ratespass-estimates",
+ "version": 1,
+ "batch": "estimates-001",
+ "source": "original",
+ "license": "CC-BY-SA-4.0",
+ "attribution": "Ratespaß-Projekt (eigene Formulierungen, Faktenwissen)",
+ "questions": [
+  {
+   "category": "geography",
+   "answer": 8849,
+   "i18n": {
+    "de": {
+     "text": "Wie hoch ist der Mount Everest über dem Meeresspiegel?",
+     "unit": "m"
+    },
+    "en": {
+     "text": "How high is Mount Everest above sea level?",
+     "unit": "m"
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "answer": 5895,
+   "i18n": {
+    "de": {
+     "text": "Wie hoch ist der Kilimandscharo?",
+     "unit": "m"
+    },
+    "en": {
+     "text": "How high is Mount Kilimanjaro?",
+     "unit": "m"
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "answer": 4806,
+   "i18n": {
+    "de": {
+     "text": "Wie hoch ist der Mont Blanc?",
+     "unit": "m"
+    },
+    "en": {
+     "text": "How high is Mont Blanc?",
+     "unit": "m"
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "answer": 2962,
+   "i18n": {
+    "de": {
+     "text": "Wie hoch ist die Zugspitze?",
+     "unit": "m"
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "geography",
+   "answer": 10935,
+   "i18n": {
+    "de": {
+     "text": "Wie tief ist das Challengertief im Marianengraben ungefähr?",
+     "unit": "m"
+    },
+    "en": {
+     "text": "Roughly how deep is the Challenger Deep in the Mariana Trench?",
+     "unit": "m"
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "answer": 1233,
+   "i18n": {
+    "de": {
+     "text": "Wie lang ist der Rhein?",
+     "unit": "km"
+    },
+    "en": {
+     "text": "How long is the Rhine?",
+     "unit": "km"
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "answer": 2850,
+   "i18n": {
+    "de": {
+     "text": "Wie lang ist die Donau?",
+     "unit": "km"
+    },
+    "en": {
+     "text": "How long is the Danube?",
+     "unit": "km"
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "answer": 193,
+   "i18n": {
+    "de": {
+     "text": "Wie lang ist der Suezkanal?",
+     "unit": "km"
+    },
+    "en": {
+     "text": "How long is the Suez Canal?",
+     "unit": "km"
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "answer": 82,
+   "i18n": {
+    "de": {
+     "text": "Wie lang ist der Panamakanal?",
+     "unit": "km"
+    },
+    "en": {
+     "text": "How long is the Panama Canal?",
+     "unit": "km"
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "answer": 357600,
+   "i18n": {
+    "de": {
+     "text": "Wie groß ist die Fläche Deutschlands?",
+     "unit": "km²"
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "geography",
+   "answer": 536,
+   "i18n": {
+    "de": {
+     "text": "Wie groß ist die Fläche des Bodensees?",
+     "unit": "km²"
+    },
+    "en": {
+     "text": "How large is the surface area of Lake Constance?",
+     "unit": "km²"
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "answer": 40075,
+   "i18n": {
+    "de": {
+     "text": "Wie groß ist der Umfang der Erde am Äquator?",
+     "unit": "km"
+    },
+    "en": {
+     "text": "What is the circumference of the Earth at the equator?",
+     "unit": "km"
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "answer": 384400,
+   "i18n": {
+    "de": {
+     "text": "Wie weit ist der Mond durchschnittlich von der Erde entfernt?",
+     "unit": "km"
+    },
+    "en": {
+     "text": "What is the average distance from the Earth to the Moon?",
+     "unit": "km"
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "answer": 149.6,
+   "i18n": {
+    "de": {
+     "text": "Wie weit ist die Sonne durchschnittlich von der Erde entfernt?",
+     "unit": "Mio. km"
+    },
+    "en": {
+     "text": "What is the average distance from the Earth to the Sun?",
+     "unit": "million km"
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "answer": 4478,
+   "i18n": {
+    "de": {
+     "text": "Wie hoch ist der Gipfel des Matterhorns?",
+     "unit": "m"
+    },
+    "en": {
+     "text": "How high is the summit of the Matterhorn?",
+     "unit": "m"
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "answer": 1094,
+   "i18n": {
+    "de": {
+     "text": "Wie lang ist die Elbe?",
+     "unit": "km"
+    },
+    "en": {
+     "text": "How long is the Elbe?",
+     "unit": "km"
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1969,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr landeten die ersten Menschen auf dem Mond?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did the first humans land on the Moon?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1989,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr fiel die Berliner Mauer?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did the Berlin Wall fall?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1961,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr wurde die Berliner Mauer gebaut?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was the Berlin Wall built?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1492,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr entdeckte Kolumbus Amerika?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did Columbus reach America?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1789,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr begann die Französische Revolution?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did the French Revolution begin?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1912,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr sank die Titanic?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did the Titanic sink?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1914,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr begann der Erste Weltkrieg?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did the First World War begin?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1945,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr endete der Zweite Weltkrieg in Europa?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did the Second World War end in Europe?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1944,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr landeten alliierte Truppen in der Normandie?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did the Allies land in Normandy?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1517,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr hing Martin Luther der Überlieferung nach seine Thesen an?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did Martin Luther, according to tradition, post his theses?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1917,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr fand die Oktoberrevolution in Russland statt?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did the October Revolution take place in Russia?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1986,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr ereignete sich die Reaktorkatastrophe von Tschernobyl?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did the Chernobyl nuclear disaster happen?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1896,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr fanden die ersten Olympischen Spiele der Neuzeit statt?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year were the first modern Olympic Games held?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1215,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr wurde die Magna Carta unterzeichnet?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was the Magna Carta signed?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1648,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr endete der Dreißigjährige Krieg?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did the Thirty Years' War end?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "history",
+   "answer": 1871,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr wurde das Deutsche Kaiserreich gegründet?",
+     "unit": ""
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "history",
+   "answer": 1990,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr fand die Wiedervereinigung Deutschlands statt?",
+     "unit": ""
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "history",
+   "answer": 1453,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr eroberten die Osmanen Konstantinopel?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did the Ottomans conquer Constantinople?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "science",
+   "answer": 299792,
+   "i18n": {
+    "de": {
+     "text": "Wie schnell ist das Licht im Vakuum?",
+     "unit": "km/s"
+    },
+    "en": {
+     "text": "How fast does light travel in a vacuum?",
+     "unit": "km/s"
+    }
+   }
+  },
+  {
+   "category": "science",
+   "answer": 206,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Knochen hat ein erwachsener Mensch?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many bones does an adult human have?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "science",
+   "answer": -273.15,
+   "i18n": {
+    "de": {
+     "text": "Bei wie viel Grad Celsius liegt der absolute Nullpunkt?",
+     "unit": "°C"
+    },
+    "en": {
+     "text": "At how many degrees Celsius is absolute zero?",
+     "unit": "°C"
+    }
+   }
+  },
+  {
+   "category": "science",
+   "answer": 343,
+   "i18n": {
+    "de": {
+     "text": "Wie schnell breitet sich Schall in Luft bei 20 °C aus?",
+     "unit": "m/s"
+    },
+    "en": {
+     "text": "How fast does sound travel in air at 20 °C?",
+     "unit": "m/s"
+    }
+   }
+  },
+  {
+   "category": "science",
+   "answer": 4.54,
+   "i18n": {
+    "de": {
+     "text": "Wie alt ist die Erde ungefähr?",
+     "unit": "Mrd. Jahre"
+    },
+    "en": {
+     "text": "Roughly how old is the Earth?",
+     "unit": "billion years"
+    }
+   }
+  },
+  {
+   "category": "science",
+   "answer": 13.8,
+   "i18n": {
+    "de": {
+     "text": "Wie alt ist das Universum ungefähr?",
+     "unit": "Mrd. Jahre"
+    },
+    "en": {
+     "text": "Roughly how old is the universe?",
+     "unit": "billion years"
+    }
+   }
+  },
+  {
+   "category": "science",
+   "answer": 118,
+   "i18n": {
+    "de": {
+     "text": "Wie viele chemische Elemente kennt das Periodensystem?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many chemical elements are in the periodic table?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "science",
+   "answer": 1538,
+   "i18n": {
+    "de": {
+     "text": "Bei wie viel Grad Celsius schmilzt Eisen?",
+     "unit": "°C"
+    },
+    "en": {
+     "text": "At how many degrees Celsius does iron melt?",
+     "unit": "°C"
+    }
+   }
+  },
+  {
+   "category": "science",
+   "answer": 5505,
+   "i18n": {
+    "de": {
+     "text": "Wie hoch ist die Oberflächentemperatur der Sonne ungefähr?",
+     "unit": "°C"
+    },
+    "en": {
+     "text": "Roughly how hot is the surface of the Sun?",
+     "unit": "°C"
+    }
+   }
+  },
+  {
+   "category": "science",
+   "answer": 12742,
+   "i18n": {
+    "de": {
+     "text": "Welchen mittleren Durchmesser hat die Erde?",
+     "unit": "km"
+    },
+    "en": {
+     "text": "What is the mean diameter of the Earth?",
+     "unit": "km"
+    }
+   }
+  },
+  {
+   "category": "science",
+   "answer": 1392700,
+   "i18n": {
+    "de": {
+     "text": "Welchen Durchmesser hat die Sonne ungefähr?",
+     "unit": "km"
+    },
+    "en": {
+     "text": "Roughly what is the diameter of the Sun?",
+     "unit": "km"
+    }
+   }
+  },
+  {
+   "category": "science",
+   "answer": 88,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Tage braucht Merkur für einen Umlauf um die Sonne?",
+     "unit": "Tage"
+    },
+    "en": {
+     "text": "How many days does Mercury need to orbit the Sun?",
+     "unit": "days"
+    }
+   }
+  },
+  {
+   "category": "science",
+   "answer": 32,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Zähne hat ein ausgewachsener Mensch (mit Weisheitszähnen)?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many teeth does an adult human have (including wisdom teeth)?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "answer": 110,
+   "i18n": {
+    "de": {
+     "text": "Wie schnell kann ein Gepard sprinten?",
+     "unit": "km/h"
+    },
+    "en": {
+     "text": "How fast can a cheetah sprint?",
+     "unit": "km/h"
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "answer": 30,
+   "i18n": {
+    "de": {
+     "text": "Wie lang wird ein Blauwal höchstens?",
+     "unit": "m"
+    },
+    "en": {
+     "text": "How long can a blue whale grow at most?",
+     "unit": "m"
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "answer": 22,
+   "i18n": {
+    "de": {
+     "text": "Wie lange dauert die Tragzeit eines Elefanten?",
+     "unit": "Monate"
+    },
+    "en": {
+     "text": "How long is an elephant's gestation period?",
+     "unit": "months"
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "answer": 5.5,
+   "i18n": {
+    "de": {
+     "text": "Wie hoch wird eine Giraffe?",
+     "unit": "m"
+    },
+    "en": {
+     "text": "How tall can a giraffe grow?",
+     "unit": "m"
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "answer": 3.5,
+   "i18n": {
+    "de": {
+     "text": "Welche Flügelspannweite hat ein Wanderalbatros höchstens?",
+     "unit": "m"
+    },
+    "en": {
+     "text": "What is the maximum wingspan of a wandering albatross?",
+     "unit": "m"
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "answer": 116,
+   "i18n": {
+    "de": {
+     "text": "Wie hoch ist der höchste bekannte Baum der Welt?",
+     "unit": "m"
+    },
+    "en": {
+     "text": "How tall is the tallest known tree in the world?",
+     "unit": "m"
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "answer": 4850,
+   "i18n": {
+    "de": {
+     "text": "Wie alt ist der älteste bekannte einzelne Baum (Grannen-Kiefer)?",
+     "unit": "Jahre"
+    },
+    "en": {
+     "text": "How old is the oldest known single tree (bristlecone pine)?",
+     "unit": "years"
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "answer": 8,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Arme hat ein Oktopus?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many arms does an octopus have?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "general",
+   "answer": 88,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Tasten hat ein Standard-Klavier?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many keys does a standard piano have?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "general",
+   "answer": 193,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Staaten sind Mitglied der Vereinten Nationen?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many states are members of the United Nations?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "general",
+   "answer": 86400,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Sekunden hat ein Tag?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many seconds are in a day?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "general",
+   "answer": 42.195,
+   "i18n": {
+    "de": {
+     "text": "Wie lang ist ein Marathon?",
+     "unit": "km"
+    },
+    "en": {
+     "text": "How long is a marathon?",
+     "unit": "km"
+    }
+   }
+  },
+  {
+   "category": "general",
+   "answer": 16,
+   "i18n": {
+    "de": {
+     "text": "Aus wie vielen Bundesländern besteht Deutschland?",
+     "unit": ""
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "general",
+   "answer": 30,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Buchstaben hat das deutsche Alphabet inklusive Umlauten und ß?",
+     "unit": ""
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "general",
+   "answer": 11,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Zeitzonen hat Russland?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many time zones does Russia have?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "general",
+   "answer": 8,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Planeten hat unser Sonnensystem?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many planets does our solar system have?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "answer": 9.58,
+   "i18n": {
+    "de": {
+     "text": "Wie schnell ist der 100-m-Weltrekord von Usain Bolt?",
+     "unit": "Sekunden"
+    },
+    "en": {
+     "text": "How fast is Usain Bolt's 100 m world record?",
+     "unit": "seconds"
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "answer": 7.32,
+   "i18n": {
+    "de": {
+     "text": "Wie breit ist ein Fußballtor?",
+     "unit": "m"
+    },
+    "en": {
+     "text": "How wide is a football goal?",
+     "unit": "m"
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "answer": 3.05,
+   "i18n": {
+    "de": {
+     "text": "In welcher Höhe hängt der Basketballkorb?",
+     "unit": "m"
+    },
+    "en": {
+     "text": "At what height does the basketball hoop hang?",
+     "unit": "m"
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "answer": 23.77,
+   "i18n": {
+    "de": {
+     "text": "Wie lang ist ein Tennisplatz?",
+     "unit": "m"
+    },
+    "en": {
+     "text": "How long is a tennis court?",
+     "unit": "m"
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "answer": 90,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Minuten dauert ein reguläres Fußballspiel ohne Nachspielzeit?",
+     "unit": "Minuten"
+    },
+    "en": {
+     "text": "How many minutes does a regular football match last, excluding stoppage time?",
+     "unit": "minutes"
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "answer": 18,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Löcher hat ein Standard-Golfplatz?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many holes does a standard golf course have?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "answer": 2007,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr kam das erste iPhone auf den Markt?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was the first iPhone released?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "answer": 1998,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr wurde Google gegründet?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was Google founded?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "answer": 1976,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr wurde Apple gegründet?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was Apple founded?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "answer": 1995,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien Windows 95?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was Windows 95 released?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "answer": 1989,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr stellte Tim Berners-Lee das World Wide Web vor?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did Tim Berners-Lee propose the World Wide Web?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "answer": 1941,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr stellte Konrad Zuse den Z3 fertig?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did Konrad Zuse complete the Z3?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "answer": 128,
+   "i18n": {
+    "de": {
+     "text": "Aus wie vielen Bit besteht eine IPv6-Adresse?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many bits does an IPv6 address have?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "music",
+   "answer": 1756,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr wurde Wolfgang Amadeus Mozart geboren?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was Wolfgang Amadeus Mozart born?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "music",
+   "answer": 1770,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr wurde Ludwig van Beethoven geboren?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was Ludwig van Beethoven born?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "music",
+   "answer": 1750,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr starb Johann Sebastian Bach?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did Johann Sebastian Bach die?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "music",
+   "answer": 1969,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr fand das Woodstock-Festival statt?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did the Woodstock festival take place?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "music",
+   "answer": 9,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Sinfonien hat Ludwig van Beethoven komponiert?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many symphonies did Ludwig van Beethoven compose?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "music",
+   "answer": 1960,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr wurde die Band The Beatles gegründet?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year were The Beatles formed?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "answer": 1977,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien der erste Star-Wars-Film?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was the first Star Wars film released?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "answer": 1997,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr kam der Film „Titanic“ von James Cameron in die Kinos?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was James Cameron's “Titanic” released?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "answer": 1972,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien „Der Pate“?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was “The Godfather” released?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "answer": 1942,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien „Casablanca“?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was “Casablanca” released?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "answer": 1993,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr kam „Jurassic Park“ in die Kinos?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was “Jurassic Park” released?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "answer": 11,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Oscars gewann „Ben Hur“ (1959)?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many Academy Awards did “Ben-Hur” (1959) win?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "answer": 1949,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien George Orwells „1984“?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was George Orwell's “1984” published?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "answer": 1937,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien „Der Hobbit“?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was “The Hobbit” published?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "answer": 1997,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien der erste Harry-Potter-Band?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was the first Harry Potter book published?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "answer": 1605,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien der erste Teil von „Don Quijote“?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was the first part of “Don Quixote” published?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "answer": 1851,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien „Moby-Dick“?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was “Moby-Dick” published?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "answer": 1808,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien der erste Teil von Goethes „Faust“?",
+     "unit": ""
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "art",
+   "answer": 1937,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr malte Pablo Picasso „Guernica“?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did Pablo Picasso paint “Guernica”?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "art",
+   "answer": 1889,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr malte Vincent van Gogh „Sternennacht“?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did Vincent van Gogh paint “The Starry Night”?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "art",
+   "answer": 1919,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr wurde das Bauhaus gegründet?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was the Bauhaus founded?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "art",
+   "answer": 1889,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr wurde der Eiffelturm fertiggestellt?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was the Eiffel Tower completed?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "art",
+   "answer": 1882,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr begann der Bau der Sagrada Família?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did construction of the Sagrada Família begin?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "games",
+   "answer": 1972,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien das Arcade-Spiel Pong?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was the arcade game Pong released?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "games",
+   "answer": 1985,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien „Super Mario Bros.“ in Japan?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was “Super Mario Bros.” released in Japan?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "games",
+   "answer": 1984,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erfand Alexei Paschitnow Tetris?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year did Alexey Pajitnov create Tetris?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "games",
+   "answer": 2011,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien „Minecraft“ in der Vollversion?",
+     "unit": ""
+    },
+    "en": {
+     "text": "In which year was the full version of “Minecraft” released?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "games",
+   "answer": 361,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Schnittpunkte hat ein Standard-Go-Brett?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many intersections does a standard Go board have?",
+     "unit": ""
+    }
+   }
+  },
+  {
+   "category": "games",
+   "answer": 151,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Pokémon gab es in der ersten Generation?",
+     "unit": ""
+    },
+    "en": {
+     "text": "How many Pokémon were there in the first generation?",
+     "unit": ""
+    }
+   }
+  }
+ ]
+}

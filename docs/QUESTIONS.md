@@ -46,6 +46,18 @@ npm run import -- batches/original-001.json --dry-run   # prüfen
 # danach Datei committen; beim nächsten Start importiert der Server sie automatisch
 ```
 
+## Schätzfragen (Live-Schätzrunde)
+
+Zahlenfragen („Wie hoch …?“, „In welchem Jahr …?“) liegen **getrennt** von den Multiple-Choice-Fragen in `batches/estimates/estimates-NNN.json` (`format: "ratespass-estimates"`, `version: 1`, `batch`, `source`, `license`, optional `attribution`). Der Import beim Start (`server/estimates.ts`) ist strikt (ein Fehler verwirft den ganzen Batch) und doppelte Fragen werden übersprungen.
+
+```json
+{ "category": "geography", "answer": 8849, "region": "global",
+  "i18n": { "de": { "text": "Wie hoch ist der Mount Everest über dem Meeresspiegel?", "unit": "m", "explanation": "optional" },
+            "en": { "text": "How high is Mount Everest above sea level?", "unit": "m" } } }
+```
+
+Regeln: `answer` eine endliche Zahl; Text 8–300 Zeichen; Einheit höchstens 24 Zeichen (bei Jahreszahlen leer lassen – sie werden ohne Tausenderpunkt angezeigt); Region wie bei normalen Fragen (`global` → de **und** en, `dach` → nur de). Gute Schätzfragen haben **eine eindeutige, überprüfbare Zahl** (keine „ungefähr“-Werte, die je nach Quelle abweichen), keine Zeitabhängigkeit (Einwohnerzahlen veralten) und einen plausiblen Bereich, den man ohne Spezialwissen eingrenzen kann. Wertung: `scoreGuesses` in `server/estimates.ts`. Die Antworten zählen nicht in Bestenliste und Statistik.
+
 ## Spielstufen: Basis, Nerd, Experte
 
 - Jede Kategorie gehört zu einer Stufe (`CATEGORY_TIERS` in `server/categories.ts`): `basic`, `nerd` (`scifi_fantasy coding anime retro_games`), `expert` (`expert_mint expert_humanities expert_arts expert_it`). Neue Kategorie = Eintrag dort + `cat.*`-Texte (de+en) + Farbe in `web/style.css` + mind. 40 Fragen je Sprache.

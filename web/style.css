@@ -219,3 +219,8 @@ table.stat th:first-child, table.stat td:first-child { text-align: left }
 .key.wide { flex: 1.6 1 0 }
 .key.c { background: var(--good); color: #fff } .key.p { background: #c99a1a; color: #fff } .key.a { background: #6b7280; color: #fff }
 .key:active { transform: scale(.96) }
+
+/* Live: Schätzrunde */
+input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums }
+.estimate-answer { display: grid; gap: 4px; text-align: center }
+.estimate-answer strong { font-size: 2.4rem; letter-spacing: -.02em; font-variant-numeric: tabular-nums }

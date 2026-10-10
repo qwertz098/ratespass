@@ -1,9 +1,11 @@
+import path from 'node:path'
 import { createApp } from './app.ts'
 import { adminStatus } from './admin.ts'
 import { config } from './config.ts'
 import { sweep } from './game.ts'
 import { sweepRooms } from './rooms.ts'
 import { importPendingBatches } from './questions.ts'
+import { importPendingEstimates } from './estimates.ts'
 import { loadWordlists, wordlePushTick } from './wordle.ts'
 import { autoRun } from './ai.ts'
 import { sweepProfiles } from './erase.ts'
@@ -11,6 +13,7 @@ import { resumeLive, sweepLive } from './live.ts'
 import { missingSettings } from './privacy.ts'
 
 importPendingBatches(config.batchDir)
+importPendingEstimates(path.join(config.batchDir, 'estimates'))
 loadWordlists()
 resumeLive()
 setInterval(() => { try { wordlePushTick() } catch (e) { console.error('wordle push', e) } }, 60_000).unref()

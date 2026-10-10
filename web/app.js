@@ -739,7 +739,22 @@ async function play(id, my) {
 }
 
 /* ---------- Live-Gesellschaftsspiel (Echtzeit) ---------- */
-const LIVE_MODES = ['tempo', 'survival', 'race', 'bet', 'show', 'blitz'], LIVE_TEAM_MODES = ['tempo', 'bet', 'blitz']
+const LIVE_MODES = ['tempo', 'survival', 'race', 'bet', 'show', 'blitz', 'estimate'], LIVE_TEAM_MODES = ['tempo', 'bet', 'blitz', 'estimate']
+/** Zahl aus Freitext: „1.234,5“ (de) bzw. „1,234.5“ (en), Leerzeichen/Apostroph als Tausender; null bei Unsinn. */
+function parseGuess(raw, lang = getLang()) {
+  let x = String(raw ?? '').trim().replace(/[\s'’\u00a0]/g, '').replace(/^\+/, '').replace('−', '-')
+  if (!/^-?[\d.,]+$/.test(x) || !/\d/.test(x)) return null
+  const thou = lang === 'de' ? '.' : ',', dec = lang === 'de' ? ',' : '.'
+  const other = { '.': ',', ',': '.' }
+  const groups = (sep) => x.split(sep).length - 1
+  if (groups(thou) && groups(dec)) { if (x.lastIndexOf(thou) > x.lastIndexOf(dec)) return null; x = x.split(thou).join('').replace(dec, '.') }
+  else if (groups(thou)) { const parts = x.split(thou); x = parts.length > 2 || (parts[1].length === 3 && parts[0].replace('-', '').length <= 3 && parts[0].replace('-', '') !== '0') ? parts.join('') : parts.join('.') }
+  else if (groups(dec)) { if (groups(dec) > 1) return null; x = x.replace(dec, '.') }
+  const n = Number(x)
+  return Number.isFinite(n) && Math.abs(n) <= 1e12 ? n : null
+}
+/** Anzeige einer geschätzten Zahl; Jahreszahlen (ganzzahlig 1000–2100, ohne Einheit) ohne Tausendertrenner. */
+const fmtGuess = (v, unit) => (!unit && Number.isInteger(v) && v >= 1000 && v <= 2100 ? String(v) : Number(v).toLocaleString(getLang(), { maximumFractionDigits: 6 })) + (unit ? ' ' + unit : '')
 const LETTERS = ['A', 'B', 'C', 'D']
 const liveLink = (token) => `${location.origin}/#/live-join/${token}`
 
@@ -808,7 +823,7 @@ async function live(id, my) {
     s.mode === 'race' && s.status !== 'lobby' ? h('span', { class: 'score' }, `${Math.min(p.pos, s.race_length)}/${s.race_length}`) : null,
     p.candidate ? h('span', { class: 'badge' }, '🎤') : null,
     s.mode === 'blitz' && s.status !== 'lobby' ? h('div', { class: 'lane', title: String(p.score) }, h('i', { style: `width:${Math.round((p.score / Math.max(1, ...s.players.map((x) => x.score))) * 100)}%` })) : null,
-    (s.mode === 'tempo' || s.mode === 'bet' || s.mode === 'show' || s.mode === 'blitz') && s.status !== 'lobby' ? h('span', { class: 'score' }, String(p.score)) : null,
+    (s.mode === 'tempo' || s.mode === 'bet' || s.mode === 'show' || s.mode === 'blitz' || s.mode === 'estimate') && s.status !== 'lobby' ? h('span', { class: 'score' }, String(p.score)) : null,
     kick && p.public_id && !p.is_me ? h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: act('kick', { public_id: p.public_id }) }, '✕') : null)))
   const hostBar = (s) => s.is_host && s.status !== 'finished' ? h('div', { class: 'row wrap' },
     s.status !== 'lobby' ? h('button', { class: 'btn small primary', onclick: act('next') }, t(s.status === 'question' ? 'live.endQuestion' : 'live.next')) : null,
@@ -957,6 +972,37 @@ async function live(id, my) {
       s.is_host ? hostBar(s) : null)
   }
 
+  /** Schätzrunde: Zahl eintippen; Auflösung mit der richtigen Zahl und allen Tipps (Rang nach Abstand). */
+  let draft = { idx: -1, text: '', focus: false }
+  const estimateView = (s) => {
+    const e = s.estimate, reveal = s.status !== 'question', display = s.is_host && s.screen
+    if (draft.idx !== s.idx) draft = { idx: s.idx, text: '', focus: false }
+    const send = guard(async () => {
+      const v = parseGuess(draft.text)
+      if (v === null) return toast(t('estimate.bad'))
+      await api('POST', `/api/live/${id}/guess`, { idx: s.idx, value: v })
+    })
+    const input = h('input', { type: 'text', inputmode: 'decimal', autocomplete: 'off', class: 'guess', value: draft.text, placeholder: e.unit || t('estimate.number'), 'aria-label': t('estimate.number'),
+      oninput: (ev) => { draft.text = ev.target.value }, onfocus: () => { draft.focus = true }, onblur: () => { draft.focus = false },
+      onkeydown: (ev) => { if (ev.key === 'Enter') send() } })
+    const head = h('div', { class: 'q-head' }, catChip(e.category), h('span', { class: 'muted' }, t('ladder.step', { n: s.idx + 1, total: s.total })))
+    const canGuess = !display && s.me && !s.me.answered && !reveal
+    const body = reveal ? h('div', { class: 'stack' },
+      h('div', { class: 'estimate-answer' }, h('span', { class: 'muted' }, t('estimate.answer')), h('strong', {}, fmtGuess(e.answer, e.unit))),
+      s.me ? h('div', { class: 'feedback' }, h('strong', {}, e.my_guess === undefined ? t('estimate.none') : t('estimate.yours', { v: fmtGuess(e.my_guess, e.unit) })), h('span', { class: 'score' }, '+' + (s.me.points ?? 0))) : null,
+      h('div', { class: 'list' }, e.guesses.map((g) => h('div', { class: 'item' + (g.is_me ? ' me' : '') }, h('span', { class: 'rank' }, '#' + g.rank), h('div', { class: 'grow ell' }, g.name),
+        h('span', { class: 'muted' }, fmtGuess(g.value, e.unit) + ' · ' + (g.error < 0.005 ? t('estimate.exact') : '±' + Math.round(g.error * 100) + ' %')), h('span', { class: 'score' }, '+' + g.points)))),
+      e.explanation ? h('p', { class: 'muted' }, e.explanation) : null)
+      : canGuess ? h('div', { class: 'stack' }, h('div', { class: 'row' }, input, h('button', { class: 'btn primary', onclick: send }, t('estimate.send'))), h('p', { class: 'hint' }, t('estimate.hint')))
+      : s.me?.answered ? h('div', { class: 'feedback' }, h('strong', {}, t('estimate.sent', { v: fmtGuess(e.my_guess, e.unit) })))
+      : display ? h('p', { class: 'hint' }, t('estimate.screen')) : null
+    mount(topbar(t('live.title'), false),
+      h('div', { class: 'card qcard' + (display ? ' display' : ''), cat: e.category }, head, timerBar(s), h('div', { class: 'question' + (display ? ' bigq' : '') }, e.text), e.unit && !reveal ? h('p', { class: 'hint' }, t('estimate.unit', { unit: e.unit })) : null, body),
+      reveal || display ? h('div', { class: 'card stack' }, s.team_rank ? h('h3', {}, t('live.teamRank')) : null, teamBoard(s), s.team_rank ? h('h3', {}, t('room.ranking')) : null, players({ ...s, players: s.players.slice(0, display ? 8 : 5) }, false)) : null,
+      hostBar(s))
+    if (draft.focus && canGuess) { input.focus(); const n = input.value.length; try { input.setSelectionRange(n, n) } catch { /* */ } }
+  }
+
   const finished = (s) => (bl = null, mount(topbar(t('live.title'), true),
     h('div', { class: 'card stack lresult' }, h('h3', {}, t('live.finished')), s.team_rank ? h('div', { class: 'big' }, '🏆 ' + t('live.team', { n: s.team_rank[0].team })) : s.players[0] ? h('div', { class: 'big' }, '🏆 ' + s.players[0].name) : null),
     s.team_rank ? [h('h2', {}, t('live.teamRank')), teamBoard(s)] : null,
@@ -974,6 +1020,7 @@ async function live(id, my) {
       if (s.status === 'lobby') { if (!document.activeElement || document.activeElement === document.body || s.token !== lastQr) { lastQr = s.token; await lobby(s) } else await lobby(s) }
       else if (s.status === 'finished') finished(s)
       else if (s.mode === 'blitz' && s.status === 'question') { if (!(bl && !(s.is_host && s.screen))) blitzView(s) }
+      else if (s.mode === 'estimate' && s.estimate) estimateView(s)
       else if (s.status === 'bet' && s.question) betView(s)
       else if (s.question) question(s)
     } finally { rendering = false }

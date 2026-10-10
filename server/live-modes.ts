@@ -5,14 +5,15 @@
 //  - race:     jede richtige Antwort = 1 Feld, die schnellste richtige = +1 Bonusfeld; wer 12 Felder erreicht, gewinnt.
 //  - bet:      vor jeder Frage (nur Kategorie sichtbar) wird ein Einsatz gesetzt; richtig +Einsatz, falsch −Einsatz; letzte Frage doppelt.
 //  - blitz:    feste Spielzeit (45/60/90 s), jeder arbeitet dieselbe Fragenliste im eigenen Tempo ab; richtig = 1 Punkt, falsch = 2 s Pause.
+//  - estimate: Schätzrunde: alle tippen eine Zahl (Jahr, Länge, Anzahl …); der nächste Tipp bekommt 1000/700/500 Punkte, weitere Tipps anteilig (scoreGuesses in estimates.ts).
 //  - show:     Quizshow mit Publikum: ein Kandidat (Schnellster Finger) steigt die Millionen-Leiter hoch, alle anderen sind das Publikum (Publikumsjoker, 50:50).
 import { PRIZES, SAFE_STEPS, difficultyOf, guaranteed, limitMs, prizeAt, shuffle } from './ladder.ts'
 import { config } from './config.ts'
 
-export const MODES = ['tempo', 'survival', 'race', 'bet', 'show', 'blitz'] as const
+export const MODES = ['tempo', 'survival', 'race', 'bet', 'show', 'blitz', 'estimate'] as const
 export type Mode = (typeof MODES)[number]
 /** Teams gibt es dort, wo Punkte addierbar sind. */
-export const TEAM_MODES: readonly Mode[] = ['tempo', 'bet', 'blitz']
+export const TEAM_MODES: readonly Mode[] = ['tempo', 'bet', 'blitz', 'estimate']
 export const TEAM_COUNTS = [0, 2, 3, 4] as const
 
 export const RACE_LENGTH = 12
@@ -34,7 +35,7 @@ export function planDiffs(mode: Mode): number[] {
   if (mode === 'survival') return PRIZES.map((_, i) => difficultyOf(i + 1))
   if (mode === 'race') return RACE_DIFFS.slice(0, Math.max(1, config.live.raceQuestions))
   if (mode === 'blitz') return shuffle(Array.from({ length: BLITZ_QUESTIONS }, (_, i) => BLITZ_DIFFS[i % BLITZ_DIFFS.length]))
-  if (mode === 'show') return [] // Fragen werden einzeln nachgezogen (Qualifikation, Leiterstufen)
+  if (mode === 'show' || mode === 'estimate') return [] // show: Fragen einzeln nachgezogen; estimate: eigener Bestand
   if (mode === 'bet') return BET_DIFFS.slice(-Math.max(1, config.live.betQuestions))
   return shuffle(TEMPO_DIFFS).slice(0, config.live.tempoQuestions).sort()
 }

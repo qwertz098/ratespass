@@ -338,3 +338,35 @@ test('Blitzrunde: zu schnelle Antworten (keine Lesezeit) werden abgelehnt', asyn
   try { assert.equal((await answer(a.token, c.id, 0, correctOf(c.id, 0))).status, 429) } finally { Object.assign(config.live, { blitzMinMs: 0 }) }
   await call('POST', `/api/live/${c.id}/end`, {}, h.token)
 })
+
+test('Schätzrunde: Tipp einmalig, Rang nach Abstand, 1000/700/500, Auflösung zeigt Zahl und alle Tipps, früher Abschluss wenn alle getippt haben', async () => {
+  const { importEstimates } = await import('../server/estimates.ts')
+  assert.deepEqual(importEstimates(JSON.parse(fs.readFileSync(new URL('../batches/estimates/estimates-001.json', import.meta.url), 'utf8'))).errors, [])
+  Object.assign(config.live, { estimateQuestions: 2 })
+  const [h, a, b, d] = [await newPlayer('Schätz Host'), await newPlayer('Schätz A'), await newPlayer('Schätz B'), await newPlayer('Schätz C')]
+  const c = (await call('POST', '/api/live', { mode: 'estimate', screen: true }, h.token)).json
+  for (const p of [a, b, d]) await call('POST', '/api/live/join', { token: c.live.token }, p.token)
+  const w = await watch(a.token, c.id)
+  assert.equal((await call('POST', `/api/live/${c.id}/start`, {}, h.token)).status, 200)
+  assert.equal(all('SELECT 1 FROM live_estimates WHERE game_id=?', c.id).length, 2)
+  assert.equal(all('SELECT 1 FROM live_questions WHERE game_id=?', c.id).length, 0)
+  const q0 = await w.waitFor((s) => s.status === 'question' && s.idx === 0)
+  assert.ok(q0.estimate.text); assert.equal(q0.estimate.answer, undefined, 'Lösung erst in der Auflösung'); assert.equal(q0.question, null)
+  const truth = get<{ answer: number }>('SELECT e.answer FROM live_estimates le JOIN estimates e ON e.id=le.estimate_id WHERE le.game_id=? AND le.idx=0', c.id)!.answer
+  const guess = (tok: string, idx: number, value: unknown) => call('POST', `/api/live/${c.id}/guess`, { idx, value }, tok)
+  assert.equal((await guess(a.token, 0, 'viel')).status, 400); assert.equal((await guess(a.token, 0, 1e15)).status, 400); assert.equal((await guess(a.token, 1, 5)).status, 409, 'falsche Frage')
+  assert.equal((await guess(a.token, 0, truth)).status, 200)
+  assert.equal((await guess(a.token, 0, truth + 1)).status, 409, 'nur ein Tipp')
+  assert.equal((await guess(b.token, 0, truth * 1.1 + 1)).status, 200)
+  assert.equal((await guess(h.token, 0, 5)).status, 409, 'Bildschirm-Host spielt nicht mit')
+  assert.equal((await guess(d.token, 0, truth * 4 + 100)).status, 200) // alle drei haben getippt → sofort Auflösung
+  const r0 = await w.waitFor((s) => s.status === 'reveal' && s.idx === 0)
+  assert.equal(r0.estimate.answer, truth)
+  assert.deepEqual(r0.estimate.guesses.map((x: any) => [x.name, x.rank, x.points]), [['Schätz A', 1, 1000], ['Schätz B', 2, 700], ['Schätz C', 3, 0]])
+  assert.equal(r0.me.points, 1000); assert.equal(r0.players[0].name, 'Schätz A'); assert.equal(r0.players[0].score, 1000)
+  // Frage 2: niemand tippt → nach Ablauf 0 Punkte; Ende
+  const fin = await w.waitFor((s) => s.status === 'finished', 6000)
+  assert.deepEqual(fin.players.map((p: any) => [p.name, p.score]), [['Schätz A', 1000], ['Schätz B', 700], ['Schätz C', 0]])
+  assert.equal((await guess(a.token, 1, 3)).status, 409, 'nach dem Ende geschlossen')
+  w.close()
+})

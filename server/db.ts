@@ -461,8 +461,48 @@ CREATE TABLE wordle_push_log(
 );
 `
 
+// v17: Schätzfragen (Zahlenantworten) für den Live-Modus „Schätzrunde“
+const SCHEMA_V17 = `
+CREATE TABLE estimates(
+  id INTEGER PRIMARY KEY,
+  uid TEXT NOT NULL UNIQUE,
+  group_id TEXT NOT NULL,
+  lang TEXT NOT NULL,
+  category TEXT NOT NULL,
+  region TEXT NOT NULL DEFAULT 'global',
+  text TEXT NOT NULL,
+  unit TEXT NOT NULL DEFAULT '',
+  answer REAL NOT NULL,
+  explanation TEXT,
+  source TEXT NOT NULL,
+  license TEXT NOT NULL,
+  attribution TEXT,
+  batch TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
+  created_at INTEGER NOT NULL,
+  UNIQUE(group_id, lang)
+);
+CREATE INDEX estimates_pick ON estimates(lang, status, category);
+CREATE TABLE live_estimates(
+  game_id INTEGER NOT NULL REFERENCES live_games(id) ON DELETE CASCADE,
+  idx INTEGER NOT NULL,
+  estimate_id INTEGER NOT NULL REFERENCES estimates(id),
+  PRIMARY KEY(game_id, idx)
+);
+CREATE TABLE live_guesses(
+  game_id INTEGER NOT NULL REFERENCES live_games(id) ON DELETE CASCADE,
+  idx INTEGER NOT NULL,
+  player_id INTEGER NOT NULL,
+  value REAL NOT NULL,
+  ms INTEGER NOT NULL,
+  points INTEGER NOT NULL DEFAULT 0,
+  at INTEGER NOT NULL,
+  PRIMARY KEY(game_id, idx, player_id)
+);
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10], [11, SCHEMA_V11], [12, SCHEMA_V12], [13, SCHEMA_V13], [14, SCHEMA_V14], [15, SCHEMA_V15], [16, SCHEMA_V16]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10], [11, SCHEMA_V11], [12, SCHEMA_V12], [13, SCHEMA_V13], [14, SCHEMA_V14], [15, SCHEMA_V15], [16, SCHEMA_V16], [17, SCHEMA_V17]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)

@@ -14,6 +14,7 @@ import { effectiveFor } from './settings.ts'
 import { PRIZES, SAFE_STEPS, guaranteed, prizeAt, shown, shuffle } from './ladder.ts'
 import { BLITZ_DEFAULT_S, BLITZ_DURATIONS, SHOW_AUDIENCE_POINTS, SHOW_STEPS, audiencePercent, fiftyHidden, newShowState, showDifficulty, showLimitMs, showOutcome, type ShowState, BET_ALL_IN, BET_CHOICES, BET_DEFAULT, BET_START, MODES, RACE_LENGTH, TEAM_COUNTS, TEAM_MODES, balanceTeams, betDelta, hasBetPhase, isFinalQuestion, planDiffs, raceFields, teamStandings, tempoPoints, validBet, type Mode } from './live-modes.ts'
 import { pickQuestions } from './rooms.ts'
+import { pickEstimates, scoreGuesses } from './estimates.ts'
 import type { QRow } from './questions.ts'
 
 export { MODES }
@@ -166,10 +167,19 @@ export function start(me: PlayerRow, id: number) {
     const teams = teamsOf(g)
     if (teams) for (const [pid, team] of balanceTeams(ps.map((p) => ({ id: p.player_id, team: p.team })), teams)) run('UPDATE live_players SET team=? WHERE game_id=? AND player_id=?', team, id, pid)
     if (g.mode === 'bet') run('UPDATE live_players SET score=? WHERE game_id=?', BET_START, id)
-    const diffs = planDiffs(g.mode)
-    const qs = pickQuestions(g.lang, eff.cats, ps.map((p) => p.player_id), diffs)
-    qs.forEach((q, i) => run('INSERT INTO live_questions(game_id,idx,question_id,perm) VALUES(?,?,?,?)', id, i, q.id, JSON.stringify(shuffle([0, 1, 2, 3]))))
-    run("UPDATE live_games SET level=?, cats=?, total=?, token_expires=0, updated_at=? WHERE id=?", eff.level, JSON.stringify(eff.cats), qs.length, now(), id)
+    let total: number
+    if (g.mode === 'estimate') {
+      let es = pickEstimates(g.lang, eff.cats, config.live.estimateQuestions)
+      if (es.length < Math.min(3, config.live.estimateQuestions)) es = pickEstimates(g.lang, all<{ category: string }>('SELECT DISTINCT category FROM estimates WHERE lang=?', g.lang).map((r) => r.category), config.live.estimateQuestions) // gewählte Kategorien zu dünn
+      if (!es.length) throw new HttpError(409, 'no_estimates')
+      es.forEach((e, i) => run('INSERT INTO live_estimates(game_id,idx,estimate_id) VALUES(?,?,?)', id, i, e.id))
+      total = es.length
+    } else {
+      const qs = pickQuestions(g.lang, eff.cats, ps.map((p) => p.player_id), planDiffs(g.mode))
+      qs.forEach((q, i) => run('INSERT INTO live_questions(game_id,idx,question_id,perm) VALUES(?,?,?,?)', id, i, q.id, JSON.stringify(shuffle([0, 1, 2, 3]))))
+      total = qs.length
+    }
+    run("UPDATE live_games SET level=?, cats=?, total=?, token_expires=0, updated_at=? WHERE id=?", eff.level, JSON.stringify(eff.cats), total, now(), id)
     if (g.mode === 'show') showNext(id)
     else if (g.mode === 'blitz') openBlitz(id)
     else openQuestion(id, 0)
@@ -196,7 +206,7 @@ function openQuestion(id: number, idx: number) {
 function startQuestion(id: number, idx?: number, ms = config.live.questionMs) {
   const g = getGame(id)
   if (!g || (g.status !== 'bet' && g.status !== 'lobby' && g.status !== 'reveal')) return
-  const t = now(), until = t + ms
+  const t = now(), until = t + (g.mode === 'estimate' ? Math.round(ms * 1.5) : ms) // Zahlen eintippen braucht länger als A–D antippen
   run("UPDATE live_games SET status='question', idx=?, phase_started=?, phase_until=?, updated_at=? WHERE id=?", idx ?? g.idx, t, until, t, id)
   schedule(id, until, () => closeQuestion(id))
 }
@@ -342,6 +352,36 @@ function afterShowReveal(g: Game) {
   showNext(g.id)
 }
 
+/* ---------- Schätzrunde ---------- */
+const estimateRow = (id: number, idx: number) => get<{ id: number; text: string; unit: string; answer: number; category: string; explanation: string | null }>('SELECT e.id, e.text, e.unit, e.answer, e.category, e.explanation FROM live_estimates le JOIN estimates e ON e.id=le.estimate_id WHERE le.game_id=? AND le.idx=?', id, idx)
+
+/** Tipp abgeben (einmal pro Frage, danach gesperrt); haben alle getippt, wird früher aufgelöst. */
+export function guess(me: PlayerRow, id: number, idx: unknown, value: unknown) {
+  tx(() => {
+    const g = mustMember(id, me.id)
+    if (g.mode !== 'estimate' || g.status !== 'question' || (g.phase_until ?? 0) <= now() || idx !== g.idx) throw new HttpError(409, 'live_closed')
+    if (!players(id).some((p) => p.player_id === me.id)) throw new HttpError(409, 'live_closed')
+    if (typeof value !== 'number' || !Number.isFinite(value) || Math.abs(value) > 1e12) throw new HttpError(400, 'bad_guess')
+    if (get('SELECT 1 FROM live_guesses WHERE game_id=? AND idx=? AND player_id=?', id, g.idx, me.id)) throw new HttpError(409, 'already_answered')
+    run('INSERT INTO live_guesses(game_id,idx,player_id,value,ms,at) VALUES(?,?,?,?,?,?)', id, g.idx, me.id, value, Math.min(now() - g.phase_started!, g.phase_until! - g.phase_started!), now())
+    if (get<{ n: number }>('SELECT COUNT(*) n FROM live_guesses WHERE game_id=? AND idx=?', id, g.idx)!.n >= players(id).length) closeQuestion(id)
+  })
+  broadcast(id)
+}
+/** Auflösung: Rang nach Abstand zur richtigen Zahl, Punkte laut scoreGuesses; kein Tipp = 0 Punkte. */
+function closeEstimate(g: Game) {
+  const e = estimateRow(g.id, g.idx)
+  if (!e) return
+  const rows = all<{ player_id: number; value: number; ms: number }>('SELECT player_id, value, ms FROM live_guesses WHERE game_id=? AND idx=?', g.id, g.idx)
+  const scored = scoreGuesses(rows.map((r) => ({ pid: r.player_id, value: r.value })), e.answer)
+  for (const r of rows) {
+    const sc = scored.get(r.player_id)!
+    run('UPDATE live_guesses SET points=? WHERE game_id=? AND idx=? AND player_id=?', sc.points, g.id, g.idx, r.player_id)
+    run('UPDATE live_players SET score=score+?, ms=ms+? WHERE game_id=? AND player_id=?', sc.points, r.ms, g.id, r.player_id)
+  }
+  for (const p of players(g.id)) if (!rows.some((r) => r.player_id === p.player_id)) run('UPDATE live_players SET ms=ms+? WHERE game_id=? AND player_id=?', g.phase_until! - g.phase_started!, g.id, p.player_id)
+}
+
 const eligible = (g: Game) => players(g.id).filter((p) => (g.mode === 'survival' ? p.alive : true))
 
 /** Frage beenden → Auflösung: Punkte und Ausscheiden werden hier festgeschrieben. */
@@ -351,9 +391,10 @@ function closeQuestion(id: number) {
     if (!g || g.status !== 'question') return
     if (g.mode === 'show') return closeShow(g)
     if (g.mode === 'blitz') return finishGame(id)
+    if (g.mode === 'estimate') closeEstimate(g)
     const answers = new Map(all<{ player_id: number; correct: number; points: number; ms: number }>('SELECT player_id, correct, points, ms FROM live_answers WHERE game_id=? AND idx=?', id, g.idx).map((a) => [a.player_id, a]))
     const fastest = [...answers.values()].filter((a) => a.correct).sort((a, b) => a.ms - b.ms)[0]?.player_id
-    for (const p of eligible(g)) {
+    for (const p of g.mode === 'estimate' ? [] : eligible(g)) {
       const a = answers.get(p.player_id)
       const ok = !!a?.correct, ms = a?.ms ?? config.live.questionMs
       if (g.mode === 'tempo') run('UPDATE live_players SET score=score+?, ms=ms+? WHERE game_id=? AND player_id=?', a?.points ?? 0, ms, id, p.player_id)
@@ -442,12 +483,16 @@ export function view(g: Game, viewer: number) {
   const q = rq && get<QRow>('SELECT * FROM questions WHERE id=?', rq.question_id)
   const answers = g.idx >= 0 && g.mode !== 'blitz' ? all<{ player_id: number; choice: number; correct: number; points: number; ms: number }>('SELECT player_id, choice, correct, points, ms FROM live_answers WHERE game_id=? AND idx=?', g.id, g.idx) : []
   const reveal = g.status === 'reveal' || g.status === 'finished'
-  const rank = [...ps].sort(g.mode === 'blitz' ? (a, b) => b.score - a.score || a.pos - b.pos || a.ms - b.ms : g.mode === 'tempo' || g.mode === 'bet' || g.mode === 'show' ? (a, b) => b.score - a.score || a.ms - b.ms : g.mode === 'race' ? (a, b) => b.pos - a.pos || a.ms - b.ms : (a, b) => b.pos - a.pos || b.alive - a.alive || a.ms - b.ms)
+  const rank = [...ps].sort(g.mode === 'blitz' ? (a, b) => b.score - a.score || a.pos - b.pos || a.ms - b.ms : g.mode === 'tempo' || g.mode === 'bet' || g.mode === 'show' || g.mode === 'estimate' ? (a, b) => b.score - a.score || a.ms - b.ms : g.mode === 'race' ? (a, b) => b.pos - a.pos || a.ms - b.ms : (a, b) => b.pos - a.pos || b.alive - a.alive || a.ms - b.ms)
   const teams = teamsOf(g)
   const bets = g.mode === 'bet' && g.idx >= 0 ? all<{ player_id: number; amount: number; delta: number | null }>('SELECT player_id, amount, delta FROM live_bets WHERE game_id=? AND idx=?', g.id, g.idx) : []
   const myBet = bets.find((b) => b.player_id === viewer)
   const showSt = g.mode === 'show' && g.status !== 'lobby' ? showOf(g) : null
   const mine = answers.find((a) => a.player_id === viewer)
+  const est = g.mode === 'estimate' && g.idx >= 0 && g.status !== 'lobby' ? estimateRow(g.id, g.idx) : undefined
+  const gs = est ? all<{ player_id: number; value: number; points: number }>('SELECT player_id, value, points FROM live_guesses WHERE game_id=? AND idx=?', g.id, g.idx) : []
+  const myGuess = gs.find((x) => x.player_id === viewer)
+  const estScores = est && reveal ? scoreGuesses(gs.map((x) => ({ pid: x.player_id, value: x.value })), est.answer) : undefined
   const correctIdx = rq ? (JSON.parse(rq.perm) as number[]).indexOf(0) : -1
   return {
     id: g.id, status: g.status, mode: g.mode, screen: !!g.screen, lang: g.lang, level: g.level, total: g.total, idx: g.idx, is_host: isHost,
@@ -469,12 +514,16 @@ export function view(g: Game, viewer: number) {
     max_players: config.live.maxPlayers,
     players: rank.map((p, i) => ({ name: pname(p.player_id), public_id: isHost ? get<{ public_id: string }>('SELECT public_id FROM players WHERE id=?', p.player_id)!.public_id : undefined,
       score: p.score, pos: p.pos, team: p.team || undefined, candidate: showSt ? p.player_id === showSt.candidate : undefined, alive: !!p.alive, rank: i + 1, is_me: p.player_id === viewer,
-      answered: g.mode === 'blitz' ? undefined : g.status === 'question' ? answers.some((a) => a.player_id === p.player_id) : g.status === 'bet' ? bets.some((b) => b.player_id === p.player_id) : undefined })),
+      answered: g.mode === 'blitz' ? undefined : g.status === 'question' ? (est ? gs.some((x) => x.player_id === p.player_id) : answers.some((a) => a.player_id === p.player_id)) : g.status === 'bet' ? bets.some((b) => b.player_id === p.player_id) : undefined })),
     me: ps.some((p) => p.player_id === viewer) ? {
-      answered: !!mine, choice: mine && reveal ? mine.choice : undefined, correct: mine && reveal ? !!mine.correct : undefined,
-      points: g.mode === 'bet' ? (reveal ? myBet?.delta ?? 0 : undefined) : mine && reveal ? mine.points : undefined, team: ps.find((p) => p.player_id === viewer)!.team || undefined, bet: myBet?.amount,
+      answered: !!mine || !!myGuess, choice: mine && reveal ? mine.choice : undefined, correct: mine && reveal ? !!mine.correct : undefined,
+      points: g.mode === 'bet' ? (reveal ? myBet?.delta ?? 0 : undefined) : myGuess && reveal ? myGuess.points : mine && reveal ? mine.points : undefined, team: ps.find((p) => p.player_id === viewer)!.team || undefined, bet: myBet?.amount,
       alive: !!ps.find((p) => p.player_id === viewer)!.alive, score: ps.find((p) => p.player_id === viewer)!.score, rank: rank.findIndex((p) => p.player_id === viewer) + 1,
     } : null,
+    estimate: est && (g.status === 'question' || reveal) ? {
+      text: est.text, unit: est.unit, category: est.category, my_guess: myGuess?.value,
+      ...(reveal ? { answer: est.answer, explanation: est.explanation, guesses: [...gs].map((x) => ({ name: pname(x.player_id), value: x.value, points: x.points, rank: estScores!.get(x.player_id)!.rank, error: estScores!.get(x.player_id)!.error, is_me: x.player_id === viewer })).sort((a, b) => a.rank - b.rank) } : {}),
+    } : undefined,
     question: q && g.status === 'bet' ? { category: q.category, difficulty: q.difficulty, bet_phase: true } : q && (g.status === 'question' || reveal) ? {
       text: q.text, options: shown(q, JSON.parse(rq!.perm)), category: q.category,
       ...(reveal ? { correct_index: correctIdx, explanation: q.explanation, counts: [0, 1, 2, 3].map((c) => answers.filter((a) => a.choice === c).length) } : {}),
