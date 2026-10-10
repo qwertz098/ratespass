@@ -118,6 +118,7 @@ textarea { min-height: 84px; resize: vertical; }
 #toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); background: var(--text); color: var(--bg); padding: 12px 18px; border-radius: 14px; opacity: 0; pointer-events: none; transition: .25s; max-width: calc(100% - 32px); font-weight: 600; z-index: 10; }
 #toast.show { opacity: 1; transform: translate(-50%, 0); }
 .fade { animation: fade .25s ease both; }
+.fade.soft { animation: none }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 .row .spinner { margin: 0; flex: none; }
@@ -242,3 +243,23 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
 .tile.quiz { background: var(--accent); color: var(--accent-ink) }
 .tile.wordle { background: #16a34a }
 .lbrow .btn { min-height: 52px; padding: 6px 10px; line-height: 1.2; text-align: center }
+
+/* Quiz-Fragen: auf niedrigen Displays alles ohne Scrollen (Frage, Timer, 4 Antworten, Erklärung, „Weiter“) */
+.timer.done { display: none }
+@media (max-height: 820px) {
+  #app { padding: 8px 12px 12px }
+  .top { min-height: 40px }
+  #app > .fade { gap: 8px }
+  .card.qcard { padding: 12px }
+  .qcard .q-head { margin-bottom: 8px }
+  .qcard .timer { margin-bottom: 10px }
+  .qcard .question { font-size: 20px; min-height: 0; margin-bottom: 10px }
+  .qcard .opts { gap: 8px }
+  .qcard .opt { padding: 10px 12px; min-height: 48px }
+  .qcard .feedback { margin-top: 8px; min-height: 40px }
+  .qcard .feedback + p, .qcard p.muted { font-size: 14px }
+}
+@media (max-height: 640px) {
+  .qcard .question { font-size: 18px }
+  .qcard .opt { padding: 8px 10px; min-height: 44px }
+}

@@ -114,16 +114,28 @@ function gameLang() {
 let cleanup = () => {}
 let runId = 0
 const go = (hash) => { if (location.hash === hash) route(); else location.hash = hash }
+/** Wie go(), ersetzt aber den aktuellen Verlaufseintrag: für das Betreten und Verlassen der Spielbildschirme (Übersicht ↔ Frage), damit „Zurück“ nicht zwischen beiden hin- und herspringt. */
+const goReplace = (hash) => { if (location.hash === hash) route(); else location.replace(location.pathname + location.search + hash) }
 
-function mount(...nodes) {
-  $app.replaceChildren(h('div', { class: 'fade' }, ...nodes))
-  window.scrollTo(0, 0)
+let mountedRun = 0, refreshing = false
+/** Inhalt der Seite ersetzen. Beim ersten Mount eines Laufs (Navigation): einblenden und nach oben scrollen. Bei Auto-Aktualisierungen im selben Lauf
+ *  (poll, Live-Zustände): ohne Einblenden und ohne Scroll-Sprung, damit die Seite nicht sichtbar „blinkt“. */
+function mount(...nodes) { place(nodes, refreshing && mountedRun === runId) }
+function place(nodes, soft) {
+  const y = window.scrollY
+  $app.replaceChildren(h('div', { class: soft ? 'fade soft' : 'fade' }, ...nodes))
+  if (soft) window.scrollTo(0, y); else window.scrollTo(0, 0)
+  mountedRun = runId
 }
 const loading = () => $app.replaceChildren(h('div', { class: 'spinner', 'aria-label': t('loading') }))
 
+/** true, wenn `data` dem vorherigen Aufruf dieser Ansicht entspricht (Auto-Aktualisierung ohne Änderung braucht kein Neuzeichnen). */
+const makeUnchanged = () => { let last; return (data) => { const j = JSON.stringify(data); const same = j === last; last = j; return same } }
+
 function poll(fn, ms) {
-  const id = setInterval(() => { if (!document.hidden) fn() }, ms)
-  const onVis = () => { if (!document.hidden) fn() }
+  const tick = async () => { refreshing = true; try { await fn() } finally { refreshing = false } }
+  const id = setInterval(() => { if (!document.hidden) tick() }, ms)
+  const onVis = () => { if (!document.hidden) tick() }
   document.addEventListener('visibilitychange', onVis)
   const prev = cleanup
   cleanup = () => { prev(); clearInterval(id); document.removeEventListener('visibilitychange', onVis) }
@@ -242,6 +254,7 @@ function sessionLost() {
 /* ---------- Startseite ---------- */
 async function home(_, my) {
   let wordleOpen = 0
+  const unchanged = makeUnchanged()
   const render = (games, rooms = []) => {
     if (my !== runId) return
     const mine = games.filter((g) => g.status === 'active' && g.turn === 'me')
@@ -263,7 +276,7 @@ async function home(_, my) {
   const load = guard(async () => {
     const [g, r, w] = await Promise.all([api('GET', '/api/games'), api('GET', '/api/rooms'), api('GET', '/api/wordle').catch(() => null)])
     wordleOpen = w ? w.langs.filter((l) => l.lang === getLang() && !l.daily).length + w.groups.filter((x) => !x.today || x.today.status === 'playing').length : 0
-    render(g.games, r.rooms)
+    if (!unchanged([g.games, r.rooms, wordleOpen])) render(g.games, r.rooms)
   })
   await load()
   poll(load, 10000)
@@ -416,6 +429,7 @@ async function sofa() {
       const ok = choice === q.correct_index
       if (ok) p.score++
       buttons.forEach((b) => (b.disabled = true))
+      bar.parentNode?.classList.add('done') // Platz für Erklärung und „Weiter“
       buttons[q.correct_index].classList.add('good')
       if (choice >= 0 && !ok) buttons[choice].classList.add('bad')
       feedback.append(h('strong', {}, choice === -1 ? t('play.timeUp') : ok ? t('play.right') : t('play.wrong')),
@@ -491,7 +505,8 @@ async function wordleHub(my) {
       h('button', { class: 'btn block', onclick: () => go('#/wordle/board') }, '🏆 ' + t('wordle.board')))
     function setExtra() { const box = document.getElementById('wextra'); box.replaceChildren(...(creating ? [createCard] : duel ? [duelCard] : [])) }
   }
-  const load = guard(async () => render(await api('GET', `/api/wordle?tz=${encodeURIComponent(localTz())}`)))
+  const unchanged = makeUnchanged()
+  const load = guard(async () => { const d = await api('GET', `/api/wordle?tz=${encodeURIComponent(localTz())}`); if (!unchanged(d)) render(d) })
   await load()
   poll(load, 60000)
 }
@@ -685,8 +700,8 @@ function actions(g, id) {
   }
   if (g.turn === 'me' && g.phase === 'pick') return [h('h3', {}, t('game.pick')),
     h('div', { class: 'cats' }, g.options.map((c) => h('button', { class: 'cat-btn', cat: c,
-      onclick: guard(async () => { await api('POST', `/api/games/${id}/pick`, { category: c }); go('#/play/' + id) }) }, t('cat.' + c))))]
-  if (g.turn === 'me') return [h('button', { class: 'btn primary block', onclick: () => go('#/play/' + id) }, t(g.rounds.find((r) => r.n === g.round)?.me.some((x) => x !== null) ? 'game.continue' : 'game.play'))]
+      onclick: guard(async () => { await api('POST', `/api/games/${id}/pick`, { category: c }); goReplace('#/play/' + id) }) }, t('cat.' + c))))]
+  if (g.turn === 'me') return [h('button', { class: 'btn primary block', onclick: () => goReplace('#/play/' + id) }, t(g.rounds.find((r) => r.n === g.round)?.me.some((x) => x !== null) ? 'game.continue' : 'game.play'))]
   return [h('div', { class: 'row' }, avatar(g.opp, 'sm'), h('div', {}, t('game.oppTurn', { name: g.opp?.name }))),
     g.idle_hours >= 1 ? h('p', { class: 'hint' }, t('game.idle', { name: g.opp?.name, h: g.idle_hours })) : null,
     g.can_takeover ? h('button', { class: 'btn block', onclick: guard(async () => {
@@ -705,7 +720,7 @@ async function play(id, my) {
   while (alive()) {
     let q
     try { q = await api('GET', `/api/games/${id}/question`) } catch (e) {
-      if (e.status === 409) return go('#/game/' + id)
+      if (e.status === 409) return goReplace('#/game/' + id)
       throw e
     }
     if (!alive()) return
@@ -734,6 +749,7 @@ async function play(id, my) {
         done = true
         cancelAnimationFrame(raf)
         buttons.forEach((b) => (b.disabled = true))
+        bar.parentNode?.classList.add('done') // Platz für Erklärung und „Weiter“
         let r
         try { r = await api('POST', `/api/games/${id}/answer`, { idx: q.idx, choice }) } catch (e) { toast(errText(e)); return resolve({ error: true }) }
         buttons[r.correct_index]?.classList.add('good')
@@ -762,9 +778,10 @@ async function play(id, my) {
       }
     })
     if (keyHandler) document.removeEventListener('keydown', keyHandler)
-    if (answered.error || !alive()) return go('#/game/' + id)
+    if (!alive()) return // schon woanders (Zurück gedrückt): nicht zurückholen
+    if (answered.error) return goReplace('#/game/' + id)
     const g = answered.r.game
-    if (q.idx >= q.total - 1 || g.turn !== 'me' || g.status !== 'active' || g.phase !== 'play') return go('#/game/' + id)
+    if (q.idx >= q.total - 1 || g.turn !== 'me' || g.status !== 'active' || g.phase !== 'play') return goReplace('#/game/' + id)
     await sleep(50)
   }
 }
@@ -829,6 +846,7 @@ function connectLive(id, onState, onGone) {
 }
 
 async function live(id, my) {
+  const mount = (...nodes) => place(nodes, mountedRun === runId) // jeder Live-Zustand ersetzt den Inhalt weich (kein Einblenden, kein Scroll-Sprung)
   let raf = 0, lastQr = '', offset = 0
   const prev = cleanup
   cleanup = () => { prev(); cancelAnimationFrame(raf); document.getElementById('app').classList.remove('wide') }
@@ -1138,7 +1156,7 @@ async function ladder(id) {
     result,
     active ? h('div', { class: 'card stack' },
       h('p', { class: 'muted' }, t('ladder.rules')),
-      h('button', { class: 'btn primary block', onclick: () => go('#/lplay/' + id) }, t(l.answered ? 'ladder.continue' : 'ladder.begin', { n: l.current })),
+      h('button', { class: 'btn primary block', onclick: () => goReplace('#/lplay/' + id) }, t(l.answered ? 'ladder.continue' : 'ladder.begin', { n: l.current })),
       l.answered ? h('button', { class: 'btn block danger', onclick: guard(async () => {
         if (!confirm(t('ladder.quitConfirm', { prize: money(l.banked) }))) return
         await api('POST', `/api/ladders/${id}/quit`, {}); route() }) }, t('ladder.quit', { prize: money(l.banked) })) : null) : null,
@@ -1153,7 +1171,7 @@ async function askOne(base, back, my, chain = false) {
   const alive = () => my === runId
   let q
   try { q = await api('GET', `${base}/question`) } catch (e) {
-    if (e.status === 409) return go(back)
+    if (e.status === 409) return goReplace(back)
     throw e
   }
   if (!alive()) return
@@ -1182,6 +1200,7 @@ async function askOne(base, back, my, chain = false) {
       done = true
       cancelAnimationFrame(raf)
       buttons.forEach((b) => (b.disabled = true))
+      bar.parentNode?.classList.add('done') // Platz für Erklärung und „Weiter“
       let r
       try { r = await api('POST', `${base}/answer`, { step: q.step, choice }) } catch (e) { toast(errText(e)); return resolve() }
       buttons[r.correct_index]?.classList.add('good')
@@ -1210,7 +1229,7 @@ async function askOne(base, back, my, chain = false) {
   if (keyHandler) document.removeEventListener('keydown', keyHandler)
   if (!alive()) return
   if (chain && result && !result.over) return askOne(base, back, my, chain) // Raumrunden: direkt zur nächsten Frage
-  go(back)
+  goReplace(back)
 }
 
 const lplay = (id, my) => askOne(`/api/ladders/${id}`, '#/ladder/' + id, my)
@@ -1246,7 +1265,7 @@ async function room(id, my) {
         h('button', { class: 'btn block danger', onclick: guard(async () => { await api('POST', `/api/rooms/${id}/leave`, {}); go('#/') }) }, t(r.is_host ? 'room.dissolve' : 'room.leave')))
     } else if (r.status === 'active') {
       if (!me.done) {
-        actions.push(h('button', { class: 'btn primary block', onclick: () => go('#/rplay/' + id) }, t(me.pos ? 'ladder.continue' : 'ladder.begin', { n: me.pos + 1 })))
+        actions.push(h('button', { class: 'btn primary block', onclick: () => goReplace('#/rplay/' + id) }, t(me.pos ? 'ladder.continue' : 'ladder.begin', { n: me.pos + 1 })))
         if (r.mode === 'ladder' && me.pos) actions.push(h('button', { class: 'btn block danger', onclick: guard(async () => {
           if (!confirm(t('ladder.quitConfirm', { prize: money(me.score) }))) return
           await api('POST', `/api/rooms/${id}/quit`, {}); route() }) }, t('ladder.quit', { prize: money(me.score) })))
