@@ -105,7 +105,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .feedback { margin-top: 14px; min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 
 label.field { display: grid; gap: 6px; font-size: 14px; color: var(--muted); }
-input[type=text], input[type=password], input[type=search], select, textarea { width: 100%; min-height: 46px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
+input[type=text], input[type=password], input[type=search], input[type=number], select, textarea { width: 100%; min-height: 46px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
 textarea { min-height: 84px; resize: vertical; }
 .hint { font-size: 13px; color: var(--muted); }
 .code { font: 700 28px/1 ui-monospace, SFMono-Regular, monospace; letter-spacing: .18em; text-align: center; padding: 16px; background: var(--bg); border-radius: 14px; }
@@ -332,3 +332,7 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
 .install-card summary { cursor: pointer; font-weight: 600; padding: 4px 0 }
 .install-card[open] summary { margin-bottom: 8px }
 .install-card .guide { margin-top: 8px }
+
+/* Auswahlschalter (Segmente) in Karten/Feldern: volle Breite, gleich breite Tasten, Text mittig */
+.stack > .seg, .field > .seg, .card > .seg { display: flex }
+.stack > .seg button, .field > .seg button, .card > .seg button { flex: 1 1 0; text-align: center }
