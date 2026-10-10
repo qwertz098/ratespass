@@ -107,8 +107,16 @@ async function share(url, title, text) {
 /** Einladungslink teilen: gilt für alle Spiele, nicht nur fürs Quiz. */
 const shareInvite = () => share(inviteUrl(), t('app.name'), t('friends.shareText'))
 
+/** Freunde, mit denen gerade ein Quiz-Duell läuft (wartend oder aktiv): Sie werden nicht erneut zum Herausfordern angeboten. */
+async function runningDuels() {
+  try { return new Set((await api('GET', '/api/games')).games.filter((g) => g.status !== 'finished' && g.opp?.public_id).map((g) => g.opp.public_id)) } catch { return new Set() }
+}
+/** Gehört die Wordle-Gruppe zu einem Duell mit diesem Freund? (Duell-Gruppen heißen „A ⚔ B“.) */
+const isDuelWith = (g, c) => g.name === `${S.me.name} ⚔ ${c.name}`.slice(0, 30) || g.name === `${c.name} ⚔ ${S.me.name}`.slice(0, 30)
+
 /** Spielauswahl für einen Freund (Blatt über der Seite): Quiz-Duell oder Wordle-Duell. Beide Spiele laufen asynchron, der Freund bekommt eine Mitteilung. */
-function pickGame(c) {
+async function pickGame(c) {
+  const running = (await runningDuels()).has(c.public_id)
   const close = () => document.querySelector('.sheet.pick')?.remove()
   close()
   const opt = (icon, title, sub, fn) => h('button', { class: 'item', onclick: guard(async () => { await fn(); close() }) },
@@ -116,7 +124,7 @@ function pickGame(c) {
   document.body.append(h('div', { class: 'sheet pick' }, h('div', { class: 'card stack' },
     h('div', { class: 'row' }, avatar(c), h('strong', { class: 'grow ell' }, t('friends.pickGame', { name: c.name })), h('button', { class: 'btn small', 'aria-label': t('review.cancel'), onclick: close }, '✕')),
     h('div', { class: 'list' },
-      opt('🧠', t('game.quizDuel'), t('game.quizDuelSub'), async () => { const r = await api('POST', '/api/games', { opponent: c.public_id, lang: gameLang() }); go('#/game/' + r.id) }),
+      opt('🧠', t('game.quizDuel'), t(running ? 'game.quizDuelRunning' : 'game.quizDuelSub'), async () => { const r = await api('POST', '/api/games', { opponent: c.public_id, lang: gameLang() }); go('#/game/' + r.id) }),
       opt('🟩', t('game.wordleDuel'), t('game.wordleDuelSub'), async () => { const r = await api('POST', '/api/wordle/duel', { public_id: c.public_id, lang: wlangs()[0] ?? 'de' }); toast(t('wordle.duelSent', { name: c.name })); go('#/wordle/group/' + r.group.id) })))))
 }
 
@@ -347,6 +355,8 @@ function gameItem(g) {
 
 /* ---------- Neues Spiel ---------- */
 async function newGame() {
+  const busy = await runningDuels()
+  const free = S.contacts.filter((c) => !busy.has(c.public_id))
   const start = guard(async (opponent) => {
     const r = await api('POST', '/api/games', { opponent, lang: gameLang() })
     go('#/game/' + r.id)
@@ -357,7 +367,7 @@ async function newGame() {
   const option = (title, sub, icon, fn) => h('button', { class: 'item', onclick: fn },
     h('div', { class: 'avatar sm' }, icon), h('div', { class: 'grow' }, h('div', {}, title), h('div', { class: 'muted' }, sub)))
   mount(topbar(t('new.title')),
-    S.contacts.length ? [h('h2', {}, t('new.challengeKnown')), h('div', { class: 'list' }, S.contacts.map((c) => h('button', { class: 'item', onclick: () => start(c.public_id) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, t('profile.challenge')))))] : null,
+    free.length ? [h('h2', {}, t('new.challengeKnown')), h('div', { class: 'list' }, free.map((c) => h('button', { class: 'item', onclick: () => start(c.public_id) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, t('profile.challenge')))))] : null,
     h('h2', {}, t('new.duel')),
     h('div', { class: 'list' },
       option(t('new.random'), t('new.randomSub'), '🎲', () => start('random')),
@@ -563,9 +573,10 @@ async function wordleHub(my) {
     let newLang = getLang(), newName = h('input', { type: 'text', maxLength: 30, placeholder: t('wordle.groupName'), autocomplete: 'off' }), joinCode = h('input', { type: 'text', maxLength: 120, placeholder: 'ABC23DEF', autocapitalize: 'characters', autocomplete: 'off' })
     const createCard = h('div', { class: 'card stack' }, h('label', { class: 'field' }, t('wordle.groupName'), newName), langSeg(() => newLang, (l) => (newLang = l)),
       h('button', { class: 'btn primary block', onclick: guard(async () => { const r = await api('POST', '/api/wordle/groups', { name: newName.value, lang: newLang }); go('#/wordle/group/' + r.group.id) }) }, t('wordle.newGroup')))
+    const freeW = S.contacts.filter((c) => !d.groups.some((g) => isDuelWith(g, c)))
     const duelCard = h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('wordle.duelInfo')), langSeg(() => newLang, (l) => (newLang = l)),
-      S.contacts.length ? h('div', { class: 'list' }, S.contacts.map((c) => h('button', { class: 'item', onclick: guard(async () => { const r = await api('POST', '/api/wordle/duel', { public_id: c.public_id, lang: newLang }); toast(t('wordle.duelSent', { name: c.name })); go('#/wordle/group/' + r.group.id) }) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, '⚔'))))
-        : [h('p', { class: 'hint' }, t('new.noContacts')), h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend'))])
+      freeW.length ? h('div', { class: 'list' }, freeW.map((c) => h('button', { class: 'item', onclick: guard(async () => { const r = await api('POST', '/api/wordle/duel', { public_id: c.public_id, lang: newLang }); toast(t('wordle.duelSent', { name: c.name })); go('#/wordle/group/' + r.group.id) }) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, '⚔'))))
+        : S.contacts.length ? h('p', { class: 'hint' }, t('wordle.duelAll')) : [h('p', { class: 'hint' }, t('new.noContacts')), h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend'))])
     mount(topbar(t('wordle.title')),
       h('p', { class: 'hint' }, t('wordle.sub')),
       wlangs().map((lang) => h('div', { class: 'card stack' },

@@ -171,6 +171,10 @@ test('Duell: Einladung als Gruppe, Beitritt per Code', async () => {
   const d = (await call('POST', '/api/wordle/duel', { public_id: b.player.public_id, lang: 'de' }, a.token)).json.group
   assert.match(d.name, /Duell Eins/); assert.equal(d.members.length, 1, 'Eingeladene treten selbst bei')
   assert.equal((await call('POST', '/api/wordle/groups/join', { code: d.code }, b.token)).json.group.members.length, 2)
+  // Je Person nur ein Duell: erneutes Einladen (von beiden Seiten) öffnet dieselbe Gruppe
+  assert.equal((await call('POST', '/api/wordle/duel', { public_id: b.player.public_id, lang: 'de' }, a.token)).json.group.id, d.id)
+  await call('POST', '/api/contacts', { public_id: a.player.public_id }, b.token)
+  assert.equal((await call('POST', '/api/wordle/duel', { public_id: a.player.public_id, lang: 'de' }, b.token)).json.group.id, d.id)
 })
 
 test('Bestenliste global: nur Teilnehmer mit Bestenlisten-Namen; Zeiträume; Streak', async () => {

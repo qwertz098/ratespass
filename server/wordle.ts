@@ -278,7 +278,13 @@ export function groupBoard(me: PlayerRow, groupId: number, rawScope: unknown) {
 export function duelInvite(me: PlayerRow, publicId: unknown, lang: unknown) {
   const other = get<PlayerRow>('SELECT * FROM players WHERE public_id=? AND deleted=0 AND is_bot=0', String(publicId ?? '').toUpperCase())
   if (!other || other.id === me.id) throw new HttpError(404, 'unknown_player')
-  const group = createGroup(me, `${me.name} ⚔ ${other.name}`.slice(0, 30), lang)
+  // Je Person läuft höchstens ein Duell: gibt es schon eine Duell-Gruppe der beiden (egal wer sie angelegt hat), wird sie geöffnet statt eine weitere anzulegen
+  const names = [`${me.name} ⚔ ${other.name}`.slice(0, 30), `${other.name} ⚔ ${me.name}`.slice(0, 30)]
+  const open = get<{ id: number }>(
+    `SELECT g.id FROM wordle_groups g JOIN wordle_members m ON m.group_id=g.id AND m.player_id=? WHERE g.name IN (?,?) AND g.lang=?
+       AND (g.owner=? OR EXISTS (SELECT 1 FROM wordle_members o WHERE o.group_id=g.id AND o.player_id=?)) ORDER BY g.id DESC LIMIT 1`, me.id, names[0], names[1], String(lang), me.id, other.id)
+  if (open) return groupView(me, open.id)
+  const group = createGroup(me, names[0], lang)
   inviteMessage(other, me, group.code, group.name)
   return group
 }
