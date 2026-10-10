@@ -511,7 +511,7 @@ async function play(id, my) {
 }
 
 /* ---------- Live-Gesellschaftsspiel (Echtzeit) ---------- */
-const LIVE_MODES = ['tempo', 'survival', 'race', 'bet', 'show'], LIVE_TEAM_MODES = ['tempo', 'bet']
+const LIVE_MODES = ['tempo', 'survival', 'race', 'bet', 'show', 'blitz'], LIVE_TEAM_MODES = ['tempo', 'bet', 'blitz']
 const LETTERS = ['A', 'B', 'C', 'D']
 const liveLink = (token) => `${location.origin}/#/live-join/${token}`
 
@@ -579,7 +579,8 @@ async function live(id, my) {
     s.mode === 'race' && s.status !== 'lobby' ? h('div', { class: 'lane', title: String(p.pos) }, h('i', { style: `width:${Math.min(100, Math.round((p.pos / s.race_length) * 100))}%` })) : null,
     s.mode === 'race' && s.status !== 'lobby' ? h('span', { class: 'score' }, `${Math.min(p.pos, s.race_length)}/${s.race_length}`) : null,
     p.candidate ? h('span', { class: 'badge' }, '🎤') : null,
-    (s.mode === 'tempo' || s.mode === 'bet' || s.mode === 'show') && s.status !== 'lobby' ? h('span', { class: 'score' }, String(p.score)) : null,
+    s.mode === 'blitz' && s.status !== 'lobby' ? h('div', { class: 'lane', title: String(p.score) }, h('i', { style: `width:${Math.round((p.score / Math.max(1, ...s.players.map((x) => x.score))) * 100)}%` })) : null,
+    (s.mode === 'tempo' || s.mode === 'bet' || s.mode === 'show' || s.mode === 'blitz') && s.status !== 'lobby' ? h('span', { class: 'score' }, String(p.score)) : null,
     kick && p.public_id && !p.is_me ? h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: act('kick', { public_id: p.public_id }) }, '✕') : null)))
   const hostBar = (s) => s.is_host && s.status !== 'finished' ? h('div', { class: 'row wrap' },
     s.status !== 'lobby' ? h('button', { class: 'btn small primary', onclick: act('next') }, t(s.status === 'question' ? 'live.endQuestion' : 'live.next')) : null,
@@ -594,6 +595,7 @@ async function live(id, my) {
       s.is_host ? h('div', { class: 'card stack qrcard' }, qr, h('p', { class: 'muted' }, t('live.scan')),
         h('button', { class: 'btn small', onclick: act('renew') }, t('live.renew'))) : h('div', { class: 'card stack' }, h('h3', {}, t('live.waiting')), h('p', { class: 'muted' }, t('live.waitHost'))),
       s.is_host ? h('div', { class: 'card stack' }, seg('mode', LIVE_MODES.map((m) => [m, 'live.mode.' + m]), s.mode), h('p', { class: 'hint' }, t('live.modeInfo.' + s.mode)),
+        s.mode === 'blitz' ? seg('duration', [[45, 'live.blitz.45'], [60, 'live.blitz.60'], [90, 'live.blitz.90']], s.blitz?.duration ?? 60) : null,
         LIVE_TEAM_MODES.includes(s.mode) ? [seg('teams', [[0, 'live.teams.off'], [2, 'live.teams.2'], [3, 'live.teams.3'], [4, 'live.teams.4']], s.teams), h('p', { class: 'hint' }, t('live.teamsInfo'))] : null,
         seg('screen', [[true, 'live.screen.on'], [false, 'live.screen.off']], s.screen), h('p', { class: 'hint' }, t(s.screen ? 'live.screenInfo.on' : 'live.screenInfo.off'))) : null,
       s.teams && s.me ? h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('live.teamPick')), h('div', { class: 'row wrap' },
@@ -692,12 +694,47 @@ async function live(id, my) {
       hostBar(s))
   }
 
-  const finished = (s) => mount(topbar(t('live.title'), true),
+  /** Blitzrunde: jeder im eigenen Tempo; Handys leben von den Antwort-Rückgaben, der Bildschirm zeigt den Zwischenstand. */
+  let bl = null, flash = null, lockTimer = 0
+  const blitzView = (s) => {
+    const display = s.is_host && s.screen
+    if (display) {
+      return mount(topbar(t('live.title'), false),
+        h('div', { class: 'card stack' }, h('h3', {}, t('live.mode.blitz')), timerBar(s), h('p', { class: 'muted' }, t('live.blitz.screen'))),
+        h('div', { class: 'card stack' }, players(s, false)), hostBar(s))
+    }
+    if (!bl || !s.blitz?.me) bl = s.blitz?.me ?? null
+    const me = bl
+    if (!me) return mount(topbar(t('live.title'), false), h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('live.spectate'))))
+    clearTimeout(lockTimer)
+    const locked = me.lock_ms > 0
+    if (locked) lockTimer = setTimeout(() => { bl = { ...bl, lock_ms: 0 }; blitzView(s) }, me.lock_ms)
+    const q = me.question
+    const answerIt = async (i) => {
+      try {
+        const r = await api('POST', `/api/live/${id}/answer`, { idx: me.n, choice: i })
+        flash = { choice: i, correct_index: r.correct_index, ok: r.correct }; bl = r.blitz
+        blitzView(s)
+        setTimeout(() => { flash = null; blitzView(s) }, 350)
+      } catch (e) {
+        toast(errText(e)); const st = await api('GET', `/api/live/${id}`).catch(() => null); if (st) { bl = st.live.blitz?.me ?? bl; if (st.live.status !== 'question') return render(st.live) } blitzView(s)
+      }
+    }
+    mount(topbar(t('live.title'), false),
+      h('div', { class: 'card qcard' }, h('div', { class: 'q-head' }, q ? catChip(q.category) : null, h('span', { class: 'muted' }, t('live.blitz.score', { n: me.score }))), timerBar(s),
+        q ? [h('div', { class: 'question' }, q.text),
+          locked ? h('p', { class: 'hint' }, '⏸ ' + t('live.blitz.pause')) : null,
+          h('div', { class: 'opts' }, q.options.map((text, i) => h('button', { class: 'opt' + (flash ? (i === flash.correct_index ? ' good' : i === flash.choice ? ' bad' : ' dim') : ''), disabled: locked || !!flash, onclick: () => answerIt(i) }, h('kbd', {}, String(i + 1)), h('span', {}, text))))]
+          : h('div', { class: 'question' }, t('live.blitz.done'))),
+      s.is_host ? hostBar(s) : null)
+  }
+
+  const finished = (s) => (bl = null, mount(topbar(t('live.title'), true),
     h('div', { class: 'card stack lresult' }, h('h3', {}, t('live.finished')), s.team_rank ? h('div', { class: 'big' }, '🏆 ' + t('live.team', { n: s.team_rank[0].team })) : s.players[0] ? h('div', { class: 'big' }, '🏆 ' + s.players[0].name) : null),
     s.team_rank ? [h('h2', {}, t('live.teamRank')), teamBoard(s)] : null,
     s.show?.results?.length ? [h('h2', {}, t('show.results')), h('div', { class: 'list' }, s.show.results.map((r) => h('div', { class: 'item' }, h('div', { class: 'grow ell' }, r.name), h('span', { class: 'badge' }, t('show.how.' + r.how)), h('span', { class: 'score' }, money(r.prize)))))] : null,
     h('h2', {}, t('room.ranking')), players(s, false),
-    h('button', { class: 'btn block', onclick: () => go('#/') }, t('ladder.home')))
+    h('button', { class: 'btn block', onclick: () => go('#/') }, t('ladder.home'))))
 
   let rendering = false, pending = null
   const render = async (s) => {
@@ -708,6 +745,7 @@ async function live(id, my) {
     try {
       if (s.status === 'lobby') { if (!document.activeElement || document.activeElement === document.body || s.token !== lastQr) { lastQr = s.token; await lobby(s) } else await lobby(s) }
       else if (s.status === 'finished') finished(s)
+      else if (s.mode === 'blitz' && s.status === 'question') { if (!(bl && !(s.is_host && s.screen))) blitzView(s) }
       else if (s.status === 'bet' && s.question) betView(s)
       else if (s.question) question(s)
     } finally { rendering = false }

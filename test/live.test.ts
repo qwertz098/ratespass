@@ -8,7 +8,7 @@ const { call, newPlayer, base } = t
 for (const f of ['original-001', 'original-002']) assert.deepEqual(importBatch(JSON.parse(fs.readFileSync(new URL(`../batches/${f}.json`, import.meta.url), 'utf8'))).errors, [])
 const { config } = await import('../server/config.ts')
 const live = await import('../server/live.ts')
-Object.assign(config.live, { questionMs: 700, revealMs: 120, tempoQuestions: 3, raceQuestions: 14, betQuestions: 3, betMs: 400 })
+Object.assign(config.live, { questionMs: 700, revealMs: 120, tempoQuestions: 3, raceQuestions: 14, betQuestions: 3, betMs: 400, blitzMinMs: 0, blitzLockMs: 250 })
 test.after(() => { live.closeAll(); t.close() })
 
 /** SSE-Client: sammelt `state`-Ereignisse. */
@@ -294,4 +294,47 @@ test('Quizshow: Schnellster Finger wählt den Kandidaten, Joker (50:50, Publikum
   const fin = await w.waitFor((s) => s.status === 'finished', 4000)
   assert.equal(fin.show.results.length, 3); assert.equal(fin.players[0].name, 'Kandidatin A', 'A hat 100 + Publikumspunkte')
   w.close()
+})
+
+test('Blitzrunde: eigenes Tempo, gleiche Fragenliste, Sperre nach falsch, Handys bekommen nur Antwort-Rückgaben, Ende nach Ablauf der Zeit', async () => {
+  const [h, a, b] = [await newPlayer('Blitz Host'), await newPlayer('Blitz Schnell'), await newPlayer('Blitz Fehler')]
+  const c = (await call('POST', '/api/live', { mode: 'blitz', screen: true }, h.token)).json
+  assert.equal((await call('POST', `/api/live/${c.id}/settings`, { duration: 50 }, h.token)).status, 400)
+  assert.equal((await call('POST', `/api/live/${c.id}/settings`, { duration: 45 }, h.token)).status, 200)
+  for (const p of [a, b]) await call('POST', '/api/live/join', { token: c.live.token }, p.token)
+  const wh = await watch(h.token, c.id), wa = await watch(a.token, c.id)
+  await call('POST', `/api/live/${c.id}/start`, {}, h.token)
+  assert.equal(all('SELECT 1 FROM live_questions WHERE game_id=?', c.id).length, 60)
+  const s0 = await wa.waitFor((s) => s.status === 'question'); assert.equal(s0.blitz.me.n, 0); assert.ok(s0.blitz.me.question.text); assert.equal(s0.question, null, 'keine gemeinsame Frage')
+  assert.ok(Math.abs((s0.phase_until - s0.now) - Math.round(45 * 1000 * 700 / 20000)) < 80, 'Spielzeit 45 s (skaliert)')
+  // A: drei richtige in Folge, jeweils mit der Rückgabe der nächsten Frage
+  let me = s0.blitz.me
+  for (let i = 0; i < 3; i++) {
+    const r = await answer(a.token, c.id, i, correctOf(c.id, i))
+    assert.equal(r.status, 200); assert.equal(r.json.correct, true); assert.equal(r.json.blitz.n, i + 1); me = r.json.blitz
+  }
+  assert.equal(me.score, 3); assert.ok(me.question.text)
+  assert.equal((await answer(a.token, c.id, 1, 0)).status, 400, 'nur die aktuelle persönliche Frage')
+  // B: falsch → Sperre
+  const w1 = await answer(b.token, c.id, 0, wrongOf(c.id, 0)); assert.equal(w1.json.correct, false); assert.ok(w1.json.blitz.lock_ms > 0)
+  assert.equal((await answer(b.token, c.id, 1, correctOf(c.id, 1))).status, 409, 'während der Sperre keine Antwort')
+  await new Promise((r) => setTimeout(r, 300))
+  assert.equal((await answer(b.token, c.id, 1, correctOf(c.id, 1))).json.blitz.score, 1)
+  // Host-Bildschirm bekommt gedrosselte Zwischenstände, Handy nicht (außer Start/Ende)
+  const hs = await wh.waitFor((s) => s.status === 'question' && s.players.some((p: any) => p.score === 3), 3000)
+  assert.deepEqual(hs.players.map((p: any) => [p.name, p.score]), [['Blitz Schnell', 3], ['Blitz Fehler', 1]]); assert.equal(hs.blitz.me, undefined)
+  assert.equal(wa.states.filter((s) => s.status === 'question').length, 1, 'Handy bekommt während der Runde keine Zustände')
+  const fin = await wa.waitFor((s) => s.status === 'finished', 4000)
+  assert.equal(fin.players[0].name, 'Blitz Schnell'); assert.equal((await answer(a.token, c.id, 3, 0)).status, 409, 'nach Ablauf geschlossen')
+  wh.close(); wa.close()
+})
+
+test('Blitzrunde: zu schnelle Antworten (keine Lesezeit) werden abgelehnt', async () => {
+  const [h, a] = [await newPlayer('Lese Host'), await newPlayer('Lese Gast')]
+  const c = (await call('POST', '/api/live', { mode: 'blitz' }, h.token)).json
+  await call('POST', '/api/live/join', { token: c.live.token }, a.token)
+  await call('POST', `/api/live/${c.id}/start`, {}, h.token)
+  Object.assign(config.live, { blitzMinMs: 5000 })
+  try { assert.equal((await answer(a.token, c.id, 0, correctOf(c.id, 0))).status, 429) } finally { Object.assign(config.live, { blitzMinMs: 0 }) }
+  await call('POST', `/api/live/${c.id}/end`, {}, h.token)
 })
