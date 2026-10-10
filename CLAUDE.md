@@ -7,4 +7,4 @@
 - **Echtzeit (Live-Spielabend):** nur Einzelinstanz; Reverse-Proxys dürfen `/api/live/*/events` nicht puffern (Caddyfile `flush_interval -1`). Neue Antwortquellen müssen in `ANSWER_SOURCES` (`server/leaderboard.ts`) und `server/stats.ts` auftauchen.
 - **Korrekturen im Admin** (Moderation/Überarbeitung) werden in `edits` protokolliert und per `npm run apply:edits` in die Batch-Dateien übernommen – die Batch-Dateien sind die Quelle der Wahrheit.
 - **Admin-Token nie im Chat/Code**: nur über `ADMIN_TOKEN` in der Umgebung.
-- Tests: `npm test` (Node ≥ 22.18, keine Laufzeit-Abhängigkeiten); Typen: `npm run check`.
+- Tests: `npm test` (Node ≥ 26, keine Laufzeit-Abhängigkeiten); Typen: `npm run check`.

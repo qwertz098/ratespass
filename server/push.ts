@@ -13,7 +13,7 @@ let vapid: VapidKeys | undefined
 
 function loadVapid(): VapidKeys {
   const file = process.env.VAPID_FILE ?? path.join(config.dataDir, 'vapid.json')
-  let jwk: crypto.JsonWebKey | undefined
+  let jwk: crypto.webcrypto.JsonWebKey | undefined
   if (config.dbPath !== ':memory:' && fs.existsSync(file)) jwk = JSON.parse(fs.readFileSync(file, 'utf8'))
   if (!jwk) {
     jwk = crypto.generateKeyPairSync('ec', { namedCurve: 'prime256v1' }).privateKey.export({ format: 'jwk' })

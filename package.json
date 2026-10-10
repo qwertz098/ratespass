@@ -5,7 +5,7 @@
   "description": "Ratespaß – minimalistischer Quizduell-Clon als PWA",
   "type": "module",
   "engines": {
-    "node": ">=22.18"
+    "node": ">=26"
   },
   "scripts": {
     "start": "node --disable-warning=ExperimentalWarning server/main.ts",
@@ -23,8 +23,8 @@
     "build:demo": "node tools/build-demo.mjs"
   },
   "devDependencies": {
-    "@types/node": "^22.10.0",
-    "typescript": "^5.9.0",
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2",
     "web-push": "^3.6.7"
   }
 }

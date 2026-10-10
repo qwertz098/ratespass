@@ -10,7 +10,7 @@ Minimalistisches Duell-Quiz mit Wordle als **PWA**, betrieben als **ein Docker-C
 - **Optionaler Account** (Benutzername + Passwort): Login auf jedem Gerät, Kontakte zentral gespeichert
 - Mehrsprachig (UI und Fragen: de/en; weitere Sprachen = zusätzliche Texte bzw. Fragen-Batches)
 - Fragen aus mehreren Quellen mit **Lizenz je Frage**, Community-Einreichungen mit Moderation, „Frage melden“-Button, Reviewer-Rolle für Überarbeitungs-Meldungen („falsch“ / „Formulierung“)
-- Keine Laufzeit-Abhängigkeiten (Node 24 führt TypeScript direkt aus, SQLite via `node:sqlite`), kein Build-Schritt fürs Frontend
+- Keine Laufzeit-Abhängigkeiten (Node 26 führt TypeScript direkt aus, SQLite via `node:sqlite`), kein Build-Schritt fürs Frontend
 
 ## Schnellstart
 
@@ -21,7 +21,7 @@ ADMIN_TOKEN=$(openssl rand -hex 16) docker compose up -d --build
 
 Daten liegen im Volume `ratespass-data` (SQLite). Hinter einem Reverse-Proxy (TLS ist für PWA/Service Worker außerhalb von localhost Pflicht) `TRUST_PROXY=1` setzen.
 
-Entwicklung ohne Docker (Node ≥ 22.18):
+Entwicklung ohne Docker (Node ≥ 26):
 
 ```bash
 npm install          # nur typescript + @types/node für `npm run check`

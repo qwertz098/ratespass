@@ -1,5 +1,5 @@
-# Keine Laufzeit-Abhängigkeiten: Node 24 führt TypeScript direkt aus und bringt SQLite (node:sqlite) mit.
-FROM node:24-alpine
+# Keine Laufzeit-Abhängigkeiten: Node 26 führt TypeScript direkt aus und bringt SQLite (node:sqlite) mit.
+FROM node:26-alpine
 ENV NODE_ENV=production DATA_DIR=/data PORT=3000
 WORKDIR /app
 COPY package.json ./
