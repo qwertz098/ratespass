@@ -62,10 +62,9 @@ const WORDS = ${JSON.stringify(words)};
 </script>
 <script type="module">
 ${mock}
-const VERSION = ${JSON.stringify(version)}
 ${i18n}
 ${install}
-${app}
+${app.replaceAll('__APP_VERSION__', version)}
 const tabApp = document.getElementById('tab-app'), tabMod = document.getElementById('tab-mod')
 const showTab = (mod) => { document.getElementById('app').hidden = mod; document.getElementById('mod').hidden = !mod; tabApp.setAttribute('aria-pressed', String(!mod)); tabMod.setAttribute('aria-pressed', String(mod)) }
 tabApp.onclick = () => showTab(false); tabMod.onclick = () => showTab(true)

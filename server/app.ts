@@ -50,7 +50,7 @@ function serveVersion(req: http.IncomingMessage, res: http.ServerResponse, pathn
 function stamp(rel: string, ext: string, body: string): string {
   if (rel.startsWith('/vendor/') || rel === '/sw.js') return body
   if (ext === '.html') return body.replace(/(src|href)="(\/[\w.\-/]+\.(?:js|css))"/g, (m, a, u) => (u.startsWith('/vendor/') ? m : `${a}="${u}?v=${VERSION}"`))
-  if (ext === '.js') return body.replace(/(from\s+['"])(\.\/[\w.-]+\.js)(['"])/g, `$1$2?v=${VERSION}$3`)
+  if (ext === '.js') return body.replace(/(from\s+['"])(\.\/[\w.-]+\.js)(['"])/g, `$1$2?v=${VERSION}$3`).replaceAll('__APP_VERSION__', VERSION)
   return body
 }
 

@@ -23,6 +23,7 @@ test('Versionsstempel: index.html und JS-Module verweisen auf ?v=<Version>; sw.j
   assert.match(index, new RegExp(`src="/app\\.js\\?v=${VERSION.replaceAll('.', '\\.')}"`)); assert.match(index, new RegExp(`href="/style\\.css\\?v=${VERSION.replaceAll('.', '\\.')}"`))
   const app = await (await fetch(`${base}/app.js?v=${VERSION}`)).text()
   assert.match(app, new RegExp(`from './i18n\\.js\\?v=${VERSION.replaceAll('.', '\\.')}'`)); assert.match(app, /from '\.\/install\.js\?v=/)
+  assert.match(app, new RegExp(`const VERSION = '${VERSION.replaceAll('.', '\\.')}'`), 'app.js trägt seine eigene Version fest im Code'); assert.doesNotMatch(app, /__APP_VERSION__/)
   assert.doesNotMatch(await (await fetch(`${base}/sw.js`)).text(), /\?v=\$\{|from '\.\/[a-z]+\.js\?v=/)
   const lib = await fetch(`${base}/vendor/qrcode.js`); assert.equal(lib.status, 200); assert.doesNotMatch((await lib.text()).slice(0, 4000), /\?v=\d/)
   const etag = (await fetch(`${base}/app.js`)).headers.get('etag'); assert.ok(etag)

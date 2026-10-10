@@ -1,6 +1,9 @@
 import { t, setLang, getLang, detectLang, languages, dict } from './i18n.js'
 import { installGuide, detectEnv } from './install.js'
-import { VERSION } from './version.js'
+
+/** Version dieser App-Dateien: der Server setzt sie beim Ausliefern von app.js ein. Sie steht damit fest in dem Code, den der Browser wirklich ausführt –
+ *  anders als /version.js (immer frisch vom Server) verrät sie also, wenn ein Gerät noch alten Code aus dem Zwischenspeicher fährt. */
+const VERSION = '__APP_VERSION__'
 
 /* ---------- Helfer ---------- */
 const $app = document.getElementById('app')
@@ -173,7 +176,7 @@ async function hardReload() {
     await Promise.all(regs.map((r) => r.unregister()))
     if (window.caches) await Promise.all((await caches.keys()).map((k) => caches.delete(k)))
   } catch { /* trotzdem neu laden */ }
-  location.reload()
+  location.replace(`${location.pathname.startsWith('/i/') ? '/' : location.pathname}?r=${Date.now()}${location.hash}`) // frische Adresse statt reload(): umgeht jeden Zwischenspeicher
 }
 /** Vergleicht die geladene App-Version mit der des Servers. Bei Abweichung: einmal automatisch hart aktualisieren, danach Hinweisleiste mit Knopf.
  *  Gibt true zurück, wenn eine neuere Version existiert. `manual` (Profil-Knopf) aktualisiert sofort. */

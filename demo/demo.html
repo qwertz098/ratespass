@@ -85,7 +85,11 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .dots { display: flex; gap: 6px; }
 .dots.r { justify-content: flex-end; }
 .dot { width: 14px; height: 14px; border-radius: 999px; border: 2px solid var(--line); }
-.dot.good { background: var(--good); border-color: var(--good); } .dot.bad { background: var(--bad); border-color: var(--bad); }
+/* Treffer/Fehler in der Rundenübersicht: Teal gegen Orange statt Grün gegen Rot – gut unterscheidbar, auch bei Rot-Grün-Schwäche und auf dunklem Grund */
+.dot { --hit: #0d9488; --miss: #ea580c }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .dot { --hit: #2dd4bf; --miss: #fb923c } }
+:root[data-theme="dark"] .dot { --hit: #2dd4bf; --miss: #fb923c }
+.dot.good { background: var(--hit); border-color: var(--hit); } .dot.bad { background: var(--miss); border-color: var(--miss); }
 
 .cats { display: grid; gap: 10px; }
 .cat-btn { display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 16px; border: 2px solid transparent; background: color-mix(in srgb, var(--c) 14%, var(--surface)); color: var(--text);
@@ -771,7 +775,6 @@ const DEMO = (() => {
   return { reset: () => { try { localStorage.removeItem(KEY) } catch { /* ignorieren */ } location.reload() } }
 })()
 
-const VERSION = "0.0.82"
 // UI-Texte. Neue Sprache = neues Objekt hinzufügen (Schlüssel wie in `de`); Fragen-Sprachen kommen unabhängig vom Server.
 const dict = {
   de: {
@@ -790,8 +793,8 @@ const dict = {
     'home.finished': 'Beendet', 'home.history': 'Verlauf anzeigen ({n} ältere)', 'history.title': 'Verlauf', 'history.empty': 'Noch keine beendeten Spiele.', 'home.empty': 'Noch keine Spiele. Starte dein erstes Duell!', 'home.round': 'Runde {n}/{total}',
     'home.won': 'Gewonnen', 'home.lost': 'Verloren', 'home.draw': 'Unentschieden',
     'new.title': 'Neues Spiel', 'new.random': 'Zufälliger Gegner', 'new.randomSub': 'Wir suchen jemanden für dich',
-    'new.bot': 'Gegen den Bot', 'new.botSub': 'Sofort spielen, jederzeit', 'new.contacts': 'Kontakte', 'new.noContacts': 'Noch keine Kontakte. Teile deinen Einladungslink.',
-    'new.invite': 'Einladungslink teilen', 'new.inviteSub': 'Freunde fordern dich per Link heraus', 'new.questionLang': 'Fragen-Sprache',
+    'new.bot': 'Gegen den Bot', 'new.botSub': 'Sofort spielen, jederzeit', 'new.contacts': 'Kontakte', 'new.noContacts': 'Noch keine Freunde. Lade jemanden ein.',
+    'new.invite': 'Einladungslink teilen', 'new.questionLang': 'Fragen-Sprache',
     'game.vs': 'gegen {name}', 'game.pick': 'Wähle eine Kategorie', 'game.play': 'Runde spielen', 'game.continue': 'Weiterspielen',
     'game.oppTurn': '{name} ist dran', 'game.waitingOpp': 'Wir suchen einen Gegner …', 'game.playBot': 'Stattdessen gegen den Bot', 'game.cancel': 'Abbrechen',
     'game.resign': 'Aufgeben', 'game.resignConfirm': 'Wirklich aufgeben? Dein Gegner gewinnt.', 'game.rematch': 'Revanche', 'game.addContact': 'Als Kontakt speichern',
@@ -862,9 +865,9 @@ const dict = {
     'install.iosOtherBrowser': 'Du nutzt auf dem iPhone/iPad einen anderen Browser als Safari: Das Teilen-Symbol sitzt dort ggf. in der Adressleiste oder im Menü. Am zuverlässigsten klappt es in Safari.', 'install.iosPush': 'Hinweis: Auf dem iPhone funktionieren Benachrichtigungen (z. B. die Wordle-Erinnerung) erst, wenn die App auf dem Home-Bildschirm liegt (iOS 16.4 oder neuer).',
     'install.desktopOther': 'Firefox (Computer) kann Webseiten nicht installieren; in Safari am Mac: Menü Ablage → „Zum Dock hinzufügen“.',
     'wordle.today': 'Heutiges Wordle', 'wordle.streak': '{n} Tage in Folge', 'wordle.groups': 'Gruppen & Duelle', 'wordle.noGroups': 'Noch keine Gruppe – lade Freunde zu einem eigenen Wordle ein.',
-    'wordle.newGroup': 'Gruppe erstellen', 'wordle.groupName': 'Gruppenname', 'wordle.joinGroup': 'Gruppe beitreten', 'wordle.joinAsk': 'Mit dem Code {code} einer Wordle-Gruppe beitreten?', 'wordle.duel': 'Duell mit Bekanntem', 'wordle.duelInfo': 'Erstellt eine Gruppe und lädt die Person per Nachricht ein. Beide spielen dasselbe, eigene Wort.', 'wordle.duelSent': 'Einladung an {name} geschickt',
+    'wordle.newGroup': 'Gruppe erstellen', 'wordle.groupName': 'Gruppenname', 'wordle.joinGroup': 'Gruppe beitreten', 'wordle.joinAsk': 'Mit dem Code {code} einer Wordle-Gruppe beitreten?', 'wordle.duel': 'Duell mit Bekanntem', 'wordle.duelInfo': 'Erstellt eine Gruppe und lädt die Person per Nachricht ein. Beide spielen dasselbe, eigene Wort.', 'wordle.duelAll': 'Mit allen deinen Freunden läuft schon ein Duell.', 'wordle.duelSent': 'Einladung an {name} geschickt',
     'wordle.standToday': 'Stand heute', 'wordle.stillOpen': 'noch offen', 'wordle.allDone': 'heute erledigt ✓', 'wordle.gridLocked': 'Die Raster der anderen siehst du, sobald du heute selbst fertig bist.', 'wordle.boardInfo': 'Dauerwertung der Gruppe: Punkte entstehen nur durch Gruppen-Wordles; wer an einem Tag nicht spielt, bekommt dafür 0 Punkte.', 'wordle.playedWon': '{p} gespielt, {w} gelöst', 'wordle.missed': '{n} verpasst', 'wordle.standing': 'Platz {rank} · {points} Pkt.',
-    'wordle.send': 'In der App senden', 'wordle.groupBoard': 'Gruppenwertung', 'wordle.sendInfo': 'Es werden nur Ausgang, Versuche und das Farbraster gesendet – nie das Wort.', 'wordle.sendNone': 'Du hast noch keine Kontakte oder Gruppen.', 'wordle.sent': 'Gesendet an {name}.', 'wordle.inbox': 'Von Freunden', 'wordle.inboxInfo': 'Geteilte Ergebnisse der letzten 14 Tage. Das Raster siehst du, sobald du dasselbe Wordle selbst gespielt hast.', 'wordle.inboxEmpty': 'Noch nichts geteilt.', 'wordle.feed': 'Geteilt in der Gruppe', 'wordle.shareLocked': 'Raster verborgen – spiele dasselbe Wordle selbst, dann siehst du es.',
+    'wordle.send': 'In der App senden', 'wordle.groupBoard': 'Gruppenwertung', 'wordle.sendInfo': 'Es werden nur Ausgang, Versuche und das Farbraster gesendet – nie das Wort.', 'wordle.sendNone': 'Du hast noch keine Freunde oder Gruppen.', 'wordle.sent': 'Gesendet an {name}.', 'wordle.inbox': 'Von Freunden', 'wordle.inboxInfo': 'Geteilte Ergebnisse der letzten 14 Tage. Das Raster siehst du, sobald du dasselbe Wordle selbst gespielt hast.', 'wordle.inboxEmpty': 'Noch nichts geteilt.', 'wordle.feed': 'Geteilt in der Gruppe', 'wordle.shareLocked': 'Raster verborgen – spiele dasselbe Wordle selbst, dann siehst du es.',
     'err.not_finished': 'Spiele das Wordle erst zu Ende.', 'err.bad_target': 'Bitte genau einen Empfänger wählen.',
     'wordle.member1': '1 Mitglied', 'wordle.scan': 'QR-Code scannen', 'wordle.joinBad': 'Das ist kein gültiger Einladungscode.', 'wordle.members': '{n} Mitglieder', 'wordle.membersTitle': 'Mitglieder', 'wordle.invite': 'Einladen', 'wordle.inviteLink': 'Einladungslink teilen', 'wordle.groupToday': 'Gruppen-Wordle', 'wordle.groupPlay': 'Heutiges Gruppen-Wordle spielen', 'wordle.continue': 'Weiterspielen', 'wordle.toGroup': 'Zur Gruppe', 'wordle.back': 'Zur Übersicht',
     'wordle.leave': 'Gruppe verlassen', 'wordle.delete': 'Gruppe auflösen', 'wordle.leaveConfirm': 'Gruppe verlassen? Deine Gruppen-Spiele werden gelöscht.', 'wordle.deleteConfirm': 'Gruppe für alle auflösen?',
@@ -882,7 +885,7 @@ const dict = {
     'profile.birthYear': 'Geburtsjahr (freiwillig)', 'profile.birthHint': 'Nur das Jahr, nur für anonyme Auswertungen, wie schwer Fragen für verschiedene Altersgruppen sind. Leer lassen ist völlig in Ordnung; du kannst es jederzeit löschen.',
     'profile.title': 'Profil', 'profile.name': 'Anzeigename', 'profile.save': 'Speichern', 'profile.saved': 'Gespeichert',
     'profile.uiLang': 'App-Sprache', 'profile.code': 'Dein Freundescode', 'profile.share': 'Einladungslink teilen', 'profile.copied': 'Link kopiert',
-    'profile.contacts': 'Kontakte', 'profile.challenge': 'Herausfordern', 'profile.remove': 'Entfernen',
+    'profile.contacts': 'Freunde', 'profile.challenge': 'Spielen', 'profile.codeInfo': 'Mit deinem Code finden dich Freunde – und ihr spielt gemeinsam Quiz, Wordle und mehr.', 'profile.remove': 'Entfernen',
     'profile.account': 'Konto (optional)', 'profile.accountInfo': 'Ohne Konto spielst du anonym auf diesem Gerät. Mit Konto kannst du dich auf jedem Gerät einloggen.',
     'profile.username': 'Benutzername', 'profile.password': 'Passwort (min. 8 Zeichen)', 'profile.createAccount': 'Konto anlegen', 'profile.login': 'Einloggen',
     'profile.loggedInAs': 'Angemeldet als {name}', 'profile.logout': 'Abmelden', 'profile.haveAccount': 'Schon ein Konto?',
@@ -891,7 +894,7 @@ const dict = {
     'profile.transferEnter': 'Code vom alten Gerät eingeben', 'profile.transferUse': 'Übernehmen', 'profile.transferValid': 'Gültig für 10 Minuten, einmal nutzbar.',
     'profile.contribute': 'Frage einreichen', 'profile.licenses': 'Lizenzen, Quellen & Fragen-Download', 'profile.dataset': 'Alle Fragen herunterladen', 'profile.legal': 'Impressum & Datenschutz', 'profile.more': 'Mehr',
     'profile.delete': 'Profil löschen', 'profile.deleteConfirm': 'Profil endgültig löschen? Laufende Spiele werden aufgegeben.',
-    'invite.title': '{name} fordert dich heraus', 'invite.accept': 'Annehmen & spielen', 'invite.unknown': 'Dieser Einladungslink ist ungültig.',
+    'invite.title': '{name} lädt dich zum Spielen ein', 'invite.accept': 'Hinzufügen & spielen', 'invite.add': 'Nur als Freund hinzufügen', 'invite.unknown': 'Dieser Einladungslink ist ungültig.',
     'contrib.title': 'Frage einreichen', 'contrib.info': 'Eingereichte Fragen werden geprüft, bevor sie ins Spiel kommen.', 'contrib.lang': 'Sprache', 'contrib.category': 'Kategorie',
     'contrib.difficulty': 'Schwierigkeit', 'contrib.d1': 'Leicht', 'contrib.d2': 'Mittel', 'contrib.d3': 'Schwer', 'contrib.text': 'Frage', 'contrib.correct': 'Richtige Antwort',
     'contrib.wrong': 'Falsche Antwort {n}', 'contrib.explanation': 'Erklärung (optional)', 'contrib.ack': 'Ich bin Urheber:in dieser Frage und stelle sie unter CC BY-SA 4.0 zur Verfügung.',
@@ -900,12 +903,12 @@ const dict = {
     'lic.title': 'Lizenzen & Quellen', 'lic.datasetTitle': 'Fragen herunterladen', 'lic.datasetInfo': 'Alle Fragen als eine Datei (JSON Lines) unter CC BY-SA 4.0 – inklusive Quelle und Lizenz je Frage.', 'lic.intro': 'Die Fragen stammen aus folgenden Quellen. Der gesamte Fragenpool steht unter CC BY-SA 4.0 und kann heruntergeladen werden.', 'lic.count': '{n} Fragen',
     'src.opentdb': 'Open Trivia DB', 'src.wikidata': 'Wikidata', 'src.original': 'Ratespaß-Projekt', 'src.community': 'Community', 'src.llm': 'KI-generiert (geprüft)',
     'friends.title': 'Freunde hinzufügen', 'friends.mine': 'Mein Code', 'friends.enter': 'Code eingeben', 'friends.scan': 'Scannen',
-    'friends.qrHint': 'Dein Freund scannt diesen QR-Code – mit der Kamera-App oder hier unter „Scannen“.', 'friends.copyCode': 'Code kopieren', 'friends.codeCopied': 'Code kopiert',
-    'friends.placeholder': 'Code oder Link einfügen', 'friends.lookup': 'Suchen', 'friends.found': 'Gefunden', 'friends.add': 'Hinzufügen', 'friends.addPlay': 'Hinzufügen & herausfordern',
-    'friends.added': '{name} wurde hinzugefügt', 'friends.notFound': 'Kein Spieler mit diesem Code.', 'friends.self': 'Das ist dein eigener Code.', 'friends.already': 'Schon in deinen Kontakten',
-    'friends.challenge': 'Herausfordern', 'friends.camStart': 'Kamera starten', 'friends.camHint': 'Halte den QR-Code deines Freundes in den Rahmen.',
+    'friends.qrHint': 'Dein Freund scannt diesen QR-Code – mit der Kamera-App oder hier unter „Scannen“. Danach spielt ihr zusammen.', 'friends.copyCode': 'Code kopieren', 'friends.codeCopied': 'Code kopiert',
+    'friends.placeholder': 'Code oder Link einfügen', 'friends.lookup': 'Suchen', 'friends.found': 'Gefunden', 'friends.add': 'Hinzufügen', 'friends.addPlay': 'Hinzufügen & spielen',
+    'friends.added': '{name} wurde hinzugefügt', 'friends.notFound': 'Kein Spieler mit diesem Code.', 'friends.self': 'Das ist dein eigener Code.', 'friends.already': 'Schon in deinen Freunden',
+    'friends.challenge': 'Spielen …', 'friends.invite': 'Freunde einladen', 'friends.pickGame': 'Was spielst du mit {name}?', 'friends.shareText': 'Spiel mit mir auf Quissel – Quiz, Wordle und mehr.', 'game.quizDuel': 'Quiz-Duell', 'game.quizDuelSub': '6 Runden, jeder wann er will', 'game.quizDuelRunning': 'Läuft schon – öffnet das Spiel', 'game.wordleDuel': 'Wordle-Duell', 'game.wordleDuelSub': 'Beide raten täglich ein eigenes Wort', 'friends.camStart': 'Kamera starten', 'friends.camHint': 'Halte den QR-Code deines Freundes in den Rahmen.',
     'friends.noCamera': 'Kamera nicht verfügbar. Scanne den QR-Code stattdessen mit der Kamera-App deines Handys – der Link öffnet Quissel direkt.',
-    'friends.localNote': 'Kontakte werden zusätzlich lokal auf diesem Gerät gespeichert.', 'friends.addFriend': 'Freund hinzufügen',
+    'friends.localNote': 'Freunde werden zusätzlich lokal auf diesem Gerät gespeichert.', 'friends.addFriend': 'Freund hinzufügen',
     'push.title': 'Benachrichtigungen', 'push.info': 'Du bekommst eine Nachricht, wenn du dran bist oder ein Duell endet.', 'push.enable': 'Benachrichtigungen aktivieren',
     'push.disable': 'Ausschalten', 'push.test': 'Test senden', 'push.on': 'Auf diesem Gerät aktiv', 'push.off': 'Auf diesem Gerät aus',
     'push.denied': 'Im Browser blockiert – bitte in den Website-Einstellungen erlauben.', 'push.unsupported': 'Dieser Browser unterstützt keine Push-Nachrichten.',
@@ -917,7 +920,7 @@ const dict = {
     'err.bad_credentials': 'Benutzername oder Passwort falsch.', 'err.username_taken': 'Benutzername schon vergeben.', 'err.bad_username': 'Benutzername: 3–24 Zeichen (a–z, 0–9, _ . -).',
     'err.bad_password': 'Passwort: mindestens 8 Zeichen.', 'err.bad_name': 'Name: 2–24 Zeichen.', 'err.bad_code': 'Code ungültig oder abgelaufen.', 'err.too_many_games': 'Zu viele laufende Spiele.',
     'err.no_questions': 'Für diese Sprache gibt es noch nicht genug Fragen.', 'err.duplicate': 'Diese Frage gibt es schon.', 'err.daily_limit': 'Tageslimit erreicht (10 Fragen).',
-    'err.invalid_question': 'Die Frage ist nicht gültig: {message}', 'err.not_a_contact': 'Nur Kontakte können herausgefordert werden.', 'err.bad_file': 'Das ist keine gültige Profil-Datei.',
+    'err.invalid_question': 'Die Frage ist nicht gültig: {message}', 'err.not_a_contact': 'Nur Freunde können herausgefordert werden.', 'err.bad_file': 'Das ist keine gültige Profil-Datei.',
     'err.unknown_player': 'Spieler nicht gefunden.',
   },
   en: {
@@ -936,8 +939,8 @@ const dict = {
     'home.finished': 'Finished', 'home.history': 'Show history ({n} older)', 'history.title': 'History', 'history.empty': 'No finished games yet.', 'home.empty': 'No games yet. Start your first duel!', 'home.round': 'Round {n}/{total}',
     'home.won': 'Won', 'home.lost': 'Lost', 'home.draw': 'Draw',
     'new.title': 'New game', 'new.random': 'Random opponent', 'new.randomSub': "We'll find someone for you",
-    'new.bot': 'Play the bot', 'new.botSub': 'Play instantly, any time', 'new.contacts': 'Contacts', 'new.noContacts': 'No contacts yet. Share your invite link.',
-    'new.invite': 'Share invite link', 'new.inviteSub': 'Friends can challenge you via link', 'new.questionLang': 'Question language',
+    'new.bot': 'Play the bot', 'new.botSub': 'Play instantly, any time', 'new.contacts': 'Contacts', 'new.noContacts': 'No friends yet. Invite someone.',
+    'new.invite': 'Share invite link', 'new.questionLang': 'Question language',
     'game.vs': 'vs {name}', 'game.pick': 'Pick a category', 'game.play': 'Play round', 'game.continue': 'Continue',
     'game.oppTurn': "{name}'s turn", 'game.waitingOpp': 'Looking for an opponent …', 'game.playBot': 'Play the bot instead', 'game.cancel': 'Cancel',
     'game.resign': 'Resign', 'game.resignConfirm': 'Really resign? Your opponent wins.', 'game.rematch': 'Rematch', 'game.addContact': 'Save as contact',
@@ -1008,9 +1011,9 @@ const dict = {
     'install.iosOtherBrowser': 'You are using a browser other than Safari on iPhone/iPad: the Share icon may be in the address bar or the menu there. It works most reliably in Safari.', 'install.iosPush': 'Note: on iPhone, notifications (e.g. the Wordle reminder) only work once the app is on the home screen (iOS 16.4 or newer).',
     'install.desktopOther': 'Firefox (desktop) cannot install web apps; in Safari on Mac: File menu → “Add to Dock”.',
     'wordle.today': 'Today’s Wordle', 'wordle.streak': '{n} days in a row', 'wordle.groups': 'Groups & duels', 'wordle.noGroups': 'No group yet – invite friends to a Wordle of your own.',
-    'wordle.newGroup': 'Create group', 'wordle.groupName': 'Group name', 'wordle.joinGroup': 'Join group', 'wordle.joinAsk': 'Join the Wordle group with code {code}?', 'wordle.duel': 'Duel a contact', 'wordle.duelInfo': 'Creates a group and invites the person by message. You both play the same word of your own.', 'wordle.duelSent': 'Invitation sent to {name}',
+    'wordle.newGroup': 'Create group', 'wordle.groupName': 'Group name', 'wordle.joinGroup': 'Join group', 'wordle.joinAsk': 'Join the Wordle group with code {code}?', 'wordle.duel': 'Duel a contact', 'wordle.duelInfo': 'Creates a group and invites the person by message. You both play the same word of your own.', 'wordle.duelAll': 'You already have a duel with all your friends.', 'wordle.duelSent': 'Invitation sent to {name}',
     'wordle.standToday': 'Today’s standing', 'wordle.stillOpen': 'still open', 'wordle.allDone': 'done today ✓', 'wordle.gridLocked': 'You see the others’ grids once you have finished today yourself.', 'wordle.boardInfo': 'Ongoing group ranking: points only come from group Wordles; if you skip a day you get 0 points for it.', 'wordle.playedWon': '{p} played, {w} solved', 'wordle.missed': '{n} missed', 'wordle.standing': 'Rank {rank} · {points} pts',
-    'wordle.send': 'Send in the app', 'wordle.groupBoard': 'Group ranking', 'wordle.sendInfo': 'Only the outcome, number of guesses and the colour grid are sent – never the word.', 'wordle.sendNone': 'You have no contacts or groups yet.', 'wordle.sent': 'Sent to {name}.', 'wordle.inbox': 'From friends', 'wordle.inboxInfo': 'Results shared in the last 14 days. You see the grid once you have played the same Wordle yourself.', 'wordle.inboxEmpty': 'Nothing shared yet.', 'wordle.feed': 'Shared in the group', 'wordle.shareLocked': 'Grid hidden – play the same Wordle yourself to see it.',
+    'wordle.send': 'Send in the app', 'wordle.groupBoard': 'Group ranking', 'wordle.sendInfo': 'Only the outcome, number of guesses and the colour grid are sent – never the word.', 'wordle.sendNone': 'You have no friends or groups yet.', 'wordle.sent': 'Sent to {name}.', 'wordle.inbox': 'From friends', 'wordle.inboxInfo': 'Results shared in the last 14 days. You see the grid once you have played the same Wordle yourself.', 'wordle.inboxEmpty': 'Nothing shared yet.', 'wordle.feed': 'Shared in the group', 'wordle.shareLocked': 'Grid hidden – play the same Wordle yourself to see it.',
     'err.not_finished': 'Finish the Wordle first.', 'err.bad_target': 'Please pick exactly one recipient.',
     'wordle.member1': '1 member', 'wordle.scan': 'Scan QR code', 'wordle.joinBad': 'That is not a valid invitation code.', 'wordle.members': '{n} members', 'wordle.membersTitle': 'Members', 'wordle.invite': 'Invite', 'wordle.inviteLink': 'Share invitation link', 'wordle.groupToday': 'Group Wordle', 'wordle.groupPlay': 'Play today’s group Wordle', 'wordle.continue': 'Continue', 'wordle.toGroup': 'Back to group', 'wordle.back': 'Back to overview',
     'wordle.leave': 'Leave group', 'wordle.delete': 'Dissolve group', 'wordle.leaveConfirm': 'Leave the group? Your group games will be deleted.', 'wordle.deleteConfirm': 'Dissolve the group for everyone?',
@@ -1028,7 +1031,7 @@ const dict = {
     'profile.birthYear': 'Birth year (optional)', 'profile.birthHint': 'Year only, used only for anonymous statistics on how hard questions are for different age groups. Leaving it empty is perfectly fine; you can delete it at any time.',
     'profile.title': 'Profile', 'profile.name': 'Display name', 'profile.save': 'Save', 'profile.saved': 'Saved',
     'profile.uiLang': 'App language', 'profile.code': 'Your friend code', 'profile.share': 'Share invite link', 'profile.copied': 'Link copied',
-    'profile.contacts': 'Contacts', 'profile.challenge': 'Challenge', 'profile.remove': 'Remove',
+    'profile.contacts': 'Friends', 'profile.challenge': 'Play', 'profile.codeInfo': 'Friends find you with your code – and you play quiz, Wordle and more together.', 'profile.remove': 'Remove',
     'profile.account': 'Account (optional)', 'profile.accountInfo': 'Without an account you play anonymously on this device. With one, you can log in anywhere.',
     'profile.username': 'Username', 'profile.password': 'Password (min. 8 characters)', 'profile.createAccount': 'Create account', 'profile.login': 'Log in',
     'profile.loggedInAs': 'Signed in as {name}', 'profile.logout': 'Log out', 'profile.haveAccount': 'Already have an account?',
@@ -1037,7 +1040,7 @@ const dict = {
     'profile.transferEnter': 'Enter code from old device', 'profile.transferUse': 'Apply', 'profile.transferValid': 'Valid for 10 minutes, single use.',
     'profile.contribute': 'Submit a question', 'profile.licenses': 'Licenses, sources & question download', 'profile.dataset': 'Download all questions', 'profile.legal': 'Legal notice & privacy', 'profile.more': 'More',
     'profile.delete': 'Delete profile', 'profile.deleteConfirm': 'Delete your profile permanently? Running games will be forfeited.',
-    'invite.title': '{name} challenges you', 'invite.accept': 'Accept & play', 'invite.unknown': 'This invite link is not valid.',
+    'invite.title': '{name} invites you to play', 'invite.accept': 'Add & play', 'invite.add': 'Just add as friend', 'invite.unknown': 'This invite link is not valid.',
     'contrib.title': 'Submit a question', 'contrib.info': 'Submitted questions are reviewed before they appear in games.', 'contrib.lang': 'Language', 'contrib.category': 'Category',
     'contrib.difficulty': 'Difficulty', 'contrib.d1': 'Easy', 'contrib.d2': 'Medium', 'contrib.d3': 'Hard', 'contrib.text': 'Question', 'contrib.correct': 'Correct answer',
     'contrib.wrong': 'Wrong answer {n}', 'contrib.explanation': 'Explanation (optional)', 'contrib.ack': 'I am the author of this question and release it under CC BY-SA 4.0.',
@@ -1046,12 +1049,12 @@ const dict = {
     'lic.title': 'Licenses & sources', 'lic.datasetTitle': 'Download questions', 'lic.datasetInfo': 'All questions as one file (JSON Lines) under CC BY-SA 4.0 – with source and license per question.', 'lic.intro': 'Questions come from the sources below. The whole question pool is licensed CC BY-SA 4.0 and can be downloaded.', 'lic.count': '{n} questions',
     'src.opentdb': 'Open Trivia DB', 'src.wikidata': 'Wikidata', 'src.original': 'Ratespaß project', 'src.community': 'Community', 'src.llm': 'AI-generated (reviewed)',
     'friends.title': 'Add friends', 'friends.mine': 'My code', 'friends.enter': 'Enter code', 'friends.scan': 'Scan',
-    'friends.qrHint': 'Your friend scans this QR code – with their camera app or here under “Scan”.', 'friends.copyCode': 'Copy code', 'friends.codeCopied': 'Code copied',
-    'friends.placeholder': 'Paste code or link', 'friends.lookup': 'Look up', 'friends.found': 'Found', 'friends.add': 'Add', 'friends.addPlay': 'Add & challenge',
-    'friends.added': '{name} was added', 'friends.notFound': 'No player with this code.', 'friends.self': 'That is your own code.', 'friends.already': 'Already in your contacts',
-    'friends.challenge': 'Challenge', 'friends.camStart': 'Start camera', 'friends.camHint': "Hold your friend's QR code inside the frame.",
+    'friends.qrHint': 'Your friend scans this QR code – with their camera app or here under “Scan”. Then you play together.', 'friends.copyCode': 'Copy code', 'friends.codeCopied': 'Code copied',
+    'friends.placeholder': 'Paste code or link', 'friends.lookup': 'Look up', 'friends.found': 'Found', 'friends.add': 'Add', 'friends.addPlay': 'Add & play',
+    'friends.added': '{name} was added', 'friends.notFound': 'No player with this code.', 'friends.self': 'That is your own code.', 'friends.already': 'Already in your friends',
+    'friends.challenge': 'Play …', 'friends.invite': 'Invite friends', 'friends.pickGame': 'What do you play with {name}?', 'friends.shareText': 'Play with me on Quissel – quiz, Wordle and more.', 'game.quizDuel': 'Quiz duel', 'game.quizDuelSub': '6 rounds, each at their own pace', 'game.quizDuelRunning': 'Already running – opens the game', 'game.wordleDuel': 'Wordle duel', 'game.wordleDuelSub': 'Both guess their own word daily', 'friends.camStart': 'Start camera', 'friends.camHint': "Hold your friend's QR code inside the frame.",
     'friends.noCamera': 'Camera not available. Scan the QR code with your phone’s camera app instead – the link opens Quissel directly.',
-    'friends.localNote': 'Contacts are also stored locally on this device.', 'friends.addFriend': 'Add friend',
+    'friends.localNote': 'Friends are also stored locally on this device.', 'friends.addFriend': 'Add friend',
     'push.title': 'Notifications', 'push.info': 'Get a message when it is your turn or a duel ends.', 'push.enable': 'Enable notifications',
     'push.disable': 'Turn off', 'push.test': 'Send test', 'push.on': 'Active on this device', 'push.off': 'Off on this device',
     'push.denied': 'Blocked in the browser – please allow it in the site settings.', 'push.unsupported': 'This browser does not support push notifications.',
@@ -1063,7 +1066,7 @@ const dict = {
     'err.bad_credentials': 'Wrong username or password.', 'err.username_taken': 'Username already taken.', 'err.bad_username': 'Username: 3–24 characters (a–z, 0–9, _ . -).',
     'err.bad_password': 'Password: at least 8 characters.', 'err.bad_name': 'Name: 2–24 characters.', 'err.bad_code': 'Code invalid or expired.', 'err.too_many_games': 'Too many running games.',
     'err.no_questions': 'Not enough questions in this language yet.', 'err.duplicate': 'This question already exists.', 'err.daily_limit': 'Daily limit reached (10 questions).',
-    'err.invalid_question': 'The question is not valid: {message}', 'err.not_a_contact': 'Only contacts can be challenged.', 'err.bad_file': 'This is not a valid profile file.',
+    'err.invalid_question': 'The question is not valid: {message}', 'err.not_a_contact': 'Only friends can be challenged.', 'err.bad_file': 'This is not a valid profile file.',
     'err.unknown_player': 'Player not found.',
   },
 }
@@ -1187,6 +1190,10 @@ function installGuide(h) {
 }
 
 
+/** Version dieser App-Dateien: der Server setzt sie beim Ausliefern von app.js ein. Sie steht damit fest in dem Code, den der Browser wirklich ausführt –
+ *  anders als /version.js (immer frisch vom Server) verrät sie also, wenn ein Gerät noch alten Code aus dem Zwischenspeicher fährt. */
+const VERSION = '0.0.86'
+
 /* ---------- Helfer ---------- */
 const $app = document.getElementById('app')
 const $toast = document.getElementById('toast')
@@ -1285,9 +1292,32 @@ function parseCode(text) {
   return /^[A-HJ-NP-Z2-9]{8}$/.test(code) ? code : null
 }
 
-async function share(url, title) {
-  if (navigator.share) { try { await navigator.share({ title, url }); return } catch (e) { if (e.name === 'AbortError') return } }
+async function share(url, title, text) {
+  if (navigator.share) { try { await navigator.share(text ? { title, text, url } : { title, url }); return } catch (e) { if (e.name === 'AbortError') return } }
   try { await navigator.clipboard.writeText(url); toast(t('profile.copied')) } catch { prompt(title, url) }
+}
+/** Einladungslink teilen: gilt für alle Spiele, nicht nur fürs Quiz. */
+const shareInvite = () => share(inviteUrl(), t('app.name'), t('friends.shareText'))
+
+/** Freunde, mit denen gerade ein Quiz-Duell läuft (wartend oder aktiv): Sie werden nicht erneut zum Herausfordern angeboten. */
+async function runningDuels() {
+  try { return new Set((await api('GET', '/api/games')).games.filter((g) => g.status !== 'finished' && g.opp?.public_id).map((g) => g.opp.public_id)) } catch { return new Set() }
+}
+/** Gehört die Wordle-Gruppe zu einem Duell mit diesem Freund? (Duell-Gruppen heißen „A ⚔ B“.) */
+const isDuelWith = (g, c) => g.name === `${S.me.name} ⚔ ${c.name}`.slice(0, 30) || g.name === `${c.name} ⚔ ${S.me.name}`.slice(0, 30)
+
+/** Spielauswahl für einen Freund (Blatt über der Seite): Quiz-Duell oder Wordle-Duell. Beide Spiele laufen asynchron, der Freund bekommt eine Mitteilung. */
+async function pickGame(c) {
+  const running = (await runningDuels()).has(c.public_id)
+  const close = () => document.querySelector('.sheet.pick')?.remove()
+  close()
+  const opt = (icon, title, sub, fn) => h('button', { class: 'item', onclick: guard(async () => { await fn(); close() }) },
+    h('div', { class: 'avatar sm' }, icon), h('div', { class: 'grow' }, h('div', {}, title), h('div', { class: 'muted' }, sub)))
+  document.body.append(h('div', { class: 'sheet pick' }, h('div', { class: 'card stack' },
+    h('div', { class: 'row' }, avatar(c), h('strong', { class: 'grow ell' }, t('friends.pickGame', { name: c.name })), h('button', { class: 'btn small', 'aria-label': t('review.cancel'), onclick: close }, '✕')),
+    h('div', { class: 'list' },
+      opt('🧠', t('game.quizDuel'), t(running ? 'game.quizDuelRunning' : 'game.quizDuelSub'), async () => { const r = await api('POST', '/api/games', { opponent: c.public_id, lang: gameLang() }); go('#/game/' + r.id) }),
+      opt('🟩', t('game.wordleDuel'), t('game.wordleDuelSub'), async () => { const r = await api('POST', '/api/wordle/duel', { public_id: c.public_id, lang: wlangs()[0] ?? 'de' }); toast(t('wordle.duelSent', { name: c.name })); go('#/wordle/group/' + r.group.id) })))))
 }
 
 function gameLang() {
@@ -1335,7 +1365,7 @@ async function hardReload() {
     await Promise.all(regs.map((r) => r.unregister()))
     if (window.caches) await Promise.all((await caches.keys()).map((k) => caches.delete(k)))
   } catch { /* trotzdem neu laden */ }
-  location.reload()
+  location.replace(`${location.pathname.startsWith('/i/') ? '/' : location.pathname}?r=${Date.now()}${location.hash}`) // frische Adresse statt reload(): umgeht jeden Zwischenspeicher
 }
 /** Vergleicht die geladene App-Version mit der des Servers. Bei Abweichung: einmal automatisch hart aktualisieren, danach Hinweisleiste mit Knopf.
  *  Gibt true zurück, wenn eine neuere Version existiert. `manual` (Profil-Knopf) aktualisiert sofort. */
@@ -1357,6 +1387,7 @@ let updateReady = false
 async function route() {
   if (updateReady) return location.reload()
   cleanup(); cleanup = () => {}
+  document.querySelector('.sheet.pick')?.remove()
   const my = ++runId
   const [, page = '', arg, arg2] = (location.hash || '#/').slice(1).split('/')
   try {
@@ -1487,6 +1518,7 @@ async function home(_, my) {
       rooms.length ? [h('h2', {}, t('room.rounds')), h('div', { class: 'list' }, rooms.map(roomItem))] : null,
       section(t('home.yourTurn'), mine), section(t('home.theirTurn'), theirs), section(t('home.waiting'), waiting), section(t('home.finished'), done),
       older ? h('button', { class: 'btn block', onclick: () => go('#/history') }, t('home.history', { n: older })) : null,
+      h('button', { class: 'btn block', style: 'margin-top:12px', onclick: () => go('#/friends') }, '＋ ' + t('friends.invite')),
       h('div', { class: 'lbrow' }, h('button', { class: 'btn', onclick: () => go('#/top') }, t('home.lbQuiz')), h('button', { class: 'btn', onclick: () => go('#/wordle/board') }, t('wordle.board'))))
   }
   const load = guard(async () => {
@@ -1516,6 +1548,8 @@ function gameItem(g) {
 
 /* ---------- Neues Spiel ---------- */
 async function newGame() {
+  const busy = await runningDuels()
+  const free = S.contacts.filter((c) => !busy.has(c.public_id))
   const start = guard(async (opponent) => {
     const r = await api('POST', '/api/games', { opponent, lang: gameLang() })
     go('#/game/' + r.id)
@@ -1526,12 +1560,11 @@ async function newGame() {
   const option = (title, sub, icon, fn) => h('button', { class: 'item', onclick: fn },
     h('div', { class: 'avatar sm' }, icon), h('div', { class: 'grow' }, h('div', {}, title), h('div', { class: 'muted' }, sub)))
   mount(topbar(t('new.title')),
-    S.contacts.length ? [h('h2', {}, t('new.challengeKnown')), h('div', { class: 'list' }, S.contacts.map((c) => h('button', { class: 'item', onclick: () => start(c.public_id) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, t('profile.challenge')))))] : null,
+    free.length ? [h('h2', {}, t('new.challengeKnown')), h('div', { class: 'list' }, free.map((c) => h('button', { class: 'item', onclick: () => start(c.public_id) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, t('profile.challenge')))))] : null,
     h('h2', {}, t('new.duel')),
     h('div', { class: 'list' },
       option(t('new.random'), t('new.randomSub'), '🎲', () => start('random')),
-      option(t('new.bot'), t('new.botSub'), '🤖', () => start('bot')),
-      option(t('friends.title'), t('new.inviteSub'), '🤝', () => go('#/friends'))),
+      option(t('new.bot'), t('new.botSub'), '🤖', () => start('bot'))),
     h('h2', {}, t('ladder.title')),
     h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
       const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),
@@ -1731,8 +1764,10 @@ async function wordleHub(my) {
     let newLang = getLang(), newName = h('input', { type: 'text', maxLength: 30, placeholder: t('wordle.groupName'), autocomplete: 'off' }), joinCode = h('input', { type: 'text', maxLength: 120, placeholder: 'ABC23DEF', autocapitalize: 'characters', autocomplete: 'off' })
     const createCard = h('div', { class: 'card stack' }, h('label', { class: 'field' }, t('wordle.groupName'), newName), langSeg(() => newLang, (l) => (newLang = l)),
       h('button', { class: 'btn primary block', onclick: guard(async () => { const r = await api('POST', '/api/wordle/groups', { name: newName.value, lang: newLang }); go('#/wordle/group/' + r.group.id) }) }, t('wordle.newGroup')))
+    const freeW = S.contacts.filter((c) => !d.groups.some((g) => isDuelWith(g, c)))
     const duelCard = h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('wordle.duelInfo')), langSeg(() => newLang, (l) => (newLang = l)),
-      S.contacts.length ? h('div', { class: 'list' }, S.contacts.map((c) => h('button', { class: 'item', onclick: guard(async () => { const r = await api('POST', '/api/wordle/duel', { public_id: c.public_id, lang: newLang }); toast(t('wordle.duelSent', { name: c.name })); go('#/wordle/group/' + r.group.id) }) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, '⚔')))) : h('p', { class: 'hint' }, t('new.noContacts')))
+      freeW.length ? h('div', { class: 'list' }, freeW.map((c) => h('button', { class: 'item', onclick: guard(async () => { const r = await api('POST', '/api/wordle/duel', { public_id: c.public_id, lang: newLang }); toast(t('wordle.duelSent', { name: c.name })); go('#/wordle/group/' + r.group.id) }) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, '⚔'))))
+        : S.contacts.length ? h('p', { class: 'hint' }, t('wordle.duelAll')) : [h('p', { class: 'hint' }, t('new.noContacts')), h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend'))])
     mount(topbar(t('wordle.title')),
       h('p', { class: 'hint' }, t('wordle.sub')),
       wlangs().map((lang) => h('div', { class: 'card stack' },
@@ -2592,7 +2627,7 @@ async function profile() {
   const installBox = h('div', { class: 'stack' }) // Installationsanleitung: erst nach Antippen des Knopfs ganz unten
   const contacts = S.contacts.length
     ? h('div', { class: 'list' }, S.contacts.map((c) => h('div', { class: 'item' }, avatar(c), h('div', { class: 'grow ell' }, c.name),
-      h('button', { class: 'btn small', onclick: guard(async () => { const r = await api('POST', '/api/games', { opponent: c.public_id, lang: gameLang() }); go('#/game/' + r.id) }) }, t('profile.challenge')),
+      h('button', { class: 'btn small', onclick: () => pickGame(c) }, t('profile.challenge')),
       h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: guard(async () => { await api('DELETE', '/api/contacts/' + c.public_id); S.contacts = S.contacts.filter((x) => x.public_id !== c.public_id); setLocalContacts(S.contacts); route() }) }, '✕'))))
     : h('div', { class: 'empty' }, t('new.noContacts'))
   const account = p.has_account
@@ -2616,7 +2651,7 @@ async function profile() {
     p.reviewer ? h('p', { class: 'hint' }, t('profile.reviewer')) : null,
     levelCard(),
     h('h2', {}, t('profile.code')),
-    h('div', { class: 'card stack' }, h('div', { class: 'code' }, p.public_id), h('button', { class: 'btn block', onclick: () => share(inviteUrl(), t('app.name')) }, '🔗 ' + t('profile.share'))),
+    h('div', { class: 'card stack' }, h('div', { class: 'code' }, p.public_id), h('p', { class: 'hint' }, t('profile.codeInfo')), h('button', { class: 'btn block', onclick: shareInvite }, '🔗 ' + t('profile.share'))),
     h('h2', {}, t('profile.contacts')), contacts,
     h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend')),
     h('p', { class: 'hint' }, t('friends.localNote')),
@@ -2717,8 +2752,8 @@ async function friends() {
       h('div', { class: 'row' }, avatar(who), h('div', { class: 'grow' }, h('strong', {}, who.name), h('div', { class: 'muted' }, known() ? t('friends.already') : t('friends.found')))),
       known() ? null : h('button', { class: 'btn block', onclick: guard(async () => { await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe(); toast(t('friends.added', { name: who.name })); draw() }) }, t('friends.add')),
       h('button', { class: 'btn primary block', onclick: guard(async () => {
-        if (!known()) { await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe() }
-        const r = await api('POST', '/api/games', { opponent: who.public_id, lang: gameLang() }); go('#/game/' + r.id) }) }, known() ? t('friends.challenge') : t('friends.addPlay'))))
+        if (!known()) { await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe(); draw() }
+        pickGame(who) }) }, known() ? t('friends.challenge') : t('friends.addPlay'))))
     draw()
   })
 
@@ -2730,7 +2765,7 @@ async function friends() {
     if (tab === 'mine') {
       const holder = h('div', { class: 'qr' }, h('div', { class: 'spinner' }))
       body.replaceChildren(holder, h('p', { class: 'hint' }, t('friends.qrHint')), h('div', { class: 'code' }, S.me.public_id),
-        h('button', { class: 'btn primary block', onclick: () => share(inviteUrl(), t('app.name')) }, '🔗 ' + t('profile.share')),
+        h('button', { class: 'btn primary block', onclick: shareInvite }, '🔗 ' + t('profile.share')),
         h('button', { class: 'btn block', onclick: guard(async () => { await navigator.clipboard.writeText(S.me.public_id); toast(t('friends.codeCopied')) }) }, t('friends.copyCode')))
       try { holder.replaceChildren(await renderQr(inviteUrl())) } catch { holder.replaceChildren(h('p', { class: 'hint' }, inviteUrl())) }
     } else if (tab === 'enter') {
@@ -2765,10 +2800,16 @@ async function invite(code) {
   let who
   try { who = await api('GET', '/api/players/' + encodeURIComponent(code), undefined, { auth: false }) } catch { who = null }
   if (!who) return mount(topbar(t('app.name'), false), h('div', { class: 'empty' }, t('invite.unknown'), h('p', {}, h('button', { class: 'btn', onclick: () => go('#/') }, t('back')))))
-  mount(topbar(t('app.name'), false), h('div', { class: 'card stack' }, h('div', { class: 'row' }, avatar(who), h('h3', {}, t('invite.title', { name: who.name }))),
-    who.public_id === S.me.public_id ? null : h('button', { class: 'btn primary block', onclick: guard(async () => {
-      await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe()
-      const r = await api('POST', '/api/games', { opponent: who.public_id, lang: gameLang() }); go('#/game/' + r.id) }) }, t('invite.accept'))))
+  const own = who.public_id === S.me.public_id
+  const known = () => S.contacts.some((c) => c.public_id === who.public_id)
+  const draw = () => mount(topbar(t('app.name'), false), h('div', { class: 'card stack' }, h('div', { class: 'row' }, avatar(who), h('h3', {}, t('invite.title', { name: who.name }))),
+    own ? null : [
+      known() ? h('p', { class: 'muted' }, t('friends.already')) : h('button', { class: 'btn block', onclick: guard(async () => { await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe(); toast(t('friends.added', { name: who.name })); draw() }) }, t('invite.add')),
+      h('button', { class: 'btn primary block', onclick: guard(async () => {
+        if (!known()) { await api('POST', '/api/contacts', { public_id: who.public_id }); await refreshMe(); draw() }
+        pickGame(who) }) }, known() ? t('friends.challenge') : t('invite.accept'))],
+    h('button', { class: 'btn block', onclick: () => go('#/') }, t('back'))))
+  draw()
 }
 
 /* ---------- Frage einreichen ---------- */
