@@ -1,3 +1,4 @@
+import crypto from 'node:crypto'
 import http from 'node:http'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -44,16 +45,35 @@ function serveVersion(req: http.IncomingMessage, res: http.ServerResponse, pathn
   return true
 }
 
+/** Versionsstempel: HTML und JS-Module verweisen auf `…?v=<Version>`. Jede neue Version hat damit neue Adressen, die kein (alter) Service Worker und kein
+ *  Browser-Cache kennt – so holt auch ein Gerät mit alter App nach dem ersten Neuladen alles frisch. Bibliotheken (vendor/) und sw.js bleiben unverändert. */
+function stamp(rel: string, ext: string, body: string): string {
+  if (rel.startsWith('/vendor/') || rel === '/sw.js') return body
+  if (ext === '.html') return body.replace(/(src|href)="(\/[\w.\-/]+\.(?:js|css))"/g, (m, a, u) => (u.startsWith('/vendor/') ? m : `${a}="${u}?v=${VERSION}"`))
+  if (ext === '.js') return body.replace(/(from\s+['"])(\.\/[\w.-]+\.js)(['"])/g, `$1$2?v=${VERSION}$3`)
+  return body
+}
+
 function serveStatic(req: http.IncomingMessage, res: http.ServerResponse, pathname: string) {
   if (serveVersion(req, res, pathname)) return
   let rel = decodeURIComponent(pathname)
+  if (rel === '/reset') rel = '/reset.html'
   if (rel === '/' || /^\/i\/[A-Za-z0-9]+$/.test(rel)) rel = '/index.html'
   if (rel === '/admin') rel = '/admin.html'
   const file = path.join(config.webDir, path.normalize(rel))
   if (!file.startsWith(config.webDir + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) throw new HttpError(404, 'not_found')
+  const ext = path.extname(file)
+  if (ext === '.html' || ext === '.js') {
+    const body = stamp(rel, ext, fs.readFileSync(file, 'utf8'))
+    const etag = `W/"${crypto.createHash('sha1').update(body).digest('hex').slice(0, 16)}"`
+    const headers = { 'content-type': TYPES[ext], etag, 'cache-control': 'no-cache' }
+    if (req.headers['if-none-match'] === etag) { res.writeHead(304, headers); res.end(); return }
+    res.writeHead(200, { ...headers, 'content-length': Buffer.byteLength(body) })
+    res.end(req.method === 'HEAD' ? undefined : body)
+    return
+  }
   const st = fs.statSync(file)
   const etag = `W/"${st.size}-${Math.floor(st.mtimeMs)}"`
-  const ext = path.extname(file)
   const headers = {
     'content-type': TYPES[ext] ?? 'application/octet-stream', etag,
     'cache-control': ext === '.png' || ext === '.svg' || ext === '.woff2' ? 'public, max-age=86400' : 'no-cache',

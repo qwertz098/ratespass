@@ -1,7 +1,8 @@
 // Service Worker: App-Shell offline verfügbar, API immer live.
 importScripts('/sw-version.js') // setzt self.APP_VERSION; ändert sich die Version, ändert sich der importierte Code → der Browser installiert den Service Worker neu
 const VERSION = 'rp-' + (self.APP_VERSION || 'dev')
-const SHELL = ['/', '/app.js', '/i18n.js', '/install.js', '/version.js', '/style.css', '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png', '/fonts/ClearSans-Bold.woff2']
+const V = '?v=' + (self.APP_VERSION || 'dev') // der Server stempelt die Adressen der App-Dateien mit der Version (siehe server/app.ts)
+const SHELL = ['/', '/app.js' + V, '/i18n.js' + V, '/install.js' + V, '/version.js' + V, '/style.css' + V, '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png', '/fonts/ClearSans-Bold.woff2']
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()))
