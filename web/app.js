@@ -488,13 +488,34 @@ async function wordle(arg, my, arg2) {
   return wordleHub(my)
 }
 
+/** Beitrittscode aus einem Einladungslink (…/#/wordle/join/CODE), einem eingefügten Link oder dem Code selbst. */
+const parseJoinCode = (raw) => { const m = /wordle\/join\/([A-Za-z0-9]+)/.exec(String(raw ?? '')); return (m ? m[1] : String(raw ?? '')).toUpperCase().replace(/[^A-Z0-9]/g, '') }
+
 async function wordleHub(my) {
   let creating = false, duel = false
+  const scanHolder = h('div', { class: 'stack' })
+  let stopScan = () => {}
+  const prevCleanup = cleanup
+  cleanup = () => { prevCleanup(); stopScan() }
+  const joinWith = guard(async (raw) => {
+    const code = parseJoinCode(raw)
+    if (!code) return toast(t('wordle.joinBad'))
+    stopScan(); stopScan = () => {}
+    const r = await api('POST', '/api/wordle/groups/join', { code }); go('#/wordle/group/' + r.group.id)
+  })
+  /** In-App-Scanner für den QR-Code einer Gruppe/eines Duells (die Kamera-App würde den Link sonst im Browser statt in der installierten App öffnen). */
+  const toggleScan = async () => {
+    if (scanHolder.childNodes.length) { stopScan(); stopScan = () => {}; return scanHolder.replaceChildren() }
+    const video = h('video', { 'aria-label': t('wordle.scan') })
+    const note = h('p', { class: 'hint' }, t('friends.camHint'))
+    scanHolder.replaceChildren(h('div', { class: 'scanbox live' }, video), note)
+    try { stopScan = await startScan(video, (text) => joinWith(text)) } catch (e) { console.warn(e); scanHolder.replaceChildren(h('p', { class: 'hint' }, t('friends.noCamera'))) }
+  }
   const startGame = guard(async (kind, lang, group_id) => { const r = await api('POST', '/api/wordle/games', { kind, lang, group_id }); go('#/wordle/play/' + r.game.id) })
   const render = (d) => {
     if (my !== runId) return
     const langSeg = (cur, set) => h('div', { class: 'seg' }, WLANGS.map((l) => h('button', { 'aria-pressed': String(cur() === l), onclick: (e) => { set(l); e.currentTarget.parentNode.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === e.currentTarget))) } }, langName(l))))
-    let newLang = getLang(), newName = h('input', { type: 'text', maxLength: 30, placeholder: t('wordle.groupName'), autocomplete: 'off' }), joinCode = h('input', { type: 'text', maxLength: 12, placeholder: 'ABC23DEF', autocapitalize: 'characters', autocomplete: 'off' })
+    let newLang = getLang(), newName = h('input', { type: 'text', maxLength: 30, placeholder: t('wordle.groupName'), autocomplete: 'off' }), joinCode = h('input', { type: 'text', maxLength: 120, placeholder: 'ABC23DEF', autocapitalize: 'characters', autocomplete: 'off' })
     const createCard = h('div', { class: 'card stack' }, h('label', { class: 'field' }, t('wordle.groupName'), newName), langSeg(() => newLang, (l) => (newLang = l)),
       h('button', { class: 'btn primary block', onclick: guard(async () => { const r = await api('POST', '/api/wordle/groups', { name: newName.value, lang: newLang }); go('#/wordle/group/' + r.group.id) }) }, t('wordle.newGroup')))
     const duelCard = h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('wordle.duelInfo')), langSeg(() => newLang, (l) => (newLang = l)),
@@ -510,7 +531,8 @@ async function wordleHub(my) {
         h('button', { class: 'btn small', onclick: () => { creating = !creating; duel = false; setExtra() } }, '＋ ' + t('wordle.newGroup')),
         h('button', { class: 'btn small', onclick: () => { duel = !duel; creating = false; setExtra() } }, '⚔ ' + t('wordle.duel'))),
       h('div', { id: 'wextra', class: 'stack' }),
-      h('div', { class: 'card stack' }, h('label', { class: 'field' }, t('wordle.joinGroup'), h('div', { class: 'row' }, joinCode, h('button', { class: 'btn', onclick: guard(async () => { const r = await api('POST', '/api/wordle/groups/join', { code: joinCode.value }); go('#/wordle/group/' + r.group.id) }) }, t('room.join'))))),
+      h('div', { class: 'card stack' }, h('label', { class: 'field' }, t('wordle.joinGroup'), h('div', { class: 'row' }, joinCode, h('button', { class: 'btn', onclick: () => joinWith(joinCode.value) }, t('room.join')))),
+        h('button', { class: 'btn block', onclick: toggleScan }, '📷 ' + t('wordle.scan')), scanHolder),
       h('button', { class: 'btn block', onclick: () => go('#/wordle/inbox') }, '📨 ' + t('wordle.inbox'), d.inbox_unseen ? h('span', { class: 'badge' }, String(d.inbox_unseen)) : null),
       h('button', { class: 'btn block', onclick: () => go('#/wordle/board') }, '🏆 ' + t('wordle.board')))
     function setExtra() { const box = document.getElementById('wextra'); box.replaceChildren(...(creating ? [createCard] : duel ? [duelCard] : [])) }
