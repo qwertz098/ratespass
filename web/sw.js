@@ -1,5 +1,5 @@
 // Service Worker: App-Shell offline verfügbar, API immer live.
-const VERSION = 'rp-v4'
+const VERSION = 'rp-v5'
 const SHELL = ['/', '/app.js', '/i18n.js', '/style.css', '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png', '/fonts/ClearSans-Bold.woff2']
 
 self.addEventListener('install', (e) => {

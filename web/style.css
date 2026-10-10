@@ -268,3 +268,43 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
   .qcard .question { font-size: 18px }
   .qcard .opt { padding: 8px 10px; min-height: 44px }
 }
+
+/* Zwei gleich breite Knöpfe nebeneinander */
+.row.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+.row.two .btn { padding: 8px 10px; min-height: 48px; line-height: 1.2; text-align: center }
+
+/* Wordle: passt immer ohne Scrollen auf den Bildschirm (Größen folgen der Fensterhöhe) */
+.wcard { flex: 1; justify-content: space-between; gap: 8px; padding: 12px }
+.wcard .whint { font-size: .8rem; line-height: 1.3 }
+.wgrid { gap: 5px; width: min(100%, 320px, calc((100dvh - 340px) / 1.2)) }
+.wrow { gap: 5px }
+.wt { font-size: clamp(1.2rem, 5.5dvh, 2rem) }
+.wmsg { min-height: 0 }
+.wmsg:empty { display: none }
+.key { height: clamp(38px, 6dvh, 50px) }
+.kb { gap: 5px }
+.wresult { width: 100%; text-align: center }
+.wresult h3 { font-size: 1.1rem }
+.sheet:empty { display: none }
+.sheet { position: fixed; left: 12px; right: 12px; bottom: 12px; max-width: 496px; margin: 0 auto; max-height: 60dvh; overflow: auto; z-index: 20 }
+@media (max-height: 700px) { .wcard .whint { display: none } }
+@media (max-height: 700px) {
+  #app { padding: 6px 10px 10px }
+  .top { min-height: 36px }
+  .top h1 { font-size: 18px }
+  .card.qcard { padding: 10px }
+  .qcard .opts { gap: 6px }
+  .qcard .opt { padding: 7px 10px; min-height: 42px }
+  .qcard .feedback .btn { min-height: 42px }
+  .qcard .question { font-size: 18px }
+  .item { padding-top: 8px; padding-bottom: 8px }
+}
+@media (max-height: 700px) {
+  /* Duell-Übersicht (Stand, Runden, Kategorie wählen) ebenfalls ohne Scrollen */
+  .score-board .big { font-size: 30px }
+  .score-board .who { gap: 2px }
+  .rounds { margin-top: 8px; gap: 2px }
+  .round { padding: 4px 8px }
+  .cat-btn { padding: 11px 14px }
+  .cats { gap: 8px }
+}

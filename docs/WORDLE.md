@@ -14,6 +14,8 @@ Tägliches Wortspiel in zwei Sprachen (de/en): 5 Buchstaben, 6 Versuche. Code: `
 ## Schrift
 Kacheln, Tastatur und Meldungen im Wordle nutzen **Clear Sans Bold** (Intel, Apache-2.0; Teilmenge als `web/fonts/ClearSans-Bold.woff2`, Lizenztext `web/fonts/ClearSans-LICENSE.txt`) statt der Systemschrift; die übrige App bleibt bei der Systemschrift.
 
+**Layout:** Der Wordle-Spielbildschirm (Raster, Tastatur, Ergebnis) passt ohne Scrollen auf Handys ab 360×640; Raster- und Tastengrößen folgen der Fensterhöhe, nach dem Spielende ersetzt die Ergebnis-Karte die Tastatur.
+
 ## Regeln und Konvention
 - Das gesuchte Wort verlässt den Server erst nach Spielende; die Auswertung (richtig / falsche Stelle / nicht enthalten, Doppelbuchstaben korrekt) geschieht nur dort. Eingaben müssen in der Rateliste stehen; zwischen zwei Versuchen liegen mindestens 300 ms.
 - **Nur Buchstaben A–Z.** Deutsche Wörter mit Ä, Ö, Ü oder ß sind aus den Listen entfernt (nicht umgeschrieben); das steht auch im Spielfenster.
