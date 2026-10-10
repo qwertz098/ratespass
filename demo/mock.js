@@ -161,7 +161,7 @@ const DEMO = (() => {
       p.score = r.mode === 'quiz' ? 4 + rnd(8) : [0, 100, 500, 1000, 4000, 16000, 32000][rnd(7)]
     }
   }
-  function handle(method, path, body) {
+  function handle(method, path, body, qs = new URLSearchParams()) {
     let m
     if (path === '/api/meta') return { body: { categories: ALL_CATS, tiers: Object.fromEntries(ALL_CATS.map((c) => [c, TIERS[c] ?? 'basic'])), levels: LEVELS, regions: ['global', 'dach'], reports: true, langs: [{ lang: 'de', n: pool('de').length }, { lang: 'en', n: pool('en').length }], time_limit_ms: LIMIT, rounds: 6, per_round: 3 } }
     if (path === '/api/privacy') {
@@ -216,10 +216,11 @@ const DEMO = (() => {
     if (path === '/api/leaderboard' && method === 'GET') {
       const sample = [['Quizkönig', 412, 540], ['Wissensdurst', 388, 470], ['Rätselfuchs', 351, 520], ['Nachteule', 300, 380], ['Neunmalklug', 262, 400]]
       const mine = st.lb ? { name: st.lb, ok: st.lbOk ?? 0, n: st.lbN ?? 0 } : null
-      const all = [...sample.map(([name, ok, n]) => ({ name, ok, n })), ...(mine && mine.n >= 50 ? [{ ...mine, me: true }] : [])]
-      all.sort((a, b) => b.ok - a.ok)
+      const rel = qs.get('kind') === 'rel', minN = rel ? 100 : 50
+      const all = [...sample.map(([name, ok, n]) => ({ name, ok, n })), ...(mine && mine.n >= minN ? [{ ...mine, me: true }] : [])]
+      all.sort(rel ? (a, b) => b.ok / b.n - a.ok / a.n || b.n - a.n : (a, b) => b.ok - a.ok || a.n - b.n)
       const top = all.map((x, i) => ({ rank: i + 1, name: x.name, ok: x.ok, n: x.n, rate: Math.round((x.ok / x.n) * 1000) / 10, is_me: !!x.me }))
-      return { body: { top, me: mine ? { rank: top.find((x) => x.is_me)?.rank ?? null, ok: mine.ok, n: mine.n, rate: mine.n ? Math.round((mine.ok / mine.n) * 1000) / 10 : null, needs: Math.max(0, 50 - mine.n), young: false } : null,
+      return { body: { top, me: mine ? { rank: top.find((x) => x.is_me)?.rank ?? null, ok: mine.ok, n: mine.n, rate: mine.n ? Math.round((mine.ok / mine.n) * 1000) / 10 : null, needs: Math.max(0, minN - mine.n), young: false } : null,
         total: top.length, rules: { min_answers: 50, min_relative: 100, day_cap: 400 }, participating: !!st.lb, name: st.lb ?? null, banned: false } }
     }
     if (path === '/api/leaderboard/join' && method === 'POST') { const n = String(body?.name ?? '').trim(); if (n.length < 3 || n.length > 20) return err(400, 'bad_lb_name'); st.lb = n; save(); return { body: { name: n } } }
@@ -338,7 +339,7 @@ const DEMO = (() => {
     let body
     try { body = init.body ? JSON.parse(init.body) : {} } catch { body = {} }
     await new Promise((r) => setTimeout(r, 60))
-    const res = handle((init.method || 'GET').toUpperCase(), url.pathname, body)
+    const res = handle((init.method || 'GET').toUpperCase(), url.pathname, body, url.searchParams)
     return new Response(JSON.stringify(res.body), { status: res.status || 200, headers: { 'content-type': 'application/json' } })
   }
   return { reset: () => { try { localStorage.removeItem(KEY) } catch { /* ignorieren */ } location.reload() } }
