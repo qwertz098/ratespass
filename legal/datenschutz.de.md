@@ -25,7 +25,8 @@ E-Mail: {{CONTROLLER_EMAIL}}
 ## Was diese App speichert
 - Anonymes Profil: zufälliger Freundescode, frei gewählter Anzeigename, Sprache, Spielstufe und Kategorie-Auswahl, ein geheimer Zugangsschlüssel (im Browser, auf dem Server nur als Hash).
 - Spielverlauf: Spiele, Runden, Antworten (richtig/falsch, Antwortzeit), Ergebnisse, Millionen-Leiter-Stände, Kontakte (Freundescodes), die du hinzufügst.
-- Optional: Benutzername und Passwort (als Hash), Geburtsjahr (nur das Jahr), Bestenlisten-Name, Push-Abo deines Browsers, Reviewer-Rolle.
+- Wordle: deine Versuche und Ergebnisse je Spiel (tägliches Wordle, Bonus, Gruppen), Mitgliedschaften in Wordle-Gruppen (Gruppenname, Einladungscode).
+- Optional: Benutzername und Passwort (als Hash), Geburtsjahr (nur das Jahr), Bestenlisten-Name, Push-Abo deines Browsers, bei aktivierter Wordle-Erinnerung die Zeitzone deines Geräts (nur für die Uhrzeit „9 Uhr“), Reviewer-Rolle.
 - Technisch: IP-Adressen nur flüchtig im Arbeitsspeicher für Missbrauchsschutz (Rate-Limits); der Browser speichert Zugangsschlüssel und Einstellungen lokal (technisch notwendig, keine Tracking-Cookies).
 
 ## Zwecke und Rechtsgrundlagen
@@ -37,6 +38,7 @@ E-Mail: {{CONTROLLER_EMAIL}}
 ## Was andere sehen
 - Gegner und Mitspieler in Duellen, Runden und Live-Spielen sehen deinen Anzeigenamen und das Spielergebnis.
 - In der Bestenliste erscheint nur der eigene Bestenlisten-Name – oder, wenn du es bei der Anmeldung ausdrücklich wählst, dein Anzeigename (dann für alle Besucher der Bestenliste sichtbar) – und nur, wenn du aktiv teilnimmst. Du kannst die Teilnahme jederzeit beenden; der Name wird sofort entfernt.
+- Mitglieder einer Wordle-Gruppe sehen deinen Anzeigenamen sowie, ob du das Gruppen-Wordle des Tages gelöst hast und wie viele Versuche du brauchtest. In der Wordle-Bestenliste erscheint wie bei der Quiz-Bestenliste nur dein Bestenlisten-Name, und nur bei freiwilliger Teilnahme.
 - Von dir eingereichte Community-Fragen werden mit deiner Zustimmung unter CC BY-SA 4.0 veröffentlicht; dein Name wird nicht genannt.
 
 ## Empfänger und Hosting
@@ -48,7 +50,7 @@ Push-Nachrichten laufen über den Push-Dienst deines Browsers/Betriebssystems, s
 ## Speicherdauer
 - Anonyme Profile ohne Anmeldung werden nach {{PRIVACY_RETENTION_DAYS}} Tagen ohne Aktivität gelöscht.
 - Wartende Spiele verfallen nach 24 Stunden, Mehrspieler-Runden werden spätestens nach 48 Stunden ausgewertet, inaktive Duelle nach {{DUEL_FORFEIT_DAYS}} Tagen beendet. Reagiert dein Gegner {{DUEL_TAKEOVER_HOURS}} Stunden nicht, kann das Duell mit einem Bot fortgesetzt werden; dein bisheriger Spielverlauf in diesem Duell geht dann auf den Bot über.
-- Mit „Profil löschen“ werden Zugang, Kontakte, Konto, Geburtsjahr, Bestenlisten-Name und deine Zustimmungsdokumentation sofort entfernt; abgeschlossene Spiele bleiben für Gegner anonymisiert (Name „—“).
+- Mit „Profil löschen“ werden Zugang, Kontakte, Konto, Geburtsjahr, Bestenlisten-Name, Wordle-Spiele und -Mitgliedschaften und deine Zustimmungsdokumentation sofort entfernt; verlässt du eine Wordle-Gruppe, werden deine Spiele darin gelöscht; abgeschlossene Spiele bleiben für Gegner anonymisiert (Name „—“).
 
 ## Deine Rechte
 - Auskunft und Datenübertragbarkeit: Profil → „Profil & Verlauf herunterladen“; zusätzlich per E-Mail an den Verantwortlichen.

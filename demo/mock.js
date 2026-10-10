@@ -27,6 +27,14 @@ const DEMO = (() => {
   const profile = () => ({ ...st.me, has_account: false, username: null, reviewer: true, level: st.level ?? 'basic', disabled_cats: st.disabled ?? [], best_ladder: st.best ?? 0, birth_year: st.birth ?? null, lb_name: st.lb ?? null, lb_follow: !!st.lbFollow })
   const err = (status, error, message) => ({ status, body: { error, message } })
 
+  const wmarks = (guess, answer) => {
+    const res = [...guess].map(() => 'a'), left = {}
+    ;[...guess].forEach((ch, i) => { if (ch === answer[i]) res[i] = 'c'; else left[answer[i]] = (left[answer[i]] ?? 0) + 1 })
+    ;[...guess].forEach((ch, i) => { if (res[i] !== 'c' && left[ch] > 0) { res[i] = 'p'; left[ch]-- } })
+    return res.join('')
+  }
+  const wview = (g) => ({ id: g.id, kind: g.kind, lang: g.lang, day: g.day, group_id: null, status: g.status, points: g.points, max: 6, guesses: g.guesses.map((w) => ({ word: w, marks: wmarks(w, g.word) })), finished: g.status !== 'playing', ...(g.status !== 'playing' ? { answer: g.word } : {}) })
+
   const used = (g) => new Set(g.rounds.flatMap((r) => r.qs.map((x) => x.i)))
   function categoryOptions(g) {
     const u = used(g), p = pool(g.lang)
@@ -212,6 +220,39 @@ const DEMO = (() => {
     if (path === '/api/games' && method === 'GET') {
       return { body: { games: st.games.map((g) => { const v = view(g); return { id: v.id, status: v.status, lang: v.lang, round: v.round, turn: v.turn, phase: v.phase, opp: v.opp, score: v.score, winner: v.winner, updated_at: v.updated_at } }) } }
     }
+    /* Wordle (Demo: tägliches Wort + Bonus aus der Lösungsliste; Gruppen, Bestenliste und Erinnerungen brauchen den echten Server) */
+    if (path === '/api/wordle' && method === 'GET') {
+      const day = new Date().toISOString().slice(0, 10), w = (st.wordle ??= { seq: 0, games: [] })
+      const sum = (g) => (g ? { id: g.id, status: g.status, guesses: g.guesses.length, points: g.points } : null)
+      const mine = (kind, lang) => w.games.find((g) => g.kind === kind && g.lang === lang && g.day === day)
+      return { body: { day, tz: 'UTC', langs: ['de', 'en'].map((lang) => ({ lang, daily: sum(mine('daily', lang)), bonus: sum(mine('bonus', lang)), streak: 0, push: false })), groups: [] } }
+    }
+    if (path === '/api/wordle/games' && method === 'POST') {
+      const w = (st.wordle ??= { seq: 0, games: [] }), day = new Date().toISOString().slice(0, 10), lang = body.lang
+      if (!WORDS[lang] || !['daily', 'bonus'].includes(body.kind)) return err(501, 'demo_unavailable')
+      let g = w.games.find((x) => x.kind === body.kind && x.lang === lang && x.day === day)
+      if (!g) {
+        const h = [...(lang + day)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7)
+        const daily = WORDS[lang][h % WORDS[lang].length]
+        const word = body.kind === 'daily' ? daily : shuffle(WORDS[lang].filter((x) => x !== daily))[0]
+        g = { id: ++w.seq, kind: body.kind, lang, day, word, guesses: [], status: 'playing', points: 0 }; w.games.push(g); save()
+      }
+      return { body: { game: wview(g) } }
+    }
+    const wm = path.match(/^\/api\/wordle\/games\/(\d+)(\/guess)?$/)
+    if (wm) {
+      const g = st.wordle?.games.find((x) => x.id === Number(wm[1]))
+      if (!g) return err(404, 'not_found')
+      if (!wm[2]) return { body: { game: wview(g) } }
+      if (g.status !== 'playing') return err(409, 'game_over')
+      const word = String(body.word ?? '').toLowerCase()
+      if (!/^[a-z]{5}$/.test(word)) return err(400, 'bad_word')
+      if (!WORDS[g.lang].includes(word)) return err(422, 'not_in_list')
+      g.guesses.push(word)
+      if (word === g.word) { g.status = 'won'; g.points = 7 - g.guesses.length } else if (g.guesses.length >= 6) g.status = 'lost'
+      save(); return { body: { game: wview(g) } }
+    }
+    if (path.startsWith('/api/wordle')) return err(501, 'demo_unavailable')
     if (path === '/api/sofa' && method === 'GET') {
       const lang = qs.get('lang') || st.me.lang || 'de', n = Math.min(60, Math.max(2, Number(qs.get('n')) || 12))
       const rank = LEVELS.indexOf(st.level ?? 'basic'), open = ALL_CATS.filter((c) => !TIERS[c] || (LEVELS.indexOf(TIERS[c]) <= rank && !(st.disabled ?? []).includes(c)))

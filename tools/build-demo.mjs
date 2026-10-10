@@ -19,6 +19,9 @@ for (const f of fs.readdirSync(path.join(root, 'batches')).filter((x) => x.endsW
   }
 }
 
+// Wordle-Wörter (nur Lösungsliste, genügt für die Demo)
+const words = Object.fromEntries(['de', 'en'].map((l) => [l, fs.readFileSync(path.join(root, `wordlists/${l}.solutions.txt`), 'utf8').split('\n').filter(Boolean)]))
+
 // App-Styles; explizites Theme (data-theme) zusätzlich zur System-Einstellung
 let css = rd('web/style.css')
 const m = css.match(/@media \(prefers-color-scheme: dark\) \{\n {2}:root \{(.*?)\}\n\}/s)
@@ -51,6 +54,7 @@ ${rd('demo/shell.css')}
 </section>
 <script>
 const QS = ${JSON.stringify(qs)};
+const WORDS = ${JSON.stringify(words)};
 </script>
 <script type="module">
 ${mock}

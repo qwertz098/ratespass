@@ -55,6 +55,7 @@ GitHub Pages reicht nicht (nur statisch); die Anleitung für kostenlose Variante
 | `CONTROLLER_NAME`, `CONTROLLER_ADDRESS`, `CONTROLLER_EMAIL` | – | **Pflicht** für Impressum und Datenschutzerklärung (Verantwortlicher); fehlen sie, zeigt die Erklärung „[nicht konfiguriert]“ und der Server warnt |
 | `CONTROLLER_PHONE`, `CONTROLLER_REPRESENTATIVE`, `CONTROLLER_REGISTER`, `CONTROLLER_VAT_ID`, `DPO_CONTACT`, `SUPERVISORY_AUTHORITY`, `HOSTING_PROVIDER` | – | optionale Angaben für Impressum/Datenschutz; der übrige Text steht vorbereitet in `legal/` (eigene Fassung: `LEGAL_DIR`) |
 | `PRIVACY_RETENTION_DAYS` | 730 | anonyme Profile ohne Anmeldung werden nach so vielen Tagen ohne Aktivität gelöscht |
+| `WORDLE_TZ` / `WORDLE_GROUP_MAX` / `WORDLE_DIR` | Europe/Berlin / 200 / `wordlists` | Wordle: Zeitzone des Tageswechsels, Höchstzahl Mitglieder je Gruppe, Verzeichnis der Wortlisten |
 | `LIVE_MAX_PLAYERS` / `LIVE_QUESTION_MS` / `LIVE_REVEAL_MS` / `LIVE_TEMPO_QUESTIONS` / `LIVE_BET_MS` | 30 / 20000 / 5000 / 10 / 8000 | Live-Spielabend: Höchstzahl Spieler, Fragezeit, Auflösungszeit (ms), Fragen im Tempo-Quiz, Einsatzphase (ms) |
 | `CONSENT_REQUIRED` | 1 | `0` schaltet die Zustimmungspflicht nur für lokale Entwicklung/Tests ab |
 | `ANTHROPIC_API_KEY` | – | aktiviert die KI-Schnittstelle (Fragen erzeugen/prüfen, Schwierigkeit schätzen); nie ins Repo, nur als Umgebungsvariable |
@@ -86,6 +87,10 @@ Aktueller Bestand: **3778 Fragen** (davon 3556 auch auf Englisch spielbar) (`see
 ### Spielstufen und Extra-Kategorien
 
 Jeder Spieler wählt im Profil sein **Level** – Basis, Nerd (Sci-Fi & Fantasy, Programmieren & IT, Anime & Manga, Retro-Games) oder Experte (MINT & Ingenieurwesen, Geisteswissenschaften, Kunst & Literatur, Informatik) – und kann einzelne Extra-Kategorien abwählen. Im Duell zählt immer die **niedrigste Einstellung** beider Spieler (niedrigstes Level, Schnitt der aktiven Kategorien); beim Spielstart wird die Auswahl im Spiel festgehalten. Details in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
+
+### Wordle
+
+Tägliches Wordle je Sprache (de/en; alle Spieler dasselbe Wort), ein zusätzliches Wordle pro Tag, **Wordle-Gruppen** beliebiger Größe mit eigenem Tageswort (2 Mitglieder = Duell, Beitritt per Code/Link/QR), **Bestenliste** (global mit Bestenlisten-Namen, je Gruppe) und optionale **Erinnerung um 9 Uhr lokaler Zeit** je Wordle. Nur Buchstaben A–Z (deutsche Wörter mit Ä/Ö/Ü/ß sind entfernt). Wortlisten laden und filtern: `npm run fetch:wordlists` (Ergebnis im Repo: `wordlists/`). Admin-Tab „Wordle“ mit Statistik, Wortsperren und Tageswort-Vorgabe. Details, Quellen und Lizenzen: [`docs/WORDLE.md`](docs/WORDLE.md). Läuft in der Demo (Tages- und Bonus-Wordle); Gruppen, Bestenliste und Erinnerungen brauchen den Server.
 
 ### Sofa-Modus
 

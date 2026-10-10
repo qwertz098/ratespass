@@ -28,3 +28,6 @@ Anonyme Profile ohne Konto werden nach `PRIVACY_RETENTION_DAYS` ohne Aktivität 
 
 ## Auskunft / Löschung auf Anfrage
 Spieler laden ihr Profil selbst herunter (Profil → „Profil & Verlauf herunterladen“). Für Anfragen per E-Mail: öffentliche ID aus dem Profil verlangen, Zeilen in `players`, `games`, `answers`, `ladders`, `room_*`, `consents` zuordnen; Löschen entspricht „Profil löschen“ (`erasePlayer`).
+
+## Wordle
+Siehe [`WORDLE.md`](WORDLE.md#datenschutz): Spiele/Versuche, Gruppen-Mitgliedschaften und (nur bei eingeschalteter 9-Uhr-Erinnerung) die Zeitzone des Geräts; Löschung beim Verlassen der Gruppe bzw. beim Profil-Löschen.
