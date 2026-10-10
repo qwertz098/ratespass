@@ -278,7 +278,10 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
 .row.two .btn { padding: 8px 10px; min-height: 48px; line-height: 1.2; text-align: center }
 
 /* Wordle: passt immer ohne Scrollen auf den Bildschirm (Größen folgen der Fensterhöhe) */
-.wcard { flex: 1; justify-content: space-between; gap: 8px; padding: 12px }
+/* Flex statt Raster: in einem Raster ließ justify-content: space-between die Spalte auf die Inhaltsbreite schrumpfen (Feld und Tastatur klebten schmal links) */
+.wcard { display: flex; flex-direction: column; align-items: center; flex: 1; justify-content: space-between; gap: 8px; padding: 12px }
+.wcard > * { max-width: 100% }
+.wcard > .whint, .wcard > .wmsg, .wcard > .kb, .wcard > .wresult { width: 100% }
 .wcard .whint { font-size: .8rem; line-height: 1.3 }
 .wgrid { gap: 5px; width: min(100%, 320px, calc((100dvh - 340px) / 1.2)) }
 .wrow { gap: 5px }
