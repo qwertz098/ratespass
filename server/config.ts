@@ -39,7 +39,7 @@ export const config = {
     takeoverHours: Math.max(1, Number(env.DUEL_TAKEOVER_HOURS ?? 24) || 24),
   },
   /** Wordle: Tageswechsel in dieser Zeitzone, Wortlisten-Verzeichnis, Gruppengröße, Mindestabstand zwischen Versuchen (ms). */
-  wordle: { tz: env.WORDLE_TZ ?? 'Europe/Berlin', dir: env.WORDLE_DIR ?? path.join(root, 'data', 'wordle'), groupMax: Math.max(2, Number(env.WORDLE_GROUP_MAX ?? 200) || 200), minGuessMs: 300 },
+  wordle: { tz: env.WORDLE_TZ ?? 'Europe/Berlin', dir: env.WORDLE_DIR ?? path.join(root, 'wordlists'), groupMax: Math.max(2, Number(env.WORDLE_GROUP_MAX ?? 200) || 200), minGuessMs: 300 },
   /** Live-Gesellschaftsspiel (Zeiten in ms; in Tests verkürzt). */
   live: {
     maxPlayers: Math.max(2, Number(env.LIVE_MAX_PLAYERS ?? 30) || 30),

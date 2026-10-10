@@ -25,7 +25,7 @@ test('buildWordlist: Lösungen = häufige echte Wörter ohne Namen/Fremdwörter/
 
 test('Gelieferte Wortlisten im Repo: alle Wörter gültig formatiert, Lösungen ⊂ gültige, ausreichend viele', () => {
   for (const lang of ['de', 'en'] as const) {
-    const read = (n: string) => fs.readFileSync(new URL(`../data/wordle/${lang}.${n}.txt`, import.meta.url), 'utf8').split('\n').filter(Boolean)
+    const read = (n: string) => fs.readFileSync(new URL(`../wordlists/${lang}.${n}.txt`, import.meta.url), 'utf8').split('\n').filter(Boolean)
     const words = read('words'), sol = read('solutions'), set = new Set(words)
     assert.ok(words.every((w) => normalizeWord(lang, w) === w), `${lang}: ungültiges Wort`)
     assert.ok(sol.every((w) => set.has(w)), `${lang}: Lösung nicht in der Rateliste`)

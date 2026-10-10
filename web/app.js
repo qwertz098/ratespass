@@ -132,12 +132,12 @@ function poll(fn, ms) {
 async function route() {
   cleanup(); cleanup = () => {}
   const my = ++runId
-  const [, page = '', arg] = (location.hash || '#/').slice(1).split('/')
+  const [, page = '', arg, arg2] = (location.hash || '#/').slice(1).split('/')
   try {
     if (!S.me) { loading(); if (!(await boot())) return }
     if (my !== runId) return
-    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top, live, 'live-join': liveJoin, sofa }
-    await (pages[page] ?? home)(arg, my)
+    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top, live, 'live-join': liveJoin, sofa, wordle }
+    await (pages[page] ?? home)(arg, my, arg2)
   } catch (e) {
     if (my !== runId) return
     if (e instanceof ApiError && e.status === 401) return sessionLost()
@@ -241,6 +241,7 @@ function sessionLost() {
 
 /* ---------- Startseite ---------- */
 async function home(_, my) {
+  let wordleOpen = 0
   const render = (games, rooms = []) => {
     if (my !== runId) return
     const mine = games.filter((g) => g.status === 'active' && g.turn === 'me')
@@ -253,11 +254,16 @@ async function home(_, my) {
         h('button', { class: 'iconbtn', 'aria-label': t('profile.title'), onclick: () => go('#/profile') }, avatar(S.me, 'sm'))),
       h('button', { class: 'btn primary block', onclick: () => go('#/new') }, '＋ ' + t('home.new')),
       h('button', { class: 'btn block', onclick: () => go('#/top') }, '🏆 ' + t('lb.title')),
+      h('button', { class: 'btn block', onclick: () => go('#/wordle') }, '🟩 ' + t('wordle.title'), wordleOpen ? h('span', { class: 'badge' }, t('wordle.open', { n: wordleOpen })) : null),
       games.length || rooms.length ? null : h('div', { class: 'empty' }, t('home.empty')),
       rooms.length ? [h('h2', {}, t('room.rounds')), h('div', { class: 'list' }, rooms.map(roomItem))] : null,
       section(t('home.yourTurn'), mine), section(t('home.theirTurn'), theirs), section(t('home.waiting'), waiting), section(t('home.finished'), done))
   }
-  const load = guard(async () => { const [g, r] = await Promise.all([api('GET', '/api/games'), api('GET', '/api/rooms')]); render(g.games, r.rooms) })
+  const load = guard(async () => {
+    const [g, r, w] = await Promise.all([api('GET', '/api/games'), api('GET', '/api/rooms'), api('GET', '/api/wordle').catch(() => null)])
+    wordleOpen = w ? w.langs.filter((l) => l.lang === getLang() && !l.daily).length + w.groups.filter((x) => !x.today || x.today.status === 'playing').length : 0
+    render(g.games, r.rooms)
+  })
   await load()
   poll(load, 10000)
 }
@@ -433,6 +439,171 @@ async function sofa() {
   }
 
   setup()
+}
+
+/* ---------- Wordle ---------- */
+const WLANGS = ['de', 'en']
+const wlangs = () => [getLang(), ...WLANGS.filter((l) => l !== getLang())].filter((l, i, a) => WLANGS.includes(l) && a.indexOf(l) === i)
+const wstatus = (s) => !s ? t('wordle.status.none') : s.status === 'won' ? t('wordle.status.won', { n: s.guesses }) : s.status === 'lost' ? t('wordle.status.lost') : t('wordle.status.playing', { n: s.guesses })
+const wbadge = (s) => h('span', { class: 'badge ' + (s?.status === 'won' ? 'good' : s?.status === 'lost' ? 'bad' : '') }, s ? (s.status === 'won' ? '✓ ' + s.guesses + '/6' : s.status === 'lost' ? '✗' : '…') : t('wordle.new'))
+const wInviteLink = (code) => location.origin + '/#/wordle/join/' + code
+
+async function wordle(arg, my, arg2) {
+  if (arg === 'play') return wordlePlay(Number(arg2), my)
+  if (arg === 'group') return wordleGroup(Number(arg2), my)
+  if (arg === 'join') return wordleJoin(arg2, my)
+  if (arg === 'board') return wordleBoard(my)
+  return wordleHub(my)
+}
+
+async function wordleHub(my) {
+  let creating = false, duel = false
+  const startGame = guard(async (kind, lang, group_id) => { const r = await api('POST', '/api/wordle/games', { kind, lang, group_id }); go('#/wordle/play/' + r.game.id) })
+  const render = (d) => {
+    if (my !== runId) return
+    const langSeg = (cur, set) => h('div', { class: 'seg' }, WLANGS.map((l) => h('button', { 'aria-pressed': String(cur() === l), onclick: (e) => { set(l); e.currentTarget.parentNode.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === e.currentTarget))) } }, langName(l))))
+    let newLang = getLang(), newName = h('input', { type: 'text', maxLength: 30, placeholder: t('wordle.groupName'), autocomplete: 'off' }), joinCode = h('input', { type: 'text', maxLength: 12, placeholder: 'ABC23DEF', autocapitalize: 'characters', autocomplete: 'off' })
+    const createCard = h('div', { class: 'card stack' }, h('label', { class: 'field' }, t('wordle.groupName'), newName), langSeg(() => newLang, (l) => (newLang = l)),
+      h('button', { class: 'btn primary block', onclick: guard(async () => { const r = await api('POST', '/api/wordle/groups', { name: newName.value, lang: newLang }); go('#/wordle/group/' + r.group.id) }) }, t('wordle.newGroup')))
+    const duelCard = h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('wordle.duelInfo')), langSeg(() => newLang, (l) => (newLang = l)),
+      S.contacts.length ? h('div', { class: 'list' }, S.contacts.map((c) => h('button', { class: 'item', onclick: guard(async () => { const r = await api('POST', '/api/wordle/duel', { public_id: c.public_id, lang: newLang }); toast(t('wordle.duelSent', { name: c.name })); go('#/wordle/group/' + r.group.id) }) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, '⚔')))) : h('p', { class: 'hint' }, t('new.noContacts')))
+    mount(topbar(t('wordle.title')),
+      h('p', { class: 'hint' }, t('wordle.sub')),
+      wlangs().map((lang) => h('div', { class: 'card stack' },
+        h('div', { class: 'row' }, h('h3', { class: 'grow' }, langName(lang)), d.langs.find((x) => x.lang === lang).streak ? h('span', { class: 'badge' }, '🔥 ' + t('wordle.streak', { n: d.langs.find((x) => x.lang === lang).streak })) : null),
+        h('button', { class: 'item', onclick: () => startGame('daily', lang) }, h('div', { class: 'avatar sm' }, '🟩'), h('div', { class: 'grow' }, h('div', {}, t('wordle.today')), h('div', { class: 'muted' }, wstatus(d.langs.find((x) => x.lang === lang).daily))), wbadge(d.langs.find((x) => x.lang === lang).daily)),
+        h('button', { class: 'item', onclick: () => startGame('bonus', lang) }, h('div', { class: 'avatar sm' }, '➕'), h('div', { class: 'grow' }, h('div', {}, t('wordle.bonus')), h('div', { class: 'muted' }, wstatus(d.langs.find((x) => x.lang === lang).bonus) + ' · ' + t('wordle.bonusSub'))), wbadge(d.langs.find((x) => x.lang === lang).bonus)))),
+      h('h2', {}, t('wordle.groups')),
+      d.groups.length ? h('div', { class: 'list' }, d.groups.map((g) => h('button', { class: 'item', onclick: () => go('#/wordle/group/' + g.id) }, h('div', { class: 'avatar sm' }, g.members === 2 ? '⚔' : '👥'), h('div', { class: 'grow' }, h('div', { class: 'ell' }, g.name), h('div', { class: 'muted' }, langName(g.lang) + ' · ' + t('wordle.members', { n: g.members }))), wbadge(g.today)))) : h('div', { class: 'empty' }, t('wordle.noGroups')),
+      h('div', { class: 'row wrap' },
+        h('button', { class: 'btn small', onclick: () => { creating = !creating; duel = false; setExtra() } }, '＋ ' + t('wordle.newGroup')),
+        h('button', { class: 'btn small', onclick: () => { duel = !duel; creating = false; setExtra() } }, '⚔ ' + t('wordle.duel'))),
+      h('div', { id: 'wextra', class: 'stack' }),
+      h('div', { class: 'card stack' }, h('label', { class: 'field' }, t('wordle.joinGroup'), h('div', { class: 'row' }, joinCode, h('button', { class: 'btn', onclick: guard(async () => { const r = await api('POST', '/api/wordle/groups/join', { code: joinCode.value }); go('#/wordle/group/' + r.group.id) }) }, t('room.join'))))),
+      h('button', { class: 'btn block', onclick: () => go('#/wordle/board') }, '🏆 ' + t('wordle.board')))
+    function setExtra() { const box = document.getElementById('wextra'); box.replaceChildren(...(creating ? [createCard] : duel ? [duelCard] : [])) }
+  }
+  const load = guard(async () => render(await api('GET', '/api/wordle')))
+  await load()
+  poll(load, 60000)
+}
+
+async function wordleJoin(code, my) {
+  mount(topbar(t('wordle.title')), h('div', { class: 'card stack' }, h('p', {}, t('wordle.joinAsk', { code })),
+    h('button', { class: 'btn primary block', onclick: guard(async () => { const r = await api('POST', '/api/wordle/groups/join', { code }); go('#/wordle/group/' + r.group.id) }) }, t('wordle.joinGroup')),
+    h('button', { class: 'btn block', onclick: () => go('#/wordle') }, t('wordle.back'))))
+}
+
+const WKEYS = {
+  de: ['QWERTZUIOPÜ', 'ASDFGHJKLÖÄ', 'YXCVBNM'],
+  en: ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'],
+}
+async function wordlePlay(id, my) {
+  let g = (await api('GET', `/api/wordle/games/${id}`)).game
+  let cur = '', busy = false
+  const title = { daily: t('wordle.today'), bonus: t('wordle.bonus'), group: t('wordle.groupToday') }[g.kind] + ' · ' + langName(g.lang)
+  const rows = Array.from({ length: g.max }, () => Array.from({ length: 5 }, () => h('div', { class: 'wt' })))
+  const grid = h('div', { class: 'wgrid', role: 'grid', 'aria-label': title }, rows.map((r) => h('div', { class: 'wrow', role: 'row' }, r)))
+  const msg = h('div', { class: 'wmsg', 'aria-live': 'polite' })
+  const keyEls = new Map()
+  const best = { c: 3, p: 2, a: 1 }
+  const keyMarks = () => { const m = new Map(); for (const gu of g.guesses) [...gu.word].forEach((ch, i) => { const k = gu.marks[i]; if ((best[k] ?? 0) > (best[m.get(ch)] ?? 0)) m.set(ch, k) }); return m }
+  const MARKTXT = { c: 'wordle.m.c', p: 'wordle.m.p', a: 'wordle.m.a' }
+  const paintRow = (i, flip) => {
+    const gu = g.guesses[i]
+    rows[i].forEach((tile, n) => {
+      const ch = gu ? gu.word[n] : i === g.guesses.length && !g.finished ? cur[n] : ''
+      tile.textContent = ch ? ch.toUpperCase() : ''
+      tile.className = 'wt' + (ch && !gu ? ' filled' : '') + (gu ? ' ' + gu.marks[n] + (flip ? ' flip' : '') : '')
+      if (gu) { tile.setAttribute('aria-label', `${ch.toUpperCase()}, ${t(MARKTXT[gu.marks[n]])}`); if (flip) tile.style.animationDelay = n * 0.18 + 's' } else tile.removeAttribute('aria-label')
+    })
+  }
+  const paintKeys = () => { const m = keyMarks(); for (const [ch, el] of keyEls) el.className = 'key' + (m.has(ch) ? ' ' + m.get(ch) : '') + (el.dataset.wide ? ' wide' : '') }
+  const paintAll = () => { for (let i = 0; i < g.max; i++) paintRow(i, false); paintKeys() }
+  const shake = () => { const r = rows[g.guesses.length][0].parentNode; r.classList.remove('shake'); void r.offsetWidth; r.classList.add('shake') }
+  const result = h('div', { class: 'stack' })
+  const share = () => {
+    const text = `Ratespaß Wordle ${g.lang.toUpperCase()} ${g.day} ${g.status === 'won' ? g.guesses.length : 'X'}/${g.max}\n` + g.guesses.map((gu) => [...gu.marks].map((m) => ({ c: '🟩', p: '🟨', a: '⬛' })[m]).join('')).join('\n')
+    if (navigator.share) navigator.share({ text }).catch(() => {}); else navigator.clipboard?.writeText(text).then(() => toast(t('wordle.copied'))).catch(() => toast(text))
+  }
+  const showResult = () => {
+    if (!g.finished) return result.replaceChildren()
+    result.replaceChildren(h('div', { class: 'card stack lresult' }, h('h3', {}, g.status === 'won' ? t('wordle.win') : t('wordle.lose', { word: g.answer.toUpperCase() })),
+      g.status === 'won' ? h('p', { class: 'muted' }, t('wordle.points', { n: g.points })) : null,
+      h('button', { class: 'btn primary block', onclick: share }, '📋 ' + t('wordle.share')),
+      g.kind === 'group' ? h('button', { class: 'btn block', onclick: () => go('#/wordle/group/' + g.group_id) }, t('wordle.toGroup')) : null,
+      h('button', { class: 'btn block', onclick: () => go('#/wordle') }, t('wordle.back'))))
+  }
+  const type = (ch) => { if (busy || g.finished || cur.length >= 5) return; cur += ch.toLowerCase(); paintRow(g.guesses.length, false) }
+  const del = () => { if (busy || g.finished) return; cur = cur.slice(0, -1); paintRow(g.guesses.length, false) }
+  const submit = async () => {
+    if (busy || g.finished) return
+    if (cur.length < 5) { shake(); msg.textContent = t('err.bad_word'); return }
+    busy = true
+    try {
+      const r = await api('POST', `/api/wordle/games/${id}/guess`, { word: cur })
+      g = r.game; cur = ''; msg.textContent = ''
+      paintRow(g.guesses.length - 1, true)
+      setTimeout(() => { paintKeys(); paintAll(); showResult() }, g.finished ? 1000 : 900)
+    } catch (e) { shake(); msg.textContent = e instanceof ApiError ? errText(e) : t('err.generic') } finally { busy = false }
+  }
+  const press = (k) => (k === 'ENTER' ? submit() : k === 'DEL' ? del() : type(k))
+  const mkKey = (k, label, wide) => { const el = h('button', { class: 'key', 'data-wide': wide ? '1' : '', onclick: () => press(k), 'aria-label': k === 'ENTER' ? t('wordle.enter') : k === 'DEL' ? t('wordle.del') : k }, label); if (wide) el.classList.add('wide'); keyEls.set(k.toLowerCase(), el); return el }
+  const kb = h('div', { class: 'kb' }, WKEYS[g.lang].map((row, i, all) => h('div', { class: 'krow' },
+    i === all.length - 1 ? mkKey('ENTER', '↵', true) : null, [...row].map((ch) => mkKey(ch, ch)), i === all.length - 1 ? mkKey('DEL', '⌫', true) : null)))
+  const onKey = (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return
+    if (e.key === 'Enter') { e.preventDefault(); submit() } else if (e.key === 'Backspace') del()
+    else if (e.key.length === 1 && new RegExp(g.lang === 'de' ? '^[a-zäöüA-ZÄÖÜ]$' : '^[a-zA-Z]$').test(e.key)) type(e.key)
+  }
+  document.addEventListener('keydown', onKey)
+  const prev = cleanup
+  cleanup = () => { prev(); document.removeEventListener('keydown', onKey) }
+  mount(topbar(title),
+    h('div', { class: 'card stack wcard' }, h('p', { class: 'hint', style: 'text-align:center' }, t('wordle.hint.' + g.lang)), grid, msg, result, kb))
+  paintAll(); showResult()
+}
+
+async function wordleGroup(id, my) {
+  let scope = store.get('rp.wScope') || 'week'
+  const render = (gv, board) => {
+    if (my !== runId) return
+    const link = wInviteLink(gv.code)
+    const holder = h('div', { class: 'qr' })
+    const scopeSeg = h('div', { class: 'seg wrap' }, [['day', 'wordle.scope.day'], ['week', 'wordle.scope.week'], ['all', 'wordle.scope.all']].map(([v, l]) => h('button', { 'aria-pressed': String(scope === v), onclick: () => { scope = v; store.set('rp.wScope', v); load() } }, t(l))))
+    mount(topbar(gv.name),
+      h('div', { class: 'card stack' }, h('p', { class: 'muted' }, langName(gv.lang) + ' · ' + t('wordle.members', { n: gv.members.length })),
+        h('button', { class: 'btn primary block', onclick: guard(async () => { const r = await api('POST', '/api/wordle/games', { kind: 'group', group_id: gv.id }); go('#/wordle/play/' + r.game.id) }) },
+          gv.my_game ? (gv.my_game.status === 'playing' ? t('wordle.continue') : wstatus(gv.my_game)) : t('wordle.groupPlay'))),
+      h('h2', {}, t('wordle.invite')),
+      h('div', { class: 'card stack' }, h('div', { class: 'code' }, gv.code), holder,
+        h('button', { class: 'btn block', onclick: () => share(link, gv.name) }, '🔗 ' + t('wordle.inviteLink'))),
+      h('h2', {}, t('wordle.board')), h('div', { class: 'card stack' }, scopeSeg,
+        board.rows.length ? h('div', { class: 'list' }, board.rows.map((r) => h('div', { class: 'item' + (r.is_me ? ' me' : '') }, h('span', { class: 'rank' }, '#' + r.rank), h('div', { class: 'grow ell' }, r.name), h('span', { class: 'muted' }, r.avg_guesses ? 'Ø ' + r.avg_guesses : ''), h('span', { class: 'score' }, String(r.points))))) : null),
+      h('h2', {}, t('wordle.membersTitle')),
+      h('div', { class: 'list' }, gv.members.map((m) => h('div', { class: 'item' + (m.is_me ? ' me' : '') }, h('div', { class: 'grow ell' }, m.name + (m.is_owner ? ' ★' : '')), h('span', { class: 'muted' }, wstatus(m.today))))),
+      h('button', { class: 'btn block danger', onclick: guard(async () => { if (confirm(t('wordle.leaveConfirm'))) { await api('POST', `/api/wordle/groups/${id}/leave`, {}); go('#/wordle') } }) }, t('wordle.leave')),
+      gv.is_owner ? h('button', { class: 'btn block danger', onclick: guard(async () => { if (confirm(t('wordle.deleteConfirm'))) { await api('DELETE', `/api/wordle/groups/${id}`); go('#/wordle') } }) }, t('wordle.delete')) : null)
+    renderQr(link).then((q) => holder.replaceChildren(q)).catch(() => holder.replaceChildren(h('p', { class: 'hint' }, link)))
+  }
+  const load = guard(async () => { const [g, b] = await Promise.all([api('GET', `/api/wordle/groups/${id}`), api('GET', `/api/wordle/groups/${id}/board?scope=${scope}`)]); render(g.group, b) })
+  await load()
+}
+
+async function wordleBoard(my) {
+  let lang = store.get('rp.wLang') || getLang(), scope = store.get('rp.wScopeG') || 'week'
+  if (!WLANGS.includes(lang)) lang = 'de'
+  const render = (r) => {
+    if (my !== runId) return
+    const seg = (cur, opts, set) => h('div', { class: 'seg wrap' }, opts.map(([v, l]) => h('button', { 'aria-pressed': String(cur === v), onclick: () => { set(v); load() } }, l)))
+    mount(topbar(t('wordle.board')),
+      h('div', { class: 'card stack' }, seg(lang, WLANGS.map((l) => [l, langName(l)]), (v) => { lang = v; store.set('rp.wLang', v) }), seg(scope, [['day', t('wordle.scope.day')], ['week', t('wordle.scope.week')], ['month', t('wordle.scope.month')], ['all', t('wordle.scope.all')]], (v) => { scope = v; store.set('rp.wScopeG', v) }),
+        r.me.participating ? h('p', { class: 'hint' }, r.me.rank ? t('wordle.myRank', { rank: r.me.rank, total: r.total }) : t('wordle.notRanked')) : null),
+      r.top.length ? h('div', { class: 'list' }, r.top.map((x) => h('div', { class: 'item' + (x.is_me ? ' me' : '') }, h('span', { class: 'rank' }, '#' + x.rank), h('div', { class: 'grow ell' }, x.name), x.streak ? h('span', { class: 'badge' }, '🔥' + x.streak) : null, h('span', { class: 'muted' }, x.avg_guesses ? 'Ø ' + x.avg_guesses : ''), h('span', { class: 'score' }, String(x.points))))) : h('div', { class: 'empty' }, t('lb.empty')),
+      r.me.participating ? null : h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('wordle.joinLbInfo')), h('button', { class: 'btn primary block', onclick: () => go('#/top') }, t('wordle.joinLb'))))
+  }
+  const load = guard(async () => render(await api('GET', `/api/wordle/board?lang=${lang}&scope=${scope}`)))
+  await load()
 }
 
 /* ---------- Spielansicht ---------- */

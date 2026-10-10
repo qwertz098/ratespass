@@ -1,7 +1,7 @@
-// Lädt Wortlisten aus dem Netz und erzeugt die 5-Buchstaben-Listen für Wordle (data/wordle/<lang>.words.txt und <lang>.solutions.txt).
-// Verwendung: npm run fetch:wordlists [-- --out data/wordle]
+// Lädt Wortlisten aus dem Netz und erzeugt die 5-Buchstaben-Listen für Wordle (wordlists/<lang>.words.txt und <lang>.solutions.txt).
+// Verwendung: npm run fetch:wordlists [-- --out wordlists]
 // Quellen (Lizenzen siehe docs/WORDLE.md): Rateliste en: tabatkins/wordle-list (MIT), Wörterliste de: lorenbrichter/Words (CC0),
-// Häufigkeiten: hermitdave/FrequencyWords 2018 (MIT), Vornamen: dominictarr/random-name (MIT). Manuelle Sperren: data/wordle/blocklist.<lang>.txt.
+// Häufigkeiten: hermitdave/FrequencyWords 2018 (MIT), Vornamen: dominictarr/random-name (MIT). Manuelle Sperren: wordlists/blocklist.<lang>.txt.
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -44,5 +44,5 @@ export async function run(outDir: string, log: (m: string) => void = console.log
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
   const i = process.argv.indexOf('--out')
-  run(path.resolve(i >= 0 ? process.argv[i + 1] : path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'data', 'wordle'))).catch((e) => { console.error(e.message); process.exit(1) })
+  run(path.resolve(i >= 0 ? process.argv[i + 1] : path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'wordlists'))).catch((e) => { console.error(e.message); process.exit(1) })
 }

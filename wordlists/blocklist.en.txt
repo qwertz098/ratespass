@@ -1,0 +1,1 @@
+# Wörter, die nicht als Tageswort erscheinen sollen. „wort“ = nur aus den Lösungen, „!wort“ = auch als Eingabe sperren.

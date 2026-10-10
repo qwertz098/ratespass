@@ -26,7 +26,7 @@ const windowStart = (scope: Scope, today: string) => (scope === 'day' ? today : 
 
 /* ---------- Wortlisten ---------- */
 let loaded = false
-/** Liest data/wordle/*.txt in die Datenbank (nur Neues; Sperren bleiben bestehen). */
+/** Liest wordlists/*.txt in die Datenbank (nur Neues; Sperren bleiben bestehen). */
 export function loadWordlists(dir = config.wordle.dir) {
   tx(() => {
     for (const lang of WORDLE_LANGS) {
