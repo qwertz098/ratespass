@@ -86,6 +86,8 @@ Aktueller Bestand: **3778 Fragen** (davon 3556 auch auf Englisch spielbar) (`see
 
 ### Spielstufen und Extra-Kategorien
 
+**Version:** Die App-Version ist `0.0.<Anzahl Commits>` und wird automatisch gesetzt (Docker-Build-Argument `APP_VERSION` durch `build+deploy.bat` bzw. die Publish-Action, sonst aus Git). Sie steht ganz unten im Profil. Weicht die Version des Servers von der geladenen App ab, aktualisiert sich die App einmal selbst (Service Worker und Cache verwerfen, neu laden), danach erscheint bei Bedarf die Leiste „Neue Version verfügbar – Aktualisieren“; „Auf Updates prüfen“ im Profil erzwingt das sofort. Der Service Worker bekommt die Version über `/sw-version.js`, damit jeder neue Build auch ihn neu installiert.
+
 **App installieren:** Auf dem Willkommensbildschirm (erster Aufruf, aufklappbar) und im Profil steht eine bebilderte Anleitung „App auf den Startbildschirm“ (`web/install.js`, selbstgezeichnete SVG-Bilder in Hell/Dunkel): erkennt Gerät und Browser (Android: Chrome, Samsung Internet, Firefox, Edge; iPhone/iPad: Safari-Teilen-Blatt; Computer: Chrome/Edge), lässt andere Kombinationen wählen, zeigt bei Chrome-Android einen „Jetzt installieren“-Knopf (`beforeinstallprompt`) und blendet sich auf dem Willkommensbildschirm aus, wenn die App schon installiert ist.
 
 **Layout:** Spielbildschirme (Quiz-Frage, Wordle, Sofa, Live-Fragen auf dem Handy, Duell-Übersicht) sind so gebaut, dass sie auf Handys ab 360×640 ohne Scrollen passen (kompakte Abstände unter 820/700 px Höhe, höhenabhängige Größen im Wordle).

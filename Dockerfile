@@ -1,6 +1,8 @@
 # Keine Laufzeit-Abhängigkeiten: Node 26 führt TypeScript direkt aus und bringt SQLite (node:sqlite) mit.
 FROM node:26-alpine
-ENV NODE_ENV=production DATA_DIR=/data PORT=3000
+# Versionsnummer (0.0.<Anzahl Commits>) kommt als Build-Argument von build+deploy.bat bzw. der Publish-Action; ohne Angabe fällt der Server auf Git/0.0.0 zurück.
+ARG APP_VERSION=
+ENV NODE_ENV=production DATA_DIR=/data PORT=3000 APP_VERSION=$APP_VERSION
 WORKDIR /app
 COPY package.json ./
 COPY server ./server

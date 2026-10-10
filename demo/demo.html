@@ -340,6 +340,10 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
 .stack > .seg, .field > .seg, .card > .seg { display: flex }
 .stack > .seg button, .field > .seg button, .card > .seg button { flex: 1 1 0; text-align: center }
 
+/* Version im Profil und Hinweisleiste „Neue Version“ */
+.versionbox { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 13px; padding: 4px 4px 16px }
+.update-banner { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); max-width: 496px; margin: 0 auto; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); border: 1px solid var(--line); font-weight: 600 }
+
 .demo-bar{max-width:520px;margin:0 auto;padding:12px 16px 0;display:grid;gap:10px}
 .demo-bar .row{justify-content:space-between}
 .demo-note{font-size:13px;color:var(--muted);margin:0}
@@ -767,6 +771,7 @@ const DEMO = (() => {
   return { reset: () => { try { localStorage.removeItem(KEY) } catch { /* ignorieren */ } location.reload() } }
 })()
 
+const VERSION = "0.0.79"
 // UI-Texte. Neue Sprache = neues Objekt hinzufügen (Schlüssel wie in `de`); Fragen-Sprachen kommen unabhängig vom Server.
 const dict = {
   de: {
@@ -846,6 +851,7 @@ const dict = {
     'live.bet.title': 'Wie viel setzt du?', 'live.bet.finalTitle': 'Finale: doppelter Einsatz!', 'live.bet.capital': 'Dein Kapital: {n}', 'live.bet.allin': 'All-in', 'live.bet.info': 'Ohne Einsatz gelten 100. Richtig = Einsatz gewonnen, falsch = verloren (nie unter 0).', 'live.bet.finalInfo': 'Gewinn und Verlust zählen doppelt.',
     'wordle.bell': 'Erinnerung um 9 Uhr (deine Ortszeit), wenn du noch nicht gespielt hast', 'wordle.bellAsk': 'Erinnerung 9 Uhr', 'wordle.bellIs': '9-Uhr-Erinnerung an', 'wordle.bellOn': 'Erinnerung um 9 Uhr eingeschaltet', 'wordle.bellOff': 'Erinnerung ausgeschaltet',
     'wordle.title': 'Wordle', 'wordle.sub': 'Täglich ein Wort pro Sprache – 6 Versuche, 5 Buchstaben. Jeder bekommt dasselbe Wort, jede Gruppe ihr eigenes.', 'wordle.open': '{n} offen', 'wordle.new': 'neu',
+    'profile.version': 'Version {v}', 'update.server': 'Server {v}', 'update.check': 'Auf Updates prüfen', 'update.latest': 'Du hast die neueste Version.', 'update.available': 'Neue Version {v} verfügbar.', 'update.apply': 'Aktualisieren',
     'install.title': 'App auf den Startbildschirm', 'install.sub': 'So liegt Quissel wie eine App auf deinem Handy: schneller Start, Vollbild, und Benachrichtigungen (z. B. Wordle-Erinnerung) funktionieren zuverlässiger.', 'install.welcome': '📲 App auf den Startbildschirm legen – Anleitung', 'install.already': 'Quissel ist hier schon als App installiert.', 'install.now': 'Jetzt installieren',
     'install.g.androidChrome': 'Android · Chrome', 'install.g.iosSafari': 'iPhone · Safari', 'install.g.samsung': 'Samsung Internet', 'install.g.firefox': 'Firefox', 'install.g.edge': 'Edge', 'install.g.desktop': 'Computer',
     'install.s.menuTop': 'Tippe oben rechts auf das Menü ⋮.', 'install.s.menuBottom': 'Tippe unten rechts auf das Menü ≡.', 'install.s.chromeItem': 'Wähle „App installieren“ (manchmal heißt es „Zum Startbildschirm hinzufügen“).', 'install.s.firefoxItem': 'Wähle „Installieren“ (bzw. „Zum Startbildschirm hinzufügen“).',
@@ -991,6 +997,7 @@ const dict = {
     'live.bet.title': 'How much do you stake?', 'live.bet.finalTitle': 'Final: double stakes!', 'live.bet.capital': 'Your capital: {n}', 'live.bet.allin': 'All in', 'live.bet.info': 'Without a stake 100 applies. Right = stake won, wrong = stake lost (never below 0).', 'live.bet.finalInfo': 'Gains and losses count double.',
     'wordle.bell': 'Reminder at 9 am (your local time) if you have not played yet', 'wordle.bellAsk': '9 am reminder', 'wordle.bellIs': '9 am reminder on', 'wordle.bellOn': '9 am reminder switched on', 'wordle.bellOff': 'Reminder switched off',
     'wordle.title': 'Wordle', 'wordle.sub': 'One word a day per language – 6 tries, 5 letters. Everyone gets the same word, every group its own.', 'wordle.open': '{n} open', 'wordle.new': 'new',
+    'profile.version': 'Version {v}', 'update.server': 'server {v}', 'update.check': 'Check for updates', 'update.latest': 'You have the latest version.', 'update.available': 'New version {v} available.', 'update.apply': 'Update',
     'install.title': 'Add the app to your home screen', 'install.sub': 'Put Quissel on your phone like an app: faster start, full screen, and notifications (e.g. the Wordle reminder) work more reliably.', 'install.welcome': '📲 Add the app to your home screen – guide', 'install.already': 'Quissel is already installed as an app here.', 'install.now': 'Install now',
     'install.g.androidChrome': 'Android · Chrome', 'install.g.iosSafari': 'iPhone · Safari', 'install.g.samsung': 'Samsung Internet', 'install.g.firefox': 'Firefox', 'install.g.edge': 'Edge', 'install.g.desktop': 'Computer',
     'install.s.menuTop': 'Tap the menu ⋮ at the top right.', 'install.s.menuBottom': 'Tap the menu ≡ at the bottom right.', 'install.s.chromeItem': 'Choose “Install app” (sometimes called “Add to Home screen”).', 'install.s.firefoxItem': 'Choose “Install” (or “Add to Home screen”).',
@@ -1321,6 +1328,31 @@ function poll(fn, ms) {
   cleanup = () => { prev(); clearInterval(id); document.removeEventListener('visibilitychange', onVis) }
 }
 
+/** Harte Aktualisierung: Service Worker und Zwischenspeicher verwerfen, dann neu laden (hilft, wenn ein Browser – z. B. Firefox auf Android – die alte Version festhält). */
+async function hardReload() {
+  try {
+    const regs = (await navigator.serviceWorker?.getRegistrations?.()) ?? []
+    await Promise.all(regs.map((r) => r.unregister()))
+    if (window.caches) await Promise.all((await caches.keys()).map((k) => caches.delete(k)))
+  } catch { /* trotzdem neu laden */ }
+  location.reload()
+}
+/** Vergleicht die geladene App-Version mit der des Servers. Bei Abweichung: einmal automatisch hart aktualisieren, danach Hinweisleiste mit Knopf.
+ *  Gibt true zurück, wenn eine neuere Version existiert. `manual` (Profil-Knopf) aktualisiert sofort. */
+async function checkVersion(manual = false) {
+  let v
+  try { v = (await fetch('/api/meta', { cache: 'no-store' }).then((r) => r.json())).version } catch { return false }
+  if (!v) return false // Demo oder alter Server ohne Versionsangabe
+  S.serverVersion = v
+  if (v === VERSION) { document.getElementById('update-banner')?.remove(); return false }
+  let tried = null
+  try { tried = sessionStorage.getItem('rp.updTried') } catch { /* ignorieren */ }
+  if (manual || tried !== v) { try { sessionStorage.setItem('rp.updTried', v) } catch { /* ignorieren */ } hardReload(); return true }
+  if (!document.getElementById('update-banner')) {
+    document.body.append(h('div', { id: 'update-banner', class: 'update-banner', role: 'status' }, h('span', {}, t('update.available', { v })), h('button', { class: 'btn small primary', onclick: hardReload }, t('update.apply'))))
+  }
+  return true
+}
 let updateReady = false
 async function route() {
   if (updateReady) return location.reload()
@@ -2610,7 +2642,9 @@ async function profile() {
       h('a', { class: 'item', href: '/legal.html' }, h('div', { class: 'grow' }, t('profile.legal')))),
     h('div', {}, h('button', { class: 'btn block danger', onclick: guard(async () => {
       if (!(()=>true)(t('profile.deleteConfirm'))) return
-      await api('DELETE', '/api/me'); await disablePush().catch(() => {}); forgetIdentity(); go('#/') }) }, t('profile.delete'))))
+      await api('DELETE', '/api/me'); await disablePush().catch(() => {}); forgetIdentity(); go('#/') }) }, t('profile.delete'))),
+    h('div', { class: 'versionbox' }, h('span', {}, t('profile.version', { v: VERSION }) + (S.serverVersion && S.serverVersion !== VERSION ? ' · ' + t('update.server', { v: S.serverVersion }) : '')),
+      h('button', { class: 'btn small', onclick: guard(async () => { if (!(await checkVersion(true))) toast(t('update.latest')) }) }, '↻ ' + t('update.check'))))
 }
 const linkItem = (label, hash) => h('button', { class: 'item', onclick: () => go(hash) }, h('div', { class: 'grow' }, label), '›')
 
@@ -2865,6 +2899,8 @@ if ('serviceWorker' in navigator) {
   })
 }
 route()
+checkVersion()
+document.addEventListener('visibilitychange', () => { if (!document.hidden) checkVersion() })
 
 const tabApp = document.getElementById('tab-app'), tabMod = document.getElementById('tab-mod')
 const showTab = (mod) => { document.getElementById('app').hidden = mod; document.getElementById('mod').hidden = !mod; tabApp.setAttribute('aria-pressed', String(!mod)); tabMod.setAttribute('aria-pressed', String(mod)) }

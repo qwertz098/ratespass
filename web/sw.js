@@ -1,6 +1,7 @@
 // Service Worker: App-Shell offline verfügbar, API immer live.
-const VERSION = 'rp-v8'
-const SHELL = ['/', '/app.js', '/i18n.js', '/install.js', '/style.css', '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png', '/fonts/ClearSans-Bold.woff2']
+importScripts('/sw-version.js') // setzt self.APP_VERSION; ändert sich die Version, ändert sich der importierte Code → der Browser installiert den Service Worker neu
+const VERSION = 'rp-' + (self.APP_VERSION || 'dev')
+const SHELL = ['/', '/app.js', '/i18n.js', '/install.js', '/version.js', '/style.css', '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png', '/fonts/ClearSans-Bold.woff2']
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()))
@@ -11,6 +12,10 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url)
   if (e.request.method !== 'GET' || url.origin !== location.origin || url.pathname.startsWith('/api/')) return
+  if (url.pathname === '/version.js') { // Version immer vom Server holen (offline: letzte bekannte)
+    e.respondWith(caches.open(VERSION).then(async (c) => fetch(e.request).then((r) => { if (r.ok) c.put(e.request, r.clone()); return r }).catch(async () => (await c.match(e.request)) ?? Response.error())))
+    return
+  }
   if (e.request.mode === 'navigate') {
     e.respondWith(fetch(e.request).catch(() => caches.match('/')))
     return

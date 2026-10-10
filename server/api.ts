@@ -1,3 +1,4 @@
+import { VERSION } from './version.ts'
 import crypto from 'node:crypto'
 import { CATEGORIES, CATEGORY_TIERS, TIERS, isCategory, LICENSES, REGIONS, SERVABLE_SQL } from './categories.ts'
 import { config } from './config.ts'
@@ -53,7 +54,7 @@ const profile = (p: PlayerRow) => ({
 router.get('/api/meta', () => ({
   categories: CATEGORIES, tiers: CATEGORY_TIERS, levels: TIERS, regions: REGIONS, reports: config.playerReports,
   langs: supportedLangs(),
-  time_limit_ms: game.TIME_LIMIT_MS, rounds: game.ROUNDS, per_round: game.PER_ROUND,
+  time_limit_ms: game.TIME_LIMIT_MS, rounds: game.ROUNDS, per_round: game.PER_ROUND, version: VERSION,
 }), { auth: false })
 
 router.get('/api/licenses', () => ({ sources: licenseSummary(), licenses: LICENSES }), { auth: false })

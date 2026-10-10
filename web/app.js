@@ -1,5 +1,6 @@
 import { t, setLang, getLang, detectLang, languages, dict } from './i18n.js'
 import { installGuide, detectEnv } from './install.js'
+import { VERSION } from './version.js'
 
 /* ---------- Helfer ---------- */
 const $app = document.getElementById('app')
@@ -142,6 +143,31 @@ function poll(fn, ms) {
   cleanup = () => { prev(); clearInterval(id); document.removeEventListener('visibilitychange', onVis) }
 }
 
+/** Harte Aktualisierung: Service Worker und Zwischenspeicher verwerfen, dann neu laden (hilft, wenn ein Browser – z. B. Firefox auf Android – die alte Version festhält). */
+async function hardReload() {
+  try {
+    const regs = (await navigator.serviceWorker?.getRegistrations?.()) ?? []
+    await Promise.all(regs.map((r) => r.unregister()))
+    if (window.caches) await Promise.all((await caches.keys()).map((k) => caches.delete(k)))
+  } catch { /* trotzdem neu laden */ }
+  location.reload()
+}
+/** Vergleicht die geladene App-Version mit der des Servers. Bei Abweichung: einmal automatisch hart aktualisieren, danach Hinweisleiste mit Knopf.
+ *  Gibt true zurück, wenn eine neuere Version existiert. `manual` (Profil-Knopf) aktualisiert sofort. */
+async function checkVersion(manual = false) {
+  let v
+  try { v = (await fetch('/api/meta', { cache: 'no-store' }).then((r) => r.json())).version } catch { return false }
+  if (!v) return false // Demo oder alter Server ohne Versionsangabe
+  S.serverVersion = v
+  if (v === VERSION) { document.getElementById('update-banner')?.remove(); return false }
+  let tried = null
+  try { tried = sessionStorage.getItem('rp.updTried') } catch { /* ignorieren */ }
+  if (manual || tried !== v) { try { sessionStorage.setItem('rp.updTried', v) } catch { /* ignorieren */ } hardReload(); return true }
+  if (!document.getElementById('update-banner')) {
+    document.body.append(h('div', { id: 'update-banner', class: 'update-banner', role: 'status' }, h('span', {}, t('update.available', { v })), h('button', { class: 'btn small primary', onclick: hardReload }, t('update.apply'))))
+  }
+  return true
+}
 let updateReady = false
 async function route() {
   if (updateReady) return location.reload()
@@ -1431,7 +1457,9 @@ async function profile() {
       h('a', { class: 'item', href: '/legal.html' }, h('div', { class: 'grow' }, t('profile.legal')))),
     h('div', {}, h('button', { class: 'btn block danger', onclick: guard(async () => {
       if (!confirm(t('profile.deleteConfirm'))) return
-      await api('DELETE', '/api/me'); await disablePush().catch(() => {}); forgetIdentity(); go('#/') }) }, t('profile.delete'))))
+      await api('DELETE', '/api/me'); await disablePush().catch(() => {}); forgetIdentity(); go('#/') }) }, t('profile.delete'))),
+    h('div', { class: 'versionbox' }, h('span', {}, t('profile.version', { v: VERSION }) + (S.serverVersion && S.serverVersion !== VERSION ? ' · ' + t('update.server', { v: S.serverVersion }) : '')),
+      h('button', { class: 'btn small', onclick: guard(async () => { if (!(await checkVersion(true))) toast(t('update.latest')) }) }, '↻ ' + t('update.check'))))
 }
 const linkItem = (label, hash) => h('button', { class: 'item', onclick: () => go(hash) }, h('div', { class: 'grow' }, label), '›')
 
@@ -1686,3 +1714,5 @@ if ('serviceWorker' in navigator) {
   })
 }
 route()
+checkVersion()
+document.addEventListener('visibilitychange', () => { if (!document.hidden) checkVersion() })

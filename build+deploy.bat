@@ -163,7 +163,9 @@ rem ---- Version ---------------------------------------------------------------
 for /f "delims=" %%i in ('git -C "%REPO%" rev-parse --short HEAD') do set "SHA=%%i"
 for /f "delims=" %%i in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd-HHmm"') do set "STAMP=%%i"
 if defined TAG_OVERRIDE ( set "TAG=%TAG_OVERRIDE%" ) else ( set "TAG=%STAMP%-%SHA%" )
-echo      Version: %TAG%
+for /f "delims=" %%i in ('git -C "%REPO%" rev-list --count HEAD') do set "COUNT=%%i"
+set "APP_VERSION=0.0.%COUNT%"
+echo      Version: %TAG%  ^(App %APP_VERSION%^)
 
 rem ---- Tailscale ---------------------------------------------------------------------------------------------------------
 echo [2/5] Pruefe Tailscale ...
@@ -191,17 +193,17 @@ set "PUSHED=0"
 echo [3/5] Baue Image %IMAGE%:%TAG% ...
 if defined PLATFORM (
   if "%BUILD_ONLY%"=="1" (
-    docker buildx build --platform "%PLATFORM%" -t "%IMAGE%:%TAG%" -t "%IMAGE%:latest" "%REPO%"
+    docker buildx build --build-arg APP_VERSION=%APP_VERSION% --platform "%PLATFORM%" -t "%IMAGE%:%TAG%" -t "%IMAGE%:latest" "%REPO%"
     if errorlevel 1 ( echo [FEHLER] docker buildx fehlgeschlagen. & goto :fail )
     echo [4/5] --build-only: kein Push. ^(buildx ohne --push legt das Image nur im Build-Cache ab^)
     goto :done
   )
-  docker buildx build --platform "%PLATFORM%" -t "%IMAGE%:%TAG%" -t "%IMAGE%:latest" --push "%REPO%"
+  docker buildx build --build-arg APP_VERSION=%APP_VERSION% --platform "%PLATFORM%" -t "%IMAGE%:%TAG%" -t "%IMAGE%:latest" --push "%REPO%"
   if errorlevel 1 ( echo [FEHLER] docker buildx fehlgeschlagen - Registry erreichbar? Insecure-Registry eingetragen? & goto :fail )
   echo [4/5] Gebaut und gepusht mit buildx ^(%PLATFORM%^).
   set "PUSHED=1"
 ) else (
-  docker build -t "%IMAGE%:%TAG%" -t "%IMAGE%:latest" "%REPO%"
+  docker build --build-arg APP_VERSION=%APP_VERSION% -t "%IMAGE%:%TAG%" -t "%IMAGE%:latest" "%REPO%"
   if errorlevel 1 ( echo [FEHLER] docker build fehlgeschlagen. & goto :fail )
   if "%BUILD_ONLY%"=="1" ( echo [4/5] --build-only: kein Push. & goto :done )
   echo [4/5] Pushe in die Registry %REGISTRY% ...

@@ -336,3 +336,7 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
 /* Auswahlschalter (Segmente) in Karten/Feldern: volle Breite, gleich breite Tasten, Text mittig */
 .stack > .seg, .field > .seg, .card > .seg { display: flex }
 .stack > .seg button, .field > .seg button, .card > .seg button { flex: 1 1 0; text-align: center }
+
+/* Version im Profil und Hinweisleiste „Neue Version“ */
+.versionbox { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 13px; padding: 4px 4px 16px }
+.update-banner { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); max-width: 496px; margin: 0 auto; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); border: 1px solid var(--line); font-weight: 600 }

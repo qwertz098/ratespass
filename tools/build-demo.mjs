@@ -38,6 +38,9 @@ const shots = [
   ['admin-reviewers.jpg', 'Reviewer', 'Reviewer per Freundescode bestimmen oder entfernen.'],
 ].map(([f, t, c]) => `<figure><img src="${img(f)}" alt="Admin-Ansicht ${t}"><figcaption><b>${t}.</b> ${c}</figcaption></figure>`).join('')
 
+import { execSync } from 'node:child_process'
+let version = '0.0.0'
+try { version = '0.0.' + execSync('git rev-list --count HEAD', { cwd: root }).toString().trim() } catch { /* ohne Git */ }
 const html = `<title>Quissel Demo</title>
 <style>
 ${css}
@@ -59,6 +62,7 @@ const WORDS = ${JSON.stringify(words)};
 </script>
 <script type="module">
 ${mock}
+const VERSION = ${JSON.stringify(version)}
 ${i18n}
 ${install}
 ${app}

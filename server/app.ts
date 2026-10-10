@@ -7,6 +7,7 @@ import { get } from './db.ts'
 import { HttpError, readJson, sendJson, type Ctx } from './http.ts'
 import { router } from './api.ts'
 import { hasConsent } from './privacy.ts'
+import { VERSION } from './version.ts'
 
 const TYPES: Record<string, string> = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
@@ -34,7 +35,17 @@ export function clientIp(req: Pick<http.IncomingMessage, 'headers' | 'socket'>, 
   return ip && ip.length <= 64 ? ip.replace(/^::ffff:/, '') : socketIp
 }
 
+/** Version als kleine JS-Dateien (nie zwischengespeichert): `/version.js` für die App (ES-Modul), `/sw-version.js` für den Service Worker. */
+function serveVersion(req: http.IncomingMessage, res: http.ServerResponse, pathname: string): boolean {
+  const body = pathname === '/version.js' ? `export const VERSION = '${VERSION}'\n` : pathname === '/sw-version.js' ? `self.APP_VERSION = '${VERSION}'\n` : null
+  if (body === null) return false
+  res.writeHead(200, { 'content-type': 'text/javascript; charset=utf-8', 'cache-control': 'no-cache, no-store', 'content-length': Buffer.byteLength(body) })
+  res.end(req.method === 'HEAD' ? undefined : body)
+  return true
+}
+
 function serveStatic(req: http.IncomingMessage, res: http.ServerResponse, pathname: string) {
+  if (serveVersion(req, res, pathname)) return
   let rel = decodeURIComponent(pathname)
   if (rel === '/' || /^\/i\/[A-Za-z0-9]+$/.test(rel)) rel = '/index.html'
   if (rel === '/admin') rel = '/admin.html'
