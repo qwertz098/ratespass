@@ -58,8 +58,6 @@ Einstellungen: `deploy.local.bat.example` nach `deploy.local.bat` kopieren (wird
 
 ## A) Eigene VM (z. B. Oracle Always Free) mit automatischem HTTPS
 
-> **Oracle Cloud per Terraform:** Für eine Always-Free-VM bei Oracle gibt es ein fertiges Paket mit Netzwerk, Firewall, Docker, Caddy-HTTPS und Backups: [`deploy/oracle/`](../deploy/oracle/README.md). Die folgenden Schritte beschreiben die manuelle Variante für beliebige VMs.
-
 1. VM mit Docker + Compose-Plugin einrichten, Ports 80 und 443 freigeben (Firewall/Security List).
 2. Domain besorgen (oder kostenlosen DynDNS-Namen) und per DNS auf die VM-IP zeigen lassen.
 3. Repo (oder nur `docker-compose.prod.yml`, `Caddyfile`, `batches/`) auf die VM kopieren.

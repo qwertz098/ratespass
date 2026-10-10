@@ -4,7 +4,7 @@
 
 ## Aufbau: vorbereiteter Text + Betreiberangaben
 
-Der Text der Datenschutzerklärung steht **vorbereitet** in `legal/datenschutz.de.md` und `legal/datenschutz.en.md` (Markdown-ähnlich: `## Abschnitt`, `- Punkt`, Absatz je Zeile). Aus der Umgebung kommen nur die **Angaben des Betreibers** (Verantwortlicher inkl. Anschrift, Kontakt, optional Register/USt-IdNr./Datenschutzbeauftragte/r/Aufsichtsbehörde), der Hoster und die Speicherdauer. Platzhalter `{{NAME}}`, Zeilen mit `{{?NAME}}` erscheinen nur bei gesetzter Variable, `{{!NAME}}` nur bei nicht gesetzter; `{{?ai}}`/`{{!ai}}` hängen am KI-Schlüssel. Eine **eigene (juristisch geprüfte) Fassung** lässt sich per `LEGAL_DIR` einbinden. Vorlage für die Werte: `.env.example` (Terraform: `terraform.tfvars.example`).
+Der Text der Datenschutzerklärung steht **vorbereitet** in `legal/datenschutz.de.md` und `legal/datenschutz.en.md` (Markdown-ähnlich: `## Abschnitt`, `- Punkt`, Absatz je Zeile). Aus der Umgebung kommen nur die **Angaben des Betreibers** (Verantwortlicher inkl. Anschrift, Kontakt, optional Register/USt-IdNr./Datenschutzbeauftragte/r/Aufsichtsbehörde), der Hoster und die Speicherdauer. Platzhalter `{{NAME}}`, Zeilen mit `{{?NAME}}` erscheinen nur bei gesetzter Variable, `{{!NAME}}` nur bei nicht gesetzter; `{{?ai}}`/`{{!ai}}` hängen am KI-Schlüssel. Eine **eigene (juristisch geprüfte) Fassung** lässt sich per `LEGAL_DIR` einbinden. Vorlage für die Werte: `.env.example`.
 
 ## Pflichtangaben (Umgebungsvariablen)
 

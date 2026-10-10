@@ -17,14 +17,3 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: docker build -t ratespass .
-  terraform:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: deploy/oracle
-    steps:
-      - uses: actions/checkout@v4
-      - uses: hashicorp/setup-terraform@v3
-      - run: terraform fmt -check -recursive
-      - run: terraform init -backend=false -input=false
-      - run: terraform validate
