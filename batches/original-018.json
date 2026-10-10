@@ -1,0 +1,4730 @@
+{
+ "format": "ratespass-batch",
+ "version": 1,
+ "batch": "original-018",
+ "source": "original",
+ "license": "CC-BY-SA-4.0",
+ "attribution": "Ratespaß-Projekt (eigene Formulierungen, Faktenwissen)",
+ "questions": [
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die Technik der Wandmalerei auf frischem, noch feuchtem Putz?",
+     "correct": "Freskomalerei",
+     "wrong": [
+      "Seccomalerei",
+      "Enkaustik",
+      "Sgraffito"
+     ]
+    },
+    "en": {
+     "text": "What is the technique of painting on fresh, still wet plaster called?",
+     "correct": "Fresco painting",
+     "wrong": [
+      "Secco painting",
+      "Encaustic",
+      "Sgraffito"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Film gewann 1929 den ersten Oscar als bester Film?",
+     "correct": "Flügel der Nacht (Wings)",
+     "wrong": [
+      "Der Jazzsänger",
+      "Sonnenaufgang",
+      "Metropolis"
+     ]
+    },
+    "en": {
+     "text": "Which film won the first Academy Award for Best Picture, presented in 1929?",
+     "correct": "Wings",
+     "wrong": [
+      "The Jazz Singer",
+      "Sunrise",
+      "Metropolis"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Steine umfasst ein Domino-Satz mit Doppel-Sechs?",
+     "correct": "28",
+     "wrong": [
+      "21",
+      "36",
+      "45"
+     ]
+    },
+    "en": {
+     "text": "How many tiles does a double-six domino set contain?",
+     "correct": "28",
+     "wrong": [
+      "21",
+      "36",
+      "45"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Nobelpreis geht nicht auf das Testament Alfred Nobels zurück, sondern wurde erst 1968 gestiftet?",
+     "correct": "Wirtschaftswissenschaften",
+     "wrong": [
+      "Literatur",
+      "Medizin",
+      "Frieden"
+     ]
+    },
+    "en": {
+     "text": "Which Nobel Prize does not stem from Alfred Nobel's will but was only established in 1968?",
+     "correct": "Economic Sciences",
+     "wrong": [
+      "Literature",
+      "Medicine",
+      "Peace"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Land besitzt die meisten Inseln der Welt?",
+     "correct": "Schweden",
+     "wrong": [
+      "Indonesien",
+      "Philippinen",
+      "Kanada"
+     ]
+    },
+    "en": {
+     "text": "Which country has the most islands in the world?",
+     "correct": "Sweden",
+     "wrong": [
+      "Indonesia",
+      "Philippines",
+      "Canada"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer war der erste Reichspräsident der Weimarer Republik?",
+     "correct": "Friedrich Ebert",
+     "wrong": [
+      "Paul von Hindenburg",
+      "Gustav Stresemann",
+      "Philipp Scheidemann"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Shakespeare-Stück tritt der Magier Prospero auf?",
+     "correct": "Der Sturm",
+     "wrong": [
+      "Ein Sommernachtstraum",
+      "Was ihr wollt",
+      "Othello"
+     ]
+    },
+    "en": {
+     "text": "In which Shakespeare play does the magician Prospero appear?",
+     "correct": "The Tempest",
+     "wrong": [
+      "A Midsummer Night's Dream",
+      "Twelfth Night",
+      "Othello"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte „Finlandia“?",
+     "correct": "Jean Sibelius",
+     "wrong": [
+      "Edvard Grieg",
+      "Carl Nielsen",
+      "Wilhelm Stenhammar"
+     ]
+    },
+    "en": {
+     "text": "Who composed “Finlandia”?",
+     "correct": "Jean Sibelius",
+     "wrong": [
+      "Edvard Grieg",
+      "Carl Nielsen",
+      "Wilhelm Stenhammar"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Baum gilt als das älteste bekannte Einzelindividuum unter den Bäumen?",
+     "correct": "Grannen-Kiefer",
+     "wrong": [
+      "Mammutbaum",
+      "Eibe",
+      "Stieleiche"
+     ]
+    },
+    "en": {
+     "text": "Which tree is considered the oldest known single individual among trees?",
+     "correct": "Great Basin bristlecone pine",
+     "wrong": [
+      "Giant sequoia",
+      "Yew",
+      "English oak"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die SI-Einheit des elektrischen Leitwerts?",
+     "correct": "Siemens",
+     "wrong": [
+      "Ohm",
+      "Coulomb",
+      "Ampere"
+     ]
+    },
+    "en": {
+     "text": "What is the SI unit of electrical conductance?",
+     "correct": "Siemens",
+     "wrong": [
+      "Ohm",
+      "Coulomb",
+      "Ampere"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Basketballspieler erzielte 1962 in einem NBA-Spiel 100 Punkte?",
+     "correct": "Wilt Chamberlain",
+     "wrong": [
+      "Bill Russell",
+      "Michael Jordan",
+      "Kareem Abdul-Jabbar"
+     ]
+    },
+    "en": {
+     "text": "Which basketball player scored 100 points in a single NBA game in 1962?",
+     "correct": "Wilt Chamberlain",
+     "wrong": [
+      "Bill Russell",
+      "Michael Jordan",
+      "Kareem Abdul-Jabbar"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer entwickelte die Programmiersprache Python?",
+     "correct": "Guido van Rossum",
+     "wrong": [
+      "Larry Wall",
+      "Yukihiro Matsumoto",
+      "Rasmus Lerdorf"
+     ]
+    },
+    "en": {
+     "text": "Who developed the programming language Python?",
+     "correct": "Guido van Rossum",
+     "wrong": [
+      "Larry Wall",
+      "Yukihiro Matsumoto",
+      "Rasmus Lerdorf"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr malte Pablo Picasso das Gemälde „Guernica“?",
+     "correct": "1937",
+     "wrong": [
+      "1925",
+      "1945",
+      "1914"
+     ]
+    },
+    "en": {
+     "text": "In which year did Pablo Picasso paint “Guernica”?",
+     "correct": "1937",
+     "wrong": [
+      "1925",
+      "1945",
+      "1914"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die nigerianische Filmindustrie?",
+     "correct": "Nollywood",
+     "wrong": [
+      "Bollywood",
+      "Lollywood",
+      "Tollywood"
+     ]
+    },
+    "en": {
+     "text": "What is the Nigerian film industry called?",
+     "correct": "Nollywood",
+     "wrong": [
+      "Bollywood",
+      "Lollywood",
+      "Tollywood"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welcher Unterwasserstadt spielt das Videospiel „BioShock“?",
+     "correct": "Rapture",
+     "wrong": [
+      "Atlantis",
+      "Columbia",
+      "Sanctuary"
+     ]
+    },
+    "en": {
+     "text": "In which underwater city is the video game “BioShock” set?",
+     "correct": "Rapture",
+     "wrong": [
+      "Atlantis",
+      "Columbia",
+      "Sanctuary"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer erhielt als einzige Person Nobelpreise in zwei verschiedenen Naturwissenschaften, nämlich Physik und Chemie?",
+     "correct": "Marie Curie",
+     "wrong": [
+      "Linus Pauling",
+      "Frederick Sanger",
+      "Albert Einstein"
+     ]
+    },
+    "en": {
+     "text": "Who is the only person to have received Nobel Prizes in two different natural sciences, physics and chemistry?",
+     "correct": "Marie Curie",
+     "wrong": [
+      "Linus Pauling",
+      "Frederick Sanger",
+      "Albert Einstein"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Hauptstadt von Bhutan?",
+     "correct": "Thimphu",
+     "wrong": [
+      "Paro",
+      "Punakha",
+      "Kathmandu"
+     ]
+    },
+    "en": {
+     "text": "What is the capital of Bhutan?",
+     "correct": "Thimphu",
+     "wrong": [
+      "Paro",
+      "Punakha",
+      "Kathmandu"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Bei welcher Seeschlacht besiegte 1571 die Heilige Liga die osmanische Flotte?",
+     "correct": "Lepanto",
+     "wrong": [
+      "Trafalgar",
+      "Actium",
+      "Salamis"
+     ]
+    },
+    "en": {
+     "text": "In which naval battle did the Holy League defeat the Ottoman fleet in 1571?",
+     "correct": "Lepanto",
+     "wrong": [
+      "Trafalgar",
+      "Actium",
+      "Salamis"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Mrs Dalloway“?",
+     "correct": "Virginia Woolf",
+     "wrong": [
+      "Jane Austen",
+      "George Eliot",
+      "Katherine Mansfield"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “Mrs Dalloway”?",
+     "correct": "Virginia Woolf",
+     "wrong": [
+      "Jane Austen",
+      "George Eliot",
+      "Katherine Mansfield"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Jazz-Klassiker „Take Five“, den das Dave Brubeck Quartet spielte?",
+     "correct": "Paul Desmond",
+     "wrong": [
+      "Dave Brubeck",
+      "Miles Davis",
+      "John Coltrane"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the jazz classic “Take Five”, played by the Dave Brubeck Quartet?",
+     "correct": "Paul Desmond",
+     "wrong": [
+      "Dave Brubeck",
+      "Miles Davis",
+      "John Coltrane"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Tiere sind neben dem Schnabeltier die einzigen eierlegenden Säugetiere?",
+     "correct": "Ameisenigel",
+     "wrong": [
+      "Gürteltiere",
+      "Schuppentiere",
+      "Beutelratten"
+     ]
+    },
+    "en": {
+     "text": "Which animals are, besides the platypus, the only egg-laying mammals?",
+     "correct": "Echidnas",
+     "wrong": [
+      "Armadillos",
+      "Pangolins",
+      "Opossums"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der programmierte, kontrollierte Zelltod?",
+     "correct": "Apoptose",
+     "wrong": [
+      "Nekrose",
+      "Mitose",
+      "Autolyse"
+     ]
+    },
+    "en": {
+     "text": "What is programmed, controlled cell death called?",
+     "correct": "Apoptosis",
+     "wrong": [
+      "Necrosis",
+      "Mitosis",
+      "Autolysis"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer lief 1954 als Erster die Meile in unter vier Minuten?",
+     "correct": "Roger Bannister",
+     "wrong": [
+      "Sebastian Coe",
+      "Jim Ryun",
+      "Steve Ovett"
+     ]
+    },
+    "en": {
+     "text": "Who was the first person to run a mile in under four minutes, in 1954?",
+     "correct": "Roger Bannister",
+     "wrong": [
+      "Sebastian Coe",
+      "Jim Ryun",
+      "Steve Ovett"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr wurde die erste Verbindung im ARPANET hergestellt?",
+     "correct": "1969",
+     "wrong": [
+      "1958",
+      "1975",
+      "1983"
+     ]
+    },
+    "en": {
+     "text": "In which year was the first connection made on the ARPANET?",
+     "correct": "1969",
+     "wrong": [
+      "1958",
+      "1975",
+      "1983"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer malte „Nighthawks“ (1942)?",
+     "correct": "Edward Hopper",
+     "wrong": [
+      "Andrew Wyeth",
+      "Norman Rockwell",
+      "Georgia O'Keeffe"
+     ]
+    },
+    "en": {
+     "text": "Who painted “Nighthawks” (1942)?",
+     "correct": "Edward Hopper",
+     "wrong": [
+      "Andrew Wyeth",
+      "Norman Rockwell",
+      "Georgia O'Keeffe"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Film von Stanley Kubrick basiert auf einem Roman von Anthony Burgess?",
+     "correct": "Uhrwerk Orange",
+     "wrong": [
+      "Shining",
+      "Full Metal Jacket",
+      "Barry Lyndon"
+     ]
+    },
+    "en": {
+     "text": "Which Stanley Kubrick film is based on a novel by Anthony Burgess?",
+     "correct": "A Clockwork Orange",
+     "wrong": [
+      "The Shining",
+      "Full Metal Jacket",
+      "Barry Lyndon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer erfand das Spiel „The Landlord's Game“, das Vorbild von Monopoly?",
+     "correct": "Elizabeth Magie",
+     "wrong": [
+      "Charles Darrow",
+      "Lizzie Hasbro",
+      "Parker Brothers"
+     ]
+    },
+    "en": {
+     "text": "Who invented “The Landlord's Game”, the model for Monopoly?",
+     "correct": "Elizabeth Magie",
+     "wrong": [
+      "Charles Darrow",
+      "Lizzie Hasbro",
+      "Parker Brothers"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Fabelwesen ist das Nationaltier Schottlands?",
+     "correct": "Einhorn",
+     "wrong": [
+      "Greif",
+      "Drache",
+      "Löwe"
+     ]
+    },
+    "en": {
+     "text": "Which mythical creature is the national animal of Scotland?",
+     "correct": "Unicorn",
+     "wrong": [
+      "Griffin",
+      "Dragon",
+      "Lion"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die längste Gebirgskette der Erde über Land?",
+     "correct": "Anden",
+     "wrong": [
+      "Rocky Mountains",
+      "Himalaya",
+      "Alpen"
+     ]
+    },
+    "en": {
+     "text": "What is the longest mountain range on land?",
+     "correct": "Andes",
+     "wrong": [
+      "Rocky Mountains",
+      "Himalayas",
+      "Alps"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer gründete 1526 nach der Schlacht von Panipat das Mogulreich in Indien?",
+     "correct": "Babur",
+     "wrong": [
+      "Akbar",
+      "Timur",
+      "Dschingis Khan"
+     ]
+    },
+    "en": {
+     "text": "Who founded the Mughal Empire in India in 1526 after the Battle of Panipat?",
+     "correct": "Babur",
+     "wrong": [
+      "Akbar",
+      "Timur",
+      "Genghis Khan"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer erhielt 1902 als erster Deutscher den Literaturnobelpreis?",
+     "correct": "Theodor Mommsen",
+     "wrong": [
+      "Gerhart Hauptmann",
+      "Paul Heyse",
+      "Thomas Mann"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Jazzsängerin nahm 1939 das Lied „Strange Fruit“ auf?",
+     "correct": "Billie Holiday",
+     "wrong": [
+      "Ella Fitzgerald",
+      "Nina Simone",
+      "Sarah Vaughan"
+     ]
+    },
+    "en": {
+     "text": "Which jazz singer recorded the song “Strange Fruit” in 1939?",
+     "correct": "Billie Holiday",
+     "wrong": [
+      "Ella Fitzgerald",
+      "Nina Simone",
+      "Sarah Vaughan"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Zu welcher Tiergruppe gehört das Seepferdchen?",
+     "correct": "Knochenfische",
+     "wrong": [
+      "Krebstiere",
+      "Weichtiere",
+      "Stachelhäuter"
+     ]
+    },
+    "en": {
+     "text": "To which animal group does the seahorse belong?",
+     "correct": "Bony fish",
+     "wrong": [
+      "Crustaceans",
+      "Molluscs",
+      "Echinoderms"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer entdeckte 1897 das Elektron?",
+     "correct": "Joseph John Thomson",
+     "wrong": [
+      "Ernest Rutherford",
+      "Robert Millikan",
+      "Niels Bohr"
+     ]
+    },
+    "en": {
+     "text": "Who discovered the electron in 1897?",
+     "correct": "Joseph John Thomson",
+     "wrong": [
+      "Ernest Rutherford",
+      "Robert Millikan",
+      "Niels Bohr"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Farbe hat das Trikot des Gesamtführenden beim Giro d'Italia?",
+     "correct": "Rosa",
+     "wrong": [
+      "Gelb",
+      "Rot",
+      "Weiß"
+     ]
+    },
+    "en": {
+     "text": "What colour is the jersey of the overall leader at the Giro d'Italia?",
+     "correct": "Pink",
+     "wrong": [
+      "Yellow",
+      "Red",
+      "White"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die 1959 entwickelte Programmiersprache für kaufmännische Anwendungen?",
+     "correct": "COBOL",
+     "wrong": [
+      "FORTRAN",
+      "ALGOL",
+      "BASIC"
+     ]
+    },
+    "en": {
+     "text": "What is the programming language for business applications developed in 1959 called?",
+     "correct": "COBOL",
+     "wrong": [
+      "FORTRAN",
+      "ALGOL",
+      "BASIC"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Architekt entwarf die Villa Savoye bei Paris?",
+     "correct": "Le Corbusier",
+     "wrong": [
+      "Walter Gropius",
+      "Alvar Aalto",
+      "Adolf Loos"
+     ]
+    },
+    "en": {
+     "text": "Which architect designed the Villa Savoye near Paris?",
+     "correct": "Le Corbusier",
+     "wrong": [
+      "Walter Gropius",
+      "Alvar Aalto",
+      "Adolf Loos"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer führte Regie bei „Die sieben Samurai“?",
+     "correct": "Akira Kurosawa",
+     "wrong": [
+      "Yasujirō Ozu",
+      "Hayao Miyazaki",
+      "Kenji Mizoguchi"
+     ]
+    },
+    "en": {
+     "text": "Who directed “Seven Samurai”?",
+     "correct": "Akira Kurosawa",
+     "wrong": [
+      "Yasujirō Ozu",
+      "Hayao Miyazaki",
+      "Kenji Mizoguchi"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Unternehmen entwickelte das Computerspiel „Half-Life“ (1998)?",
+     "correct": "Valve",
+     "wrong": [
+      "id Software",
+      "Blizzard",
+      "Epic Games"
+     ]
+    },
+    "en": {
+     "text": "Which company developed the computer game “Half-Life” (1998)?",
+     "correct": "Valve",
+     "wrong": [
+      "id Software",
+      "Blizzard",
+      "Epic Games"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Land hat die einzige nicht rechteckige Nationalflagge der Welt?",
+     "correct": "Nepal",
+     "wrong": [
+      "Bhutan",
+      "Sri Lanka",
+      "Brunei"
+     ]
+    },
+    "en": {
+     "text": "Which country has the only non-rectangular national flag in the world?",
+     "correct": "Nepal",
+     "wrong": [
+      "Bhutan",
+      "Sri Lanka",
+      "Brunei"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Meer hat keine Küste und wird nur von Meeresströmungen im Atlantik begrenzt?",
+     "correct": "Sargassosee",
+     "wrong": [
+      "Ägäis",
+      "Timorsee",
+      "Bismarcksee"
+     ]
+    },
+    "en": {
+     "text": "Which sea has no coastline and is bounded only by ocean currents in the Atlantic?",
+     "correct": "Sargasso Sea",
+     "wrong": [
+      "Aegean Sea",
+      "Timor Sea",
+      "Bismarck Sea"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Schlacht im Norden Englands fand 1066 wenige Wochen vor der Schlacht bei Hastings statt?",
+     "correct": "Stamford Bridge",
+     "wrong": [
+      "Bosworth Field",
+      "Agincourt",
+      "Crécy"
+     ]
+    },
+    "en": {
+     "text": "Which battle in the north of England took place a few weeks before the Battle of Hastings in 1066?",
+     "correct": "Stamford Bridge",
+     "wrong": [
+      "Bosworth Field",
+      "Agincourt",
+      "Crécy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb die Erzählung „Herz der Finsternis“?",
+     "correct": "Joseph Conrad",
+     "wrong": [
+      "Rudyard Kipling",
+      "Robert Louis Stevenson",
+      "Thomas Hardy"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novella “Heart of Darkness”?",
+     "correct": "Joseph Conrad",
+     "wrong": [
+      "Rudyard Kipling",
+      "Robert Louis Stevenson",
+      "Thomas Hardy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte die Oper „Der Freischütz“?",
+     "correct": "Carl Maria von Weber",
+     "wrong": [
+      "Richard Wagner",
+      "Albert Lortzing",
+      "Giacomo Meyerbeer"
+     ]
+    },
+    "en": {
+     "text": "Who composed the opera “Der Freischütz”?",
+     "correct": "Carl Maria von Weber",
+     "wrong": [
+      "Richard Wagner",
+      "Albert Lortzing",
+      "Giacomo Meyerbeer"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher lebende Gliederfüßer erreicht die größte Spannweite der Beine?",
+     "correct": "Japanische Riesenkrabbe",
+     "wrong": [
+      "Hummer",
+      "Kokosnusskrabbe",
+      "Königskrabbe"
+     ]
+    },
+    "en": {
+     "text": "Which living arthropod reaches the largest leg span?",
+     "correct": "Japanese spider crab",
+     "wrong": [
+      "Lobster",
+      "Coconut crab",
+      "King crab"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man Enzyme, die DNA an bestimmten Basensequenzen schneiden?",
+     "correct": "Restriktionsenzyme",
+     "wrong": [
+      "Ligasen",
+      "Polymerasen",
+      "Helikasen"
+     ]
+    },
+    "en": {
+     "text": "What are enzymes called that cut DNA at specific base sequences?",
+     "correct": "Restriction enzymes",
+     "wrong": [
+      "Ligases",
+      "Polymerases",
+      "Helicases"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie alt war Boris Becker, als er 1985 erstmals Wimbledon gewann?",
+     "correct": "17",
+     "wrong": [
+      "19",
+      "21",
+      "23"
+     ]
+    },
+    "en": {
+     "text": "How old was Boris Becker when he first won Wimbledon in 1985?",
+     "correct": "17",
+     "wrong": [
+      "19",
+      "21",
+      "23"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Protokoll weist Geräten in einem Netzwerk automatisch IP-Adressen zu?",
+     "correct": "DHCP",
+     "wrong": [
+      "DNS",
+      "ARP",
+      "FTP"
+     ]
+    },
+    "en": {
+     "text": "Which protocol automatically assigns IP addresses to devices in a network?",
+     "correct": "DHCP",
+     "wrong": [
+      "DNS",
+      "ARP",
+      "FTP"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf um 1440 die erste freistehende Aktfigur in Bronze seit der Antike, den „David“?",
+     "correct": "Donatello",
+     "wrong": [
+      "Michelangelo",
+      "Verrocchio",
+      "Ghiberti"
+     ]
+    },
+    "en": {
+     "text": "Who created the “David”, the first free-standing bronze nude since antiquity, around 1440?",
+     "correct": "Donatello",
+     "wrong": [
+      "Michelangelo",
+      "Verrocchio",
+      "Ghiberti"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Animationsfilm von Hayao Miyazaki gewann 2003 den Oscar als bester Animationsfilm?",
+     "correct": "Chihiros Reise ins Zauberland",
+     "wrong": [
+      "Prinzessin Mononoke",
+      "Mein Nachbar Totoro",
+      "Das wandelnde Schloss"
+     ]
+    },
+    "en": {
+     "text": "Which animated film by Hayao Miyazaki won the Oscar for Best Animated Feature in 2003?",
+     "correct": "Spirited Away",
+     "wrong": [
+      "Princess Mononoke",
+      "My Neighbor Totoro",
+      "Howl's Moving Castle"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Spiel wurde 1979 erstmals zum „Spiel des Jahres“ gekürt?",
+     "correct": "Hase und Igel",
+     "wrong": [
+      "Scotland Yard",
+      "Carcassonne",
+      "Heimlich & Co."
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die höchste Auszeichnung der Mathematik, die nur alle vier Jahre an junge Forschende vergeben wird?",
+     "correct": "Fields-Medaille",
+     "wrong": [
+      "Abel-Preis",
+      "Turing-Preis",
+      "Wolf-Preis"
+     ]
+    },
+    "en": {
+     "text": "What is the highest award in mathematics, given to young researchers only every four years?",
+     "correct": "Fields Medal",
+     "wrong": [
+      "Abel Prize",
+      "Turing Award",
+      "Wolf Prize"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Hauptstadt von Suriname?",
+     "correct": "Paramaribo",
+     "wrong": [
+      "Georgetown",
+      "Cayenne",
+      "Caracas"
+     ]
+    },
+    "en": {
+     "text": "What is the capital of Suriname?",
+     "correct": "Paramaribo",
+     "wrong": [
+      "Georgetown",
+      "Cayenne",
+      "Caracas"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Bei welchen Orten stoppte Karl Martell 732 das Vordringen der Araber ins Frankenreich?",
+     "correct": "Tours und Poitiers",
+     "wrong": [
+      "Orléans und Paris",
+      "Narbonne und Toulouse",
+      "Aachen und Köln"
+     ]
+    },
+    "en": {
+     "text": "Near which places did Charles Martel halt the advance of the Arabs into the Frankish realm in 732?",
+     "correct": "Tours and Poitiers",
+     "wrong": [
+      "Orléans and Paris",
+      "Narbonne and Toulouse",
+      "Aachen and Cologne"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Mein Name sei Gantenbein“?",
+     "correct": "Max Frisch",
+     "wrong": [
+      "Friedrich Dürrenmatt",
+      "Robert Walser",
+      "Peter Bichsel"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie lautet der bürgerliche Name von Bob Dylan?",
+     "correct": "Robert Zimmerman",
+     "wrong": [
+      "Robert Allen",
+      "Robert Dillon",
+      "Robert Thomas"
+     ]
+    },
+    "en": {
+     "text": "What is Bob Dylan's birth name?",
+     "correct": "Robert Zimmerman",
+     "wrong": [
+      "Robert Allen",
+      "Robert Dillon",
+      "Robert Thomas"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Insektenordnung umfasst die meisten bekannten Arten?",
+     "correct": "Käfer",
+     "wrong": [
+      "Schmetterlinge",
+      "Hautflügler",
+      "Fliegen"
+     ]
+    },
+    "en": {
+     "text": "Which insect order includes the most known species?",
+     "correct": "Beetles",
+     "wrong": [
+      "Butterflies and moths",
+      "Hymenoptera",
+      "Flies"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches ist das leichteste Metall?",
+     "correct": "Lithium",
+     "wrong": [
+      "Aluminium",
+      "Magnesium",
+      "Natrium"
+     ]
+    },
+    "en": {
+     "text": "Which is the lightest metal?",
+     "correct": "Lithium",
+     "wrong": [
+      "Aluminium",
+      "Magnesium",
+      "Sodium"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer gewann 1960 in Rom barfuß den olympischen Marathon?",
+     "correct": "Abebe Bikila",
+     "wrong": [
+      "Emil Zátopek",
+      "Haile Gebrselassie",
+      "Paavo Nurmi"
+     ]
+    },
+    "en": {
+     "text": "Who won the Olympic marathon barefoot in Rome in 1960?",
+     "correct": "Abebe Bikila",
+     "wrong": [
+      "Emil Zátopek",
+      "Haile Gebrselassie",
+      "Paavo Nurmi"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer gilt als Begründer der Informationstheorie?",
+     "correct": "Claude Shannon",
+     "wrong": [
+      "Norbert Wiener",
+      "John von Neumann",
+      "Alan Turing"
+     ]
+    },
+    "en": {
+     "text": "Who is regarded as the founder of information theory?",
+     "correct": "Claude Shannon",
+     "wrong": [
+      "Norbert Wiener",
+      "John von Neumann",
+      "Alan Turing"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer malte den Freskenzyklus „Die Legende vom wahren Kreuz“ in Arezzo?",
+     "correct": "Piero della Francesca",
+     "wrong": [
+      "Giotto",
+      "Masaccio",
+      "Fra Angelico"
+     ]
+    },
+    "en": {
+     "text": "Who painted the fresco cycle “The Legend of the True Cross” in Arezzo?",
+     "correct": "Piero della Francesca",
+     "wrong": [
+      "Giotto",
+      "Masaccio",
+      "Fra Angelico"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer führte Regie bei „Das Leben der Anderen“?",
+     "correct": "Florian Henckel von Donnersmarck",
+     "wrong": [
+      "Wolfgang Becker",
+      "Tom Tykwer",
+      "Fatih Akin"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr erschien das Arcade-Spiel Pong von Atari?",
+     "correct": "1972",
+     "wrong": [
+      "1965",
+      "1978",
+      "1980"
+     ]
+    },
+    "en": {
+     "text": "In which year was the Atari arcade game Pong released?",
+     "correct": "1972",
+     "wrong": [
+      "1965",
+      "1978",
+      "1980"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Aus wie vielen Mitgliedern besteht der UN-Sicherheitsrat insgesamt (ständige und nichtständige)?",
+     "correct": "15",
+     "wrong": [
+      "12",
+      "10",
+      "20"
+     ]
+    },
+    "en": {
+     "text": "How many members does the UN Security Council have in total (permanent and non-permanent)?",
+     "correct": "15",
+     "wrong": [
+      "12",
+      "10",
+      "20"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Hauptstadt der Republik Moldau?",
+     "correct": "Chișinău",
+     "wrong": [
+      "Tiraspol",
+      "Bălți",
+      "Bukarest"
+     ]
+    },
+    "en": {
+     "text": "What is the capital of Moldova?",
+     "correct": "Chișinău",
+     "wrong": [
+      "Tiraspol",
+      "Bălți",
+      "Bucharest"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer war der letzte Kaiser von Byzanz, der 1453 bei der Eroberung Konstantinopels fiel?",
+     "correct": "Konstantin XI. Palaiologos",
+     "wrong": [
+      "Justinian II.",
+      "Johannes VIII.",
+      "Manuel II."
+     ]
+    },
+    "en": {
+     "text": "Who was the last Byzantine emperor, who fell during the conquest of Constantinople in 1453?",
+     "correct": "Constantine XI Palaiologos",
+     "wrong": [
+      "Justinian II",
+      "John VIII",
+      "Manuel II"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Die Wand“ (1963)?",
+     "correct": "Marlen Haushofer",
+     "wrong": [
+      "Ingeborg Bachmann",
+      "Christa Wolf",
+      "Ilse Aichinger"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte „Das Lied von der Erde“?",
+     "correct": "Gustav Mahler",
+     "wrong": [
+      "Anton Bruckner",
+      "Richard Strauss",
+      "Arnold Schönberg"
+     ]
+    },
+    "en": {
+     "text": "Who composed “Das Lied von der Erde” (“The Song of the Earth”)?",
+     "correct": "Gustav Mahler",
+     "wrong": [
+      "Anton Bruckner",
+      "Richard Strauss",
+      "Arnold Schönberg"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Spinnen gelten als eine der giftigsten der Welt?",
+     "correct": "Brasilianische Wanderspinnen",
+     "wrong": [
+      "Kreuzspinnen",
+      "Wolfsspinnen",
+      "Vogelspinnen"
+     ]
+    },
+    "en": {
+     "text": "Which spiders are considered among the most venomous in the world?",
+     "correct": "Brazilian wandering spiders",
+     "wrong": [
+      "Orb-weaver spiders",
+      "Wolf spiders",
+      "Tarantulas"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Gesetz, nach dem bei konstanter Temperatur das Produkt aus Druck und Volumen eines idealen Gases konstant ist?",
+     "correct": "Boyle-Mariotte-Gesetz",
+     "wrong": [
+      "Gay-Lussac-Gesetz",
+      "Avogadro-Gesetz",
+      "Henry-Gesetz"
+     ]
+    },
+    "en": {
+     "text": "What is the law called according to which the product of pressure and volume of an ideal gas is constant at constant temperature?",
+     "correct": "Boyle's law",
+     "wrong": [
+      "Charles's law",
+      "Avogadro's law",
+      "Henry's law"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Sprinter gewann 1996 bei den Olympischen Spielen sowohl über 200 m als auch über 400 m Gold?",
+     "correct": "Michael Johnson",
+     "wrong": [
+      "Carl Lewis",
+      "Donovan Bailey",
+      "Maurice Greene"
+     ]
+    },
+    "en": {
+     "text": "Which sprinter won gold at the 1996 Olympics in both the 200 m and the 400 m?",
+     "correct": "Michael Johnson",
+     "wrong": [
+      "Carl Lewis",
+      "Donovan Bailey",
+      "Maurice Greene"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wofür stehen die Buchstaben im Verschlüsselungsverfahren RSA?",
+     "correct": "Die Nachnamen der Entwickler Rivest, Shamir, Adleman",
+     "wrong": [
+      "Random Secure Algorithm",
+      "Reverse Symmetric Authentication",
+      "Remote Secret Access"
+     ]
+    },
+    "en": {
+     "text": "What do the letters in the RSA encryption method stand for?",
+     "correct": "The surnames of the inventors Rivest, Shamir, Adleman",
+     "wrong": [
+      "Random Secure Algorithm",
+      "Reverse Symmetric Authentication",
+      "Remote Secret Access"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer malte „Der Schwur der Horatier“?",
+     "correct": "Jacques-Louis David",
+     "wrong": [
+      "Jean-Auguste-Dominique Ingres",
+      "Nicolas Poussin",
+      "François Boucher"
+     ]
+    },
+    "en": {
+     "text": "Who painted “The Oath of the Horatii”?",
+     "correct": "Jacques-Louis David",
+     "wrong": [
+      "Jean-Auguste-Dominique Ingres",
+      "Nicolas Poussin",
+      "François Boucher"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer führte Regie bei dem Science-Fiction-Film „Stalker“ (1979)?",
+     "correct": "Andrei Tarkowski",
+     "wrong": [
+      "Sergei Eisenstein",
+      "Nikita Michalkow",
+      "Andrei Swjaginzew"
+     ]
+    },
+    "en": {
+     "text": "Who directed the science fiction film “Stalker” (1979)?",
+     "correct": "Andrei Tarkovsky",
+     "wrong": [
+      "Sergei Eisenstein",
+      "Nikita Mikhalkov",
+      "Andrey Zvyagintsev"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Mit wie vielen Steinen spielt jeder Spieler beim Mühle-Spiel?",
+     "correct": "9",
+     "wrong": [
+      "7",
+      "12",
+      "15"
+     ]
+    },
+    "en": {
+     "text": "With how many pieces does each player play in Nine Men's Morris?",
+     "correct": "9",
+     "wrong": [
+      "7",
+      "12",
+      "15"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Währung Vietnams?",
+     "correct": "Dong",
+     "wrong": [
+      "Kip",
+      "Riel",
+      "Baht"
+     ]
+    },
+    "en": {
+     "text": "What is the currency of Vietnam called?",
+     "correct": "Dong",
+     "wrong": [
+      "Kip",
+      "Riel",
+      "Baht"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die tiefste bekannte Stelle der Weltmeere?",
+     "correct": "Challengertief im Marianengraben",
+     "wrong": [
+      "Puerto-Rico-Graben",
+      "Java-Graben",
+      "Kermadec-Graben"
+     ]
+    },
+    "en": {
+     "text": "What is the deepest known point in the world's oceans?",
+     "correct": "Challenger Deep in the Mariana Trench",
+     "wrong": [
+      "Puerto Rico Trench",
+      "Java Trench",
+      "Kermadec Trench"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer war der erste Kaiser des vereinten China?",
+     "correct": "Qin Shi Huangdi",
+     "wrong": [
+      "Liu Bang",
+      "Kublai Khan",
+      "Sun Yat-sen"
+     ]
+    },
+    "en": {
+     "text": "Who was the first emperor of unified China?",
+     "correct": "Qin Shi Huang",
+     "wrong": [
+      "Liu Bang",
+      "Kublai Khan",
+      "Sun Yat-sen"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Die Blendung“?",
+     "correct": "Elias Canetti",
+     "wrong": [
+      "Joseph Roth",
+      "Arthur Schnitzler",
+      "Hermann Broch"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “Auto-da-Fé” (“Die Blendung”)?",
+     "correct": "Elias Canetti",
+     "wrong": [
+      "Joseph Roth",
+      "Arthur Schnitzler",
+      "Hermann Broch"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Sängerin sang 1964 den Titelsong des James-Bond-Films „Goldfinger“?",
+     "correct": "Shirley Bassey",
+     "wrong": [
+      "Dionne Warwick",
+      "Nancy Sinatra",
+      "Tina Turner"
+     ]
+    },
+    "en": {
+     "text": "Which singer performed the title song of the 1964 James Bond film “Goldfinger”?",
+     "correct": "Shirley Bassey",
+     "wrong": [
+      "Dionne Warwick",
+      "Nancy Sinatra",
+      "Tina Turner"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Fisch galt bis zu seiner Wiederentdeckung 1938 als seit Millionen Jahren ausgestorben?",
+     "correct": "Quastenflosser",
+     "wrong": [
+      "Lungenfisch",
+      "Stör",
+      "Neunauge"
+     ]
+    },
+    "en": {
+     "text": "Which fish was thought to have been extinct for millions of years until it was rediscovered in 1938?",
+     "correct": "Coelacanth",
+     "wrong": [
+      "Lungfish",
+      "Sturgeon",
+      "Lamprey"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Saturnmond besitzt eine dichte Atmosphäre?",
+     "correct": "Titan",
+     "wrong": [
+      "Enceladus",
+      "Mimas",
+      "Rhea"
+     ]
+    },
+    "en": {
+     "text": "Which moon of Saturn has a dense atmosphere?",
+     "correct": "Titan",
+     "wrong": [
+      "Enceladus",
+      "Mimas",
+      "Rhea"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Spieler eines Teams stehen beim Eishockey gleichzeitig auf dem Eis (inklusive Torhüter)?",
+     "correct": "6",
+     "wrong": [
+      "5",
+      "7",
+      "8"
+     ]
+    },
+    "en": {
+     "text": "How many players of one team are on the ice at the same time in ice hockey (including the goalie)?",
+     "correct": "6",
+     "wrong": [
+      "5",
+      "7",
+      "8"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer erfand die Computermaus und stellte sie 1968 vor?",
+     "correct": "Douglas Engelbart",
+     "wrong": [
+      "Steve Jobs",
+      "Alan Kay",
+      "Ted Nelson"
+     ]
+    },
+    "en": {
+     "text": "Who invented the computer mouse and presented it in 1968?",
+     "correct": "Douglas Engelbart",
+     "wrong": [
+      "Steve Jobs",
+      "Alan Kay",
+      "Ted Nelson"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer malte „Die Arnolfini-Hochzeit“?",
+     "correct": "Jan van Eyck",
+     "wrong": [
+      "Hans Memling",
+      "Robert Campin",
+      "Petrus Christus"
+     ]
+    },
+    "en": {
+     "text": "Who painted “The Arnolfini Portrait”?",
+     "correct": "Jan van Eyck",
+     "wrong": [
+      "Hans Memling",
+      "Robert Campin",
+      "Petrus Christus"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welcher Fernsehserie geht es um den Mafiaboss Tony Soprano aus New Jersey?",
+     "correct": "Die Sopranos",
+     "wrong": [
+      "Boardwalk Empire",
+      "Der Pate",
+      "Goodfellas"
+     ]
+    },
+    "en": {
+     "text": "Which TV series is about the mob boss Tony Soprano from New Jersey?",
+     "correct": "The Sopranos",
+     "wrong": [
+      "Boardwalk Empire",
+      "The Godfather",
+      "Goodfellas"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Mit wie vielen Steinen beginnt jeder Spieler beim Backgammon?",
+     "correct": "15",
+     "wrong": [
+      "12",
+      "16",
+      "10"
+     ]
+    },
+    "en": {
+     "text": "How many checkers does each player start with in backgammon?",
+     "correct": "15",
+     "wrong": [
+      "12",
+      "16",
+      "10"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie groß ist die Summe aller Zahlen von 0 bis 36 auf einem Roulette-Kessel?",
+     "correct": "666",
+     "wrong": [
+      "630",
+      "703",
+      "741"
+     ]
+    },
+    "en": {
+     "text": "What is the sum of all numbers from 0 to 36 on a roulette wheel?",
+     "correct": "666",
+     "wrong": [
+      "630",
+      "703",
+      "741"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Staat ist das flächengrößte Land der Erde ohne Zugang zum Meer?",
+     "correct": "Kasachstan",
+     "wrong": [
+      "Mongolei",
+      "Tschad",
+      "Sambia"
+     ]
+    },
+    "en": {
+     "text": "Which country is the largest landlocked country in the world by area?",
+     "correct": "Kazakhstan",
+     "wrong": [
+      "Mongolia",
+      "Chad",
+      "Zambia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr besiegte Wilhelm der Eroberer bei Hastings das englische Heer?",
+     "correct": "1066",
+     "wrong": [
+      "1215",
+      "1014",
+      "1154"
+     ]
+    },
+    "en": {
+     "text": "In which year did William the Conqueror defeat the English army at Hastings?",
+     "correct": "1066",
+     "wrong": [
+      "1215",
+      "1014",
+      "1154"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Der Mann ohne Eigenschaften“?",
+     "correct": "Robert Musil",
+     "wrong": [
+      "Franz Kafka",
+      "Thomas Bernhard",
+      "Heimito von Doderer"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte die „Symphonie fantastique“?",
+     "correct": "Hector Berlioz",
+     "wrong": [
+      "Franz Liszt",
+      "Robert Schumann",
+      "César Franck"
+     ]
+    },
+    "en": {
+     "text": "Who composed the “Symphonie fantastique”?",
+     "correct": "Hector Berlioz",
+     "wrong": [
+      "Franz Liszt",
+      "Robert Schumann",
+      "César Franck"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Wal erreicht bei Tauchgängen die größten gemessenen Tiefen unter den Säugetieren?",
+     "correct": "Cuvier-Schnabelwal",
+     "wrong": [
+      "Pottwal",
+      "Blauwal",
+      "Orca"
+     ]
+    },
+    "en": {
+     "text": "Which whale reaches the greatest measured depths among mammals when diving?",
+     "correct": "Cuvier's beaked whale",
+     "wrong": [
+      "Sperm whale",
+      "Blue whale",
+      "Orca"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die SI-Einheit der Aktivität eines radioaktiven Stoffs?",
+     "correct": "Becquerel",
+     "wrong": [
+      "Sievert",
+      "Gray",
+      "Curie"
+     ]
+    },
+    "en": {
+     "text": "What is the SI unit of the activity of a radioactive substance?",
+     "correct": "Becquerel",
+     "wrong": [
+      "Sievert",
+      "Gray",
+      "Curie"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer erhielt 1956 den ersten Ballon d'Or?",
+     "correct": "Stanley Matthews",
+     "wrong": [
+      "Alfredo Di Stéfano",
+      "Raymond Kopa",
+      "Ferenc Puskás"
+     ]
+    },
+    "en": {
+     "text": "Who received the first Ballon d'Or in 1956?",
+     "correct": "Stanley Matthews",
+     "wrong": [
+      "Alfredo Di Stéfano",
+      "Raymond Kopa",
+      "Ferenc Puskás"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Firma entwickelte die ARM-Prozessorarchitektur ursprünglich?",
+     "correct": "Acorn Computers",
+     "wrong": [
+      "Intel",
+      "IBM",
+      "Commodore"
+     ]
+    },
+    "en": {
+     "text": "Which company originally developed the ARM processor architecture?",
+     "correct": "Acorn Computers",
+     "wrong": [
+      "Intel",
+      "IBM",
+      "Commodore"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher osmanische Baumeister schuf die Selimiye-Moschee in Edirne?",
+     "correct": "Mimar Sinan",
+     "wrong": [
+      "Mehmed Aga",
+      "Kasim Pascha",
+      "Atik Sinan"
+     ]
+    },
+    "en": {
+     "text": "Which Ottoman architect created the Selimiye Mosque in Edirne?",
+     "correct": "Mimar Sinan",
+     "wrong": [
+      "Mehmed Aga",
+      "Kasim Pascha",
+      "Atik Sinan"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der Hauptpreis der Filmfestspiele von Venedig?",
+     "correct": "Goldener Löwe",
+     "wrong": [
+      "Goldene Palme",
+      "Goldener Bär",
+      "Goldener Leopard"
+     ]
+    },
+    "en": {
+     "text": "What is the main prize of the Venice Film Festival called?",
+     "correct": "Golden Lion",
+     "wrong": [
+      "Palme d'Or",
+      "Golden Bear",
+      "Golden Leopard"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man den Schachzug, bei dem ein Bauer einen daneben vorbeigezogenen gegnerischen Bauern schlägt?",
+     "correct": "En passant",
+     "wrong": [
+      "Rochade",
+      "Gambit",
+      "Zugzwang"
+     ]
+    },
+    "en": {
+     "text": "What is the chess move called in which a pawn captures an enemy pawn that has just passed it?",
+     "correct": "En passant",
+     "wrong": [
+      "Rochade",
+      "Gambit",
+      "Zugzwang"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Gewürz ist nach Gewicht eines der teuersten der Welt?",
+     "correct": "Safran",
+     "wrong": [
+      "Vanille",
+      "Zimt",
+      "Kardamom"
+     ]
+    },
+    "en": {
+     "text": "Which spice is one of the most expensive in the world by weight?",
+     "correct": "Saffron",
+     "wrong": [
+      "Vanilla",
+      "Cinnamon",
+      "Cardamom"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Fluss bildet über weite Strecken die Grenze zwischen Texas und Mexiko?",
+     "correct": "Rio Grande",
+     "wrong": [
+      "Colorado River",
+      "Mississippi",
+      "Rio Bravo del Sur"
+     ]
+    },
+    "en": {
+     "text": "Which river forms the border between Texas and Mexico over a long stretch?",
+     "correct": "Rio Grande",
+     "wrong": [
+      "Colorado River",
+      "Mississippi",
+      "Pecos River"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Jahr endete der Siebenjährige Krieg?",
+     "correct": "1763",
+     "wrong": [
+      "1748",
+      "1756",
+      "1789"
+     ]
+    },
+    "en": {
+     "text": "In which year did the Seven Years' War end?",
+     "correct": "1763",
+     "wrong": [
+      "1748",
+      "1756",
+      "1789"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Menschenkind“ („Beloved“)?",
+     "correct": "Toni Morrison",
+     "wrong": [
+      "Alice Walker",
+      "Maya Angelou",
+      "Zora Neale Hurston"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “Beloved”?",
+     "correct": "Toni Morrison",
+     "wrong": [
+      "Alice Walker",
+      "Maya Angelou",
+      "Zora Neale Hurston"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Jazzsaxofonist nahm 1959 das Album „Giant Steps“ auf?",
+     "correct": "John Coltrane",
+     "wrong": [
+      "Charlie Parker",
+      "Sonny Rollins",
+      "Stan Getz"
+     ]
+    },
+    "en": {
+     "text": "Which jazz saxophonist recorded the album “Giant Steps” in 1959?",
+     "correct": "John Coltrane",
+     "wrong": [
+      "Charlie Parker",
+      "Sonny Rollins",
+      "Stan Getz"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Mit welchen Sinnesorganen nehmen Haie schwache elektrische Felder wahr?",
+     "correct": "Lorenzinische Ampullen",
+     "wrong": [
+      "Seitenlinienorgan",
+      "Schwimmblase",
+      "Kiemenspalten"
+     ]
+    },
+    "en": {
+     "text": "With which sensory organs do sharks perceive weak electric fields?",
+     "correct": "Ampullae of Lorenzini",
+     "wrong": [
+      "Lateral line",
+      "Swim bladder",
+      "Gill slits"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Blutgruppe gilt als Universalspender für Erythrozytenkonzentrate?",
+     "correct": "0 Rhesus-negativ",
+     "wrong": [
+      "AB Rhesus-positiv",
+      "A Rhesus-negativ",
+      "B Rhesus-positiv"
+     ]
+    },
+    "en": {
+     "text": "Which blood group is considered the universal donor for red blood cell concentrates?",
+     "correct": "O Rh-negative",
+     "wrong": [
+      "AB Rh-positive",
+      "A Rh-negative",
+      "B Rh-positive"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man im Golf ein Ergebnis von drei Schlägen unter Par an einem Loch?",
+     "correct": "Albatros",
+     "wrong": [
+      "Eagle",
+      "Birdie",
+      "Condor"
+     ]
+    },
+    "en": {
+     "text": "What is a score of three strokes under par on a hole called in golf?",
+     "correct": "Albatross",
+     "wrong": [
+      "Eagle",
+      "Birdie",
+      "Condor"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer baute 1941 mit dem Z3 den ersten funktionsfähigen programmgesteuerten Digitalrechner?",
+     "correct": "Konrad Zuse",
+     "wrong": [
+      "John von Neumann",
+      "Howard Aiken",
+      "Charles Babbage"
+     ]
+    },
+    "en": {
+     "text": "Who built the Z3 in 1941, the first working program-controlled digital computer?",
+     "correct": "Konrad Zuse",
+     "wrong": [
+      "John von Neumann",
+      "Howard Aiken",
+      "Charles Babbage"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Von wem stammt das Gemälde „Die Toteninsel“?",
+     "correct": "Arnold Böcklin",
+     "wrong": [
+      "Caspar David Friedrich",
+      "Franz von Stuck",
+      "Anselm Feuerbach"
+     ]
+    },
+    "en": {
+     "text": "Who painted “Isle of the Dead”?",
+     "correct": "Arnold Böcklin",
+     "wrong": [
+      "Caspar David Friedrich",
+      "Franz von Stuck",
+      "Anselm Feuerbach"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Hitchcock-Film spielt fast vollständig in einer Wohnung mit Blick auf einen Hinterhof?",
+     "correct": "Das Fenster zum Hof",
+     "wrong": [
+      "Vertigo",
+      "Die Vögel",
+      "Der unsichtbare Dritte"
+     ]
+    },
+    "en": {
+     "text": "Which Hitchcock film takes place almost entirely in an apartment overlooking a courtyard?",
+     "correct": "Rear Window",
+     "wrong": [
+      "Vertigo",
+      "The Birds",
+      "North by Northwest"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welche Handheld-Konsole veröffentlichte Nintendo 1989?",
+     "correct": "Game Boy",
+     "wrong": [
+      "Game Gear",
+      "Atari Lynx",
+      "PSP"
+     ]
+    },
+    "en": {
+     "text": "Which handheld console did Nintendo release in 1989?",
+     "correct": "Game Boy",
+     "wrong": [
+      "Game Gear",
+      "Atari Lynx",
+      "PSP"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Staat hat drei Hauptstädte, nämlich Pretoria, Kapstadt und Bloemfontein?",
+     "correct": "Südafrika",
+     "wrong": [
+      "Bolivien",
+      "Niederlande",
+      "Malaysia"
+     ]
+    },
+    "en": {
+     "text": "Which country has three capitals, namely Pretoria, Cape Town and Bloemfontein?",
+     "correct": "South Africa",
+     "wrong": [
+      "Bolivia",
+      "Netherlands",
+      "Malaysia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der längste Fluss Australiens?",
+     "correct": "Murray",
+     "wrong": [
+      "Darling",
+      "Yarra",
+      "Swan"
+     ]
+    },
+    "en": {
+     "text": "What is the longest river in Australia?",
+     "correct": "Murray",
+     "wrong": [
+      "Darling",
+      "Yarra",
+      "Swan"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Konflikt zwischen England und Frankreich dauerte mit Unterbrechungen von 1337 bis 1453?",
+     "correct": "Hundertjähriger Krieg",
+     "wrong": [
+      "Dreißigjähriger Krieg",
+      "Rosenkriege",
+      "Siebenjähriger Krieg"
+     ]
+    },
+    "en": {
+     "text": "Which conflict between England and France lasted, with interruptions, from 1337 to 1453?",
+     "correct": "Hundred Years' War",
+     "wrong": [
+      "Thirty Years' War",
+      "Wars of the Roses",
+      "Seven Years' War"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Alexis Sorbas“?",
+     "correct": "Nikos Kazantzakis",
+     "wrong": [
+      "Giorgos Seferis",
+      "Odysseas Elytis",
+      "Kostas Karyotakis"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “Zorba the Greek”?",
+     "correct": "Nikos Kazantzakis",
+     "wrong": [
+      "Giorgos Seferis",
+      "Odysseas Elytis",
+      "Kostas Karyotakis"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Jazztrompeter nahm 1959 das Album „Kind of Blue“ auf?",
+     "correct": "Miles Davis",
+     "wrong": [
+      "Louis Armstrong",
+      "Dizzy Gillespie",
+      "Chet Baker"
+     ]
+    },
+    "en": {
+     "text": "Which jazz trumpeter recorded the album “Kind of Blue” in 1959?",
+     "correct": "Miles Davis",
+     "wrong": [
+      "Louis Armstrong",
+      "Dizzy Gillespie",
+      "Chet Baker"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man eine Beziehung zwischen zwei Arten, von der beide profitieren, etwa Clownfisch und Anemone?",
+     "correct": "Mutualismus",
+     "wrong": [
+      "Parasitismus",
+      "Kommensalismus",
+      "Konkurrenz"
+     ]
+    },
+    "en": {
+     "text": "What is a relationship between two species called from which both benefit, such as clownfish and sea anemone?",
+     "correct": "Mutualism",
+     "wrong": [
+      "Parasitism",
+      "Commensalism",
+      "Competition"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Elementarteilchen vermittelt die starke Wechselwirkung zwischen Quarks?",
+     "correct": "Gluon",
+     "wrong": [
+      "Photon",
+      "Graviton",
+      "W-Boson"
+     ]
+    },
+    "en": {
+     "text": "Which elementary particle mediates the strong interaction between quarks?",
+     "correct": "Gluon",
+     "wrong": [
+      "Photon",
+      "Graviton",
+      "W boson"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer gewann die French Open der Herren am häufigsten?",
+     "correct": "Rafael Nadal",
+     "wrong": [
+      "Björn Borg",
+      "Roger Federer",
+      "Novak Djokovic"
+     ]
+    },
+    "en": {
+     "text": "Who has won the men's French Open the most times?",
+     "correct": "Rafael Nadal",
+     "wrong": [
+      "Björn Borg",
+      "Roger Federer",
+      "Novak Djokovic"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Bit lang ist eine IPv6-Adresse?",
+     "correct": "128",
+     "wrong": [
+      "32",
+      "64",
+      "256"
+     ]
+    },
+    "en": {
+     "text": "How many bits long is an IPv6 address?",
+     "correct": "128",
+     "wrong": [
+      "32",
+      "64",
+      "256"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer malte den Isenheimer Altar?",
+     "correct": "Matthias Grünewald",
+     "wrong": [
+      "Albrecht Dürer",
+      "Lucas Cranach der Ältere",
+      "Hans Holbein der Jüngere"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Film von Ingmar Bergman spielt ein Ritter Schach mit dem Tod?",
+     "correct": "Das siebente Siegel",
+     "wrong": [
+      "Wilde Erdbeeren",
+      "Das Schweigen",
+      "Persona"
+     ]
+    },
+    "en": {
+     "text": "In which Ingmar Bergman film does a knight play chess with Death?",
+     "correct": "The Seventh Seal",
+     "wrong": [
+      "Wild Strawberries",
+      "The Silence",
+      "Persona"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Karten erhält beim Skat jeder Spieler?",
+     "correct": "10",
+     "wrong": [
+      "8",
+      "12",
+      "11"
+     ]
+    },
+    "en": {
+     "text": "How many cards does each player receive in Skat?",
+     "correct": "10",
+     "wrong": [
+      "8",
+      "12",
+      "11"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die krankhafte Angst vor der Zahl 13?",
+     "correct": "Triskaidekaphobie",
+     "wrong": [
+      "Hexakosioihexekontahexaphobie",
+      "Arithmophobie",
+      "Numerophobie"
+     ]
+    },
+    "en": {
+     "text": "What is the irrational fear of the number 13 called?",
+     "correct": "Triskaidekaphobia",
+     "wrong": [
+      "Hexakosioihexekontahexaphobia",
+      "Arithmophobia",
+      "Numerophobia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Hauptstadt von Usbekistan?",
+     "correct": "Taschkent",
+     "wrong": [
+      "Samarkand",
+      "Duschanbe",
+      "Aschgabat"
+     ]
+    },
+    "en": {
+     "text": "What is the capital of Uzbekistan?",
+     "correct": "Tashkent",
+     "wrong": [
+      "Samarkand",
+      "Dushanbe",
+      "Ashgabat"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Konferenz in Berlin regelte 1884/85 die Aufteilung Afrikas unter den europäischen Mächten?",
+     "correct": "Kongokonferenz",
+     "wrong": [
+      "Wiener Kongress",
+      "Konferenz von Jalta",
+      "Potsdamer Konferenz"
+     ]
+    },
+    "en": {
+     "text": "Which conference in Berlin in 1884/85 regulated the partition of Africa among the European powers?",
+     "correct": "Berlin (Congo) Conference",
+     "wrong": [
+      "Congress of Vienna",
+      "Yalta Conference",
+      "Potsdam Conference"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Mitternachtskinder“?",
+     "correct": "Salman Rushdie",
+     "wrong": [
+      "V. S. Naipaul",
+      "Arundhati Roy",
+      "Kazuo Ishiguro"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “Midnight's Children”?",
+     "correct": "Salman Rushdie",
+     "wrong": [
+      "V. S. Naipaul",
+      "Arundhati Roy",
+      "Kazuo Ishiguro"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte das Ballett „Le sacre du printemps“ (Das Frühlingsopfer)?",
+     "correct": "Igor Strawinsky",
+     "wrong": [
+      "Sergei Prokofjew",
+      "Maurice Ravel",
+      "Béla Bartók"
+     ]
+    },
+    "en": {
+     "text": "Who composed the ballet “The Rite of Spring”?",
+     "correct": "Igor Stravinsky",
+     "wrong": [
+      "Sergei Prokofiev",
+      "Maurice Ravel",
+      "Béla Bartók"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man Tiere, die vor allem in der Dämmerung aktiv sind?",
+     "correct": "Krepuskular",
+     "wrong": [
+      "Nokturn",
+      "Diurnal",
+      "Kathemeral"
+     ]
+    },
+    "en": {
+     "text": "What are animals called that are mainly active at dawn and dusk?",
+     "correct": "Crepuscular",
+     "wrong": [
+      "Nocturnal",
+      "Diurnal",
+      "Cathemeral"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche ist die einfachste Aminosäure?",
+     "correct": "Glycin",
+     "wrong": [
+      "Alanin",
+      "Serin",
+      "Prolin"
+     ]
+    },
+    "en": {
+     "text": "Which is the simplest amino acid?",
+     "correct": "Glycine",
+     "wrong": [
+      "Alanine",
+      "Serine",
+      "Proline"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie schwer ist ein Curlingstein ungefähr?",
+     "correct": "19 bis 20 kg",
+     "wrong": [
+      "5 bis 6 kg",
+      "10 bis 11 kg",
+      "30 bis 32 kg"
+     ]
+    },
+    "en": {
+     "text": "Roughly how heavy is a curling stone?",
+     "correct": "19 to 20 kg",
+     "wrong": [
+      "5 to 6 kg",
+      "10 to 11 kg",
+      "30 to 32 kg"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Betriebssystem entwickelten Ken Thompson und Dennis Ritchie ab 1969 bei den Bell Labs?",
+     "correct": "Unix",
+     "wrong": [
+      "Linux",
+      "MS-DOS",
+      "Multics"
+     ]
+    },
+    "en": {
+     "text": "Which operating system did Ken Thompson and Dennis Ritchie develop at Bell Labs from 1969?",
+     "correct": "Unix",
+     "wrong": [
+      "Linux",
+      "MS-DOS",
+      "Multics"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schuf die Bronzeplastik „Der Schreitende Mann“ (L'Homme qui marche)?",
+     "correct": "Auguste Rodin",
+     "wrong": [
+      "Alberto Giacometti",
+      "Henry Moore",
+      "Constantin Brâncuși"
+     ]
+    },
+    "en": {
+     "text": "Who created the bronze sculpture “Walking Man” (L'Homme qui marche)?",
+     "correct": "Auguste Rodin",
+     "wrong": [
+      "Alberto Giacometti",
+      "Henry Moore",
+      "Constantin Brâncuși"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte die Musik zu „Spiel mir das Lied vom Tod“?",
+     "correct": "Ennio Morricone",
+     "wrong": [
+      "John Williams",
+      "Nino Rota",
+      "Hans Zimmer"
+     ]
+    },
+    "en": {
+     "text": "Who composed the music for “Once Upon a Time in the West”?",
+     "correct": "Ennio Morricone",
+     "wrong": [
+      "John Williams",
+      "Nino Rota",
+      "Hans Zimmer"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Schnittpunkte hat ein Go-Brett in der Standardgröße?",
+     "correct": "361",
+     "wrong": [
+      "324",
+      "289",
+      "400"
+     ]
+    },
+    "en": {
+     "text": "How many intersections does a standard-size Go board have?",
+     "correct": "361",
+     "wrong": [
+      "324",
+      "289",
+      "400"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Wissenschaft von den Flaggen?",
+     "correct": "Vexillologie",
+     "wrong": [
+      "Heraldik",
+      "Sphragistik",
+      "Phaleristik"
+     ]
+    },
+    "en": {
+     "text": "What is the study of flags called?",
+     "correct": "Vexillology",
+     "wrong": [
+      "Heraldry",
+      "Sigillography",
+      "Phaleristics"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Inselstaat im Indischen Ozean hat die Hauptstadt Malé?",
+     "correct": "Malediven",
+     "wrong": [
+      "Seychellen",
+      "Komoren",
+      "Mauritius"
+     ]
+    },
+    "en": {
+     "text": "Which island state in the Indian Ocean has the capital Malé?",
+     "correct": "Maldives",
+     "wrong": [
+      "Seychelles",
+      "Comoros",
+      "Mauritius"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher oströmische Kaiser ließ im 6. Jahrhundert die Hagia Sophia in ihrer heutigen Form erbauen?",
+     "correct": "Justinian I.",
+     "wrong": [
+      "Konstantin der Große",
+      "Herakleios",
+      "Basileios II."
+     ]
+    },
+    "en": {
+     "text": "Which Eastern Roman emperor had the Hagia Sophia built in its present form in the 6th century?",
+     "correct": "Justinian I",
+     "wrong": [
+      "Constantine the Great",
+      "Heraclius",
+      "Basil II"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der jugendliche Ich-Erzähler in „Der Fänger im Roggen“?",
+     "correct": "Holden Caulfield",
+     "wrong": [
+      "Huckleberry Finn",
+      "Nick Carraway",
+      "Pip Pirrip"
+     ]
+    },
+    "en": {
+     "text": "What is the name of the teenage narrator in “The Catcher in the Rye”?",
+     "correct": "Holden Caulfield",
+     "wrong": [
+      "Huckleberry Finn",
+      "Nick Carraway",
+      "Pip Pirrip"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer komponierte die „Gymnopédies“?",
+     "correct": "Erik Satie",
+     "wrong": [
+      "Claude Debussy",
+      "Francis Poulenc",
+      "Gabriel Fauré"
+     ]
+    },
+    "en": {
+     "text": "Who composed the “Gymnopédies”?",
+     "correct": "Erik Satie",
+     "wrong": [
+      "Claude Debussy",
+      "Francis Poulenc",
+      "Gabriel Fauré"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Pflanze bildet die größte Einzelblüte der Welt?",
+     "correct": "Rafflesia arnoldii",
+     "wrong": [
+      "Titanwurz",
+      "Riesenseerose",
+      "Lotos"
+     ]
+    },
+    "en": {
+     "text": "Which plant produces the largest single flower in the world?",
+     "correct": "Rafflesia arnoldii",
+     "wrong": [
+      "Titan arum",
+      "Giant water lily",
+      "Lotus"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Physiker formulierte die Unschärferelation?",
+     "correct": "Werner Heisenberg",
+     "wrong": [
+      "Max Planck",
+      "Erwin Schrödinger",
+      "Wolfgang Pauli"
+     ]
+    },
+    "en": {
+     "text": "Which physicist formulated the uncertainty principle?",
+     "correct": "Werner Heisenberg",
+     "wrong": [
+      "Max Planck",
+      "Erwin Schrödinger",
+      "Wolfgang Pauli"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie breit ist ein Fußballtor?",
+     "correct": "7,32 m",
+     "wrong": [
+      "6,40 m",
+      "8,00 m",
+      "7,00 m"
+     ]
+    },
+    "en": {
+     "text": "How wide is a football goal?",
+     "correct": "7.32 m",
+     "wrong": [
+      "6.40 m",
+      "8.00 m",
+      "7.00 m"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Firma entwickelte ursprünglich die Programmiersprache Java?",
+     "correct": "Sun Microsystems",
+     "wrong": [
+      "Microsoft",
+      "IBM",
+      "Oracle"
+     ]
+    },
+    "en": {
+     "text": "Which company originally developed the programming language Java?",
+     "correct": "Sun Microsystems",
+     "wrong": [
+      "Microsoft",
+      "IBM",
+      "Oracle"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer malte „American Gothic“?",
+     "correct": "Grant Wood",
+     "wrong": [
+      "Edward Hopper",
+      "Thomas Hart Benton",
+      "Jackson Pollock"
+     ]
+    },
+    "en": {
+     "text": "Who painted “American Gothic”?",
+     "correct": "Grant Wood",
+     "wrong": [
+      "Edward Hopper",
+      "Thomas Hart Benton",
+      "Jackson Pollock"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer führte Regie bei „Citizen Kane“?",
+     "correct": "Orson Welles",
+     "wrong": [
+      "Alfred Hitchcock",
+      "John Ford",
+      "Billy Wilder"
+     ]
+    },
+    "en": {
+     "text": "Who directed “Citizen Kane”?",
+     "correct": "Orson Welles",
+     "wrong": [
+      "Alfred Hitchcock",
+      "John Ford",
+      "Billy Wilder"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Aus wie vielen Karten besteht ein vollständiges Tarotspiel?",
+     "correct": "78",
+     "wrong": [
+      "52",
+      "64",
+      "96"
+     ]
+    },
+    "en": {
+     "text": "How many cards does a complete tarot deck consist of?",
+     "correct": "78",
+     "wrong": [
+      "52",
+      "64",
+      "96"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche ist die kleinste Primzahl, die größer als 100 ist?",
+     "correct": "101",
+     "wrong": [
+      "103",
+      "107",
+      "111"
+     ]
+    },
+    "en": {
+     "text": "What is the smallest prime number greater than 100?",
+     "correct": "101",
+     "wrong": [
+      "103",
+      "107",
+      "111"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welchem Land liegt der Salar de Uyuni, die größte Salzwüste der Erde?",
+     "correct": "Bolivien",
+     "wrong": [
+      "Chile",
+      "Argentinien",
+      "Peru"
+     ]
+    },
+    "en": {
+     "text": "In which country is the Salar de Uyuni, the largest salt flat in the world?",
+     "correct": "Bolivia",
+     "wrong": [
+      "Chile",
+      "Argentina",
+      "Peru"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Vertrag teilte 1494 die außereuropäische Welt zwischen Spanien und Portugal auf?",
+     "correct": "Vertrag von Tordesillas",
+     "wrong": [
+      "Vertrag von Verdun",
+      "Frieden von Utrecht",
+      "Vertrag von Nanking"
+     ]
+    },
+    "en": {
+     "text": "Which treaty divided the non-European world between Spain and Portugal in 1494?",
+     "correct": "Treaty of Tordesillas",
+     "wrong": [
+      "Treaty of Verdun",
+      "Peace of Utrecht",
+      "Treaty of Nanking"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Madame Bovary“?",
+     "correct": "Gustave Flaubert",
+     "wrong": [
+      "Émile Zola",
+      "Victor Hugo",
+      "Stendhal"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “Madame Bovary”?",
+     "correct": "Gustave Flaubert",
+     "wrong": [
+      "Émile Zola",
+      "Victor Hugo",
+      "Stendhal"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Band veröffentlichte 1979 das Album „London Calling“?",
+     "correct": "The Clash",
+     "wrong": [
+      "Sex Pistols",
+      "The Jam",
+      "The Ramones"
+     ]
+    },
+    "en": {
+     "text": "Which band released the album “London Calling” in 1979?",
+     "correct": "The Clash",
+     "wrong": [
+      "Sex Pistols",
+      "The Jam",
+      "The Ramones"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der erste Vormagen der Wiederkäuer?",
+     "correct": "Pansen",
+     "wrong": [
+      "Netzmagen",
+      "Blättermagen",
+      "Labmagen"
+     ]
+    },
+    "en": {
+     "text": "What is the first stomach chamber of ruminants called?",
+     "correct": "Rumen",
+     "wrong": [
+      "Reticulum",
+      "Omasum",
+      "Abomasum"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die SI-Einheit der elektrischen Kapazität?",
+     "correct": "Farad",
+     "wrong": [
+      "Henry",
+      "Weber",
+      "Tesla"
+     ]
+    },
+    "en": {
+     "text": "What is the SI unit of electrical capacitance?",
+     "correct": "Farad",
+     "wrong": [
+      "Henry",
+      "Weber",
+      "Tesla"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Bei welcher Fechtwaffe zählen Treffer nur am Rumpf?",
+     "correct": "Florett",
+     "wrong": [
+      "Degen",
+      "Säbel",
+      "Rapier"
+     ]
+    },
+    "en": {
+     "text": "With which fencing weapon do hits count only on the torso?",
+     "correct": "Foil",
+     "wrong": [
+      "Épée",
+      "Sabre",
+      "Rapier"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Standardport gilt für HTTPS?",
+     "correct": "443",
+     "wrong": [
+      "80",
+      "8080",
+      "22"
+     ]
+    },
+    "en": {
+     "text": "Which standard port is used for HTTPS?",
+     "correct": "443",
+     "wrong": [
+      "80",
+      "8080",
+      "22"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer malte „Die Hochzeit zu Kana“ für das Kloster San Giorgio Maggiore in Venedig?",
+     "correct": "Paolo Veronese",
+     "wrong": [
+      "Tintoretto",
+      "Tizian",
+      "Giorgione"
+     ]
+    },
+    "en": {
+     "text": "Who painted “The Wedding Feast at Cana” for the monastery of San Giorgio Maggiore in Venice?",
+     "correct": "Paolo Veronese",
+     "wrong": [
+      "Tintoretto",
+      "Tizian",
+      "Giorgione"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer führte Regie bei dem Film „Außer Atem“ (1960)?",
+     "correct": "Jean-Luc Godard",
+     "wrong": [
+      "François Truffaut",
+      "Claude Chabrol",
+      "Éric Rohmer"
+     ]
+    },
+    "en": {
+     "text": "Who directed the film “Breathless” (1960)?",
+     "correct": "Jean-Luc Godard",
+     "wrong": [
+      "François Truffaut",
+      "Claude Chabrol",
+      "Éric Rohmer"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welcher Schachcomputer besiegte 1997 den Weltmeister Garri Kasparow in einem Match?",
+     "correct": "Deep Blue",
+     "wrong": [
+      "Deep Thought",
+      "Watson",
+      "AlphaGo"
+     ]
+    },
+    "en": {
+     "text": "Which chess computer defeated world champion Garry Kasparov in a match in 1997?",
+     "correct": "Deep Blue",
+     "wrong": [
+      "Deep Thought",
+      "Watson",
+      "AlphaGo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Aus welcher Pflanze wird Tequila hergestellt?",
+     "correct": "Blaue Agave",
+     "wrong": [
+      "Zuckerrohr",
+      "Kaktusfeige",
+      "Mais"
+     ]
+    },
+    "en": {
+     "text": "From which plant is tequila made?",
+     "correct": "Blue agave",
+     "wrong": [
+      "Sugar cane",
+      "Prickly pear",
+      "Maize"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt vereinigen sich Blauer und Weißer Nil?",
+     "correct": "Khartum",
+     "wrong": [
+      "Kairo",
+      "Assuan",
+      "Addis Abeba"
+     ]
+    },
+    "en": {
+     "text": "In which city do the Blue Nile and the White Nile meet?",
+     "correct": "Khartoum",
+     "wrong": [
+      "Cairo",
+      "Aswan",
+      "Addis Ababa"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher römisch-deutsche König ging 1077 den „Gang nach Canossa“?",
+     "correct": "Heinrich IV.",
+     "wrong": [
+      "Friedrich Barbarossa",
+      "Otto der Große",
+      "Karl IV."
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Das Ende einer Affäre“?",
+     "correct": "Graham Greene",
+     "wrong": [
+      "Evelyn Waugh",
+      "George Orwell",
+      "Somerset Maugham"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “The End of the Affair”?",
+     "correct": "Graham Greene",
+     "wrong": [
+      "Evelyn Waugh",
+      "George Orwell",
+      "Somerset Maugham"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Instrument gibt im Orchester üblicherweise den Stimmton a' vor?",
+     "correct": "Oboe",
+     "wrong": [
+      "Flöte",
+      "Klarinette",
+      "Trompete"
+     ]
+    },
+    "en": {
+     "text": "Which instrument usually gives the tuning note A in an orchestra?",
+     "correct": "Oboe",
+     "wrong": [
+      "Flute",
+      "Clarinet",
+      "Trumpet"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Tier hat die höchste gemessene Beißkraft aller lebenden Tiere?",
+     "correct": "Leistenkrokodil",
+     "wrong": [
+      "Weißer Hai",
+      "Nilpferd",
+      "Löwe"
+     ]
+    },
+    "en": {
+     "text": "Which animal has the highest measured bite force of all living animals?",
+     "correct": "Saltwater crocodile",
+     "wrong": [
+      "Great white shark",
+      "Hippopotamus",
+      "Lion"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man die Grenze um ein Schwarzes Loch, aus der nicht einmal Licht entkommen kann?",
+     "correct": "Ereignishorizont",
+     "wrong": [
+      "Akkretionsscheibe",
+      "Singularität",
+      "Roche-Grenze"
+     ]
+    },
+    "en": {
+     "text": "What is the boundary around a black hole called from which not even light can escape?",
+     "correct": "Event horizon",
+     "wrong": [
+      "Accretion disk",
+      "Singularity",
+      "Roche limit"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer wurde 1886 erster offizieller Schachweltmeister?",
+     "correct": "Wilhelm Steinitz",
+     "wrong": [
+      "Emanuel Lasker",
+      "José Raúl Capablanca",
+      "Paul Morphy"
+     ]
+    },
+    "en": {
+     "text": "Who became the first official world chess champion in 1886?",
+     "correct": "Wilhelm Steinitz",
+     "wrong": [
+      "Emanuel Lasker",
+      "José Raúl Capablanca",
+      "Paul Morphy"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man Verschlüsselungsverfahren mit einem öffentlichen und einem privaten Schlüssel?",
+     "correct": "Asymmetrische Verschlüsselung",
+     "wrong": [
+      "Symmetrische Verschlüsselung",
+      "Hash-Verfahren",
+      "Stromchiffre"
+     ]
+    },
+    "en": {
+     "text": "What are encryption methods with a public and a private key called?",
+     "correct": "Asymmetric encryption",
+     "wrong": [
+      "Symmetric encryption",
+      "Hashing",
+      "Stream cipher"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Architekt entwarf das Guggenheim-Museum in Bilbao?",
+     "correct": "Frank Gehry",
+     "wrong": [
+      "Norman Foster",
+      "Zaha Hadid",
+      "Renzo Piano"
+     ]
+    },
+    "en": {
+     "text": "Which architect designed the Guggenheim Museum in Bilbao?",
+     "correct": "Frank Gehry",
+     "wrong": [
+      "Norman Foster",
+      "Zaha Hadid",
+      "Renzo Piano"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Film von 1927 gilt als erster abendfüllender Spielfilm mit synchronisierten Dialogpassagen?",
+     "correct": "Der Jazzsänger",
+     "wrong": [
+      "Metropolis",
+      "Lichter der Großstadt",
+      "Nosferatu"
+     ]
+    },
+    "en": {
+     "text": "Which 1927 film is regarded as the first feature-length film with synchronised dialogue passages?",
+     "correct": "The Jazz Singer",
+     "wrong": [
+      "Metropolis",
+      "City Lights",
+      "Nosferatu"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Felder hat ein Scrabble-Spielbrett?",
+     "correct": "225",
+     "wrong": [
+      "196",
+      "256",
+      "289"
+     ]
+    },
+    "en": {
+     "text": "How many squares does a Scrabble board have?",
+     "correct": "225",
+     "wrong": [
+      "196",
+      "256",
+      "289"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Organisation erhielt den Friedensnobelpreis dreimal, nämlich 1917, 1944 und 1963?",
+     "correct": "Internationales Komitee vom Roten Kreuz",
+     "wrong": [
+      "UNO-Flüchtlingshilfswerk",
+      "Ärzte ohne Grenzen",
+      "Amnesty International"
+     ]
+    },
+    "en": {
+     "text": "Which organisation received the Nobel Peace Prize three times, in 1917, 1944 and 1963?",
+     "correct": "International Committee of the Red Cross",
+     "wrong": [
+      "UN Refugee Agency",
+      "Doctors Without Borders",
+      "Amnesty International"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Hauptstadt von Burkina Faso?",
+     "correct": "Ouagadougou",
+     "wrong": [
+      "Bamako",
+      "Niamey",
+      "Accra"
+     ]
+    },
+    "en": {
+     "text": "What is the capital of Burkina Faso?",
+     "correct": "Ouagadougou",
+     "wrong": [
+      "Bamako",
+      "Niamey",
+      "Accra"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches westafrikanische Reich wurde im 14. Jahrhundert von Mansa Musa regiert, der für seinen Reichtum berühmt war?",
+     "correct": "Mali",
+     "wrong": [
+      "Songhai",
+      "Aksum",
+      "Ghana"
+     ]
+    },
+    "en": {
+     "text": "Which West African empire was ruled in the 14th century by Mansa Musa, famous for his wealth?",
+     "correct": "Mali",
+     "wrong": [
+      "Songhai",
+      "Aksum",
+      "Ghana"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer schrieb den Roman „Die unerträgliche Leichtigkeit des Seins“?",
+     "correct": "Milan Kundera",
+     "wrong": [
+      "Václav Havel",
+      "Bohumil Hrabal",
+      "Jaroslav Hašek"
+     ]
+    },
+    "en": {
+     "text": "Who wrote the novel “The Unbearable Lightness of Being”?",
+     "correct": "Milan Kundera",
+     "wrong": [
+      "Václav Havel",
+      "Bohumil Hrabal",
+      "Jaroslav Hašek"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie lautete der bürgerliche Name von Freddie Mercury?",
+     "correct": "Farrokh Bulsara",
+     "wrong": [
+      "Freddie Hudson",
+      "Faisal Mehta",
+      "Farid Kapoor"
+     ]
+    },
+    "en": {
+     "text": "What was Freddie Mercury's birth name?",
+     "correct": "Farrokh Bulsara",
+     "wrong": [
+      "Freddie Hudson",
+      "Faisal Mehta",
+      "Farid Kapoor"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Pilz bildet in den USA das größte bekannte Lebewesen der Erde mit einem Myzel von fast 10 Quadratkilometern?",
+     "correct": "Dunkler Hallimasch",
+     "wrong": [
+      "Fliegenpilz",
+      "Steinpilz",
+      "Pfifferling"
+     ]
+    },
+    "en": {
+     "text": "Which fungus forms the largest known organism on Earth in the USA, with a mycelium of almost 10 square kilometres?",
+     "correct": "Dark honey fungus",
+     "wrong": [
+      "Fly agaric",
+      "Porcini",
+      "Chanterelle"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welches Mineral hat auf der Mohs-Skala die Härte 1?",
+     "correct": "Talk",
+     "wrong": [
+      "Gips",
+      "Calcit",
+      "Quarz"
+     ]
+    },
+    "en": {
+     "text": "Which mineral has hardness 1 on the Mohs scale?",
+     "correct": "Talc",
+     "wrong": [
+      "Gypsum",
+      "Calcite",
+      "Quartz"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welcher Stadt fanden 1924 die ersten Olympischen Winterspiele statt?",
+     "correct": "Chamonix",
+     "wrong": [
+      "St. Moritz",
+      "Lake Placid",
+      "Oslo"
+     ]
+    },
+    "en": {
+     "text": "In which city were the first Winter Olympic Games held in 1924?",
+     "correct": "Chamonix",
+     "wrong": [
+      "St. Moritz",
+      "Lake Placid",
+      "Oslo"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer gründete 1976 gemeinsam mit Steve Jobs das Unternehmen Apple?",
+     "correct": "Steve Wozniak",
+     "wrong": [
+      "Bill Gates",
+      "Paul Allen",
+      "Larry Ellison"
+     ]
+    },
+    "en": {
+     "text": "Who co-founded Apple with Steve Jobs in 1976?",
+     "correct": "Steve Wozniak",
+     "wrong": [
+      "Bill Gates",
+      "Paul Allen",
+      "Larry Ellison"
+     ]
+    }
+   }
+  },
+  {
+   "category": "art",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer malte „Die Kartenspieler“?",
+     "correct": "Paul Cézanne",
+     "wrong": [
+      "Edgar Degas",
+      "Camille Pissarro",
+      "Auguste Renoir"
+     ]
+    },
+    "en": {
+     "text": "Who painted “The Card Players”?",
+     "correct": "Paul Cézanne",
+     "wrong": [
+      "Edgar Degas",
+      "Camille Pissarro",
+      "Auguste Renoir"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welcher Fernsehserie spielt die Hauptfigur Don Draper?",
+     "correct": "Mad Men",
+     "wrong": [
+      "The Sopranos",
+      "Breaking Bad",
+      "The Wire"
+     ]
+    },
+    "en": {
+     "text": "In which TV series does the main character Don Draper appear?",
+     "correct": "Mad Men",
+     "wrong": [
+      "The Sopranos",
+      "Breaking Bad",
+      "The Wire"
+     ]
+    }
+   }
+  },
+  {
+   "category": "games",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer erfand das Brettspiel „Die Siedler von Catan“?",
+     "correct": "Klaus Teuber",
+     "wrong": [
+      "Reiner Knizia",
+      "Wolfgang Kramer",
+      "Alex Randolph"
+     ]
+    }
+   },
+   "region": "dach"
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt das Fest zum Ende des islamischen Fastenmonats Ramadan?",
+     "correct": "Id al-Fitr",
+     "wrong": [
+      "Id al-Adha",
+      "Aschura",
+      "Laylat al-Qadr"
+     ]
+    },
+    "en": {
+     "text": "What is the festival at the end of the Islamic fasting month of Ramadan called?",
+     "correct": "Eid al-Fitr",
+     "wrong": [
+      "Eid al-Adha",
+      "Ashura",
+      "Laylat al-Qadr"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Staat ist vollständig von Südafrika umschlossen?",
+     "correct": "Lesotho",
+     "wrong": [
+      "Eswatini",
+      "Botsuana",
+      "Namibia"
+     ]
+    },
+    "en": {
+     "text": "Which country is completely surrounded by South Africa?",
+     "correct": "Lesotho",
+     "wrong": [
+      "Eswatini",
+      "Botswana",
+      "Namibia"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "In welcher Schlacht besiegte Napoleon 1805 die verbündeten Russen und Österreicher?",
+     "correct": "Austerlitz",
+     "wrong": [
+      "Waterloo",
+      "Leipzig",
+      "Borodino"
+     ]
+    },
+    "en": {
+     "text": "In which battle did Napoleon defeat the allied Russians and Austrians in 1805?",
+     "correct": "Austerlitz",
+     "wrong": [
+      "Waterloo",
+      "Leipzig",
+      "Borodino"
+     ]
+    }
+   }
+  },
+  {
+   "category": "literature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Von welchem Dichter stammt der Gedichtband „Die Blumen des Bösen“?",
+     "correct": "Charles Baudelaire",
+     "wrong": [
+      "Arthur Rimbaud",
+      "Paul Verlaine",
+      "Stéphane Mallarmé"
+     ]
+    },
+    "en": {
+     "text": "Which poet wrote the collection “The Flowers of Evil”?",
+     "correct": "Charles Baudelaire",
+     "wrong": [
+      "Arthur Rimbaud",
+      "Paul Verlaine",
+      "Stéphane Mallarmé"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Sängerin und Songwriterin veröffentlichte 1971 das Album „Blue“?",
+     "correct": "Joni Mitchell",
+     "wrong": [
+      "Carole King",
+      "Joan Baez",
+      "Carly Simon"
+     ]
+    },
+    "en": {
+     "text": "Which singer-songwriter released the album “Blue” in 1971?",
+     "correct": "Joni Mitchell",
+     "wrong": [
+      "Carole King",
+      "Joan Baez",
+      "Carly Simon"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welche Haiart gilt als der schnellste Hai?",
+     "correct": "Makohai",
+     "wrong": [
+      "Weißer Hai",
+      "Tigerhai",
+      "Walhai"
+     ]
+    },
+    "en": {
+     "text": "Which shark species is considered the fastest shark?",
+     "correct": "Shortfin mako",
+     "wrong": [
+      "Great white shark",
+      "Tiger shark",
+      "Whale shark"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Welches Zellorganell ist der Ort der Proteinsynthese?",
+     "correct": "Ribosom",
+     "wrong": [
+      "Mitochondrium",
+      "Golgi-Apparat",
+      "Lysosom"
+     ]
+    },
+    "en": {
+     "text": "Which cell organelle is the site of protein synthesis?",
+     "correct": "Ribosome",
+     "wrong": [
+      "Mitochondrion",
+      "Golgi apparatus",
+      "Lysosome"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer wurde 1950 erster Formel-1-Weltmeister?",
+     "correct": "Giuseppe Farina",
+     "wrong": [
+      "Juan Manuel Fangio",
+      "Alberto Ascari",
+      "Stirling Moss"
+     ]
+    },
+    "en": {
+     "text": "Who became the first Formula One World Champion in 1950?",
+     "correct": "Giuseppe Farina",
+     "wrong": [
+      "Juan Manuel Fangio",
+      "Alberto Ascari",
+      "Stirling Moss"
+     ]
+    }
+   }
+  },
+  {
+   "category": "tech",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt die Faustregel, nach der sich die Zahl der Transistoren auf einem Chip etwa alle zwei Jahre verdoppelt?",
+     "correct": "Mooresches Gesetz",
+     "wrong": [
+      "Metcalfesches Gesetz",
+      "Amdahlsches Gesetz",
+      "Keplersches Gesetz"
+     ]
+    },
+    "en": {
+     "text": "What is the rule of thumb called according to which the number of transistors on a chip roughly doubles every two years?",
+     "correct": "Moore's law",
+     "wrong": [
+      "Metcalfe's law",
+      "Amdahl's law",
+      "Kepler's law"
+     ]
+    }
+   }
+  },
+  {
+   "category": "film_tv",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wer erhielt 1929 den ersten Oscar als bester Hauptdarsteller?",
+     "correct": "Emil Jannings",
+     "wrong": [
+      "Charlie Chaplin",
+      "Douglas Fairbanks",
+      "Rudolph Valentino"
+     ]
+    },
+    "en": {
+     "text": "Who received the first Academy Award for Best Actor in 1929?",
+     "correct": "Emil Jannings",
+     "wrong": [
+      "Charlie Chaplin",
+      "Douglas Fairbanks",
+      "Rudolph Valentino"
+     ]
+    }
+   }
+  },
+  {
+   "category": "general",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie nennt man ein Wort, das rückwärts gelesen ein anderes sinnvolles Wort ergibt, etwa „Lager“ und „Regal“?",
+     "correct": "Anadrom",
+     "wrong": [
+      "Palindrom",
+      "Anagramm",
+      "Akronym"
+     ]
+    },
+    "en": {
+     "text": "What is a word called that gives a different meaningful word when read backwards, such as “stressed” and “desserts”?",
+     "correct": "Anadrome",
+     "wrong": [
+      "Palindrome",
+      "Anagram",
+      "Acronym"
+     ]
+    }
+   }
+  },
+  {
+   "category": "geography",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie heißt der höchste frei fallende Wasserfall der Erde in Venezuela?",
+     "correct": "Salto Ángel",
+     "wrong": [
+      "Iguazú-Fälle",
+      "Victoriafälle",
+      "Niagarafälle"
+     ]
+    },
+    "en": {
+     "text": "What is the name of the highest uninterrupted waterfall in the world, in Venezuela?",
+     "correct": "Angel Falls",
+     "wrong": [
+      "Iguazu Falls",
+      "Victoria Falls",
+      "Niagara Falls"
+     ]
+    }
+   }
+  },
+  {
+   "category": "history",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Welcher Pharao ließ die Felsentempel von Abu Simbel errichten?",
+     "correct": "Ramses II.",
+     "wrong": [
+      "Echnaton",
+      "Cheops",
+      "Tutanchamun"
+     ]
+    },
+    "en": {
+     "text": "Which pharaoh had the rock temples of Abu Simbel built?",
+     "correct": "Ramesses II",
+     "wrong": [
+      "Akhenaten",
+      "Khufu",
+      "Tutankhamun"
+     ]
+    }
+   }
+  },
+  {
+   "category": "music",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie viele Saiten hat eine Konzertharfe üblicherweise?",
+     "correct": "47",
+     "wrong": [
+      "32",
+      "56",
+      "64"
+     ]
+    },
+    "en": {
+     "text": "How many strings does a concert harp usually have?",
+     "correct": "47",
+     "wrong": [
+      "32",
+      "56",
+      "64"
+     ]
+    }
+   }
+  },
+  {
+   "category": "nature",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Von welchem Insekt stammt der Rohstoff Schellack?",
+     "correct": "Lackschildlaus",
+     "wrong": [
+      "Honigbiene",
+      "Seidenspinner",
+      "Kochenille"
+     ]
+    },
+    "en": {
+     "text": "From which insect does the raw material shellac come?",
+     "correct": "Lac insect",
+     "wrong": [
+      "Honeybee",
+      "Silkworm",
+      "Cochineal"
+     ]
+    }
+   }
+  },
+  {
+   "category": "science",
+   "difficulty": 3,
+   "i18n": {
+    "de": {
+     "text": "Wie groß ist die Fluchtgeschwindigkeit von der Erdoberfläche ungefähr?",
+     "correct": "11,2 km/s",
+     "wrong": [
+      "7,9 km/s",
+      "29,8 km/s",
+      "3,0 km/s"
+     ]
+    },
+    "en": {
+     "text": "Roughly how large is the escape velocity from the Earth's surface?",
+     "correct": "11.2 km/s",
+     "wrong": [
+      "7.9 km/s",
+      "29.8 km/s",
+      "3.0 km/s"
+     ]
+    }
+   }
+  },
+  {
+   "category": "sports",
+   "difficulty": 2,
+   "i18n": {
+    "de": {
+     "text": "Wer gewann bei den Olympischen Spielen 1972 in München sieben Goldmedaillen im Schwimmen?",
+     "correct": "Mark Spitz",
+     "wrong": [
+      "Johnny Weissmuller",
+      "Matt Biondi",
+      "Ian Thorpe"
+     ]
+    },
+    "en": {
+     "text": "Who won seven gold medals in swimming at the 1972 Olympic Games in Munich?",
+     "correct": "Mark Spitz",
+     "wrong": [
+      "Johnny Weissmuller",
+      "Matt Biondi",
+      "Ian Thorpe"
+     ]
+    }
+   }
+  }
+ ]
+}
