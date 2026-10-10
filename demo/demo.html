@@ -238,9 +238,8 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
 
 /* Startseite: Duell und Wordle gleichberechtigt */
 .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
-.tile { display: grid; gap: 4px; justify-items: center; align-content: center; min-height: 112px; padding: 14px 10px; border: 0; border-radius: 18px; color: #fff; cursor: pointer; font: inherit; text-align: center }
+.tile { display: grid; gap: 4px; justify-items: center; align-content: center; min-height: 96px; padding: 14px 10px; border: 0; border-radius: 18px; color: #fff; cursor: pointer; font: inherit; text-align: center }
 .tile:active { transform: scale(.98) }
-.tile .ti { font-size: 1.9rem; line-height: 1 }
 .tile b { font-size: 1.15rem; letter-spacing: -.01em }
 .tile .ts { font-size: .85rem; opacity: .9 }
 .tile.quiz { background: var(--accent); color: var(--accent-ink) }
@@ -688,7 +687,7 @@ const dict = {
     'cat.general': 'Allgemeinwissen', 'cat.geography': 'Geografie', 'cat.history': 'Geschichte', 'cat.science': 'Wissenschaft',
     'cat.nature': 'Natur & Tiere', 'cat.sports': 'Sport', 'cat.film_tv': 'Film & TV', 'cat.music': 'Musik',
     'cat.literature': 'Literatur', 'cat.art': 'Kunst & Kultur', 'cat.games': 'Spiele', 'cat.tech': 'Technik',
-    'home.new': 'Neues Spiel', 'home.quizduell': 'Duell', 'home.yourTurn': 'Du bist dran', 'home.theirTurn': 'Gegner ist dran', 'home.waiting': 'Suche Gegner',
+    'home.new': 'Neues Spiel', 'home.quizduell': 'Duell', 'home.lbQuiz': 'Quiz-Bestenliste', 'home.yourTurn': 'Du bist dran', 'home.theirTurn': 'Gegner ist dran', 'home.waiting': 'Suche Gegner',
     'home.finished': 'Beendet', 'home.empty': 'Noch keine Spiele. Starte dein erstes Duell!', 'home.round': 'Runde {n}/{total}',
     'home.won': 'Gewonnen', 'home.lost': 'Verloren', 'home.draw': 'Unentschieden',
     'new.title': 'Neues Spiel', 'new.random': 'Zufälliger Gegner', 'new.randomSub': 'Wir suchen jemanden für dich',
@@ -824,7 +823,7 @@ const dict = {
     'cat.general': 'General Knowledge', 'cat.geography': 'Geography', 'cat.history': 'History', 'cat.science': 'Science',
     'cat.nature': 'Nature & Animals', 'cat.sports': 'Sports', 'cat.film_tv': 'Film & TV', 'cat.music': 'Music',
     'cat.literature': 'Literature', 'cat.art': 'Art & Culture', 'cat.games': 'Games', 'cat.tech': 'Technology',
-    'home.new': 'New game', 'home.quizduell': 'Duel', 'home.yourTurn': 'Your turn', 'home.theirTurn': "Opponent's turn", 'home.waiting': 'Finding opponent',
+    'home.new': 'New game', 'home.quizduell': 'Duel', 'home.lbQuiz': 'Quiz leaderboard', 'home.yourTurn': 'Your turn', 'home.theirTurn': "Opponent's turn", 'home.waiting': 'Finding opponent',
     'home.finished': 'Finished', 'home.empty': 'No games yet. Start your first duel!', 'home.round': 'Round {n}/{total}',
     'home.won': 'Won', 'home.lost': 'Lost', 'home.draw': 'Draw',
     'new.title': 'New game', 'new.random': 'Random opponent', 'new.randomSub': "We'll find someone for you",
@@ -1219,12 +1218,12 @@ async function home(_, my) {
       h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Quis', h('b', {}, 'sel')),
         h('button', { class: 'iconbtn', 'aria-label': t('profile.title'), onclick: () => go('#/profile') }, avatar(S.me, 'sm'))),
       h('div', { class: 'tiles' },
-        h('button', { class: 'tile quiz', onclick: () => go('#/new') }, h('span', { class: 'ti' }, '⚔️'), h('b', {}, t('home.quizduell')), h('span', { class: 'ts' }, '＋ ' + t('home.new'))),
-        h('button', { class: 'tile wordle', onclick: () => go('#/wordle') }, h('span', { class: 'ti' }, '🟩'), h('b', {}, t('wordle.title')), h('span', { class: 'ts' }, wordleOpen ? t('wordle.open', { n: wordleOpen }) : t('wordle.allDone')))),
+        h('button', { class: 'tile quiz', onclick: () => go('#/new') }, h('b', {}, t('home.quizduell')), h('span', { class: 'ts' }, '＋ ' + t('home.new'))),
+        h('button', { class: 'tile wordle', onclick: () => go('#/wordle') }, h('b', {}, t('wordle.title')), h('span', { class: 'ts' }, wordleOpen ? t('wordle.open', { n: wordleOpen }) : t('wordle.allDone')))),
       games.length || rooms.length ? null : h('div', { class: 'empty' }, t('home.empty')),
       rooms.length ? [h('h2', {}, t('room.rounds')), h('div', { class: 'list' }, rooms.map(roomItem))] : null,
       section(t('home.yourTurn'), mine), section(t('home.theirTurn'), theirs), section(t('home.waiting'), waiting), section(t('home.finished'), done),
-      h('div', { class: 'lbrow' }, h('button', { class: 'btn', onclick: () => go('#/top') }, '🏆 ' + t('lb.title')), h('button', { class: 'btn', onclick: () => go('#/wordle/board') }, '🟩 ' + t('wordle.board'))))
+      h('div', { class: 'lbrow' }, h('button', { class: 'btn', onclick: () => go('#/top') }, t('home.lbQuiz')), h('button', { class: 'btn', onclick: () => go('#/wordle/board') }, t('wordle.board'))))
   }
   const load = guard(async () => {
     const [g, r, w] = await Promise.all([api('GET', '/api/games'), api('GET', '/api/rooms'), api('GET', '/api/wordle').catch(() => null)])

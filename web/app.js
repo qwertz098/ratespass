@@ -253,12 +253,12 @@ async function home(_, my) {
       h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Quis', h('b', {}, 'sel')),
         h('button', { class: 'iconbtn', 'aria-label': t('profile.title'), onclick: () => go('#/profile') }, avatar(S.me, 'sm'))),
       h('div', { class: 'tiles' },
-        h('button', { class: 'tile quiz', onclick: () => go('#/new') }, h('span', { class: 'ti' }, '⚔️'), h('b', {}, t('home.quizduell')), h('span', { class: 'ts' }, '＋ ' + t('home.new'))),
-        h('button', { class: 'tile wordle', onclick: () => go('#/wordle') }, h('span', { class: 'ti' }, '🟩'), h('b', {}, t('wordle.title')), h('span', { class: 'ts' }, wordleOpen ? t('wordle.open', { n: wordleOpen }) : t('wordle.allDone')))),
+        h('button', { class: 'tile quiz', onclick: () => go('#/new') }, h('b', {}, t('home.quizduell')), h('span', { class: 'ts' }, '＋ ' + t('home.new'))),
+        h('button', { class: 'tile wordle', onclick: () => go('#/wordle') }, h('b', {}, t('wordle.title')), h('span', { class: 'ts' }, wordleOpen ? t('wordle.open', { n: wordleOpen }) : t('wordle.allDone')))),
       games.length || rooms.length ? null : h('div', { class: 'empty' }, t('home.empty')),
       rooms.length ? [h('h2', {}, t('room.rounds')), h('div', { class: 'list' }, rooms.map(roomItem))] : null,
       section(t('home.yourTurn'), mine), section(t('home.theirTurn'), theirs), section(t('home.waiting'), waiting), section(t('home.finished'), done),
-      h('div', { class: 'lbrow' }, h('button', { class: 'btn', onclick: () => go('#/top') }, '🏆 ' + t('lb.title')), h('button', { class: 'btn', onclick: () => go('#/wordle/board') }, '🟩 ' + t('wordle.board'))))
+      h('div', { class: 'lbrow' }, h('button', { class: 'btn', onclick: () => go('#/top') }, t('home.lbQuiz')), h('button', { class: 'btn', onclick: () => go('#/wordle/board') }, t('wordle.board'))))
   }
   const load = guard(async () => {
     const [g, r, w] = await Promise.all([api('GET', '/api/games'), api('GET', '/api/rooms'), api('GET', '/api/wordle').catch(() => null)])
