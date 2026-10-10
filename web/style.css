@@ -38,7 +38,7 @@ h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: v
 a { color: var(--accent); }
 button, input, select, textarea { font: inherit; color: inherit; }
 
-.top { display: flex; align-items: center; gap: 12px; min-height: 48px; }
+.top { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 6px 0; }
 .top h1 { font-size: 22px; flex: 1; }
 .brand { font-weight: 800; letter-spacing: -.03em; }
 .brand b { color: var(--accent); font-weight: 800; }
@@ -257,7 +257,7 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
 .timer.done { display: none }
 @media (max-height: 820px) {
   #app { padding: 8px 12px 12px }
-  .top { min-height: 40px }
+  .top { min-height: 40px; padding: 4px 0 }
   #app > .fade { gap: 8px }
   .card.qcard { padding: 12px }
   .qcard .q-head { margin-bottom: 8px }
@@ -297,7 +297,7 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
 @media (max-height: 700px) { .wcard .whint { display: none } }
 @media (max-height: 700px) {
   #app { padding: 6px 10px 10px }
-  .top { min-height: 36px }
+  .top { min-height: 36px; padding: 3px 0 }
   .top h1 { font-size: 18px }
   .card.qcard { padding: 10px }
   .qcard .opts { gap: 6px }
