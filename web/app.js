@@ -495,7 +495,7 @@ async function wordleJoin(code, my) {
 }
 
 const WKEYS = {
-  de: ['QWERTZUIOPÜ', 'ASDFGHJKLÖÄ', 'YXCVBNM'],
+  de: ['QWERTZUIOP', 'ASDFGHJKL', 'YXCVBNM'],
   en: ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'],
 }
 async function wordlePlay(id, my) {
@@ -554,7 +554,7 @@ async function wordlePlay(id, my) {
   const onKey = (e) => {
     if (e.ctrlKey || e.metaKey || e.altKey) return
     if (e.key === 'Enter') { e.preventDefault(); submit() } else if (e.key === 'Backspace') del()
-    else if (e.key.length === 1 && new RegExp(g.lang === 'de' ? '^[a-zäöüA-ZÄÖÜ]$' : '^[a-zA-Z]$').test(e.key)) type(e.key)
+    else if (e.key.length === 1 && /^[a-zA-Z]$/.test(e.key)) type(e.key)
   }
   document.addEventListener('keydown', onKey)
   const prev = cleanup

@@ -29,6 +29,7 @@ let loaded = false
 /** Liest wordlists/*.txt in die Datenbank (nur Neues; Sperren bleiben bestehen). */
 export function loadWordlists(dir = config.wordle.dir) {
   tx(() => {
+    run("DELETE FROM wordle_words WHERE word GLOB '*[^a-z]*'") // frühere Fassungen kannten Wörter mit Umlauten
     for (const lang of WORDLE_LANGS) {
       const read = (n: string) => { const f = path.join(dir, `${lang}.${n}.txt`); return fs.existsSync(f) ? fs.readFileSync(f, 'utf8').split('\n').map((w) => normalizeWord(lang, w)).filter((w): w is string => !!w) : [] }
       for (const w of read('words')) run('INSERT OR IGNORE INTO wordle_words(lang,word,solution) VALUES(?,?,0)', lang, w)

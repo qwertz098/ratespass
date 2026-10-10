@@ -1,11 +1,11 @@
 // Wortlisten für Wordle: reine Filterlogik (keine Datenbank, kein Netz). Erzeugt von tools/fetch-wordlists.ts, geladen von server/wordle.ts.
-// Konvention: genau 5 Buchstaben, Kleinbuchstaben; Deutsch mit ä, ö, ü als eigene Buchstaben und OHNE ß; Englisch a–z.
+// Konvention: genau 5 Buchstaben a–z, Kleinbuchstaben, in beiden Sprachen. Deutsche Wörter mit ä, ö, ü oder ß kommen NICHT vor (werden entfernt, nicht umgeschrieben).
 
 export const WORDLE_LANGS = ['de', 'en'] as const
 export type WordleLang = (typeof WORDLE_LANGS)[number]
 export const WORD_LEN = 5
 
-const RE: Record<WordleLang, RegExp> = { de: /^[a-zäöü]{5}$/, en: /^[a-z]{5}$/ }
+const RE: Record<WordleLang, RegExp> = { de: /^[a-z]{5}$/, en: /^[a-z]{5}$/ }
 export const isWordleLang = (l: unknown): l is WordleLang => WORDLE_LANGS.includes(l as WordleLang)
 
 /** Eingabe oder Listeneintrag → gültiges Wort der Sprache (klein, NFC) oder null. */
@@ -16,7 +16,7 @@ export function normalizeWord(lang: WordleLang, raw: unknown): string | null {
 
 export interface WordlistInput {
   lang: WordleLang
-  /** Große Wörterliste (de: mit Groß-/Kleinschreibung der Wörterbuchform, en: Rateliste). */
+  /** Große Wörterliste (de: mit Groß-/Kleinschreibung der Wörterbuchform, en: Rateliste). Wörter mit Umlauten/ß werden verworfen. */
   big: string[]
   /** Häufigkeitsliste, häufigste zuerst (nur das Wort pro Eintrag). */
   freq: string[]
