@@ -13,6 +13,8 @@ import * as ai from './ai.ts'
 import * as lb from './leaderboard.ts'
 import * as live from './live.ts'
 import { sofaQuestions } from './sofa.ts'
+import * as wordle from './wordle.ts'
+import { ensureWords, hub } from './wordle.ts'
 import { consentState, consentStats, currentPrivacy, recordConsent } from './privacy.ts'
 import { erasePlayer } from './erase.ts'
 import {
@@ -344,6 +346,19 @@ router.get('/api/sofa', (c) => {
   const q = c.url.searchParams
   return { questions: sofaQuestions(me(c), pickLang(q.get('lang') ?? undefined, me(c).lang), q.get('n')) }
 })
+/* ---------- Wordle ---------- */
+router.get('/api/wordle', (c) => { ensureWords(); return hub(me(c)) })
+router.post('/api/wordle/games', (c) => { rateLimit(`wstart:${me(c).id}`, 120, 3_600_000); ensureWords(); return { game: wordle.startGame(me(c), c.body?.kind, c.body?.lang, c.body?.group_id) } })
+router.get('/api/wordle/games/:id', (c) => ({ game: wordle.getGame(me(c), Number(c.params.id)) }))
+router.post('/api/wordle/games/:id/guess', (c) => { rateLimit(`wguess:${me(c).id}`, 600, 3_600_000); return { game: wordle.guess(me(c), Number(c.params.id), c.body?.word) } })
+router.post('/api/wordle/groups', (c) => { rateLimit(`wgroup:${me(c).id}`, 20, 3_600_000); return { group: wordle.createGroup(me(c), c.body?.name, c.body?.lang) } })
+router.post('/api/wordle/groups/join', (c) => { rateLimit(`wjoin:${c.ip}`, 60, 900_000); return { group: wordle.joinGroup(me(c), c.body?.code) } })
+router.get('/api/wordle/groups/:id', (c) => ({ group: wordle.groupView(me(c), Number(c.params.id)) }))
+router.post('/api/wordle/groups/:id/leave', (c) => { wordle.leaveGroup(me(c).id, Number(c.params.id)); return { ok: true } })
+router.delete('/api/wordle/groups/:id', (c) => { wordle.deleteGroup(me(c), Number(c.params.id)); return { ok: true } })
+router.get('/api/wordle/groups/:id/board', (c) => wordle.groupBoard(me(c), Number(c.params.id), c.url.searchParams.get('scope')))
+router.post('/api/wordle/duel', (c) => { rateLimit(`wduel:${me(c).id}`, 20, 3_600_000); return { group: wordle.duelInvite(me(c), c.body?.public_id, c.body?.lang) } })
+router.get('/api/wordle/board', (c) => wordle.board(me(c), c.url.searchParams.get('lang'), c.url.searchParams.get('scope')))
 router.get('/api/rooms', (c) => ({ rooms: rooms.listRooms(me(c)) }))
 router.post('/api/rooms', (c) => {
   const p = me(c)

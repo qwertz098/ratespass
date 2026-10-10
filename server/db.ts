@@ -396,8 +396,73 @@ CREATE TABLE live_bets(
 );
 `
 
+// v16: Wordle (tägliches Wort, Bonus, Gruppen), Zeitzone und Push-Optionen
+const SCHEMA_V16 = `
+CREATE TABLE wordle_words(
+  lang TEXT NOT NULL,
+  word TEXT NOT NULL,
+  solution INTEGER NOT NULL DEFAULT 0,
+  banned INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY(lang, word)
+);
+CREATE TABLE wordle_daily(
+  lang TEXT NOT NULL,
+  day TEXT NOT NULL,
+  scope TEXT NOT NULL,
+  word TEXT NOT NULL,
+  forced INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY(lang, day, scope)
+);
+CREATE TABLE wordle_groups(
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  lang TEXT NOT NULL,
+  owner INTEGER NOT NULL REFERENCES players(id),
+  code TEXT NOT NULL UNIQUE,
+  created_at INTEGER NOT NULL
+);
+CREATE TABLE wordle_members(
+  group_id INTEGER NOT NULL REFERENCES wordle_groups(id) ON DELETE CASCADE,
+  player_id INTEGER NOT NULL REFERENCES players(id),
+  joined_at INTEGER NOT NULL,
+  PRIMARY KEY(group_id, player_id)
+);
+CREATE INDEX wordle_members_player ON wordle_members(player_id);
+CREATE TABLE wordle_games(
+  id INTEGER PRIMARY KEY,
+  player_id INTEGER NOT NULL REFERENCES players(id),
+  kind TEXT NOT NULL,
+  lang TEXT NOT NULL,
+  day TEXT NOT NULL,
+  group_id INTEGER NOT NULL DEFAULT 0,
+  word TEXT NOT NULL,
+  guesses TEXT NOT NULL DEFAULT '[]',
+  status TEXT NOT NULL DEFAULT 'playing',
+  points INTEGER NOT NULL DEFAULT 0,
+  started_at INTEGER NOT NULL,
+  last_at INTEGER NOT NULL,
+  finished_at INTEGER,
+  UNIQUE(player_id, kind, lang, day, group_id)
+);
+CREATE INDEX wordle_games_day ON wordle_games(lang, kind, day);
+CREATE INDEX wordle_games_group ON wordle_games(group_id, day);
+ALTER TABLE players ADD COLUMN tz TEXT;
+CREATE TABLE wordle_push(
+  player_id INTEGER NOT NULL REFERENCES players(id),
+  key TEXT NOT NULL,
+  PRIMARY KEY(player_id, key)
+);
+CREATE TABLE wordle_push_log(
+  player_id INTEGER NOT NULL,
+  key TEXT NOT NULL,
+  day TEXT NOT NULL,
+  at INTEGER NOT NULL,
+  PRIMARY KEY(player_id, key, day)
+);
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10], [11, SCHEMA_V11], [12, SCHEMA_V12], [13, SCHEMA_V13], [14, SCHEMA_V14], [15, SCHEMA_V15]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10], [11, SCHEMA_V11], [12, SCHEMA_V12], [13, SCHEMA_V13], [14, SCHEMA_V14], [15, SCHEMA_V15], [16, SCHEMA_V16]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)

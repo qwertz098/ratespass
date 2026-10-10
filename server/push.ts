@@ -161,6 +161,17 @@ export function messageFor(lang: string, kind: PushKind, gameId: number, name: s
   return { title, body: body.replace('{name}', name), url: `/#/${room ? 'room' : 'game'}/${gameId}`, tag: `${room ? 'room' : 'game'}-${gameId}` }
 }
 
+/** Benachrichtigt einen Spieler mit einer fertigen Nachricht (z. B. Wordle) nach dem Commit; Bots und Spieler ohne Abo werden ausgelassen. */
+export function notifyMessage(playerId: number, msg: PushMessage) {
+  afterCommit(() => {
+    const p = get<{ is_bot: number; deleted: number }>('SELECT is_bot,deleted FROM players WHERE id=?', playerId)
+    if (!p || p.is_bot || p.deleted) return
+    if (!get('SELECT 1 FROM push_subs WHERE player_id=? LIMIT 1', playerId)) return
+    const job: Promise<void> = deliver(playerId, msg).then(() => {}, (e) => console.warn('push', e)).finally(() => inflight.delete(job))
+    inflight.add(job)
+  })
+}
+
 /** Benachrichtigt einen Spieler nach dem Commit der laufenden Transaktion. Bots und Spieler ohne Abo werden ausgelassen. */
 export function notifyPlayer(playerId: number | null, kind: PushKind, gameId: number, otherName: string) {
   if (!playerId) return

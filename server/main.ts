@@ -4,12 +4,14 @@ import { config } from './config.ts'
 import { sweep } from './game.ts'
 import { sweepRooms } from './rooms.ts'
 import { importPendingBatches } from './questions.ts'
+import { loadWordlists } from './wordle.ts'
 import { autoRun } from './ai.ts'
 import { sweepProfiles } from './erase.ts'
 import { resumeLive, sweepLive } from './live.ts'
 import { missingSettings } from './privacy.ts'
 
 importPendingBatches(config.batchDir)
+loadWordlists()
 resumeLive()
 setInterval(() => { try { sweep(); sweepRooms(); sweepProfiles(); sweepLive() } catch (e) { console.error('sweep', e) } }, 30 * 60_000).unref()
 
