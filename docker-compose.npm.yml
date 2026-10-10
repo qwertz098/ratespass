@@ -1,4 +1,5 @@
-# Ratespaß hinter Nginx Proxy Manager (NPM). NPM erreicht den Container über ein gemeinsames Docker-Netzwerk (Forward Hostname „ratespass“, Port 3000).
+# Ratespaß hinter Nginx Proxy Manager (NPM) mit LOKALEM BUILD (Dockerfile und Quellcode neben dieser Datei). Image aus der eigenen Registry/Dockge: docker-compose.dockge.yml.
+# NPM erreicht den Container über ein gemeinsames Docker-Netzwerk (Forward Hostname „ratespass“, Port 3000).
 # Zusätzlich wird der Port auf dem Host veröffentlicht (Standard 3007, änderbar per HOST_PORT) – nützlich, wenn NPM nicht im selben Netzwerk hängt
 # oder zum direkten Testen. Nur lokal erreichbar: BIND_ADDRESS=127.0.0.1. Gar nicht veröffentlichen: die Zeile `ports:` samt Eintrag löschen.
 #
@@ -8,8 +9,8 @@
 #   4. In NPM einen Proxy Host anlegen: Forward Hostname „ratespass“, Port 3000, Scheme http (siehe docs/DEPLOY.md, Abschnitt C)
 services:
   ratespass:
-    build: .                                                      # lokal bauen (erster Start); alternativ fertiges Image aus ghcr.io ziehen
-    image: ${RATESPASS_IMAGE:-ghcr.io/qwertz098/ratespass:latest}
+    build: .                                                      # lokal bauen (braucht das Dockerfile und den Quellcode neben dieser Datei)
+    image: ${RATESPASS_IMAGE:-ratespass:local}                    # Ohne Quellcode (z. B. Dockge): docker-compose.dockge.yml verwenden
     container_name: ratespass                                     # fester Name = „Forward Hostname“ in NPM
     restart: unless-stopped
     ports:

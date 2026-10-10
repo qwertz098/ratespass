@@ -26,7 +26,8 @@ rem    2. Pruefen: git, docker (und ssh/scp nur, wenn SSH_TARGET gesetzt ist), T
 rem    3. Bauen:   docker build  (oder buildx bei PLATFORM)  ->  REGISTRY[/NAMESPACE]/ratespass:<datum>-<commit> und :latest
 rem    4. Pushen:  beide Tags in die Registry.
 rem    5. Server:  - Standard (SSH_TARGET leer): Hinweis "In Dockge verwenden: image: ..." - Image in der Dockge-
-rem                  Stack eintragen bzw. dort "Update" / "Pull & Redeploy" ausfuehren.
+rem                  Stack eintragen (compose: docker-compose.dockge.yml, .env: RATESPASS_IMAGE=...) und dort
+rem                  "Update" / "Pull & Redeploy" ausfuehren.
 rem                - Mit SSH_TARGET: docker-compose.registry.yml per scp nach REMOTE_DIR, dann per ssh
 rem                  "docker compose pull + up -d" und Gesundheitspruefung. Die .env auf dem Server wird nie ueberschrieben.
 rem
@@ -256,8 +257,10 @@ if "%PUSHED%"=="1" (
   echo Erfolgreich gepusht: %IMAGE%:%TAG%  und  %IMAGE%:latest
   echo.
   echo In Dockge verwenden:  image: %IMAGE%:%TAG%
-  echo   oder mit docker-compose.registry.yml in der Stack-.env:  RATESPASS_IMAGE=%IMAGE%:%TAG%
-  echo   Danach im Stack "Update" bzw. "Pull & Redeploy". Der Server braucht die Registry als insecure-registry.
+  echo   Stack-compose: Inhalt von docker-compose.dockge.yml (Repo) einfuegen, Stack-.env: RATESPASS_IMAGE=%IMAGE%:%TAG%
+  echo   NICHT docker-compose.yml / docker-compose.npm.yml nehmen: sie enthalten "build:" und scheitern im Dockge-Ordner
+  echo   mit "failed to read dockerfile". Danach im Stack "Update" bzw. "Pull & Redeploy".
+  echo   Der Server braucht die Registry als insecure-registry.
 )
 echo.
 if not "%NO_PAUSE%"=="1" pause

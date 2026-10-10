@@ -1,0 +1,58 @@
+# Dockge-/Server-Variante OHNE Build: Das Image kommt aus der eigenen Registry (build+deploy.bat pusht es), Anbindung an Nginx Proxy Manager (NPM).
+# In Dockge als compose.yaml des Stacks einfuegen. Es gibt bewusst weder `build:` noch Bind-Mounts (kein Dockerfile/keine batches im Stack-Ordner noetig:
+# Fragen und Wortlisten stecken im Image). Die .env des Stacks braucht mindestens:
+#   RATESPASS_IMAGE=100.68.13.43:5000/ratespass:latest      (genau der Tag, den build+deploy.bat am Ende ausgibt)
+#   ADMIN_TOKEN=...  (mind. 16 Zeichen)   VAPID_SUBJECT=mailto:du@example.org   CONTROLLER_NAME / CONTROLLER_ADDRESS / CONTROLLER_EMAIL
+#   NPM_NETWORK=npm_default   (docker network ls: Netzwerk, in dem Nginx Proxy Manager haengt)
+# Der Server muss die Registry als "insecure-registries" kennen, wenn sie ohne TLS laeuft (daemon.json bzw. Unraid: Docker-Einstellungen).
+# NPM: Proxy Host -> Forward Hostname "ratespass", Port 3000 (siehe docs/DEPLOY.md).
+services:
+  ratespass:
+    image: ${RATESPASS_IMAGE:?RATESPASS_IMAGE fehlt - in die .env des Stacks eintragen, z. B. 100.68.13.43:5000/ratespass:latest}
+    container_name: ratespass                                 # fester Name = Forward Hostname in NPM
+    ports:
+      # Host-Port per HOST_PORT änderbar (Standard 3007). BIND_ADDRESS=127.0.0.1 → nur vom Host selbst erreichbar
+      # (z. B. wenn ein Reverse-Proxy auf demselben Rechner davor läuft).
+      - "${BIND_ADDRESS:-0.0.0.0}:${HOST_PORT:-3007}:3000"
+    environment:
+      # Moderation unter /admin: Token mind. 16 Zeichen (z. B. `openssl rand -hex 16`); leer/kürzer = abgeschaltet.
+      ADMIN_TOKEN: ${ADMIN_TOKEN:-}
+      # Kontakt für Push-Dienste (mailto:… oder https://…)
+      VAPID_SUBJECT: ${VAPID_SUBJECT:-https://github.com/qwertz098/ratespass}
+      # Auf 1 setzen, wenn ein Reverse-Proxy (Caddy/nginx/NPM/Traefik) davor steht; PROXY_HOPS = Anzahl der Proxys.
+      PLAYER_CREATE_LIMIT_PER_HOUR: ${PLAYER_CREATE_LIMIT_PER_HOUR:-60}   # neue Profile pro IP und Stunde
+      PLAYER_REPORTS: ${PLAYER_REPORTS:-1}   # 0 = Melde-Knopf für alle Spieler aus
+      DUEL_FORFEIT_DAYS: ${DUEL_FORFEIT_DAYS:-3}
+      DUEL_REMIND_HOURS: ${DUEL_REMIND_HOURS:-24}
+      DUEL_TAKEOVER_HOURS: ${DUEL_TAKEOVER_HOURS:-24}
+      # Verantwortlicher für Impressum und Datenschutzerklärung (Pflicht: Name, Anschrift, E-Mail)
+      CONTROLLER_NAME: ${CONTROLLER_NAME:-}
+      CONTROLLER_ADDRESS: ${CONTROLLER_ADDRESS:-}
+      CONTROLLER_EMAIL: ${CONTROLLER_EMAIL:-}
+      CONTROLLER_PHONE: ${CONTROLLER_PHONE:-}
+      CONTROLLER_REPRESENTATIVE: ${CONTROLLER_REPRESENTATIVE:-}
+      CONTROLLER_REGISTER: ${CONTROLLER_REGISTER:-}
+      CONTROLLER_VAT_ID: ${CONTROLLER_VAT_ID:-}
+      SUPERVISORY_AUTHORITY: ${SUPERVISORY_AUTHORITY:-}
+      DPO_CONTACT: ${DPO_CONTACT:-}
+      HOSTING_PROVIDER: ${HOSTING_PROVIDER:-}
+      PRIVACY_RETENTION_DAYS: ${PRIVACY_RETENTION_DAYS:-730}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}   # KI-Schnittstelle (optional)
+      AI_MODEL: ${AI_MODEL:-claude-sonnet-5-5}
+      AI_DAILY_LIMIT: ${AI_DAILY_LIMIT:-100}
+      AI_AUTO: ${AI_AUTO:-0}
+      WORDLE_TZ: ${WORDLE_TZ:-Europe/Berlin}   # Tageswechsel des täglichen Wordle
+      TRUST_PROXY: ${TRUST_PROXY:-0}
+      PROXY_HOPS: ${PROXY_HOPS:-1}
+    volumes:
+      - ratespass-data:/data
+    restart: unless-stopped
+    networks: [proxy]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+networks:
+  proxy:
+    external: true
+    name: ${NPM_NETWORK:-npm_default}
+volumes:
+  ratespass-data:
