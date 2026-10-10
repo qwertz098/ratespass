@@ -14,6 +14,7 @@
     "check": "tsc --noEmit",
     "import": "node --disable-warning=ExperimentalWarning tools/import-batch.ts",
     "fetch:opentdb": "node --disable-warning=ExperimentalWarning tools/fetch-opentdb.ts",
+    "fetch:wordlists": "node --disable-warning=ExperimentalWarning tools/fetch-wordlists.ts",
     "gen:wikidata": "node --disable-warning=ExperimentalWarning tools/gen-wikidata.ts",
     "todo:translate": "node --disable-warning=ExperimentalWarning tools/export-missing.ts",
     "backup": "node --disable-warning=ExperimentalWarning tools/backup.ts",
