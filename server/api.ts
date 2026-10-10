@@ -284,12 +284,14 @@ router.post('/api/live/join', (c) => {
 })
 router.get('/api/live/:id', (c) => ({ live: live.getView(gid(c), me(c)) }))
 router.get('/api/live/:id/events', (c) => { live.subscribe(gid(c), me(c), c.res); return undefined })
-router.post('/api/live/:id/settings', (c) => { live.configure(me(c), gid(c), { mode: c.body?.mode, screen: c.body?.screen }); return { live: live.getView(gid(c), me(c)) } })
+router.post('/api/live/:id/settings', (c) => { live.configure(me(c), gid(c), { mode: c.body?.mode, screen: c.body?.screen, teams: c.body?.teams }); return { live: live.getView(gid(c), me(c)) } })
 router.post('/api/live/:id/renew', (c) => { live.renewToken(me(c), gid(c)); return { live: live.getView(gid(c), me(c)) } })
 router.post('/api/live/:id/start', (c) => { live.start(me(c), gid(c)); return { live: live.getView(gid(c), me(c)) } })
 router.post('/api/live/:id/next', (c) => { live.next(me(c), gid(c)); return { live: live.getView(gid(c), me(c)) } })
 router.post('/api/live/:id/end', (c) => { live.end(me(c), gid(c)); return { live: live.getView(gid(c), me(c)) } })
 router.post('/api/live/:id/kick', (c) => { live.kick(me(c), gid(c), c.body?.public_id); return { live: live.getView(gid(c), me(c)) } })
+router.post('/api/live/:id/team', (c) => { live.setTeam(me(c), gid(c), c.body?.team); return { live: live.getView(gid(c), me(c)) } })
+router.post('/api/live/:id/bet', (c) => { live.placeBet(me(c), gid(c), c.body?.idx, c.body?.amount); return { ok: true } })
 router.post('/api/live/:id/answer', (c) => { live.answer(me(c), gid(c), c.body?.idx, c.body?.choice); return { ok: true } })
 
 /* ---------- Bestenliste (Opt-in) ---------- */

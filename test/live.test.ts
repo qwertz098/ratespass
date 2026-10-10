@@ -8,7 +8,7 @@ const { call, newPlayer, base } = t
 for (const f of ['original-001', 'original-002']) assert.deepEqual(importBatch(JSON.parse(fs.readFileSync(new URL(`../batches/${f}.json`, import.meta.url), 'utf8'))).errors, [])
 const { config } = await import('../server/config.ts')
 const live = await import('../server/live.ts')
-Object.assign(config.live, { questionMs: 700, revealMs: 120, tempoQuestions: 3 })
+Object.assign(config.live, { questionMs: 700, revealMs: 120, tempoQuestions: 3, raceQuestions: 14, betQuestions: 3, betMs: 400 })
 test.after(() => { live.closeAll(); t.close() })
 
 /** SSE-Client: sammelt `state`-Ereignisse. */
@@ -144,4 +144,89 @@ test('Neustart: Zeitgeber werden aus der Datenbank wieder aufgenommen; Leaderboa
   assert.ok(ANSWER_SOURCES.some((s) => s.includes('live_answers')))
   const { db } = await import('./helpers.ts')
   assert.doesNotThrow(() => db.prepare(`SELECT COUNT(*) FROM (${ANSWER_SOURCES.join(' UNION ALL ')})`).get())
+})
+
+const wrongOf = (gid: number, idx: number) => (correctOf(gid, idx) + 1) % 4
+
+test('Rennen: richtig = 1 Feld, schnellste richtige +1, Ziel bei 12 Feldern beendet das Spiel', async () => {
+  const [h, a, b] = [await newPlayer('Renn Host'), await newPlayer('Renn Schnell'), await newPlayer('Renn Langsam')]
+  const c = (await call('POST', '/api/live', { mode: 'race', screen: true }, h.token)).json
+  for (const p of [a, b]) await call('POST', '/api/live/join', { token: c.live.token }, p.token)
+  const w = await watch(h.token, c.id)
+  await call('POST', `/api/live/${c.id}/start`, {}, h.token)
+  assert.equal(all('SELECT 1 FROM live_questions WHERE game_id=?', c.id).length, 14)
+  for (let i = 0; i < 6; i++) {
+    await w.waitFor((s) => s.status === 'question' && s.idx === i)
+    await answer(a.token, c.id, i, correctOf(c.id, i)); await answer(b.token, c.id, i, i % 2 ? correctOf(c.id, i) : wrongOf(c.id, i))
+    await w.waitFor((s) => s.status === 'reveal' && s.idx === i)
+  }
+  const fin = await w.waitFor((s) => s.status === 'finished', 4000)
+  assert.equal(fin.race_length, 12)
+  assert.equal(fin.players[0].name, 'Renn Schnell'); assert.ok(fin.players[0].pos >= 12, 'Ziel erreicht')
+  assert.ok(fin.players[1].pos < fin.players[0].pos); assert.equal(fin.idx, 5, 'Spiel endet in der Frage, in der das Ziel erreicht wird')
+  w.close()
+})
+
+test('Einsatz: Kategorie vorab, Einsatz setzen, richtig +Einsatz, falsch −Einsatz (nie unter 0), letzte Frage doppelt', async () => {
+  const [h, a, b] = [await newPlayer('Wett Host'), await newPlayer('Wett Mutig'), await newPlayer('Wett Pleite')]
+  const c = (await call('POST', '/api/live', { mode: 'bet', screen: true }, h.token)).json
+  for (const p of [a, b]) await call('POST', '/api/live/join', { token: c.live.token }, p.token)
+  const w = await watch(a.token, c.id)
+  await call('POST', `/api/live/${c.id}/start`, {}, h.token)
+  const bet = (tok: string, idx: number, amount: unknown) => call('POST', `/api/live/${c.id}/bet`, { idx, amount }, tok)
+  // Frage 1: Einsatzphase zeigt nur die Kategorie, keine Frage
+  const b0 = await w.waitFor((s) => s.status === 'bet' && s.idx === 0)
+  assert.ok(b0.question.category && b0.question.text === undefined && b0.question.options === undefined, 'nur Kategorie sichtbar')
+  assert.equal(b0.me.score, 1000, 'Startkapital')
+  assert.equal((await answer(a.token, c.id, 0, 0)).status, 409, 'in der Einsatzphase kann nicht geantwortet werden')
+  assert.equal((await bet(a.token, 0, 250)).status, 400, 'nur feste Stufen')
+  assert.equal((await bet(a.token, 1, 100)).status, 409, 'falscher Index')
+  assert.equal((await bet(a.token, 0, 300)).status, 200); assert.equal((await bet(b.token, 0, -1)).status, 200, 'All-in')
+  await w.waitFor((s) => s.status === 'question' && s.idx === 0, 1000) // alle haben gesetzt → sofort Frage
+  await answer(a.token, c.id, 0, correctOf(c.id, 0)); await answer(b.token, c.id, 0, wrongOf(c.id, 0))
+  const r0 = await w.waitFor((s) => s.status === 'reveal' && s.idx === 0)
+  assert.equal(r0.me.points, 300); assert.equal(r0.me.score, 1300)
+  assert.deepEqual(r0.players.map((p: any) => [p.name, p.score]), [['Wett Mutig', 1300], ['Wett Pleite', 0]], 'All-in falsch = 0, nie negativ')
+  // Frage 2: ohne Einsatz gilt 100; Pleite darf trotzdem spielen
+  await w.waitFor((s) => s.status === 'question' && s.idx === 1, 2000) // Einsatzphase läuft ab (400 ms)
+  await answer(a.token, c.id, 1, wrongOf(c.id, 1)); await answer(b.token, c.id, 1, correctOf(c.id, 1))
+  const r1 = await w.waitFor((s) => s.status === 'reveal' && s.idx === 1)
+  assert.equal(r1.players.find((p: any) => p.name === 'Wett Mutig').score, 1200, '−100 Standard-Einsatz')
+  assert.equal(r1.players.find((p: any) => p.name === 'Wett Pleite').score, 100)
+  // Frage 3 = Finale: doppelter Einsatz
+  const b2 = await w.waitFor((s) => s.status === 'bet' && s.idx === 2); assert.equal(b2.bet.final, true)
+  await bet(a.token, 2, 500); await bet(b.token, 2, 100)
+  await w.waitFor((s) => s.status === 'question' && s.idx === 2, 1000)
+  await answer(a.token, c.id, 2, correctOf(c.id, 2)); await answer(b.token, c.id, 2, wrongOf(c.id, 2))
+  const fin = await w.waitFor((s) => s.status === 'finished', 4000)
+  assert.deepEqual(fin.players.map((p: any) => [p.name, p.score]), [['Wett Mutig', 2200], ['Wett Pleite', 0]])
+  assert.equal(all('SELECT 1 FROM live_bets WHERE game_id=?', c.id).length, 6)
+  w.close()
+})
+
+test('Teams: Teamwahl in der Lobby, automatischer Ausgleich, Teamwertung als Durchschnitt; nicht für Survival/Rennen', async () => {
+  const [h, a, b, d] = [await newPlayer('Team Host'), await newPlayer('Team A'), await newPlayer('Team B'), await newPlayer('Team C')]
+  const c = (await call('POST', '/api/live', { mode: 'tempo', screen: true }, h.token)).json
+  for (const p of [a, b, d]) await call('POST', '/api/live/join', { token: c.live.token }, p.token)
+  const set = (teams: unknown, mode?: unknown) => call('POST', `/api/live/${c.id}/settings`, { teams, mode }, h.token)
+  assert.equal((await set(5)).status, 400)
+  assert.equal((await set(2)).status, 200)
+  assert.equal((await call('POST', `/api/live/${c.id}/team`, { team: 3 }, a.token)).status, 400, 'nur vorhandene Teams')
+  assert.equal((await call('POST', `/api/live/${c.id}/team`, { team: 1 }, a.token)).json.live.me.team, 1)
+  assert.equal((await set(2, 'race')).json.live.teams, 0, 'Rennen ohne Teams')
+  assert.equal((await set(2, 'bet')).json.live.teams, 2, 'Einsatz mit Teams')
+  assert.equal((await set(0, 'tempo')).json.live.teams, 0)
+  await set(2, 'tempo'); await call('POST', `/api/live/${c.id}/team`, { team: 1 }, a.token)
+  const w = await watch(h.token, c.id)
+  await call('POST', `/api/live/${c.id}/start`, {}, h.token)
+  const teamOf = (n: string, s: any) => s.players.find((p: any) => p.name === n).team
+  const q0 = await w.waitFor((s) => s.status === 'question' && s.idx === 0)
+  assert.equal(teamOf('Team A', q0), 1, 'gewähltes Team bleibt'); assert.ok([1, 2].includes(teamOf('Team B', q0)) && [1, 2].includes(teamOf('Team C', q0)))
+  const sizes = [1, 2].map((t) => q0.players.filter((p: any) => p.team === t).length); assert.deepEqual(sizes.sort(), [1, 2], '3 Spieler: 2 + 1')
+  for (const p of [a, b, d]) await answer(p.token, c.id, 0, correctOf(c.id, 0))
+  const r0 = await w.waitFor((s) => s.status === 'reveal' && s.idx === 0)
+  assert.equal(r0.team_rank.length, 2); const big = r0.team_rank.find((t: any) => t.members === 2), small = r0.team_rank.find((t: any) => t.members === 1)
+  assert.ok(Math.abs(big.value - small.value) < 400, 'Durchschnitt statt Summe: größeres Team hat keinen Vorteil durch Kopfzahl')
+  assert.ok(big.value < 2 * Math.min(...r0.players.map((p: any) => p.score)) + 1000)
+  await call('POST', `/api/live/${c.id}/end`, {}, h.token); w.close()
 })

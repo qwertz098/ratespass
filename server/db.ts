@@ -382,8 +382,22 @@ const SCHEMA_V14 = `
 ALTER TABLE players ADD COLUMN lb_follow INTEGER NOT NULL DEFAULT 0;
 `
 
+// v15: Live-Modi (Teams, Einsätze): Modus-Parameter, Teamzuordnung, Einsatz je Frage
+const SCHEMA_V15 = `
+ALTER TABLE live_games ADD COLUMN params TEXT NOT NULL DEFAULT '{}';
+ALTER TABLE live_players ADD COLUMN team INTEGER NOT NULL DEFAULT 0;
+CREATE TABLE live_bets(
+  game_id INTEGER NOT NULL REFERENCES live_games(id) ON DELETE CASCADE,
+  idx INTEGER NOT NULL,
+  player_id INTEGER NOT NULL,
+  amount INTEGER NOT NULL,
+  delta INTEGER,
+  PRIMARY KEY(game_id, idx, player_id)
+);
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10], [11, SCHEMA_V11], [12, SCHEMA_V12], [13, SCHEMA_V13], [14, SCHEMA_V14]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10], [11, SCHEMA_V11], [12, SCHEMA_V12], [13, SCHEMA_V13], [14, SCHEMA_V14], [15, SCHEMA_V15]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)

@@ -431,6 +431,7 @@ async function play(id, my) {
 }
 
 /* ---------- Live-Gesellschaftsspiel (Echtzeit) ---------- */
+const LIVE_MODES = ['tempo', 'survival', 'race', 'bet'], LIVE_TEAM_MODES = ['tempo', 'bet']
 const LETTERS = ['A', 'B', 'C', 'D']
 const liveLink = (token) => `${location.origin}/#/live-join/${token}`
 
@@ -482,16 +483,22 @@ async function live(id, my) {
     const bar = h('i'), box = h('div', { class: 'timer' }, bar)
     cancelAnimationFrame(raf)
     const until = s.phase_until - s.now + performance.now() // Server- und Gerätezeit gleichen sich über `now` an
-    const tick = () => { const left = until - performance.now(); bar.style.transform = `scaleX(${Math.max(0, Math.min(1, left / (s.status === 'question' ? s.limit_ms : 5000)))})`; if (left > 0) raf = requestAnimationFrame(tick) }
+    const tick = () => { const left = until - performance.now(); bar.style.transform = `scaleX(${Math.max(0, Math.min(1, left / (s.phase_ms ?? (s.status === 'question' ? s.limit_ms : 5000))))})`; if (left > 0) raf = requestAnimationFrame(tick) }
     raf = requestAnimationFrame(tick)
     return box
   }
+  const teamDot = (n) => n ? h('span', { class: 'tdot t' + n, title: t('live.team', { n }) }) : null
+  const teamBoard = (s) => s.team_rank ? h('div', { class: 'list' }, s.team_rank.map((r) => h('div', { class: 'item' },
+    h('span', { class: 'rank' }, '#' + r.rank), teamDot(r.team), h('div', { class: 'grow' }, t('live.team', { n: r.team }), h('span', { class: 'muted' }, ' · ' + t('live.teamMembers', { n: r.members }))),
+    h('span', { class: 'score' }, String(r.value))))) : null
   const players = (s, kick) => h('div', { class: 'list' }, s.players.map((p) => h('div', { class: 'item' + (p.is_me ? ' me' : '') },
-    s.status === 'finished' || s.status === 'reveal' ? h('span', { class: 'rank' }, '#' + p.rank) : null,
+    s.status === 'finished' || s.status === 'reveal' ? h('span', { class: 'rank' }, '#' + p.rank) : null, teamDot(p.team),
     h('div', { class: 'grow ell' }, p.name + (p.is_me ? ' (' + t('game.you') + ')' : '')),
     s.status === 'question' && p.answered !== undefined ? h('span', { class: 'badge ' + (p.answered ? 'good' : '') }, p.answered ? '✓' : '…') : null,
     s.mode === 'survival' && s.status !== 'lobby' ? h('span', { class: 'badge ' + (p.alive ? 'good' : 'bad') }, p.alive ? t('live.alive') : t('live.out')) : null,
-    s.mode === 'tempo' && s.status !== 'lobby' ? h('span', { class: 'score' }, String(p.score)) : null,
+    s.mode === 'race' && s.status !== 'lobby' ? h('div', { class: 'lane', title: String(p.pos) }, h('i', { style: `width:${Math.min(100, Math.round((p.pos / s.race_length) * 100))}%` })) : null,
+    s.mode === 'race' && s.status !== 'lobby' ? h('span', { class: 'score' }, `${Math.min(p.pos, s.race_length)}/${s.race_length}`) : null,
+    (s.mode === 'tempo' || s.mode === 'bet') && s.status !== 'lobby' ? h('span', { class: 'score' }, String(p.score)) : null,
     kick && p.public_id && !p.is_me ? h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: act('kick', { public_id: p.public_id }) }, '✕') : null)))
   const hostBar = (s) => s.is_host && s.status !== 'finished' ? h('div', { class: 'row wrap' },
     s.status !== 'lobby' ? h('button', { class: 'btn small primary', onclick: act('next') }, t(s.status === 'question' ? 'live.endQuestion' : 'live.next')) : null,
@@ -505,8 +512,11 @@ async function live(id, my) {
     mount(topbar(t('live.title'), true),
       s.is_host ? h('div', { class: 'card stack qrcard' }, qr, h('p', { class: 'muted' }, t('live.scan')),
         h('button', { class: 'btn small', onclick: act('renew') }, t('live.renew'))) : h('div', { class: 'card stack' }, h('h3', {}, t('live.waiting')), h('p', { class: 'muted' }, t('live.waitHost'))),
-      s.is_host ? h('div', { class: 'card stack' }, seg('mode', [['tempo', 'live.mode.tempo'], ['survival', 'live.mode.survival']], s.mode), h('p', { class: 'hint' }, t('live.modeInfo.' + s.mode)),
+      s.is_host ? h('div', { class: 'card stack' }, seg('mode', LIVE_MODES.map((m) => [m, 'live.mode.' + m]), s.mode), h('p', { class: 'hint' }, t('live.modeInfo.' + s.mode)),
+        LIVE_TEAM_MODES.includes(s.mode) ? [seg('teams', [[0, 'live.teams.off'], [2, 'live.teams.2'], [3, 'live.teams.3'], [4, 'live.teams.4']], s.teams), h('p', { class: 'hint' }, t('live.teamsInfo'))] : null,
         seg('screen', [[true, 'live.screen.on'], [false, 'live.screen.off']], s.screen), h('p', { class: 'hint' }, t(s.screen ? 'live.screenInfo.on' : 'live.screenInfo.off'))) : null,
+      s.teams && s.me ? h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('live.teamPick')), h('div', { class: 'row wrap' },
+        [0, ...Array.from({ length: s.teams }, (_, i) => i + 1)].map((n) => h('button', { class: 'btn small' + ((s.me.team ?? 0) === n ? ' primary' : ''), onclick: act('team', { team: n }) }, n ? [teamDot(n), t('live.team', { n })] : t('live.teamAuto'))))) : null,
       h('h2', {}, t('room.players', { n: s.players.length, max: s.max_players })), players(s, s.is_host),
       s.is_host ? h('button', { class: 'btn primary block', disabled: s.players.length < 2, onclick: act('start') }, t('live.start')) : null,
       s.is_host ? h('button', { class: 'btn block danger', onclick: act('end') }, t('live.cancel')) : null)
@@ -527,7 +537,7 @@ async function live(id, my) {
         ...label, reveal && display && q.counts ? h('span', { class: 'cnt' }, h('i', { style: `width:${Math.round((q.counts[i] / maxCount) * 100)}%` }), String(q.counts[i])) : null)
     }
     const status = reveal && s.me ? h('div', { class: 'feedback' }, h('strong', {}, s.me.correct === undefined ? t('play.timeUp') : s.me.correct ? t('play.right') : t('play.wrong')),
-      s.mode === 'tempo' ? h('span', { class: 'score' }, '+' + (s.me.points ?? 0)) : (s.me.alive ? h('span', { class: 'badge good' }, t('live.alive')) : h('span', { class: 'badge bad' }, t('live.out')))) :
+      s.mode === 'tempo' ? h('span', { class: 'score' }, '+' + (s.me.points ?? 0)) : s.mode === 'bet' ? h('span', { class: 'score' }, (s.me.points > 0 ? '+' : '') + (s.me.points ?? 0)) : s.mode === 'race' ? null : (s.me.alive ? h('span', { class: 'badge good' }, t('live.alive')) : h('span', { class: 'badge bad' }, t('live.out')))) :
       !reveal && answered ? h('div', { class: 'feedback' }, h('strong', {}, t('live.sent'))) :
       !reveal && s.me && s.mode === 'survival' && !s.me.alive ? h('div', { class: 'feedback' }, h('strong', {}, t('live.spectate'))) : null
     mount(topbar(t('live.title'), false),
@@ -535,12 +545,30 @@ async function live(id, my) {
         !s.screen || display ? h('div', { class: 'question' + (display ? ' bigq' : '') }, q.text) : null,
         h('div', { class: 'opts' + (display ? ' grid' : s.screen ? ' grid' : '') }, q.options.map(opt)), status,
         reveal && q.explanation ? h('p', { class: 'muted' }, q.explanation) : null),
-      reveal || display ? h('div', { class: 'card stack' }, players({ ...s, players: s.players.slice(0, display ? 8 : 5) }, false)) : null,
+      reveal || display ? h('div', { class: 'card stack' }, s.team_rank ? h('h3', {}, t('live.teamRank')) : null, teamBoard(s), s.team_rank ? h('h3', {}, t('room.ranking')) : null, players({ ...s, players: s.players.slice(0, display ? 8 : 5) }, false)) : null,
+      hostBar(s))
+  }
+
+  /** Einsatzphase: nur die Kategorie ist bekannt – wie viel riskierst du? */
+  const betView = (s) => {
+    const q = s.question, display = s.is_host && s.screen, mine = s.me?.bet
+    const choice = (amount, label) => h('button', { class: 'opt big' + (mine === amount ? ' good' : ''), disabled: display || !s.me,
+      onclick: guard(async () => { await api('POST', `/api/live/${id}/bet`, { idx: s.idx, amount }) }) }, label)
+    mount(topbar(t('live.title'), false),
+      h('div', { class: 'card qcard' + (display ? ' display' : ''), cat: q.category },
+        h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, t('ladder.step', { n: s.idx + 1, total: s.total }) + ' · ' + '●'.repeat(q.difficulty ?? 1) + '○'.repeat(3 - (q.difficulty ?? 1)))),
+        timerBar(s),
+        h('div', { class: 'question' + (display ? ' bigq' : '') }, t(s.bet.final ? 'live.bet.finalTitle' : 'live.bet.title')),
+        s.me ? h('p', { class: 'muted' }, t('live.bet.capital', { n: s.me.score })) : null,
+        h('div', { class: 'opts grid' }, [...s.bet.choices.map((c) => choice(c, String(c))), choice(s.bet.all_in, t('live.bet.allin'))]),
+        h('p', { class: 'hint' }, t(s.bet.final ? 'live.bet.finalInfo' : 'live.bet.info'))),
+      h('div', { class: 'card stack' }, players(s, false)),
       hostBar(s))
   }
 
   const finished = (s) => mount(topbar(t('live.title'), true),
-    h('div', { class: 'card stack lresult' }, h('h3', {}, t('live.finished')), s.players[0] ? h('div', { class: 'big' }, '🏆 ' + s.players[0].name) : null),
+    h('div', { class: 'card stack lresult' }, h('h3', {}, t('live.finished')), s.team_rank ? h('div', { class: 'big' }, '🏆 ' + t('live.team', { n: s.team_rank[0].team })) : s.players[0] ? h('div', { class: 'big' }, '🏆 ' + s.players[0].name) : null),
+    s.team_rank ? [h('h2', {}, t('live.teamRank')), teamBoard(s)] : null,
     h('h2', {}, t('room.ranking')), players(s, false),
     h('button', { class: 'btn block', onclick: () => go('#/') }, t('ladder.home')))
 
@@ -553,6 +581,7 @@ async function live(id, my) {
     try {
       if (s.status === 'lobby') { if (!document.activeElement || document.activeElement === document.body || s.token !== lastQr) { lastQr = s.token; await lobby(s) } else await lobby(s) }
       else if (s.status === 'finished') finished(s)
+      else if (s.status === 'bet' && s.question) betView(s)
       else if (s.question) question(s)
     } finally { rendering = false }
     if (pending) { const p = pending; pending = null; render(p) }

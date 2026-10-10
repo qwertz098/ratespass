@@ -1,8 +1,7 @@
 // Live-Gesellschaftsspiel: alle spielen gleichzeitig, der Initiator (Host) leitet. Beitritt nur per QR-Code des Hosts
 // (unratbarer Token, gilt nur in der Lobby und läuft ab). Echtzeit per Server-Sent Events; der Zustand liegt in SQLite, Zeitgeber
 // laufen im Prozess und werden nach einem Neustart aus der Datenbank wieder aufgenommen (Einzelinstanz-Annahme).
-//  - tempo: feste Zahl Fragen, richtig = 500–1000 Punkte je nach Tempo.
-//  - survival: Millionen-Leiter-Schwierigkeit; wer falsch oder gar nicht antwortet, scheidet aus; Rest steigt weiter.
+// Modi (Regeln in live-modes.ts): tempo, survival, race (Rennen), bet (Einsatz); Teams als Zusatz für Modi mit addierbaren Punkten.
 // Anzeige: `screen` = Host-Gerät zeigt Frage/Auswertung groß, Handys zeigen nur A–D; sonst zeigt jedes Handy die Frage.
 // Die richtige Antwort wird erst in der Auflösungsphase gesendet.
 import crypto from 'node:crypto'
@@ -12,20 +11,20 @@ import { all, get, run, tx, now } from './db.ts'
 import { HttpError } from './http.ts'
 import { type PlayerRow } from './auth.ts'
 import { effectiveFor } from './settings.ts'
-import { PRIZES, difficultyOf, shown, shuffle } from './ladder.ts'
+import { PRIZES, shown, shuffle } from './ladder.ts'
+import { BET_ALL_IN, BET_CHOICES, BET_DEFAULT, BET_START, MODES, RACE_LENGTH, TEAM_COUNTS, TEAM_MODES, balanceTeams, betDelta, hasBetPhase, isFinalQuestion, planDiffs, raceFields, teamStandings, tempoPoints, validBet, type Mode } from './live-modes.ts'
 import { pickQuestions } from './rooms.ts'
 import type { QRow } from './questions.ts'
 
-export const MODES = ['tempo', 'survival'] as const
-type Mode = (typeof MODES)[number]
-const TEMPO_DIFFS = [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3]
+export { MODES }
 
 interface Game {
-  id: number; host: number; token: string; token_expires: number; status: 'lobby' | 'question' | 'reveal' | 'finished'; mode: Mode; screen: number
+  id: number; host: number; token: string; token_expires: number; status: 'lobby' | 'bet' | 'question' | 'reveal' | 'finished'; mode: Mode; screen: number; params: string
   lang: string; level: string | null; cats: string | null; total: number; idx: number; phase_started: number | null; phase_until: number | null
   created_at: number; updated_at: number
 }
-interface LP { game_id: number; player_id: number; score: number; alive: number; pos: number; ms: number; joined_at: number }
+interface LP { game_id: number; player_id: number; score: number; alive: number; pos: number; ms: number; joined_at: number; team: number }
+const teamsOf = (g: Game): number => Number((JSON.parse(g.params || '{}') as { teams?: number }).teams ?? 0)
 
 const getGame = (id: number) => get<Game>('SELECT * FROM live_games WHERE id=?', id)
 const players = (id: number) => all<LP>('SELECT * FROM live_players WHERE game_id=? ORDER BY joined_at', id)
@@ -101,16 +100,32 @@ export function renewToken(me: PlayerRow, id: number) {
   broadcast(id)
 }
 
-export function configure(me: PlayerRow, id: number, opts: { mode?: unknown; screen?: unknown }) {
+export function configure(me: PlayerRow, id: number, opts: { mode?: unknown; screen?: unknown; teams?: unknown }) {
   const g = mustHost(id, me.id)
   if (g.status !== 'lobby') throw new HttpError(409, 'live_closed')
-  if (opts.mode !== undefined) { if (!MODES.includes(opts.mode as Mode)) throw new HttpError(400, 'bad_mode'); run('UPDATE live_games SET mode=? WHERE id=?', opts.mode as string, id) }
+  let mode = g.mode, teams = teamsOf(g)
+  if (opts.mode !== undefined) { if (!MODES.includes(opts.mode as Mode)) throw new HttpError(400, 'bad_mode'); mode = opts.mode as Mode }
+  if (opts.teams !== undefined) { if (!(TEAM_COUNTS as readonly unknown[]).includes(opts.teams)) throw new HttpError(400, 'bad_teams'); teams = opts.teams as number }
+  if (!TEAM_MODES.includes(mode)) teams = 0 // Teams nur dort, wo Punkte addierbar sind
+  run('UPDATE live_games SET mode=?, params=? WHERE id=?', mode, JSON.stringify({ teams }), id)
+  run('UPDATE live_players SET team=0 WHERE game_id=? AND team>?', id, teams)
   if (opts.screen !== undefined) {
     const screen = opts.screen ? 1 : 0
     run('UPDATE live_games SET screen=? WHERE id=?', screen, id)
     if (screen) run('DELETE FROM live_players WHERE game_id=? AND player_id=?', id, g.host)
     else run('INSERT OR IGNORE INTO live_players(game_id,player_id,joined_at) VALUES(?,?,?)', id, g.host, now())
   }
+  broadcast(id)
+}
+
+/** Lobby: Spieler wählt sein Team (0 = Zuteilung dem Server überlassen). */
+export function setTeam(me: PlayerRow, id: number, team: unknown) {
+  const g = mustMember(id, me.id)
+  if (g.status !== 'lobby') throw new HttpError(409, 'live_closed')
+  const n = teamsOf(g)
+  if (!Number.isInteger(team) || (team as number) < 0 || (team as number) > n) throw new HttpError(400, 'bad_team')
+  if (!get('SELECT 1 FROM live_players WHERE game_id=? AND player_id=?', id, me.id)) throw new HttpError(409, 'live_closed')
+  run('UPDATE live_players SET team=? WHERE game_id=? AND player_id=?', team as number, id, me.id)
   broadcast(id)
 }
 
@@ -131,7 +146,10 @@ export function start(me: PlayerRow, id: number) {
     const ps = players(id)
     if (ps.length < 2) throw new HttpError(409, 'live_too_small')
     const eff = effectiveFor(ps.map((p) => p.player_id))
-    const diffs = g.mode === 'tempo' ? shuffle(TEMPO_DIFFS).slice(0, config.live.tempoQuestions).sort() : PRIZES.map((_, i) => difficultyOf(i + 1))
+    const teams = teamsOf(g)
+    if (teams) for (const [pid, team] of balanceTeams(ps.map((p) => ({ id: p.player_id, team: p.team })), teams)) run('UPDATE live_players SET team=? WHERE game_id=? AND player_id=?', team, id, pid)
+    if (g.mode === 'bet') run('UPDATE live_players SET score=? WHERE game_id=?', BET_START, id)
+    const diffs = planDiffs(g.mode)
     const qs = pickQuestions(g.lang, eff.cats, ps.map((p) => p.player_id), diffs)
     qs.forEach((q, i) => run('INSERT INTO live_questions(game_id,idx,question_id,perm) VALUES(?,?,?,?)', id, i, q.id, JSON.stringify(shuffle([0, 1, 2, 3]))))
     run("UPDATE live_games SET level=?, cats=?, total=?, token_expires=0, updated_at=? WHERE id=?", eff.level, JSON.stringify(eff.cats), qs.length, now(), id)
@@ -147,9 +165,35 @@ function schedule(id: number, at: number, fn: () => void) {
 }
 
 function openQuestion(id: number, idx: number) {
+  const g = getGame(id)!
+  if (hasBetPhase(g.mode)) {
+    const t = now(), until = t + config.live.betMs
+    run("UPDATE live_games SET status='bet', idx=?, phase_started=?, phase_until=?, updated_at=? WHERE id=?", idx, t, until, t, id)
+    schedule(id, until, () => startQuestion(id))
+  } else startQuestion(id, idx)
+}
+
+/** Fragephase beginnen (bei Einsatz-Modus nach der Einsatzphase). */
+function startQuestion(id: number, idx?: number) {
+  const g = getGame(id)
+  if (!g || (g.status !== 'bet' && g.status !== 'lobby' && g.status !== 'reveal')) return
   const t = now(), until = t + config.live.questionMs
-  run("UPDATE live_games SET status='question', idx=?, phase_started=?, phase_until=?, updated_at=? WHERE id=?", idx, t, until, t, id)
+  run("UPDATE live_games SET status='question', idx=?, phase_started=?, phase_until=?, updated_at=? WHERE id=?", idx ?? g.idx, t, until, t, id)
   schedule(id, until, () => closeQuestion(id))
+}
+
+/** Einsatzphase: Spieler setzt (oder ändert) seinen Einsatz; sind alle fertig, beginnt die Frage früher. */
+export function placeBet(me: PlayerRow, id: number, idx: unknown, amount: unknown) {
+  tx(() => {
+    const g = mustMember(id, me.id)
+    if (g.mode !== 'bet' || g.status !== 'bet' || idx !== g.idx) throw new HttpError(409, 'live_closed')
+    if (!players(id).some((p) => p.player_id === me.id)) throw new HttpError(409, 'live_closed')
+    if (!validBet(amount)) throw new HttpError(400, 'bad_bet')
+    run('INSERT INTO live_bets(game_id,idx,player_id,amount) VALUES(?,?,?,?) ON CONFLICT(game_id,idx,player_id) DO UPDATE SET amount=excluded.amount', id, g.idx, me.id, amount)
+    const placed = get<{ n: number }>('SELECT COUNT(*) n FROM live_bets WHERE game_id=? AND idx=?', id, g.idx)!.n
+    if (placed >= players(id).length) startQuestion(id)
+  })
+  broadcast(id)
 }
 
 const eligible = (g: Game) => players(g.id).filter((p) => (g.mode === 'survival' ? p.alive : true))
@@ -159,12 +203,21 @@ function closeQuestion(id: number) {
   tx(() => {
     const g = getGame(id)
     if (!g || g.status !== 'question') return
+    const answers = new Map(all<{ player_id: number; correct: number; points: number; ms: number }>('SELECT player_id, correct, points, ms FROM live_answers WHERE game_id=? AND idx=?', id, g.idx).map((a) => [a.player_id, a]))
+    const fastest = [...answers.values()].filter((a) => a.correct).sort((a, b) => a.ms - b.ms)[0]?.player_id
     for (const p of eligible(g)) {
-      const a = get<{ correct: number; points: number; ms: number }>('SELECT correct, points, ms FROM live_answers WHERE game_id=? AND idx=? AND player_id=?', id, g.idx, p.player_id)
-      const ok = !!a?.correct
-      if (g.mode === 'tempo') run('UPDATE live_players SET score=score+?, ms=ms+? WHERE game_id=? AND player_id=?', a?.points ?? 0, a?.ms ?? config.live.questionMs, id, p.player_id)
-      else if (ok) run('UPDATE live_players SET pos=?, ms=ms+? WHERE game_id=? AND player_id=?', g.idx + 1, a!.ms, id, p.player_id)
-      else run('UPDATE live_players SET alive=0, ms=ms+? WHERE game_id=? AND player_id=?', a?.ms ?? config.live.questionMs, id, p.player_id)
+      const a = answers.get(p.player_id)
+      const ok = !!a?.correct, ms = a?.ms ?? config.live.questionMs
+      if (g.mode === 'tempo') run('UPDATE live_players SET score=score+?, ms=ms+? WHERE game_id=? AND player_id=?', a?.points ?? 0, ms, id, p.player_id)
+      else if (g.mode === 'race') run('UPDATE live_players SET pos=pos+?, ms=ms+? WHERE game_id=? AND player_id=?', raceFields(ok, p.player_id === fastest), ms, id, p.player_id)
+      else if (g.mode === 'bet') {
+        const bet = get<{ amount: number }>('SELECT amount FROM live_bets WHERE game_id=? AND idx=? AND player_id=?', id, g.idx, p.player_id)?.amount ?? BET_DEFAULT
+        const delta = betDelta(bet, p.score, ok, isFinalQuestion(g.idx, g.total))
+        run('INSERT INTO live_bets(game_id,idx,player_id,amount,delta) VALUES(?,?,?,?,?) ON CONFLICT(game_id,idx,player_id) DO UPDATE SET delta=excluded.delta', id, g.idx, p.player_id, bet, delta)
+        run('UPDATE live_players SET score=score+?, ms=ms+? WHERE game_id=? AND player_id=?', delta, ms, id, p.player_id)
+      }
+      else if (ok) run('UPDATE live_players SET pos=?, ms=ms+? WHERE game_id=? AND player_id=?', g.idx + 1, ms, id, p.player_id)
+      else run('UPDATE live_players SET alive=0, ms=ms+? WHERE game_id=? AND player_id=?', ms, id, p.player_id)
     }
     const until = now() + config.live.revealMs
     run("UPDATE live_games SET status='reveal', phase_started=?, phase_until=?, updated_at=? WHERE id=?", now(), until, now(), id)
@@ -176,7 +229,8 @@ function afterReveal(id: number) {
   const g = getGame(id)
   if (!g || g.status !== 'reveal') return
   const alive = players(id).filter((p) => p.alive).length
-  const last = g.idx + 1 >= g.total || (g.mode === 'survival' && alive <= 1)
+  const raceDone = g.mode === 'race' && players(id).some((p) => p.pos >= RACE_LENGTH)
+  const last = g.idx + 1 >= g.total || (g.mode === 'survival' && alive <= 1) || raceDone
   if (last) finishGame(id)
   else openQuestion(id, g.idx + 1)
 }
@@ -190,7 +244,8 @@ function finishGame(id: number) {
 export function next(me: PlayerRow, id: number) {
   tx(() => {
     const g = mustHost(id, me.id)
-    if (g.status === 'question') closeQuestion(id)
+    if (g.status === 'bet') startQuestion(id)
+    else if (g.status === 'question') closeQuestion(id)
     else if (g.status === 'reveal') afterReveal(id)
     else throw new HttpError(409, 'live_closed')
   })
@@ -212,7 +267,7 @@ export function answer(me: PlayerRow, id: number, idx: unknown, choice: unknown)
     const rq = get<{ question_id: number; perm: string }>('SELECT question_id, perm FROM live_questions WHERE game_id=? AND idx=?', id, g.idx)!
     const ms = Math.min(config.live.questionMs, now() - g.phase_started!)
     const correct = (JSON.parse(rq.perm) as number[]).indexOf(0) === choice
-    const points = g.mode === 'tempo' && correct ? Math.round(1000 * (1 - 0.5 * ms / config.live.questionMs)) : 0
+    const points = g.mode === 'tempo' && correct ? tempoPoints(ms, config.live.questionMs) : 0
     run('INSERT INTO live_answers(game_id,idx,player_id,choice,ms,correct,points,at) VALUES(?,?,?,?,?,?,?,?)', id, g.idx, me.id, choice as number, ms, correct ? 1 : 0, points, now())
     run('INSERT OR IGNORE INTO seen(player_id,group_id) SELECT ?, group_id FROM questions WHERE id=?', me.id, rq.question_id)
     // Alle Berechtigten haben geantwortet → früher auflösen
@@ -230,21 +285,29 @@ export function view(g: Game, viewer: number) {
   const q = rq && get<QRow>('SELECT * FROM questions WHERE id=?', rq.question_id)
   const answers = g.idx >= 0 ? all<{ player_id: number; choice: number; correct: number; points: number; ms: number }>('SELECT player_id, choice, correct, points, ms FROM live_answers WHERE game_id=? AND idx=?', g.id, g.idx) : []
   const reveal = g.status === 'reveal' || g.status === 'finished'
-  const rank = [...ps].sort(g.mode === 'tempo' ? (a, b) => b.score - a.score || a.ms - b.ms : (a, b) => b.pos - a.pos || b.alive - a.alive || a.ms - b.ms)
+  const rank = [...ps].sort(g.mode === 'tempo' || g.mode === 'bet' ? (a, b) => b.score - a.score || a.ms - b.ms : g.mode === 'race' ? (a, b) => b.pos - a.pos || a.ms - b.ms : (a, b) => b.pos - a.pos || b.alive - a.alive || a.ms - b.ms)
+  const teams = teamsOf(g)
+  const bets = g.mode === 'bet' && g.idx >= 0 ? all<{ player_id: number; amount: number; delta: number | null }>('SELECT player_id, amount, delta FROM live_bets WHERE game_id=? AND idx=?', g.id, g.idx) : []
+  const myBet = bets.find((b) => b.player_id === viewer)
   const mine = answers.find((a) => a.player_id === viewer)
   const correctIdx = rq ? (JSON.parse(rq.perm) as number[]).indexOf(0) : -1
   return {
     id: g.id, status: g.status, mode: g.mode, screen: !!g.screen, lang: g.lang, level: g.level, total: g.total, idx: g.idx, is_host: isHost,
-    now: now(), phase_until: g.phase_until, limit_ms: config.live.questionMs,
+    teams, race_length: g.mode === 'race' ? RACE_LENGTH : undefined,
+    bet: g.mode === 'bet' ? { choices: BET_CHOICES, all_in: BET_ALL_IN, start: BET_START, final: g.idx >= 0 && isFinalQuestion(g.idx, g.total) } : undefined,
+    team_rank: teams && g.status !== 'lobby' ? teamStandings(ps.map((p) => ({ team: p.team, value: g.mode === 'bet' || g.mode === 'tempo' ? p.score : p.pos })), teams) : undefined,
+    now: now(), phase_until: g.phase_until, phase_ms: g.phase_until && g.phase_started ? g.phase_until - g.phase_started : undefined, limit_ms: config.live.questionMs,
     token: isHost && g.status === 'lobby' ? g.token : null, token_expires: isHost && g.status === 'lobby' ? g.token_expires : null,
     max_players: config.live.maxPlayers,
     players: rank.map((p, i) => ({ name: pname(p.player_id), public_id: isHost ? get<{ public_id: string }>('SELECT public_id FROM players WHERE id=?', p.player_id)!.public_id : undefined,
-      score: p.score, pos: p.pos, alive: !!p.alive, rank: i + 1, is_me: p.player_id === viewer, answered: g.status === 'question' ? answers.some((a) => a.player_id === p.player_id) : undefined })),
+      score: p.score, pos: p.pos, team: p.team || undefined, alive: !!p.alive, rank: i + 1, is_me: p.player_id === viewer,
+      answered: g.status === 'question' ? answers.some((a) => a.player_id === p.player_id) : g.status === 'bet' ? bets.some((b) => b.player_id === p.player_id) : undefined })),
     me: ps.some((p) => p.player_id === viewer) ? {
-      answered: !!mine, choice: mine && reveal ? mine.choice : undefined, correct: mine && reveal ? !!mine.correct : undefined, points: mine && reveal ? mine.points : undefined,
+      answered: !!mine, choice: mine && reveal ? mine.choice : undefined, correct: mine && reveal ? !!mine.correct : undefined,
+      points: g.mode === 'bet' ? (reveal ? myBet?.delta ?? 0 : undefined) : mine && reveal ? mine.points : undefined, team: ps.find((p) => p.player_id === viewer)!.team || undefined, bet: myBet?.amount,
       alive: !!ps.find((p) => p.player_id === viewer)!.alive, score: ps.find((p) => p.player_id === viewer)!.score, rank: rank.findIndex((p) => p.player_id === viewer) + 1,
     } : null,
-    question: q && (g.status === 'question' || reveal) ? {
+    question: q && g.status === 'bet' ? { category: q.category, difficulty: q.difficulty, bet_phase: true } : q && (g.status === 'question' || reveal) ? {
       text: q.text, options: shown(q, JSON.parse(rq!.perm)), category: q.category,
       ...(reveal ? { correct_index: correctIdx, explanation: q.explanation, counts: [0, 1, 2, 3].map((c) => answers.filter((a) => a.choice === c).length) } : {}),
       prize: g.mode === 'survival' ? PRIZES[g.idx] : null,
@@ -256,8 +319,9 @@ export const getView = (id: number, me: PlayerRow) => view(mustMember(id, me.id)
 /* ---------- Betrieb ---------- */
 /** Nach einem Neustart laufende Spiele fortsetzen (Zeitgeber neu setzen). */
 export function resumeLive() {
-  for (const g of all<Game>("SELECT * FROM live_games WHERE status IN ('question','reveal')")) {
-    if (g.status === 'question') schedule(g.id, g.phase_until ?? now(), () => closeQuestion(g.id))
+  for (const g of all<Game>("SELECT * FROM live_games WHERE status IN ('bet','question','reveal')")) {
+    if (g.status === 'bet') schedule(g.id, g.phase_until ?? now(), () => startQuestion(g.id))
+    else if (g.status === 'question') schedule(g.id, g.phase_until ?? now(), () => closeQuestion(g.id))
     else schedule(g.id, g.phase_until ?? now(), () => afterReveal(g.id))
   }
 }
@@ -265,5 +329,5 @@ export function resumeLive() {
 /** Aufräumen: alte Lobbys und beendete Spiele verschwinden. */
 export function sweepLive() {
   const t = now()
-  run("DELETE FROM live_games WHERE (status='lobby' AND created_at<?) OR (status='finished' AND updated_at<?) OR (status IN ('question','reveal') AND updated_at<?)", t - 3 * 3_600_000, t - 24 * 3_600_000, t - 6 * 3_600_000)
+  run("DELETE FROM live_games WHERE (status='lobby' AND created_at<?) OR (status='finished' AND updated_at<?) OR (status IN ('bet','question','reveal') AND updated_at<?)", t - 3 * 3_600_000, t - 24 * 3_600_000, t - 6 * 3_600_000)
 }
