@@ -501,8 +501,29 @@ CREATE TABLE live_guesses(
 );
 `
 
+const SCHEMA_V18 = `
+DELETE FROM wordle_games WHERE kind='bonus';
+CREATE TABLE wordle_shares(
+  id INTEGER PRIMARY KEY,
+  from_pid INTEGER NOT NULL,
+  to_pid INTEGER,
+  group_id INTEGER,
+  lang TEXT NOT NULL,
+  day TEXT NOT NULL,
+  status TEXT NOT NULL,
+  guesses INTEGER NOT NULL,
+  marks TEXT NOT NULL,
+  seen INTEGER NOT NULL DEFAULT 0,
+  created_at INTEGER NOT NULL
+);
+CREATE UNIQUE INDEX wordle_shares_user ON wordle_shares(from_pid, to_pid, lang, day) WHERE to_pid IS NOT NULL;
+CREATE UNIQUE INDEX wordle_shares_group ON wordle_shares(from_pid, group_id, lang, day) WHERE group_id IS NOT NULL;
+CREATE INDEX wordle_shares_to ON wordle_shares(to_pid, created_at);
+CREATE INDEX wordle_shares_grp ON wordle_shares(group_id, created_at);
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10], [11, SCHEMA_V11], [12, SCHEMA_V12], [13, SCHEMA_V13], [14, SCHEMA_V14], [15, SCHEMA_V15], [16, SCHEMA_V16], [17, SCHEMA_V17]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10], [11, SCHEMA_V11], [12, SCHEMA_V12], [13, SCHEMA_V13], [14, SCHEMA_V14], [15, SCHEMA_V15], [16, SCHEMA_V16], [17, SCHEMA_V17], [18, SCHEMA_V18]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)

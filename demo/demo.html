@@ -223,6 +223,16 @@ table.stat th:first-child, table.stat td:first-child { text-align: left }
 .key.c { background: var(--good); color: #fff } .key.p { background: #c99a1a; color: #fff } .key.a { background: #6b7280; color: #fff }
 .key:active { transform: scale(.96) }
 
+/* Live: Schätzrunde */
+input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums }
+.estimate-answer { display: grid; gap: 4px; text-align: center }
+.estimate-answer strong { font-size: 2.4rem; letter-spacing: -.02em; font-variant-numeric: tabular-nums }
+
+/* Wordle: Gruppenstand */
+.wgrid { font-size: .78rem; line-height: 1.15; letter-spacing: 1px; margin-top: 4px }
+.small { font-size: .82rem }
+.wmember { align-items: flex-start }
+
 .demo-bar{max-width:520px;margin:0 auto;padding:12px 16px 0;display:grid;gap:10px}
 .demo-bar .row{justify-content:space-between}
 .demo-note{font-size:13px;color:var(--muted);margin:0}
@@ -479,11 +489,11 @@ const DEMO = (() => {
       const day = new Date().toISOString().slice(0, 10), w = (st.wordle ??= { seq: 0, games: [] })
       const sum = (g) => (g ? { id: g.id, status: g.status, guesses: g.guesses.length, points: g.points } : null)
       const mine = (kind, lang) => w.games.find((g) => g.kind === kind && g.lang === lang && g.day === day)
-      return { body: { day, tz: 'UTC', langs: ['de', 'en'].map((lang) => ({ lang, daily: sum(mine('daily', lang)), bonus: sum(mine('bonus', lang)), streak: 0, push: false })), groups: [] } }
+      return { body: { day, tz: 'UTC', langs: ['de', 'en'].map((lang) => ({ lang, daily: sum(mine('daily', lang)), streak: 0, push: false })), groups: [] } }
     }
     if (path === '/api/wordle/games' && method === 'POST') {
       const w = (st.wordle ??= { seq: 0, games: [] }), day = new Date().toISOString().slice(0, 10), lang = body.lang
-      if (!WORDS[lang] || !['daily', 'bonus'].includes(body.kind)) return err(501, 'demo_unavailable')
+      if (!WORDS[lang] || !body.kind === 'daily') return err(501, 'demo_unavailable')
       let g = w.games.find((x) => x.kind === body.kind && x.lang === lang && x.day === day)
       if (!g) {
         const h = [...(lang + day)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7)
@@ -716,14 +726,24 @@ const dict = {
     'show.nextCandidate': '{name} ist der nächste Kandidat!', 'show.noCandidate': 'Niemand war richtig – neue Runde', 'show.continue': 'Richtig! Weiter geht’s.', 'show.res.won': '{name} gewinnt {amount}!', 'show.res.lost': '{name} liegt falsch und nimmt {amount} mit.', 'show.res.quit': '{name} steigt aus und nimmt {amount} mit.',
     'show.results': 'Kandidaten', 'show.how.won': 'Million', 'show.how.lost': 'falsch', 'show.how.quit': 'ausgestiegen',
     'live.mode.blitz': 'Blitzrunde', 'live.modeInfo.blitz': 'Alle spielen gleichzeitig dieselben Fragen, jeder in seinem Tempo. Richtig = 1 Punkt, falsch = 2 Sekunden Pause. Wer am Ende die meisten Punkte hat, gewinnt.',
+    'live.series.finished': 'Serie beendet', 'live.series.single': 'Einzelspiel', 'live.series.on': 'Serie', 'live.series.info': 'Mehrere Runden hintereinander. Nach jeder Runde gibt es Serienpunkte nach Platzierung ({points} …, alle anderen 1); am Ende gewinnt, wer die meisten hat.', 'live.series.templates': 'Vorlagen:',
+    'live.series.t.classic': 'Klassik', 'live.series.t.risk': 'Nervenkitzel', 'live.series.t.all': 'Alle Modi', 'live.series.round': 'Runde {n}/{total}', 'live.series.between': 'Zwischenwertung', 'live.series.nextUp': 'Als Nächstes: {mode}', 'live.series.hostNext': 'der Host startet die nächste Runde',
+    'live.series.total': 'Gesamtwertung', 'live.series.lastRound': 'Letzte Runde: {mode}', 'live.series.wins': '{n} Siege', 'live.nextRound': 'Nächste Runde', 'err.bad_series': 'Eine Serie braucht mindestens zwei verschiedene Runden.',
+    'live.mode.estimate': 'Schätzrunde', 'live.modeInfo.estimate': 'Alle tippen eine Zahl (Jahr, Länge, Anzahl …). Der nächste Tipp bekommt 1000, der zweite 700, der dritte 500 Punkte – alle anderen anteilig, je näher desto mehr.',
+    'estimate.number': 'Zahl', 'estimate.send': 'Tippen', 'estimate.hint': 'Dezimalzahlen mit Komma, Tausender mit Punkt oder Leerzeichen. Ein Tipp pro Frage.', 'estimate.bad': 'Das ist keine Zahl.', 'estimate.unit': 'Einheit: {unit}',
+    'estimate.answer': 'Richtig:', 'estimate.none': 'Kein Tipp abgegeben', 'estimate.yours': 'Dein Tipp: {v}', 'estimate.sent': 'Tipp gesendet: {v}', 'estimate.exact': 'genau', 'estimate.screen': 'Die Tipps kommen von den Handys …',
+    'err.bad_guess': 'Das ist keine gültige Zahl.', 'err.no_estimates': 'Für diese Sprache gibt es noch keine Schätzfragen.',
     'live.blitz.45': '45 s', 'live.blitz.60': '60 s', 'live.blitz.90': '90 s', 'live.blitz.screen': 'Die Fragen laufen auf den Handys – hier siehst du den Zwischenstand.', 'live.blitz.score': 'Punkte: {n}', 'live.blitz.pause': 'Falsch – kurze Pause …', 'live.blitz.done': 'Alle Fragen durch – warte aufs Ende!',
     'live.mode.race': 'Rennen', 'live.mode.bet': 'Einsatz', 'live.modeInfo.race': 'Jede richtige Antwort bringt dich ein Feld weiter, die schnellste sogar zwei. Wer 12 Felder schafft, gewinnt.', 'live.modeInfo.bet': 'Vor jeder Frage siehst du nur die Kategorie und setzt einen Einsatz: richtig gewinnst du ihn, falsch verlierst du ihn. Die letzte Frage zählt doppelt.',
     'live.teams.off': 'Einzeln', 'live.teams.2': '2 Teams', 'live.teams.3': '3 Teams', 'live.teams.4': '4 Teams', 'live.teamsInfo': 'Teamwertung = Durchschnitt pro Mitglied, damit ungleich große Teams fair sind.', 'live.team': 'Team {n}', 'live.teamMembers': '{n} Mitspieler', 'live.teamPick': 'Wähle dein Team – oder lass die Zuteilung automatisch laufen.', 'live.teamAuto': 'Automatisch', 'live.teamRank': 'Teamwertung',
     'live.bet.title': 'Wie viel setzt du?', 'live.bet.finalTitle': 'Finale: doppelter Einsatz!', 'live.bet.capital': 'Dein Kapital: {n}', 'live.bet.allin': 'All-in', 'live.bet.info': 'Ohne Einsatz gelten 100. Richtig = Einsatz gewonnen, falsch = verloren (nie unter 0).', 'live.bet.finalInfo': 'Gewinn und Verlust zählen doppelt.',
     'wordle.bell': 'Erinnerung um 9 Uhr (deine Ortszeit), wenn du noch nicht gespielt hast', 'wordle.bellAsk': 'Erinnerung 9 Uhr', 'wordle.bellIs': '9-Uhr-Erinnerung an', 'wordle.bellOn': 'Erinnerung um 9 Uhr eingeschaltet', 'wordle.bellOff': 'Erinnerung ausgeschaltet',
     'wordle.title': 'Wordle', 'wordle.sub': 'Täglich ein Wort pro Sprache – 6 Versuche, 5 Buchstaben. Jeder bekommt dasselbe Wort, jede Gruppe ihr eigenes.', 'wordle.open': '{n} offen', 'wordle.new': 'neu',
-    'wordle.today': 'Heutiges Wordle', 'wordle.bonus': 'Zusätzliches Wordle', 'wordle.bonusSub': 'ein Extra-Wort pro Tag', 'wordle.streak': '{n} Tage in Folge', 'wordle.groups': 'Gruppen & Duelle', 'wordle.noGroups': 'Noch keine Gruppe – lade Freunde zu einem eigenen Wordle ein.',
+    'wordle.today': 'Heutiges Wordle', 'wordle.streak': '{n} Tage in Folge', 'wordle.groups': 'Gruppen & Duelle', 'wordle.noGroups': 'Noch keine Gruppe – lade Freunde zu einem eigenen Wordle ein.',
     'wordle.newGroup': 'Gruppe erstellen', 'wordle.groupName': 'Gruppenname', 'wordle.joinGroup': 'Gruppe beitreten', 'wordle.joinAsk': 'Mit dem Code {code} einer Wordle-Gruppe beitreten?', 'wordle.duel': 'Duell mit Bekanntem', 'wordle.duelInfo': 'Erstellt eine Gruppe und lädt die Person per Nachricht ein. Beide spielen dasselbe, eigene Wort.', 'wordle.duelSent': 'Einladung an {name} geschickt',
+    'wordle.standToday': 'Stand heute', 'wordle.open': 'noch offen', 'wordle.gridLocked': 'Die Raster der anderen siehst du, sobald du heute selbst fertig bist.', 'wordle.boardInfo': 'Dauerwertung der Gruppe: Punkte entstehen nur durch Gruppen-Wordles; wer an einem Tag nicht spielt, bekommt dafür 0 Punkte.', 'wordle.playedWon': '{p} gespielt, {w} gelöst', 'wordle.missed': '{n} verpasst', 'wordle.standing': 'Platz {rank} · {points} Pkt.',
+    'wordle.send': 'In der App senden', 'wordle.groupBoard': 'Gruppenwertung', 'wordle.sendInfo': 'Es werden nur Ausgang, Versuche und das Farbraster gesendet – nie das Wort.', 'wordle.sendNone': 'Du hast noch keine Kontakte oder Gruppen.', 'wordle.sent': 'Gesendet an {name}.', 'wordle.inbox': 'Von Freunden', 'wordle.inboxInfo': 'Geteilte Ergebnisse der letzten 14 Tage. Das Raster siehst du, sobald du dasselbe Wordle selbst gespielt hast.', 'wordle.inboxEmpty': 'Noch nichts geteilt.', 'wordle.feed': 'Geteilt in der Gruppe', 'wordle.shareLocked': 'Raster verborgen – spiele dasselbe Wordle selbst, dann siehst du es.',
+    'err.not_finished': 'Spiele das Wordle erst zu Ende.', 'err.bad_target': 'Bitte genau einen Empfänger wählen.',
     'wordle.members': '{n} Mitglieder', 'wordle.membersTitle': 'Mitglieder', 'wordle.invite': 'Einladen', 'wordle.inviteLink': 'Einladungslink teilen', 'wordle.groupToday': 'Gruppen-Wordle', 'wordle.groupPlay': 'Heutiges Gruppen-Wordle spielen', 'wordle.continue': 'Weiterspielen', 'wordle.toGroup': 'Zur Gruppe', 'wordle.back': 'Zur Übersicht',
     'wordle.leave': 'Gruppe verlassen', 'wordle.delete': 'Gruppe auflösen', 'wordle.leaveConfirm': 'Gruppe verlassen? Deine Gruppen-Spiele werden gelöscht.', 'wordle.deleteConfirm': 'Gruppe für alle auflösen?',
     'wordle.status.none': 'noch nicht gespielt', 'wordle.status.playing': 'läuft ({n} Versuche)', 'wordle.status.won': 'gelöst in {n}', 'wordle.status.lost': 'nicht gelöst',
@@ -842,14 +862,24 @@ const dict = {
     'show.nextCandidate': '{name} is the next contestant!', 'show.noCandidate': 'Nobody was right – another round', 'show.continue': 'Right! On we go.', 'show.res.won': '{name} wins {amount}!', 'show.res.lost': '{name} is wrong and takes home {amount}.', 'show.res.quit': '{name} walks away with {amount}.',
     'show.results': 'Contestants', 'show.how.won': 'million', 'show.how.lost': 'wrong', 'show.how.quit': 'walked away',
     'live.mode.blitz': 'Blitz round', 'live.modeInfo.blitz': 'Everyone plays the same questions at once, each at their own pace. Right = 1 point, wrong = 2 seconds pause. Most points at the end wins.',
+    'live.series.finished': 'Series finished', 'live.series.single': 'Single game', 'live.series.on': 'Series', 'live.series.info': 'Several rounds in a row. After each round there are series points by rank ({points} …, everyone else 1); the most points at the end wins.', 'live.series.templates': 'Templates:',
+    'live.series.t.classic': 'Classic', 'live.series.t.risk': 'Thrill', 'live.series.t.all': 'All modes', 'live.series.round': 'Round {n}/{total}', 'live.series.between': 'Standings', 'live.series.nextUp': 'Up next: {mode}', 'live.series.hostNext': 'the host starts the next round',
+    'live.series.total': 'Overall standings', 'live.series.lastRound': 'Last round: {mode}', 'live.series.wins': '{n} wins', 'live.nextRound': 'Next round', 'err.bad_series': 'A series needs at least two different rounds.',
+    'live.mode.estimate': 'Estimation round', 'live.modeInfo.estimate': 'Everyone types a number (year, length, count …). The closest guess gets 1000, the second 700, the third 500 points – everyone else proportionally, the closer the more.',
+    'estimate.number': 'Number', 'estimate.send': 'Guess', 'estimate.hint': 'Decimals with a point, thousands with a comma or space. One guess per question.', 'estimate.bad': 'That is not a number.', 'estimate.unit': 'Unit: {unit}',
+    'estimate.answer': 'Correct:', 'estimate.none': 'No guess submitted', 'estimate.yours': 'Your guess: {v}', 'estimate.sent': 'Guess sent: {v}', 'estimate.exact': 'exact', 'estimate.screen': 'Guesses are coming in from the phones …',
+    'err.bad_guess': 'That is not a valid number.', 'err.no_estimates': 'There are no estimation questions for this language yet.',
     'live.blitz.45': '45 s', 'live.blitz.60': '60 s', 'live.blitz.90': '90 s', 'live.blitz.screen': 'Questions run on the phones – here you see the standings.', 'live.blitz.score': 'Score: {n}', 'live.blitz.pause': 'Wrong – short pause …', 'live.blitz.done': 'All questions done – wait for the end!',
     'live.mode.race': 'Race', 'live.mode.bet': 'Stakes', 'live.modeInfo.race': 'Every right answer moves you one square, the fastest even two. First to 12 squares wins.', 'live.modeInfo.bet': 'Before each question you only see the category and place a stake: right wins it, wrong loses it. The last question counts double.',
     'live.teams.off': 'Solo', 'live.teams.2': '2 teams', 'live.teams.3': '3 teams', 'live.teams.4': '4 teams', 'live.teamsInfo': 'Team score = average per member, so teams of different sizes stay fair.', 'live.team': 'Team {n}', 'live.teamMembers': '{n} players', 'live.teamPick': 'Pick your team – or let the assignment run automatically.', 'live.teamAuto': 'Automatic', 'live.teamRank': 'Team ranking',
     'live.bet.title': 'How much do you stake?', 'live.bet.finalTitle': 'Final: double stakes!', 'live.bet.capital': 'Your capital: {n}', 'live.bet.allin': 'All in', 'live.bet.info': 'Without a stake 100 applies. Right = stake won, wrong = stake lost (never below 0).', 'live.bet.finalInfo': 'Gains and losses count double.',
     'wordle.bell': 'Reminder at 9 am (your local time) if you have not played yet', 'wordle.bellAsk': '9 am reminder', 'wordle.bellIs': '9 am reminder on', 'wordle.bellOn': '9 am reminder switched on', 'wordle.bellOff': 'Reminder switched off',
     'wordle.title': 'Wordle', 'wordle.sub': 'One word a day per language – 6 tries, 5 letters. Everyone gets the same word, every group its own.', 'wordle.open': '{n} open', 'wordle.new': 'new',
-    'wordle.today': 'Today’s Wordle', 'wordle.bonus': 'Bonus Wordle', 'wordle.bonusSub': 'one extra word a day', 'wordle.streak': '{n} days in a row', 'wordle.groups': 'Groups & duels', 'wordle.noGroups': 'No group yet – invite friends to a Wordle of your own.',
+    'wordle.today': 'Today’s Wordle', 'wordle.streak': '{n} days in a row', 'wordle.groups': 'Groups & duels', 'wordle.noGroups': 'No group yet – invite friends to a Wordle of your own.',
     'wordle.newGroup': 'Create group', 'wordle.groupName': 'Group name', 'wordle.joinGroup': 'Join group', 'wordle.joinAsk': 'Join the Wordle group with code {code}?', 'wordle.duel': 'Duel a contact', 'wordle.duelInfo': 'Creates a group and invites the person by message. You both play the same word of your own.', 'wordle.duelSent': 'Invitation sent to {name}',
+    'wordle.standToday': 'Today’s standing', 'wordle.open': 'still open', 'wordle.gridLocked': 'You see the others’ grids once you have finished today yourself.', 'wordle.boardInfo': 'Ongoing group ranking: points only come from group Wordles; if you skip a day you get 0 points for it.', 'wordle.playedWon': '{p} played, {w} solved', 'wordle.missed': '{n} missed', 'wordle.standing': 'Rank {rank} · {points} pts',
+    'wordle.send': 'Send in the app', 'wordle.groupBoard': 'Group ranking', 'wordle.sendInfo': 'Only the outcome, number of guesses and the colour grid are sent – never the word.', 'wordle.sendNone': 'You have no contacts or groups yet.', 'wordle.sent': 'Sent to {name}.', 'wordle.inbox': 'From friends', 'wordle.inboxInfo': 'Results shared in the last 14 days. You see the grid once you have played the same Wordle yourself.', 'wordle.inboxEmpty': 'Nothing shared yet.', 'wordle.feed': 'Shared in the group', 'wordle.shareLocked': 'Grid hidden – play the same Wordle yourself to see it.',
+    'err.not_finished': 'Finish the Wordle first.', 'err.bad_target': 'Please pick exactly one recipient.',
     'wordle.members': '{n} members', 'wordle.membersTitle': 'Members', 'wordle.invite': 'Invite', 'wordle.inviteLink': 'Share invitation link', 'wordle.groupToday': 'Group Wordle', 'wordle.groupPlay': 'Play today’s group Wordle', 'wordle.continue': 'Continue', 'wordle.toGroup': 'Back to group', 'wordle.back': 'Back to overview',
     'wordle.leave': 'Leave group', 'wordle.delete': 'Dissolve group', 'wordle.leaveConfirm': 'Leave the group? Your group games will be deleted.', 'wordle.deleteConfirm': 'Dissolve the group for everyone?',
     'wordle.status.none': 'not played yet', 'wordle.status.playing': 'in progress ({n} tries)', 'wordle.status.won': 'solved in {n}', 'wordle.status.lost': 'not solved',
@@ -1381,6 +1411,7 @@ async function wordle(arg, my, arg2) {
   if (arg === 'group') return wordleGroup(Number(arg2), my)
   if (arg === 'join') return wordleJoin(arg2, my)
   if (arg === 'board') return wordleBoard(my)
+  if (arg === 'inbox') return wordleInbox(my)
   return wordleHub(my)
 }
 
@@ -1399,15 +1430,15 @@ async function wordleHub(my) {
       h('p', { class: 'hint' }, t('wordle.sub')),
       wlangs().map((lang) => h('div', { class: 'card stack' },
         h('div', { class: 'row' }, h('h3', { class: 'grow' }, langName(lang)), d.langs.find((x) => x.lang === lang).streak ? h('span', { class: 'badge' }, '🔥 ' + t('wordle.streak', { n: d.langs.find((x) => x.lang === lang).streak })) : null, wordleBell('daily:' + lang, d.langs.find((x) => x.lang === lang).push, load)),
-        h('button', { class: 'item', onclick: () => startGame('daily', lang) }, h('div', { class: 'avatar sm' }, '🟩'), h('div', { class: 'grow' }, h('div', {}, t('wordle.today')), h('div', { class: 'muted' }, wstatus(d.langs.find((x) => x.lang === lang).daily))), wbadge(d.langs.find((x) => x.lang === lang).daily)),
-        h('button', { class: 'item', onclick: () => startGame('bonus', lang) }, h('div', { class: 'avatar sm' }, '➕'), h('div', { class: 'grow' }, h('div', {}, t('wordle.bonus')), h('div', { class: 'muted' }, wstatus(d.langs.find((x) => x.lang === lang).bonus) + ' · ' + t('wordle.bonusSub'))), wbadge(d.langs.find((x) => x.lang === lang).bonus)))),
+        h('button', { class: 'item', onclick: () => startGame('daily', lang) }, h('div', { class: 'avatar sm' }, '🟩'), h('div', { class: 'grow' }, h('div', {}, t('wordle.today')), h('div', { class: 'muted' }, wstatus(d.langs.find((x) => x.lang === lang).daily))), wbadge(d.langs.find((x) => x.lang === lang).daily)))),
       h('h2', {}, t('wordle.groups')),
-      d.groups.length ? h('div', { class: 'list' }, d.groups.map((g) => h('button', { class: 'item', onclick: () => go('#/wordle/group/' + g.id) }, h('div', { class: 'avatar sm' }, g.members === 2 ? '⚔' : '👥'), h('div', { class: 'grow' }, h('div', { class: 'ell' }, g.name), h('div', { class: 'muted' }, langName(g.lang) + ' · ' + t('wordle.members', { n: g.members }))), wbadge(g.today)))) : h('div', { class: 'empty' }, t('wordle.noGroups')),
+      d.groups.length ? h('div', { class: 'list' }, d.groups.map((g) => h('button', { class: 'item', onclick: () => go('#/wordle/group/' + g.id) }, h('div', { class: 'avatar sm' }, g.members === 2 ? '⚔' : '👥'), h('div', { class: 'grow' }, h('div', { class: 'ell' }, g.name), h('div', { class: 'muted' }, langName(g.lang) + ' · ' + t('wordle.members', { n: g.members }) + ' · ' + t('wordle.standing', { rank: g.rank, points: g.points }))), wbadge(g.today)))) : h('div', { class: 'empty' }, t('wordle.noGroups')),
       h('div', { class: 'row wrap' },
         h('button', { class: 'btn small', onclick: () => { creating = !creating; duel = false; setExtra() } }, '＋ ' + t('wordle.newGroup')),
         h('button', { class: 'btn small', onclick: () => { duel = !duel; creating = false; setExtra() } }, '⚔ ' + t('wordle.duel'))),
       h('div', { id: 'wextra', class: 'stack' }),
       h('div', { class: 'card stack' }, h('label', { class: 'field' }, t('wordle.joinGroup'), h('div', { class: 'row' }, joinCode, h('button', { class: 'btn', onclick: guard(async () => { const r = await api('POST', '/api/wordle/groups/join', { code: joinCode.value }); go('#/wordle/group/' + r.group.id) }) }, t('room.join'))))),
+      h('button', { class: 'btn block', onclick: () => go('#/wordle/inbox') }, '📨 ' + t('wordle.inbox'), d.inbox_unseen ? h('span', { class: 'badge' }, String(d.inbox_unseen)) : null),
       h('button', { class: 'btn block', onclick: () => go('#/wordle/board') }, '🏆 ' + t('wordle.board')))
     function setExtra() { const box = document.getElementById('wextra'); box.replaceChildren(...(creating ? [createCard] : duel ? [duelCard] : [])) }
   }
@@ -1429,7 +1460,7 @@ const WKEYS = {
 async function wordlePlay(id, my) {
   let g = (await api('GET', `/api/wordle/games/${id}`)).game
   let cur = '', busy = false
-  const title = { daily: t('wordle.today'), bonus: t('wordle.bonus'), group: t('wordle.groupToday') }[g.kind] + ' · ' + langName(g.lang)
+  const title = { daily: t('wordle.today'), group: t('wordle.groupToday') }[g.kind] + ' · ' + langName(g.lang)
   const rows = Array.from({ length: g.max }, () => Array.from({ length: 5 }, () => h('div', { class: 'wt' })))
   const grid = h('div', { class: 'wgrid', role: 'grid', 'aria-label': title }, rows.map((r) => h('div', { class: 'wrow', role: 'row' }, r)))
   const msg = h('div', { class: 'wmsg', 'aria-live': 'polite' })
@@ -1454,11 +1485,23 @@ async function wordlePlay(id, my) {
     const text = `Ratespaß Wordle ${g.lang.toUpperCase()} ${g.day} ${g.status === 'won' ? g.guesses.length : 'X'}/${g.max}\n` + g.guesses.map((gu) => [...gu.marks].map((m) => ({ c: '🟩', p: '🟨', a: '⬛' })[m]).join('')).join('\n')
     if (navigator.share) navigator.share({ text }).catch(() => {}); else navigator.clipboard?.writeText(text).then(() => toast(t('wordle.copied'))).catch(() => toast(text))
   }
+  const picker = h('div', { class: 'stack' })
+  /** Ergebnis in der App an einen Kontakt oder in eine eigene Gruppe schicken (nur Markierungen, nie das Wort). */
+  const openPicker = guard(async () => {
+    if (picker.childNodes.length) return picker.replaceChildren()
+    const hub = await api('GET', '/api/wordle')
+    const send = (body, label) => guard(async () => { await api('POST', '/api/wordle/share', { game_id: g.id, ...body }); toast(t('wordle.sent', { name: label })); picker.replaceChildren() })
+    picker.replaceChildren(h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('wordle.sendInfo')),
+      S.contacts.length || hub.groups.length ? h('div', { class: 'list' },
+        S.contacts.map((c) => h('button', { class: 'item', onclick: send({ public_id: c.public_id }, c.name) }, avatar(c), h('div', { class: 'grow ell' }, c.name))),
+        hub.groups.map((x) => h('button', { class: 'item', onclick: send({ group_id: x.id }, x.name) }, h('div', { class: 'avatar sm' }, x.members === 2 ? '⚔' : '👥'), h('div', { class: 'grow ell' }, x.name)))) : h('p', { class: 'hint' }, t('wordle.sendNone'))))
+  })
   const showResult = () => {
     if (!g.finished) return result.replaceChildren()
     result.replaceChildren(h('div', { class: 'card stack lresult' }, h('h3', {}, g.status === 'won' ? t('wordle.win') : t('wordle.lose', { word: g.answer.toUpperCase() })),
       g.status === 'won' ? h('p', { class: 'muted' }, t('wordle.points', { n: g.points })) : null,
       h('button', { class: 'btn primary block', onclick: share }, '📋 ' + t('wordle.share')),
+      g.kind === 'daily' ? [h('button', { class: 'btn block', onclick: openPicker }, '📨 ' + t('wordle.send')), picker] : null,
       g.kind === 'group' ? h('button', { class: 'btn block', onclick: () => go('#/wordle/group/' + g.group_id) }, t('wordle.toGroup')) : null,
       h('button', { class: 'btn block', onclick: () => go('#/wordle') }, t('wordle.back'))))
   }
@@ -1492,13 +1535,25 @@ async function wordlePlay(id, my) {
   paintAll(); showResult()
 }
 
+/** Geteiltes Tages-Wordle (Eingang und Gruppen-Feed); das Raster erscheint erst, wenn man dasselbe Wordle selbst beendet hat. */
+const wShare = (x) => h('div', { class: 'item wmember' + (x.is_me ? ' me' : '') }, h('div', { class: 'grow' }, h('div', { class: 'ell' }, x.name + ' · ' + langName(x.lang) + ' · ' + x.day),
+  x.grid ? wGrid(x.grid) : h('p', { class: 'hint' }, t('wordle.shareLocked'))), h('span', { class: 'badge ' + (x.status === 'won' ? 'good' : 'bad') }, x.status === 'won' ? '✓ ' + x.guesses + '/6' : '✗'))
+async function wordleInbox(my) {
+  const r = await api('GET', '/api/wordle/inbox')
+  if (my !== runId) return
+  mount(topbar(t('wordle.inbox')), h('p', { class: 'hint' }, t('wordle.inboxInfo')),
+    r.items.length ? h('div', { class: 'list' }, r.items.map(wShare)) : h('div', { class: 'empty' }, t('wordle.inboxEmpty')),
+    h('button', { class: 'btn block', onclick: () => go('#/wordle') }, t('wordle.back')))
+}
+const wGrid = (rows) => h('div', { class: 'wgrid', 'aria-hidden': 'true' }, rows.map((r) => h('div', {}, [...r].map((m) => ({ c: '🟩', p: '🟨', a: '⬛' })[m]).join(''))))
+
 async function wordleGroup(id, my) {
-  let scope = store.get('rp.wScope') || 'week'
+  let scope = store.get('rp.wScope2') || 'all'
   const render = (gv, board) => {
     if (my !== runId) return
     const link = wInviteLink(gv.code)
     const holder = h('div', { class: 'qr' })
-    const scopeSeg = h('div', { class: 'seg wrap' }, [['day', 'wordle.scope.day'], ['week', 'wordle.scope.week'], ['all', 'wordle.scope.all']].map(([v, l]) => h('button', { 'aria-pressed': String(scope === v), onclick: () => { scope = v; store.set('rp.wScope', v); load() } }, t(l))))
+    const scopeSeg = h('div', { class: 'seg wrap' }, [['all', 'wordle.scope.all'], ['month', 'wordle.scope.month'], ['week', 'wordle.scope.week'], ['day', 'wordle.scope.day']].map(([v, l]) => h('button', { 'aria-pressed': String(scope === v), onclick: () => { scope = v; store.set('rp.wScope2', v); load() } }, t(l))))
     mount(topbar(gv.name),
       h('div', { class: 'card stack' }, h('p', { class: 'muted' }, langName(gv.lang) + ' · ' + t('wordle.members', { n: gv.members.length })),
         wordleBell('g:' + gv.id, gv.push, load),
@@ -1507,10 +1562,15 @@ async function wordleGroup(id, my) {
       h('h2', {}, t('wordle.invite')),
       h('div', { class: 'card stack' }, h('div', { class: 'code' }, gv.code), holder,
         h('button', { class: 'btn block', onclick: () => share(link, gv.name) }, '🔗 ' + t('wordle.inviteLink'))),
-      h('h2', {}, t('wordle.board')), h('div', { class: 'card stack' }, scopeSeg,
-        board.rows.length ? h('div', { class: 'list' }, board.rows.map((r) => h('div', { class: 'item' + (r.is_me ? ' me' : '') }, h('span', { class: 'rank' }, '#' + r.rank), h('div', { class: 'grow ell' }, r.name), h('span', { class: 'muted' }, r.avg_guesses ? 'Ø ' + r.avg_guesses : ''), h('span', { class: 'score' }, String(r.points))))) : null),
-      h('h2', {}, t('wordle.membersTitle')),
-      h('div', { class: 'list' }, gv.members.map((m) => h('div', { class: 'item' + (m.is_me ? ' me' : '') }, h('div', { class: 'grow ell' }, m.name + (m.is_owner ? ' ★' : '')), h('span', { class: 'muted' }, wstatus(m.today))))),
+      h('h2', {}, t('wordle.standToday')),
+      h('div', { class: 'list' }, gv.members.map((m) => h('div', { class: 'item wmember' + (m.is_me ? ' me' : '') }, h('div', { class: 'grow' }, h('div', { class: 'ell' }, m.name + (m.is_owner ? ' ★' : '')), m.grid ? wGrid(m.grid) : null),
+        h('span', { class: 'badge ' + (m.today?.status === 'won' ? 'good' : m.today?.status === 'lost' ? 'bad' : '') }, m.today ? (m.today.status === 'won' ? '✓ ' + m.today.guesses + '/6' : m.today.status === 'lost' ? '✗' : '… ' + m.today.guesses + '/6') : t('wordle.open'))))),
+      gv.members.some((m) => m.today?.status && m.today.status !== 'playing' && !m.grid) ? h('p', { class: 'hint' }, t('wordle.gridLocked')) : null,
+      gv.feed.length ? [h('h2', {}, t('wordle.feed')), h('div', { class: 'list' }, gv.feed.map(wShare))] : null,
+      h('h2', {}, t('wordle.groupBoard')), h('div', { class: 'card stack' }, scopeSeg, h('p', { class: 'hint' }, t('wordle.boardInfo')),
+        board.rows.length ? h('div', { class: 'list' }, board.rows.map((r) => h('div', { class: 'item' + (r.is_me ? ' me' : '') }, h('span', { class: 'rank' }, '#' + r.rank), h('div', { class: 'grow' }, h('div', { class: 'ell' }, r.name),
+          h('div', { class: 'muted small' }, [r.avg_guesses ? 'Ø ' + r.avg_guesses : null, t('wordle.playedWon', { p: r.played, w: r.won }), r.missed ? t('wordle.missed', { n: r.missed }) : null, r.streak > 1 ? '🔥 ' + r.streak : null].filter(Boolean).join(' · '))),
+          h('span', { class: 'score' }, String(r.points))))) : null),
       h('button', { class: 'btn block danger', onclick: guard(async () => { if ((()=>true)(t('wordle.leaveConfirm'))) { await api('POST', `/api/wordle/groups/${id}/leave`, {}); go('#/wordle') } }) }, t('wordle.leave')),
       gv.is_owner ? h('button', { class: 'btn block danger', onclick: guard(async () => { if ((()=>true)(t('wordle.deleteConfirm'))) { await api('DELETE', `/api/wordle/groups/${id}`); go('#/wordle') } }) }, t('wordle.delete')) : null)
     renderQr(link).then((q) => holder.replaceChildren(q)).catch(() => holder.replaceChildren(h('p', { class: 'hint' }, link)))
@@ -1661,7 +1721,22 @@ async function play(id, my) {
 }
 
 /* ---------- Live-Gesellschaftsspiel (Echtzeit) ---------- */
-const LIVE_MODES = ['tempo', 'survival', 'race', 'bet', 'show', 'blitz'], LIVE_TEAM_MODES = ['tempo', 'bet', 'blitz']
+const LIVE_MODES = ['tempo', 'survival', 'race', 'bet', 'show', 'blitz', 'estimate'], LIVE_TEAM_MODES = ['tempo', 'bet', 'blitz', 'estimate']
+/** Zahl aus Freitext: „1.234,5“ (de) bzw. „1,234.5“ (en), Leerzeichen/Apostroph als Tausender; null bei Unsinn. */
+function parseGuess(raw, lang = getLang()) {
+  let x = String(raw ?? '').trim().replace(/[\s'’\u00a0]/g, '').replace(/^\+/, '').replace('−', '-')
+  if (!/^-?[\d.,]+$/.test(x) || !/\d/.test(x)) return null
+  const thou = lang === 'de' ? '.' : ',', dec = lang === 'de' ? ',' : '.'
+  const other = { '.': ',', ',': '.' }
+  const groups = (sep) => x.split(sep).length - 1
+  if (groups(thou) && groups(dec)) { if (x.lastIndexOf(thou) > x.lastIndexOf(dec)) return null; x = x.split(thou).join('').replace(dec, '.') }
+  else if (groups(thou)) { const parts = x.split(thou); x = parts.length > 2 || (parts[1].length === 3 && parts[0].replace('-', '').length <= 3 && parts[0].replace('-', '') !== '0') ? parts.join('') : parts.join('.') }
+  else if (groups(dec)) { if (groups(dec) > 1) return null; x = x.replace(dec, '.') }
+  const n = Number(x)
+  return Number.isFinite(n) && Math.abs(n) <= 1e12 ? n : null
+}
+/** Anzeige einer geschätzten Zahl; Jahreszahlen (ganzzahlig 1000–2100, ohne Einheit) ohne Tausendertrenner. */
+const fmtGuess = (v, unit) => (!unit && Number.isInteger(v) && v >= 1000 && v <= 2100 ? String(v) : Number(v).toLocaleString(getLang(), { maximumFractionDigits: 6 })) + (unit ? ' ' + unit : '')
 const LETTERS = ['A', 'B', 'C', 'D']
 const liveLink = (token) => `${location.origin}/#/live-join/${token}`
 
@@ -1709,6 +1784,9 @@ async function live(id, my) {
   const prev = cleanup
   cleanup = () => { prev(); cancelAnimationFrame(raf); document.getElementById('app').classList.remove('wide') }
   const act = (path, body = {}) => guard(async () => { await api('POST', `/api/live/${id}/${path}`, body) })
+  let seriesLabel = ''
+  const liveBar = () => topbar(seriesLabel || t('live.title'), false)
+  const SERIES_TEMPLATES = { classic: ['tempo', 'estimate', 'blitz'], risk: ['bet', 'race', 'show'], all: LIVE_MODES }
   const timerBar = (s) => {
     const bar = h('i'), box = h('div', { class: 'timer' }, bar)
     cancelAnimationFrame(raf)
@@ -1730,11 +1808,20 @@ async function live(id, my) {
     s.mode === 'race' && s.status !== 'lobby' ? h('span', { class: 'score' }, `${Math.min(p.pos, s.race_length)}/${s.race_length}`) : null,
     p.candidate ? h('span', { class: 'badge' }, '🎤') : null,
     s.mode === 'blitz' && s.status !== 'lobby' ? h('div', { class: 'lane', title: String(p.score) }, h('i', { style: `width:${Math.round((p.score / Math.max(1, ...s.players.map((x) => x.score))) * 100)}%` })) : null,
-    (s.mode === 'tempo' || s.mode === 'bet' || s.mode === 'show' || s.mode === 'blitz') && s.status !== 'lobby' ? h('span', { class: 'score' }, String(p.score)) : null,
+    (s.mode === 'tempo' || s.mode === 'bet' || s.mode === 'show' || s.mode === 'blitz' || s.mode === 'estimate') && s.status !== 'lobby' ? h('span', { class: 'score' }, String(p.score)) : null,
     kick && p.public_id && !p.is_me ? h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: act('kick', { public_id: p.public_id }) }, '✕') : null)))
   const hostBar = (s) => s.is_host && s.status !== 'finished' ? h('div', { class: 'row wrap' },
-    s.status !== 'lobby' ? h('button', { class: 'btn small primary', onclick: act('next') }, t(s.status === 'question' ? 'live.endQuestion' : 'live.next')) : null,
+    s.status !== 'lobby' ? h('button', { class: 'btn small primary', onclick: act('next') }, t(s.status === 'question' ? 'live.endQuestion' : s.status === 'between' ? 'live.nextRound' : 'live.next')) : null,
     h('button', { class: 'btn small danger', onclick: guard(async () => { if ((()=>true)(t('live.endConfirm'))) await api('POST', `/api/live/${id}/end`, {}) }) }, t('live.end'))) : null
+
+  /** Serie zusammenstellen: Modi antippen (Reihenfolge = Reihenfolge des Antippens) oder Vorlage wählen. */
+  const seriesPicker = (s) => {
+    const cur = s.series.modes
+    const toggle = (m) => cur.includes(m) ? (cur.length > 2 ? { series: cur.filter((x) => x !== m) } : null) : { series: [...cur, m] }
+    return [h('p', { class: 'hint' }, t('live.series.info', { points: s.series.points.slice(0, 3).join('/') })),
+      h('div', { class: 'seg wrap' }, LIVE_MODES.map((m) => h('button', { 'aria-pressed': String(cur.includes(m)), onclick: () => { const b = toggle(m); if (b) act('settings', b)() } }, (cur.includes(m) ? (cur.indexOf(m) + 1) + '. ' : '') + t('live.mode.' + m)))),
+      h('div', { class: 'row wrap' }, h('span', { class: 'muted' }, t('live.series.templates')), Object.keys(SERIES_TEMPLATES).map((k) => h('button', { class: 'btn small', onclick: act('settings', { series: SERIES_TEMPLATES[k] }) }, t('live.series.t.' + k))))]
+  }
 
   const lobby = async (s) => {
     const url = s.token ? liveLink(s.token) : ''
@@ -1744,9 +1831,11 @@ async function live(id, my) {
     mount(topbar(t('live.title'), true),
       s.is_host ? h('div', { class: 'card stack qrcard' }, qr, h('p', { class: 'muted' }, t('live.scan')),
         h('button', { class: 'btn small', onclick: act('renew') }, t('live.renew'))) : h('div', { class: 'card stack' }, h('h3', {}, t('live.waiting')), h('p', { class: 'muted' }, t('live.waitHost'))),
-      s.is_host ? h('div', { class: 'card stack' }, seg('mode', LIVE_MODES.map((m) => [m, 'live.mode.' + m]), s.mode), h('p', { class: 'hint' }, t('live.modeInfo.' + s.mode)),
-        s.mode === 'blitz' ? seg('duration', [[45, 'live.blitz.45'], [60, 'live.blitz.60'], [90, 'live.blitz.90']], s.blitz?.duration ?? 60) : null,
-        LIVE_TEAM_MODES.includes(s.mode) ? [seg('teams', [[0, 'live.teams.off'], [2, 'live.teams.2'], [3, 'live.teams.3'], [4, 'live.teams.4']], s.teams), h('p', { class: 'hint' }, t('live.teamsInfo'))] : null,
+      s.is_host ? h('div', { class: 'card stack' },
+        h('div', { class: 'seg' }, [[false, 'live.series.single'], [true, 'live.series.on']].map(([on, label]) => h('button', { 'aria-pressed': String(!!s.series === on), onclick: act('settings', on ? { series: SERIES_TEMPLATES.classic } : { mode: s.mode }) }, t(label)))),
+        s.series ? seriesPicker(s) : [seg('mode', LIVE_MODES.map((m) => [m, 'live.mode.' + m]), s.mode), h('p', { class: 'hint' }, t('live.modeInfo.' + s.mode))],
+        (s.series ? s.series.modes : [s.mode]).includes('blitz') ? seg('duration', [[45, 'live.blitz.45'], [60, 'live.blitz.60'], [90, 'live.blitz.90']], s.blitz?.duration ?? 60) : null,
+        (s.series ? s.series.modes : [s.mode]).some((m) => LIVE_TEAM_MODES.includes(m)) ? [seg('teams', [[0, 'live.teams.off'], [2, 'live.teams.2'], [3, 'live.teams.3'], [4, 'live.teams.4']], s.teams), h('p', { class: 'hint' }, t('live.teamsInfo'))] : null,
         seg('screen', [[true, 'live.screen.on'], [false, 'live.screen.off']], s.screen), h('p', { class: 'hint' }, t(s.screen ? 'live.screenInfo.on' : 'live.screenInfo.off'))) : null,
       s.teams && s.me ? h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('live.teamPick')), h('div', { class: 'row wrap' },
         [0, ...Array.from({ length: s.teams }, (_, i) => i + 1)].map((n) => h('button', { class: 'btn small' + ((s.me.team ?? 0) === n ? ' primary' : ''), onclick: act('team', { team: n }) }, n ? [teamDot(n), t('live.team', { n })] : t('live.teamAuto'))))) : null,
@@ -1774,7 +1863,7 @@ async function live(id, my) {
       s.mode === 'tempo' ? h('span', { class: 'score' }, '+' + (s.me.points ?? 0)) : s.mode === 'bet' ? h('span', { class: 'score' }, (s.me.points > 0 ? '+' : '') + (s.me.points ?? 0)) : s.mode === 'race' ? null : (s.me.alive ? h('span', { class: 'badge good' }, t('live.alive')) : h('span', { class: 'badge bad' }, t('live.out')))) :
       !reveal && answered ? h('div', { class: 'feedback' }, h('strong', {}, t('live.sent'))) :
       !reveal && s.me && s.mode === 'survival' && !s.me.alive ? h('div', { class: 'feedback' }, h('strong', {}, t('live.spectate'))) : null
-    mount(topbar(t('live.title'), false),
+    mount(liveBar(),
       h('div', { class: 'card qcard' + (display ? ' display' : ''), cat: q.category }, head, timerBar(s),
         !s.screen || display ? h('div', { class: 'question' + (display ? ' bigq' : '') }, q.text) : null,
         h('div', { class: 'opts' + (display ? ' grid' : s.screen ? ' grid' : '') }, q.options.map(opt)), status,
@@ -1788,7 +1877,7 @@ async function live(id, my) {
     const q = s.question, display = s.is_host && s.screen, mine = s.me?.bet
     const choice = (amount, label) => h('button', { class: 'opt big' + (mine === amount ? ' good' : ''), disabled: display || !s.me,
       onclick: guard(async () => { await api('POST', `/api/live/${id}/bet`, { idx: s.idx, amount }) }) }, label)
-    mount(topbar(t('live.title'), false),
+    mount(liveBar(),
       h('div', { class: 'card qcard' + (display ? ' display' : ''), cat: q.category },
         h('div', { class: 'q-head' }, catChip(q.category), h('span', { class: 'muted' }, t('ladder.step', { n: s.idx + 1, total: s.total }) + ' · ' + '●'.repeat(q.difficulty ?? 1) + '○'.repeat(3 - (q.difficulty ?? 1)))),
         timerBar(s),
@@ -1834,7 +1923,7 @@ async function live(id, my) {
         h('button', { class: 'btn small', disabled: !sh.jokers.audience, onclick: guard(async () => { await api('POST', `/api/live/${id}/show`, { action: 'audience' }) }) }, '👥 ' + t('show.audience')),
         h('button', { class: 'btn small', disabled: !sh.jokers.fifty, onclick: guard(async () => { await api('POST', `/api/live/${id}/show`, { action: 'fifty' }) }) }, '½ ' + t('show.fifty')),
         h('button', { class: 'btn small danger', onclick: guard(async () => { if ((()=>true)(t('show.quitConfirm', { amount: money(sh.banked) }))) await api('POST', `/api/live/${id}/show`, { action: 'quit' }) }) }, t('show.quit', { amount: money(sh.banked) })))) : null
-    mount(topbar(t('live.title'), false),
+    mount(liveBar(),
       h('div', { class: 'card qcard' + (display ? ' display' : ''), cat: q.category }, head, timerBar(s), steps,
         !s.screen || display ? h('div', { class: 'question' + (display ? ' bigq' : '') }, q.text) : null,
         who,
@@ -1849,13 +1938,13 @@ async function live(id, my) {
   const blitzView = (s) => {
     const display = s.is_host && s.screen
     if (display) {
-      return mount(topbar(t('live.title'), false),
+      return mount(liveBar(),
         h('div', { class: 'card stack' }, h('h3', {}, t('live.mode.blitz')), timerBar(s), h('p', { class: 'muted' }, t('live.blitz.screen'))),
         h('div', { class: 'card stack' }, players(s, false)), hostBar(s))
     }
     if (!bl || !s.blitz?.me) bl = s.blitz?.me ?? null
     const me = bl
-    if (!me) return mount(topbar(t('live.title'), false), h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('live.spectate'))))
+    if (!me) return mount(liveBar(), h('div', { class: 'card stack' }, h('p', { class: 'muted' }, t('live.spectate'))))
     clearTimeout(lockTimer)
     const locked = me.lock_ms > 0
     if (locked) lockTimer = setTimeout(() => { bl = { ...bl, lock_ms: 0 }; blitzView(s) }, me.lock_ms)
@@ -1870,7 +1959,7 @@ async function live(id, my) {
         toast(errText(e)); const st = await api('GET', `/api/live/${id}`).catch(() => null); if (st) { bl = st.live.blitz?.me ?? bl; if (st.live.status !== 'question') return render(st.live) } blitzView(s)
       }
     }
-    mount(topbar(t('live.title'), false),
+    mount(liveBar(),
       h('div', { class: 'card qcard' }, h('div', { class: 'q-head' }, q ? catChip(q.category) : null, h('span', { class: 'muted' }, t('live.blitz.score', { n: me.score }))), timerBar(s),
         q ? [h('div', { class: 'question' }, q.text),
           locked ? h('p', { class: 'hint' }, '⏸ ' + t('live.blitz.pause')) : null,
@@ -1879,23 +1968,73 @@ async function live(id, my) {
       s.is_host ? hostBar(s) : null)
   }
 
+  /** Schätzrunde: Zahl eintippen; Auflösung mit der richtigen Zahl und allen Tipps (Rang nach Abstand). */
+  let draft = { idx: -1, text: '', focus: false }
+  const estimateView = (s) => {
+    const e = s.estimate, reveal = s.status !== 'question', display = s.is_host && s.screen
+    if (draft.idx !== s.idx) draft = { idx: s.idx, text: '', focus: false }
+    const send = guard(async () => {
+      const v = parseGuess(draft.text)
+      if (v === null) return toast(t('estimate.bad'))
+      await api('POST', `/api/live/${id}/guess`, { idx: s.idx, value: v })
+    })
+    const input = h('input', { type: 'text', inputmode: 'decimal', autocomplete: 'off', class: 'guess', value: draft.text, placeholder: e.unit || t('estimate.number'), 'aria-label': t('estimate.number'),
+      oninput: (ev) => { draft.text = ev.target.value }, onfocus: () => { draft.focus = true }, onblur: () => { draft.focus = false },
+      onkeydown: (ev) => { if (ev.key === 'Enter') send() } })
+    const head = h('div', { class: 'q-head' }, catChip(e.category), h('span', { class: 'muted' }, t('ladder.step', { n: s.idx + 1, total: s.total })))
+    const canGuess = !display && s.me && !s.me.answered && !reveal
+    const body = reveal ? h('div', { class: 'stack' },
+      h('div', { class: 'estimate-answer' }, h('span', { class: 'muted' }, t('estimate.answer')), h('strong', {}, fmtGuess(e.answer, e.unit))),
+      s.me ? h('div', { class: 'feedback' }, h('strong', {}, e.my_guess === undefined ? t('estimate.none') : t('estimate.yours', { v: fmtGuess(e.my_guess, e.unit) })), h('span', { class: 'score' }, '+' + (s.me.points ?? 0))) : null,
+      h('div', { class: 'list' }, e.guesses.map((g) => h('div', { class: 'item' + (g.is_me ? ' me' : '') }, h('span', { class: 'rank' }, '#' + g.rank), h('div', { class: 'grow ell' }, g.name),
+        h('span', { class: 'muted' }, fmtGuess(g.value, e.unit) + ' · ' + (g.error < 0.005 ? t('estimate.exact') : '±' + Math.round(g.error * 100) + ' %')), h('span', { class: 'score' }, '+' + g.points)))),
+      e.explanation ? h('p', { class: 'muted' }, e.explanation) : null)
+      : canGuess ? h('div', { class: 'stack' }, h('div', { class: 'row' }, input, h('button', { class: 'btn primary', onclick: send }, t('estimate.send'))), h('p', { class: 'hint' }, t('estimate.hint')))
+      : s.me?.answered ? h('div', { class: 'feedback' }, h('strong', {}, t('estimate.sent', { v: fmtGuess(e.my_guess, e.unit) })))
+      : display ? h('p', { class: 'hint' }, t('estimate.screen')) : null
+    mount(liveBar(),
+      h('div', { class: 'card qcard' + (display ? ' display' : ''), cat: e.category }, head, timerBar(s), h('div', { class: 'question' + (display ? ' bigq' : '') }, e.text), e.unit && !reveal ? h('p', { class: 'hint' }, t('estimate.unit', { unit: e.unit })) : null, body),
+      reveal || display ? h('div', { class: 'card stack' }, s.team_rank ? h('h3', {}, t('live.teamRank')) : null, teamBoard(s), s.team_rank ? h('h3', {}, t('room.ranking')) : null, players({ ...s, players: s.players.slice(0, display ? 8 : 5) }, false)) : null,
+      hostBar(s))
+    if (draft.focus && canGuess) { input.focus(); const n = input.value.length; try { input.setSelectionRange(n, n) } catch { /* */ } }
+  }
+
+  /** Gesamtwertung einer Serie (Serienpunkte, Siege, Zuwachs der letzten Runde). */
+  const seriesBoard = (sr) => h('div', { class: 'list' }, sr.standings.map((r) => h('div', { class: 'item' + (r.is_me ? ' me' : '') },
+    h('span', { class: 'rank' }, '#' + r.rank), h('div', { class: 'grow ell' }, r.name + (r.is_me ? ' (' + t('game.you') + ')' : ''), h('span', { class: 'muted' }, ' · ' + t('live.series.wins', { n: r.wins }))),
+    r.last && sr.last ? h('span', { class: 'muted' }, '+' + r.last) : null, h('span', { class: 'score' }, String(r.points)))))
+  /** Zwischenwertung nach einer Runde: Platzierung der Runde, Gesamtstand, was als Nächstes kommt. */
+  const betweenView = (s) => {
+    const sr = s.series, next = sr.modes[sr.index + 1]
+    mount(liveBar(),
+      h('div', { class: 'card stack' }, h('h3', {}, t('live.series.between')), timerBar(s), h('p', { class: 'muted' }, t('live.series.nextUp', { mode: t('live.mode.' + next) }) + (s.is_host ? '' : ' · ' + t('live.series.hostNext')))),
+      h('h2', {}, t('live.series.total')), seriesBoard(sr),
+      s.team_rank ? [h('h2', {}, t('live.teamRank')), teamBoard(s)] : null,
+      sr.last ? [h('h2', {}, t('live.series.lastRound', { mode: t('live.mode.' + sr.last.mode) })), h('div', { class: 'list' }, sr.last.ranks.map((r) => h('div', { class: 'item' + (r.is_me ? ' me' : '') }, h('span', { class: 'rank' }, '#' + r.rank), h('div', { class: 'grow ell' }, r.name), h('span', { class: 'score' }, '+' + r.pts))))] : null,
+      hostBar(s))
+  }
+
   const finished = (s) => (bl = null, mount(topbar(t('live.title'), true),
-    h('div', { class: 'card stack lresult' }, h('h3', {}, t('live.finished')), s.team_rank ? h('div', { class: 'big' }, '🏆 ' + t('live.team', { n: s.team_rank[0].team })) : s.players[0] ? h('div', { class: 'big' }, '🏆 ' + s.players[0].name) : null),
+    h('div', { class: 'card stack lresult' }, h('h3', {}, t(s.series ? 'live.series.finished' : 'live.finished')), s.team_rank ? h('div', { class: 'big' }, '🏆 ' + t('live.team', { n: s.team_rank[0].team })) : s.series?.standings[0] ? h('div', { class: 'big' }, '🏆 ' + s.series.standings[0].name) : s.players[0] ? h('div', { class: 'big' }, '🏆 ' + s.players[0].name) : null),
+    s.series ? [h('h2', {}, t('live.series.total')), seriesBoard(s.series)] : null,
     s.team_rank ? [h('h2', {}, t('live.teamRank')), teamBoard(s)] : null,
     s.show?.results?.length ? [h('h2', {}, t('show.results')), h('div', { class: 'list' }, s.show.results.map((r) => h('div', { class: 'item' }, h('div', { class: 'grow ell' }, r.name), h('span', { class: 'badge' }, t('show.how.' + r.how)), h('span', { class: 'score' }, money(r.prize)))))] : null,
-    h('h2', {}, t('room.ranking')), players(s, false),
+    h('h2', {}, s.series ? t('live.series.lastRound', { mode: t('live.mode.' + s.mode) }) : t('room.ranking')), players(s, false),
     h('button', { class: 'btn block', onclick: () => go('#/') }, t('ladder.home'))))
 
   let rendering = false, pending = null
   const render = async (s) => {
     if (my !== runId) return
+    seriesLabel = s.series && s.status !== 'lobby' && s.status !== 'finished' ? t('live.series.round', { n: s.series.index + 1, total: s.series.modes.length }) + ' · ' + t('live.mode.' + s.mode) : ''
     document.getElementById('app').classList.toggle('wide', s.is_host && s.screen && s.status !== 'lobby') // Bildschirm-Ansicht darf breit sein
     if (rendering) { pending = s; return }
     rendering = true
     try {
       if (s.status === 'lobby') { if (!document.activeElement || document.activeElement === document.body || s.token !== lastQr) { lastQr = s.token; await lobby(s) } else await lobby(s) }
       else if (s.status === 'finished') finished(s)
+      else if (s.status === 'between') betweenView(s)
       else if (s.mode === 'blitz' && s.status === 'question') { if (!(bl && !(s.is_host && s.screen))) blitzView(s) }
+      else if (s.mode === 'estimate' && s.estimate) estimateView(s)
       else if (s.status === 'bet' && s.question) betView(s)
       else if (s.question) question(s)
     } finally { rendering = false }

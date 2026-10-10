@@ -1,4 +1,4 @@
-// Wordle: tägliches Wort je Sprache (für alle gleich), ein Bonus-Wordle pro Tag, Gruppen mit eigenem Tageswort (2 Mitglieder = Duell),
+// Wordle: tägliches Wort je Sprache (für alle gleich), Gruppen mit eigenem Tageswort (2 Mitglieder = Duell; nur Ein- und Austreten, Punkte gehören der Gruppe),
 // Bestenlisten (global mit Opt-in-Name, je Gruppe) und Streaks. Die Auswertung geschieht nur auf dem Server; das gesuchte Wort
 // verlässt ihn erst nach Spielende.
 import crypto from 'node:crypto'
@@ -12,7 +12,7 @@ import { WORDLE_LANGS, isWordleLang, normalizeWord, type WordleLang } from './wo
 import { notifyMessage } from './push.ts'
 
 export const MAX_GUESSES = 6
-export const KINDS = ['daily', 'bonus', 'group'] as const
+export const KINDS = ['daily', 'group'] as const
 export type Kind = (typeof KINDS)[number]
 export const SCOPES = ['day', 'week', 'month', 'all'] as const
 export type Scope = (typeof SCOPES)[number]
@@ -61,16 +61,6 @@ export function wordFor(lang: WordleLang, day: string, scope: string): string {
   return get<{ word: string }>('SELECT word FROM wordle_daily WHERE lang=? AND day=? AND scope=?', lang, day, scope)!.word
 }
 
-/** Persönliches Bonus-Wort: nicht das Tageswort, nicht aus den letzten 365 Tagen dieses Spielers. */
-function bonusWord(pid: number, lang: WordleLang, day: string): string {
-  ensureWords()
-  const skip = new Set(all<{ word: string }>("SELECT word FROM wordle_games WHERE player_id=? AND kind='bonus' AND lang=? AND day>=?", pid, lang, addDays(day, -365)).map((r) => r.word))
-  skip.add(wordFor(lang, day, 'global'))
-  const pool = solutions(lang).filter((w) => !skip.has(w))
-  if (!pool.length) throw new HttpError(503, 'no_words')
-  return pick(pool)
-}
-
 /** Auswertung: je Buchstabe c = richtig, p = im Wort an anderer Stelle, a = nicht (mehr) vorhanden; Doppelbuchstaben zählen korrekt. */
 export function evaluate(guess: string, answer: string): string {
   const g = [...guess], a = [...answer], res: string[] = g.map(() => 'a'), left = new Map<string, number>()
@@ -111,7 +101,6 @@ export function startGame(me: PlayerRow, kind: unknown, lang: unknown, groupId?:
     }
     const have = myGame(me.id, kind as Kind, language, day, gid)
     if (have) return gameView(have)
-    if (kind === 'bonus') word = bonusWord(me.id, language, day)
     const t = now()
     const id = Number(run('INSERT INTO wordle_games(player_id,kind,lang,day,group_id,word,started_at,last_at) VALUES(?,?,?,?,?,?,?,?)', me.id, kind as string, language, day, gid, word, t, t).lastInsertRowid)
     return gameView(get<GameRow>('SELECT * FROM wordle_games WHERE id=?', id)!)
@@ -200,6 +189,7 @@ export function joinGroup(me: PlayerRow, rawCode: unknown) {
 }
 
 function removeGroup(id: number) {
+  run('DELETE FROM wordle_shares WHERE group_id=?', id)
   run('DELETE FROM wordle_games WHERE group_id=?', id)
   run("DELETE FROM wordle_push WHERE key=?", `g:${id}`)
   run("DELETE FROM wordle_daily WHERE scope=?", `g:${id}`)
@@ -213,6 +203,7 @@ export function leaveGroup(pid: number, groupId: number) {
     const g = get<GroupRow>('SELECT g.* FROM wordle_groups g JOIN wordle_members m ON m.group_id=g.id WHERE g.id=? AND m.player_id=?', groupId, pid)
     if (!g) throw new HttpError(404, 'unknown_group')
     run('DELETE FROM wordle_games WHERE group_id=? AND player_id=?', groupId, pid)
+    run('DELETE FROM wordle_shares WHERE group_id=? AND from_pid=?', groupId, pid)
     run('DELETE FROM wordle_push WHERE player_id=? AND key=?', pid, `g:${groupId}`)
     run('DELETE FROM wordle_members WHERE group_id=? AND player_id=?', groupId, pid)
     const next = get<{ player_id: number }>('SELECT player_id FROM wordle_members WHERE group_id=? ORDER BY joined_at LIMIT 1', groupId)
@@ -231,35 +222,56 @@ export function deleteGroup(me: PlayerRow, groupId: number) {
 export function erasePlayerWordle(pid: number) {
   for (const m of all<{ group_id: number }>('SELECT group_id FROM wordle_members WHERE player_id=?', pid)) leaveGroup(pid, m.group_id)
   run('DELETE FROM wordle_games WHERE player_id=?', pid)
+  run('DELETE FROM wordle_shares WHERE from_pid=? OR to_pid=?', pid, pid)
   run('DELETE FROM wordle_push WHERE player_id=?', pid)
   run('DELETE FROM wordle_push_log WHERE player_id=?', pid)
 }
+
+/** Farbraster (nur Markierungen, nie Buchstaben) eines beendeten Spiels. */
+const gridOf = (g: GameRow) => guessesOf(g).map((w) => evaluate(w, g.word))
 
 export function groupView(me: PlayerRow, groupId: number) {
   const g = memberGroup(me.id, groupId), day = dayOf()
   const members = all<{ player_id: number; joined_at: number }>('SELECT player_id, joined_at FROM wordle_members WHERE group_id=? ORDER BY joined_at', g.id)
   const today = new Map(all<GameRow>("SELECT * FROM wordle_games WHERE group_id=? AND kind='group' AND day=?", g.id, day).map((x) => [x.player_id, x]))
+  const mineDone = !!today.get(me.id) && today.get(me.id)!.status !== 'playing' // Raster anderer erst, wenn man selbst fertig ist (kein Hinweis auf das heutige Wort)
   return {
     id: g.id, name: g.name, lang: g.lang, code: g.code, is_owner: g.owner === me.id, day, max_members: config.wordle.groupMax,
     push: !!get('SELECT 1 FROM wordle_push WHERE player_id=? AND key=?', me.id, `g:${g.id}`),
-    members: members.map((m) => ({ name: pname(m.player_id), is_me: m.player_id === me.id, is_owner: m.player_id === g.owner, today: summary(today.get(m.player_id)) ? { status: today.get(m.player_id)!.status, guesses: guessesOf(today.get(m.player_id)!).length } : null })),
+    members: members.map((m) => {
+      const x = today.get(m.player_id)
+      return { name: pname(m.player_id), is_me: m.player_id === me.id, is_owner: m.player_id === g.owner, today: x ? { status: x.status, guesses: guessesOf(x).length } : null,
+        grid: x && x.status !== 'playing' && (mineDone || m.player_id === me.id) ? gridOf(x) : undefined }
+    }),
     my_game: summary(today.get(me.id)),
+    feed: all<ShareRow>('SELECT * FROM wordle_shares WHERE group_id=? AND created_at>=? ORDER BY created_at DESC LIMIT 30', g.id, shareSince()).map((x) => shareView(me.id, x)),
   }
 }
 
-/** Gruppen-Bestenliste: Punkte aus beendeten Gruppenspielen im Zeitraum; alle Mitglieder erscheinen. */
+/** Dauerwertung einer Gruppe: Punkte aus beendeten Gruppenspielen im Zeitraum. Alle Mitglieder erscheinen; wer an einem Tag nicht spielt, bekommt dafür 0 Punkte
+ *  (`missed` zählt diese vergangenen Tage seit Beitritt). Punkte entstehen nur in der Gruppe – es gibt keine Übernahme beim Beitritt oder Austritt. */
 export function groupBoard(me: PlayerRow, groupId: number, rawScope: unknown) {
   const g = memberGroup(me.id, groupId)
-  const scope = SCOPES.includes(rawScope as Scope) ? (rawScope as Scope) : 'week', today = dayOf()
-  const stats = new Map(all<{ player_id: number; pts: number; played: number; won: number; avg: number | null }>(
-    `SELECT player_id, SUM(points) pts, COUNT(*) played, SUM(status='won') won, AVG(CASE WHEN status='won' THEN json_array_length(guesses) END) avg
-     FROM wordle_games WHERE group_id=? AND kind='group' AND status<>'playing' AND day>=? GROUP BY player_id`, g.id, windowStart(scope, today)).map((r) => [r.player_id, r]))
-  const rows = all<{ player_id: number }>('SELECT player_id FROM wordle_members WHERE group_id=?', g.id).map((m) => {
-    const s = stats.get(m.player_id)
-    return { pid: m.player_id, name: pname(m.player_id), points: s?.pts ?? 0, played: s?.played ?? 0, won: s?.won ?? 0, avg_guesses: s?.avg ? Math.round(s.avg * 10) / 10 : null }
+  const scope = SCOPES.includes(rawScope as Scope) ? (rawScope as Scope) : 'all', today = dayOf(), from = windowStart(scope, today), yesterday = addDays(today, -1)
+  const games = all<{ player_id: number; day: string; status: string; points: number; n: number }>(
+    "SELECT player_id, day, status, points, json_array_length(guesses) n FROM wordle_games WHERE group_id=? AND kind='group'", g.id)
+  const byPlayer = new Map<number, typeof games>()
+  for (const x of games) (byPlayer.get(x.player_id) ?? byPlayer.set(x.player_id, []).get(x.player_id)!).push(x)
+  const rows = all<{ player_id: number; joined_at: number }>('SELECT player_id, joined_at FROM wordle_members WHERE group_id=?', g.id).map((m) => {
+    const mine = byPlayer.get(m.player_id) ?? [], done = mine.filter((x) => x.status !== 'playing')
+    const inWin = done.filter((x) => x.day >= from)
+    const won = inWin.filter((x) => x.status === 'won')
+    const start = [from, dayOf(m.joined_at)].sort().at(-1)! // Wertung beginnt frühestens am Beitrittstag
+    const pastDays = start > yesterday ? 0 : Math.round((Date.parse(yesterday) - Date.parse(start)) / 86_400_000) + 1
+    const missed = Math.max(0, pastDays - done.filter((x) => x.day >= start && x.day <= yesterday).length)
+    const days = new Set(done.map((x) => x.day)); let d = days.has(today) ? today : yesterday, streak = 0
+    while (days.has(d)) { streak++; d = addDays(d, -1) }
+    const t = mine.find((x) => x.day === today)
+    return { pid: m.player_id, name: pname(m.player_id), points: inWin.reduce((a, x) => a + x.points, 0), played: inWin.length, won: won.length, missed, streak,
+      avg_guesses: won.length ? Math.round((won.reduce((a, x) => a + x.n, 0) / won.length) * 10) / 10 : null, today: t ? { status: t.status, guesses: t.n } : null }
   }).sort((a, b) => b.points - a.points || (a.avg_guesses ?? 9) - (b.avg_guesses ?? 9) || b.won - a.won || a.name.localeCompare(b.name))
   let rank = 0
-  return { scope, rows: rows.map((r, i) => { if (i === 0 || r.points !== rows[i - 1].points || r.avg_guesses !== rows[i - 1].avg_guesses) rank = i + 1; return { rank, name: r.name, points: r.points, played: r.played, won: r.won, avg_guesses: r.avg_guesses, is_me: r.pid === me.id } }) }
+  return { scope, today, rows: rows.map((r, i) => { if (i === 0 || r.points !== rows[i - 1].points || r.avg_guesses !== rows[i - 1].avg_guesses) rank = i + 1; return { rank, name: r.name, points: r.points, played: r.played, won: r.won, avg_guesses: r.avg_guesses, missed: r.missed, streak: r.streak, today: r.today, is_me: r.pid === me.id } }) }
 }
 
 /** Duell: eine Gruppe, zu der die andere Person per Push eingeladen wird (Beitritt per Link, nicht automatisch). */
@@ -275,15 +287,70 @@ function inviteMessage(to: PlayerRow, from: PlayerRow, code: string, name: strin
   notifyMessage(to.id, { title: de ? 'Wordle-Duell' : 'Wordle duel', body: de ? `${from.name} lädt dich zu „${name}“ ein.` : `${from.name} invites you to “${name}”.`, url: `/#/wordle/join/${code}`, tag: `wordle-invite-${code}` })
 }
 
+/* ---------- Ergebnis teilen (an Kontakt oder Gruppe) ---------- */
+const SHARE_DAYS = 14
+interface ShareRow { id: number; from_pid: number; to_pid: number | null; group_id: number | null; lang: WordleLang; day: string; status: string; guesses: number; marks: string; seen: number; created_at: number }
+
+/** Das eigene beendete Tages-Wordle (nur Markierungen, nie Buchstaben) an einen Kontakt (`public_id`) oder in eine eigene Gruppe (`group_id`) schicken; erneutes Teilen überschreibt. */
+export function shareResult(me: PlayerRow, gameId: unknown, target: { public_id?: unknown; group_id?: unknown }) {
+  const g = get<GameRow>('SELECT * FROM wordle_games WHERE id=? AND player_id=?', Number(gameId), me.id)
+  if (!g || g.kind !== 'daily') throw new HttpError(404, 'not_found')
+  if (g.status === 'playing') throw new HttpError(409, 'not_finished')
+  const marks = JSON.stringify(gridOf(g)), t = now()
+  const hasUser = target.public_id !== undefined && target.public_id !== null, hasGroup = target.group_id !== undefined && target.group_id !== null
+  if (hasUser === hasGroup) throw new HttpError(400, 'bad_target')
+  return tx(() => {
+    if (hasUser) {
+      const other = get<PlayerRow>('SELECT p.* FROM players p JOIN contacts c ON c.contact_id=p.id WHERE c.player_id=? AND p.public_id=? AND p.deleted=0 AND p.is_bot=0', me.id, String(target.public_id).toUpperCase())
+      if (!other || other.id === me.id) throw new HttpError(404, 'unknown_player')
+      run('DELETE FROM wordle_shares WHERE from_pid=? AND to_pid=? AND lang=? AND day=?', me.id, other.id, g.lang, g.day)
+      run('INSERT INTO wordle_shares(from_pid,to_pid,lang,day,status,guesses,marks,created_at) VALUES(?,?,?,?,?,?,?,?)', me.id, other.id, g.lang, g.day, g.status, guessesOf(g).length, marks, t)
+      const de = other.lang === 'de'
+      notifyMessage(other.id, { title: 'Wordle', body: de ? `${me.name} hat sein Wordle geteilt.` : `${me.name} shared a Wordle result.`, url: '/#/wordle', tag: `wordle-share-${me.id}` })
+    } else {
+      const grp = memberGroup(me.id, target.group_id)
+      run('DELETE FROM wordle_shares WHERE from_pid=? AND group_id=? AND lang=? AND day=?', me.id, grp.id, g.lang, g.day)
+      run('INSERT INTO wordle_shares(from_pid,group_id,lang,day,status,guesses,marks,created_at) VALUES(?,?,?,?,?,?,?,?)', me.id, grp.id, g.lang, g.day, g.status, guessesOf(g).length, marks, t)
+    }
+    return { ok: true }
+  })
+}
+
+/** Ansicht eines Shares. Das Raster eines geteilten Tages-Wordles sieht nur, wer dasselbe Wordle (Sprache, Tag) selbst schon beendet hat – sonst nur Ausgang und Versuche. */
+function shareView(viewer: number, x: ShareRow) {
+  const mine = x.from_pid === viewer ? undefined : myGame(viewer, 'daily', x.lang, x.day)
+  const open = x.from_pid === viewer || (!!mine && mine.status !== 'playing')
+  return { id: x.id, name: pname(x.from_pid), is_me: x.from_pid === viewer, lang: x.lang, day: x.day, status: x.status, guesses: x.guesses, grid: open ? (JSON.parse(x.marks) as string[]) : undefined, locked: !open, seen: !!x.seen, at: x.created_at }
+}
+const shareSince = () => now() - SHARE_DAYS * 86_400_000
+const unseenShares = (pid: number) => get<{ n: number }>('SELECT COUNT(*) n FROM wordle_shares WHERE to_pid=? AND seen=0 AND created_at>=?', pid, shareSince())!.n
+/** Eingang: an mich gerichtete Shares der letzten Tage (markiert sie als gesehen). */
+export function inbox(me: PlayerRow) {
+  const rows = all<ShareRow>('SELECT * FROM wordle_shares WHERE to_pid=? AND created_at>=? ORDER BY created_at DESC LIMIT 50', me.id, shareSince())
+  const items = rows.map((x) => shareView(me.id, x))
+  run('UPDATE wordle_shares SET seen=1 WHERE to_pid=? AND seen=0', me.id)
+  return { items }
+}
+/** Aufräumen: Shares verfallen nach 14 Tagen. */
+export const sweepShares = () => run('DELETE FROM wordle_shares WHERE created_at<?', shareSince())
+
+/** Eigener Platz und Gesamtpunkte in einer Gruppe (für die Übersicht). */
+function standing(groupId: number, pid: number) {
+  const pts = new Map(all<{ player_id: number; p: number }>("SELECT player_id, SUM(points) p FROM wordle_games WHERE group_id=? AND kind='group' AND status<>'playing' GROUP BY player_id", groupId).map((r) => [r.player_id, r.p]))
+  const mine = pts.get(pid) ?? 0
+  const members = all<{ player_id: number }>('SELECT player_id FROM wordle_members WHERE group_id=?', groupId)
+  return { points: mine, rank: 1 + members.filter((m) => (pts.get(m.player_id) ?? 0) > mine).length }
+}
+
 /* ---------- Hub und Bestenliste ---------- */
 export function hub(me: PlayerRow) {
   const day = dayOf()
   const groups = all<GroupRow>('SELECT g.* FROM wordle_groups g JOIN wordle_members m ON m.group_id=g.id WHERE m.player_id=? ORDER BY g.name', me.id)
   const push = new Set(all<{ key: string }>('SELECT key FROM wordle_push WHERE player_id=?', me.id).map((r) => r.key))
   return {
-    day, tz: config.wordle.tz,
-    langs: WORDLE_LANGS.map((lang) => ({ lang, daily: summary(myGame(me.id, 'daily', lang, day)), bonus: summary(myGame(me.id, 'bonus', lang, day)), streak: streakOf(me.id, lang, day), push: push.has(`daily:${lang}`) })),
-    groups: groups.map((g) => ({ id: g.id, name: g.name, lang: g.lang, is_owner: g.owner === me.id, members: memberCount(g.id), code: g.code, today: summary(myGame(me.id, 'group', g.lang, day, g.id)), push: push.has(`g:${g.id}`) })),
+    day, tz: config.wordle.tz, inbox_unseen: unseenShares(me.id),
+    langs: WORDLE_LANGS.map((lang) => ({ lang, daily: summary(myGame(me.id, 'daily', lang, day)), streak: streakOf(me.id, lang, day), push: push.has(`daily:${lang}`) })),
+    groups: groups.map((g) => ({ id: g.id, name: g.name, lang: g.lang, is_owner: g.owner === me.id, members: memberCount(g.id), code: g.code, today: summary(myGame(me.id, 'group', g.lang, day, g.id)), push: push.has(`g:${g.id}`), ...standing(g.id, me.id) })),
   }
 }
 
@@ -389,7 +456,7 @@ export function adminOverview(days = 14) {
       const w = get<{ word: string; forced: number }>("SELECT word, forced FROM wordle_daily WHERE lang=? AND day=? AND scope='global'", lang, day)
       return { day, word: w?.word ?? null, forced: !!w?.forced }
     })
-    return { lang, words: { valid: words.total, solutions: words.sol ?? 0, banned: words.banned ?? 0 }, daily, upcoming, bonus_today: get<{ n: number }>("SELECT COUNT(*) n FROM wordle_games WHERE kind='bonus' AND lang=? AND day=?", lang, today)!.n }
+    return { lang, words: { valid: words.total, solutions: words.sol ?? 0, banned: words.banned ?? 0 }, daily, upcoming }
   })
   const groups = all<{ id: number; name: string; lang: string; members: number; plays7: number }>(
     `SELECT g.id, g.name, g.lang, (SELECT COUNT(*) FROM wordle_members m WHERE m.group_id=g.id) members,

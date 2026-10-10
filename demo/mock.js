@@ -225,11 +225,11 @@ const DEMO = (() => {
       const day = new Date().toISOString().slice(0, 10), w = (st.wordle ??= { seq: 0, games: [] })
       const sum = (g) => (g ? { id: g.id, status: g.status, guesses: g.guesses.length, points: g.points } : null)
       const mine = (kind, lang) => w.games.find((g) => g.kind === kind && g.lang === lang && g.day === day)
-      return { body: { day, tz: 'UTC', langs: ['de', 'en'].map((lang) => ({ lang, daily: sum(mine('daily', lang)), bonus: sum(mine('bonus', lang)), streak: 0, push: false })), groups: [] } }
+      return { body: { day, tz: 'UTC', langs: ['de', 'en'].map((lang) => ({ lang, daily: sum(mine('daily', lang)), streak: 0, push: false })), groups: [] } }
     }
     if (path === '/api/wordle/games' && method === 'POST') {
       const w = (st.wordle ??= { seq: 0, games: [] }), day = new Date().toISOString().slice(0, 10), lang = body.lang
-      if (!WORDS[lang] || !['daily', 'bonus'].includes(body.kind)) return err(501, 'demo_unavailable')
+      if (!WORDS[lang] || !body.kind === 'daily') return err(501, 'demo_unavailable')
       let g = w.games.find((x) => x.kind === body.kind && x.lang === lang && x.day === day)
       if (!g) {
         const h = [...(lang + day)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7)

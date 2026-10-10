@@ -224,3 +224,8 @@ table.stat th:first-child, table.stat td:first-child { text-align: left }
 input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums }
 .estimate-answer { display: grid; gap: 4px; text-align: center }
 .estimate-answer strong { font-size: 2.4rem; letter-spacing: -.02em; font-variant-numeric: tabular-nums }
+
+/* Wordle: Gruppenstand */
+.wgrid { font-size: .78rem; line-height: 1.15; letter-spacing: 1px; margin-top: 4px }
+.small { font-size: .82rem }
+.wmember { align-items: flex-start }

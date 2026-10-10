@@ -25,7 +25,7 @@ Email: {{CONTROLLER_EMAIL}}
 ## What this app stores
 - Anonymous profile: random friend code, display name of your choice, language, play level and category selection, a secret access key (in your browser, stored on the server only as a hash).
 - Play history: games, rounds, answers (right/wrong, response time), results, million ladder progress, contacts (friend codes) you add.
-- Wordle: your guesses and results per game (daily Wordle, bonus, groups), memberships in Wordle groups (group name, invitation code).
+- Wordle: your guesses and results per game (daily Wordle, groups), memberships in Wordle groups (group name, invitation code) and – if you share a result – the shared result (outcome, number of guesses and the colour grid, never the word) with its recipient, for 14 days.
 - Optional: username and password (hashed), birth year (year only), leaderboard name, your browser’s push subscription, your device’s time zone if you switch on the Wordle reminder (only for the “9 am” time), reviewer role.
 - Technical: IP addresses only transiently in memory for abuse protection (rate limits); your browser stores the access key and settings locally (technically necessary, no tracking cookies).
 
@@ -37,7 +37,7 @@ Email: {{CONTROLLER_EMAIL}}
 
 ## What others can see
 - Opponents and fellow players in duels, rounds and live games see your display name and the result.
-- Members of a Wordle group see your display name and whether you solved the group’s Wordle of the day and with how many guesses. The Wordle leaderboard shows only your leaderboard name, as with the quiz leaderboard, and only if you take part voluntarily.
+- Members of a Wordle group see your display name and whether you solved the group’s Wordle of the day and with how many guesses. Members of a group also see the colour grid of your group Wordle of the day once they have finished it themselves. Results you send to a contact or a group are seen by that recipient with your display name; the grid is shown only after they have finished the same Wordle themselves. A group’s points belong to that group only: they are not carried over when you join and are deleted when you leave. The Wordle leaderboard shows only your leaderboard name, as with the quiz leaderboard, and only if you take part voluntarily.
 - The leaderboard shows only your leaderboard name – or, if you explicitly choose so when joining, your display name (then visible to all visitors of the leaderboard) – and only if you actively take part. You can stop at any time; the name is removed immediately.
 - Community questions you submit are published under CC BY-SA 4.0 with your consent; your name is not mentioned.
 
@@ -50,7 +50,7 @@ Push messages go through your browser’s/operating system’s push service if y
 ## Retention
 - Anonymous profiles without an account are deleted after {{PRIVACY_RETENTION_DAYS}} days without activity.
 - Waiting games expire after 24 hours, multiplayer rounds are evaluated after 48 hours at the latest, inactive duels end after {{DUEL_FORFEIT_DAYS}} days. If your opponent does not respond for {{DUEL_TAKEOVER_HOURS}} hours, the duel can be continued with a bot; your previous play history in that duel then passes to the bot.
-- With “Delete profile”, access, contacts, account, birth year, leaderboard name, Wordle games and memberships and your consent record are removed immediately; if you leave a Wordle group, your games in it are deleted; finished games remain anonymised for opponents (name “—”).
+- With “Delete profile”, access, contacts, account, birth year, leaderboard name, Wordle games and memberships and your consent record are removed immediately; if you leave a Wordle group, your games in it and the results you shared into it are deleted; shared results expire after 14 days; finished games remain anonymised for opponents (name “—”).
 
 ## Your rights
 - Access and data portability: Profile → “Download profile & history”; additionally by email to the controller.
