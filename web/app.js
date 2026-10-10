@@ -150,7 +150,7 @@ async function route() {
   try {
     if (!S.me) { loading(); if (!(await boot())) return }
     if (my !== runId) return
-    const pages = { '': home, history, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top, live, 'live-join': liveJoin, sofa, wordle }
+    const pages = { '': home, history: historyPage, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top, live, 'live-join': liveJoin, sofa, wordle }
     await (pages[page] ?? home)(arg, my, arg2)
   } catch (e) {
     if (my !== runId) return
@@ -286,7 +286,7 @@ async function home(_, my) {
 }
 
 /** Verlauf: alle beendeten Spiele (die Startseite zeigt je Gegner nur das letzte). */
-async function history(_, my) {
+async function historyPage(_, my) {
   const r = await api('GET', '/api/games/history')
   if (my !== runId) return
   mount(topbar(t('history.title')), r.games.length ? h('div', { class: 'list' }, r.games.map(gameItem)) : h('div', { class: 'empty' }, t('history.empty')))
