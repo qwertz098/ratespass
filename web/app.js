@@ -326,6 +326,7 @@ async function home(_, my) {
       rooms.length ? [h('h2', {}, t('room.rounds')), h('div', { class: 'list' }, rooms.map(roomItem))] : null,
       section(t('home.yourTurn'), mine), section(t('home.theirTurn'), theirs), section(t('home.waiting'), waiting), section(t('home.finished'), done),
       older ? h('button', { class: 'btn block', onclick: () => go('#/history') }, t('home.history', { n: older })) : null,
+      h('button', { class: 'btn block', style: 'margin-top:12px', onclick: () => go('#/friends') }, '＋ ' + t('friends.invite')),
       h('div', { class: 'lbrow' }, h('button', { class: 'btn', onclick: () => go('#/top') }, t('home.lbQuiz')), h('button', { class: 'btn', onclick: () => go('#/wordle/board') }, t('wordle.board'))))
   }
   const load = guard(async () => {
@@ -372,8 +373,6 @@ async function newGame() {
     h('div', { class: 'list' },
       option(t('new.random'), t('new.randomSub'), '🎲', () => start('random')),
       option(t('new.bot'), t('new.botSub'), '🤖', () => start('bot'))),
-    h('h2', {}, t('friends.heading')),
-    h('div', { class: 'list' }, option(t('friends.title'), t('new.inviteSub'), '🤝', () => go('#/friends'))),
     h('h2', {}, t('ladder.title')),
     h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
       const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),
