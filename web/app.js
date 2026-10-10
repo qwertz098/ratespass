@@ -141,7 +141,9 @@ function poll(fn, ms) {
   cleanup = () => { prev(); clearInterval(id); document.removeEventListener('visibilitychange', onVis) }
 }
 
+let updateReady = false
 async function route() {
+  if (updateReady) return location.reload()
   cleanup(); cleanup = () => {}
   const my = ++runId
   const [, page = '', arg, arg2] = (location.hash || '#/').slice(1).split('/')
@@ -1640,7 +1642,17 @@ if (location.pathname.startsWith('/i/')) {
   history.replaceState(null, '', '/#/invite/' + code)
 }
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').catch(() => {})
+  // Neue Version: Eine installierte App bleibt oft tagelang im Speicher und würde sonst den alten Code behalten. Wird ein neuer Service Worker aktiv,
+  // lädt die App beim nächsten Seitenwechsel (bzw. sofort, wenn sie gerade im Hintergrund ist) neu; beim Zurückkehren in die App wird nach Updates gesucht.
+  const hadController = !!navigator.serviceWorker.controller
+  navigator.serviceWorker.register('/sw.js').then((reg) => {
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) reg.update().catch(() => {}) })
+  }).catch(() => {})
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadController) return // Erstinstallation
+    updateReady = true
+    if (document.hidden) location.reload()
+  })
   // Der Service Worker meldet Pushes, während die App sichtbar ist: Ansicht aktualisieren statt Benachrichtigung zeigen.
   navigator.serviceWorker.addEventListener('message', (e) => {
     if (e.data?.type !== 'push-refresh') return
