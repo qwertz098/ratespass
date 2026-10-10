@@ -218,7 +218,7 @@ const DEMO = (() => {
     if (path === '/api/logout') return { body: { ok: true } }
     if (path.startsWith('/api/push/')) return err(400, 'bad_subscription')
     if (path === '/api/games' && method === 'GET') {
-      return { body: { games: st.games.map((g) => { const v = view(g); return { id: v.id, status: v.status, lang: v.lang, round: v.round, turn: v.turn, phase: v.phase, opp: v.opp, score: v.score, winner: v.winner, updated_at: v.updated_at } }) } }
+      return { body: { history: 0, games: st.games.map((g) => { const v = view(g); return { id: v.id, status: v.status, lang: v.lang, round: v.round, turn: v.turn, phase: v.phase, opp: v.opp, score: v.score, winner: v.winner, updated_at: v.updated_at } }) } }
     }
     /* Wordle (Demo: tägliches Wort + Bonus aus der Lösungsliste; Gruppen, Bestenliste und Erinnerungen brauchen den echten Server) */
     if (path === '/api/wordle' && method === 'GET') {

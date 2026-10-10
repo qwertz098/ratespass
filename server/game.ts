@@ -119,6 +119,9 @@ export function createGame(me: PlayerRow, opponent: string, lang: string): numbe
       const o = get<PlayerRow>('SELECT * FROM players WHERE public_id=? AND deleted=0 AND is_bot=0', opponent)
       if (!o || o.id === me.id) throw new HttpError(404, 'unknown_player')
       if (!knows(me.id, o.id)) throw new HttpError(403, 'not_a_contact')
+      // Ein laufendes Duell je Gegner: gibt es schon eins (egal wer es angelegt hat), wird dieses geöffnet statt ein weiteres anzulegen
+      const open = get<{ id: number }>("SELECT id FROM games WHERE status IN ('waiting','active') AND ((p1=? AND p2=?) OR (p1=? AND p2=?)) ORDER BY updated_at DESC LIMIT 1", me.id, o.id, o.id, me.id)
+      if (open) return open.id
       id = insertGame(me.id, o.id, lang)
       notifyPlayer(o.id, 'challenge', id, me.name)
     }
@@ -406,16 +409,26 @@ export function getGameView(gameId: number, me: PlayerRow) {
   return gameView(mustGame(gameId, me.id), me.id)
 }
 
+const listItem = (g: GameRow, me: PlayerRow) => {
+  const v = gameView(g, me.id)
+  return { id: v.id, status: v.status, lang: v.lang, round: v.round, turn: v.turn, phase: v.phase, opp: v.opp,
+    score: v.score, winner: v.winner, updated_at: v.updated_at }
+}
+
+/** Startseite: laufende und wartende Spiele, dazu je Gegner nur das zuletzt beendete Spiel; `history` zählt die älteren (Verlauf). */
 export function listGames(me: PlayerRow) {
   const rows = all<GameRow>(
-    `SELECT * FROM games WHERE (p1=? OR p2=?) AND (status IN ('waiting','active') OR
-       id IN (SELECT id FROM games WHERE (p1=? OR p2=?) AND status='finished' ORDER BY updated_at DESC LIMIT 20))
-     ORDER BY updated_at DESC`, me.id, me.id, me.id, me.id)
-  return rows.map((g) => {
-    const v = gameView(g, me.id)
-    return { id: v.id, status: v.status, lang: v.lang, round: v.round, turn: v.turn, phase: v.phase, opp: v.opp,
-      score: v.score, winner: v.winner, updated_at: v.updated_at }
-  })
+    `SELECT * FROM games g WHERE (p1=? OR p2=?) AND (status IN ('waiting','active') OR
+       (status='finished' AND id = (SELECT h.id FROM games h WHERE h.status='finished' AND ((h.p1=g.p1 AND h.p2=g.p2) OR (h.p1=g.p2 AND h.p2=g.p1)) ORDER BY h.updated_at DESC, h.id DESC LIMIT 1)))
+     ORDER BY updated_at DESC LIMIT 60`, me.id, me.id)
+  const finished = get<{ n: number }>("SELECT COUNT(*) n FROM games WHERE (p1=? OR p2=?) AND status='finished'", me.id, me.id)!.n
+  const shown = rows.filter((g) => g.status === 'finished').length
+  return { games: rows.map((g) => listItem(g, me)), history: Math.max(0, finished - shown) }
+}
+
+/** Verlauf: alle beendeten Spiele (neueste zuerst, höchstens 100). */
+export function listHistory(me: PlayerRow) {
+  return all<GameRow>("SELECT * FROM games WHERE (p1=? OR p2=?) AND status='finished' ORDER BY updated_at DESC, id DESC LIMIT 100", me.id, me.id).map((g) => listItem(g, me))
 }
 
 /** Zeitüberschreitungen: Wartende Spiele verfallen, inaktive Spieler geben auf. */

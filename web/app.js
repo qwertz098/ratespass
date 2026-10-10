@@ -148,7 +148,7 @@ async function route() {
   try {
     if (!S.me) { loading(); if (!(await boot())) return }
     if (my !== runId) return
-    const pages = { '': home, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top, live, 'live-join': liveJoin, sofa, wordle }
+    const pages = { '': home, history, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top, live, 'live-join': liveJoin, sofa, wordle }
     await (pages[page] ?? home)(arg, my, arg2)
   } catch (e) {
     if (my !== runId) return
@@ -255,7 +255,7 @@ function sessionLost() {
 async function home(_, my) {
   let wordleOpen = 0
   const unchanged = makeUnchanged()
-  const render = (games, rooms = []) => {
+  const render = (games, rooms = [], older = 0) => {
     if (my !== runId) return
     const mine = games.filter((g) => g.status === 'active' && g.turn === 'me')
     const theirs = games.filter((g) => g.status === 'active' && g.turn === 'opp')
@@ -271,15 +271,23 @@ async function home(_, my) {
       games.length || rooms.length ? null : h('div', { class: 'empty' }, t('home.empty')),
       rooms.length ? [h('h2', {}, t('room.rounds')), h('div', { class: 'list' }, rooms.map(roomItem))] : null,
       section(t('home.yourTurn'), mine), section(t('home.theirTurn'), theirs), section(t('home.waiting'), waiting), section(t('home.finished'), done),
+      older ? h('button', { class: 'btn block', onclick: () => go('#/history') }, t('home.history', { n: older })) : null,
       h('div', { class: 'lbrow' }, h('button', { class: 'btn', onclick: () => go('#/top') }, t('home.lbQuiz')), h('button', { class: 'btn', onclick: () => go('#/wordle/board') }, t('wordle.board'))))
   }
   const load = guard(async () => {
     const [g, r, w] = await Promise.all([api('GET', '/api/games'), api('GET', '/api/rooms'), api('GET', '/api/wordle').catch(() => null)])
     wordleOpen = w ? w.langs.filter((l) => l.lang === getLang() && !l.daily).length + w.groups.filter((x) => !x.today || x.today.status === 'playing').length : 0
-    if (!unchanged([g.games, r.rooms, wordleOpen])) render(g.games, r.rooms)
+    if (!unchanged([g.games, g.history, r.rooms, wordleOpen])) render(g.games, r.rooms, g.history)
   })
   await load()
   poll(load, 10000)
+}
+
+/** Verlauf: alle beendeten Spiele (die Startseite zeigt je Gegner nur das letzte). */
+async function history(_, my) {
+  const r = await api('GET', '/api/games/history')
+  if (my !== runId) return
+  mount(topbar(t('history.title')), r.games.length ? h('div', { class: 'list' }, r.games.map(gameItem)) : h('div', { class: 'empty' }, t('history.empty')))
 }
 
 function gameItem(g) {

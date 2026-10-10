@@ -222,7 +222,8 @@ router.delete('/api/contacts/:public_id', (c) => {
 })
 
 /* ---------- Spiele ---------- */
-router.get('/api/games', (c) => ({ games: game.listGames(me(c)) }))
+router.get('/api/games', (c) => game.listGames(me(c)))
+router.get('/api/games/history', (c) => ({ games: game.listHistory(me(c)) }))
 
 router.post('/api/games', (c) => {
   const p = me(c)

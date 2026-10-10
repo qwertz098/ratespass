@@ -86,6 +86,8 @@ Aktueller Bestand: **3778 Fragen** (davon 3556 auch auf Englisch spielbar) (`see
 
 ### Spielstufen und Extra-Kategorien
 
+**Duelle:** je Gegner läuft höchstens ein Duell (eine erneute Herausforderung öffnet das laufende); nach dem Ende ist eine Revanche möglich. Die Startseite zeigt je Gegner nur das zuletzt beendete Spiel, ältere stehen unter „Verlauf anzeigen“ (`GET /api/games/history`).
+
 Jeder Spieler wählt im Profil sein **Level** – Basis, Nerd (Sci-Fi & Fantasy, Programmieren & IT, Anime & Manga, Retro-Games) oder Experte (MINT & Ingenieurwesen, Geisteswissenschaften, Kunst & Literatur, Informatik) – und kann einzelne Extra-Kategorien abwählen. Im Duell zählt immer die **niedrigste Einstellung** beider Spieler (niedrigstes Level, Schnitt der aktiven Kategorien); beim Spielstart wird die Auswahl im Spiel festgehalten. Details in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
 
 ### Wordle
