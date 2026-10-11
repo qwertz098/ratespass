@@ -10,6 +10,7 @@ import {
 import * as game from './game.ts'
 import * as ladder from './ladder.ts'
 import * as pool from './pool.ts'
+import * as chat from './chat.ts'
 import * as rooms from './rooms.ts'
 import * as ai from './ai.ts'
 import * as lb from './leaderboard.ts'
@@ -181,6 +182,7 @@ router.get('/api/export', (c) => {
     player: profile(p),
     contacts: all<PlayerRow>('SELECT p.* FROM contacts c JOIN players p ON p.id=c.contact_id WHERE c.player_id=? AND p.deleted=0', p.id).map(pub),
     games: games.map((g) => game.gameView(g, p.id)),
+    chat: chat.exportFor(p),
   }
 })
 
@@ -211,17 +213,20 @@ router.post('/api/contacts', (c) => {
   const p = me(c)
   const o = get<PlayerRow>('SELECT * FROM players WHERE public_id=? AND deleted=0 AND is_bot=0', String(c.body.public_id ?? '').toUpperCase())
   if (!o || o.id === p.id) throw new HttpError(404, 'unknown_player')
-  tx(() => {
-    run('INSERT OR IGNORE INTO contacts(player_id,contact_id,created_at) VALUES(?,?,?)', p.id, o.id, now())
-    run('INSERT OR IGNORE INTO contacts(player_id,contact_id,created_at) VALUES(?,?,?)', o.id, p.id, now())
-  })
+  chat.addFriend(p, o)
   return { contact: pub(o) }
 })
 
 router.delete('/api/contacts/:public_id', (c) => {
-  run('DELETE FROM contacts WHERE player_id=? AND contact_id=(SELECT id FROM players WHERE public_id=?)', me(c).id, c.params.public_id.toUpperCase())
+  chat.removeFriend(me(c), c.params.public_id) // entfernt den Kontakt, löscht den Chat-Verlauf und sperrt die Person gegen erneutes Anlegen der Gegenrichtung
   return { ok: true }
 })
+
+/* ---------- Chat mit Freunden ---------- */
+router.get('/api/chat', (c) => chat.conversations(me(c)))
+router.get('/api/chat/unread', (c) => ({ unread: chat.unreadTotal(me(c)) }))
+router.get('/api/chat/:public_id', (c) => chat.thread(me(c), c.params.public_id, Math.max(0, Number(c.url.searchParams.get('after') ?? 0) || 0)))
+router.post('/api/chat/:public_id', (c) => { rateLimit(`chat:${me(c).id}`, 30, 60_000); return { message: chat.send(me(c), c.params.public_id, c.body?.text) } })
 
 /* ---------- Spiele ---------- */
 router.get('/api/games', (c) => game.listGames(me(c)))

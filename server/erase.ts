@@ -4,6 +4,7 @@ import { all, run, tx, now } from './db.ts'
 import { resign } from './game.ts'
 import { forgetPlayer } from './rooms.ts'
 import { erasePlayerWordle } from './wordle.ts'
+import { forgetChat } from './chat.ts'
 import type { PlayerRow } from './auth.ts'
 
 export function erasePlayer(p: PlayerRow) {
@@ -19,6 +20,7 @@ export function erasePlayer(p: PlayerRow) {
     run('DELETE FROM ladders WHERE player_id=?', p.id)
     run('DELETE FROM consents WHERE player_id=?', p.id)
     forgetPlayer(p.id)
+    forgetChat(p.id)
     erasePlayerWordle(p.id)
     run('UPDATE reviews SET player_id=NULL WHERE player_id=?', p.id)
     run('UPDATE players SET reviewer=0 WHERE id=?', p.id)

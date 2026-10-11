@@ -4,6 +4,7 @@ import { adminStatus } from './admin.ts'
 import { config } from './config.ts'
 import { sweep } from './game.ts'
 import { sweepPool } from './pool.ts'
+import { sweepChat } from './chat.ts'
 import { sweepRooms } from './rooms.ts'
 import { importPendingBatches } from './questions.ts'
 import { importPendingEstimates } from './estimates.ts'
@@ -19,7 +20,7 @@ loadWordlists()
 resumeLive()
 setInterval(() => { try { sweepPool() } catch (e) { console.error('pool', e) } }, 60_000).unref()
 setInterval(() => { try { wordlePushTick() } catch (e) { console.error('wordle push', e) } }, 60_000).unref()
-setInterval(() => { try { sweep(); sweepRooms(); sweepProfiles(); sweepLive(); sweepShares() } catch (e) { console.error('sweep', e) } }, 30 * 60_000).unref()
+setInterval(() => { try { sweep(); sweepRooms(); sweepProfiles(); sweepLive(); sweepShares(); sweepChat() } catch (e) { console.error('sweep', e) } }, 30 * 60_000).unref()
 
 // KI-Auto-Lauf (nur mit ANTHROPIC_API_KEY und AI_AUTO=1 bzw. im Admin eingeschaltet): neue Fragen landen immer in der Moderation
 setInterval(() => { autoRun().catch((e) => console.error('ai auto', e?.message ?? e)) }, 60 * 60_000).unref()

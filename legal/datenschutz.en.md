@@ -26,6 +26,7 @@ Email: {{CONTROLLER_EMAIL}}
 - Anonymous profile: random friend code, display name of your choice, language, play level and category selection, a secret access key (in your browser, stored on the server only as a hash).
 - Play history: games, rounds, answers (right/wrong, response time), results, million ladder progress, contacts (friend codes) you add.
 - Wordle: your guesses and results per game (daily Wordle, groups), memberships in Wordle groups (group name, invitation code) and – if you share a result – the shared result (outcome, number of guesses and the colour grid, never the word) with its recipient, for 14 days.
+- Chat: text messages you send to friends (mutual contacts), with sender, recipient, time and read status; they are stored for 30 days, deleted immediately when you remove a friend and when you delete your profile.
 - Quiz pool: whether you take part in the quiz pool (voluntary switch, can be turned off any time; requesting a pool opponent makes you a member).
 - Optional: username and password (hashed), birth year (year only), leaderboard name, your browser’s push subscription, your device’s time zone if you switch on the Wordle reminder (only for the “9 am” time), reviewer role.
 - Technical: IP addresses only transiently in memory for abuse protection (rate limits); your browser stores the access key and settings locally (technically necessary, no tracking cookies).
@@ -38,6 +39,7 @@ Email: {{CONTROLLER_EMAIL}}
 
 ## What others can see
 - Opponents and fellow players in duels, rounds and live games see your display name and the result.
+- Chat messages are visible only to you and the friend concerned (in the app and in your profile export); the push notification shows only the sender’s name, never the text. The operator can technically read the messages (database) but does not evaluate them.
 - If you take part in the quiz pool, the server may pick you at random as an opponent for a duel; the opponent sees your display name. Others cannot see who is in the pool, only the number of members is shown. Pool duels in which the requested player does not play within 30 minutes expire.
 - Members of a Wordle group see your display name and whether you solved the group’s Wordle of the day and with how many guesses. Members of a group also see the colour grid of your group Wordle of the day once they have finished it themselves. Results you send to a contact or a group are seen by that recipient with your display name; the grid is shown only after they have finished the same Wordle themselves. A group’s points belong to that group only: they are not carried over when you join and are deleted when you leave. The Wordle leaderboard shows only your leaderboard name, as with the quiz leaderboard, and only if you take part voluntarily.
 - The leaderboard shows only your leaderboard name – or, if you explicitly choose so when joining, your display name (then visible to all visitors of the leaderboard) – and only if you actively take part. You can stop at any time; the name is removed immediately.

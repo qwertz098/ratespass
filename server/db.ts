@@ -528,8 +528,26 @@ ALTER TABLE games ADD COLUMN pool INTEGER NOT NULL DEFAULT 0;
 CREATE INDEX games_pool ON games(pool, status);
 `
 
+const SCHEMA_V20 = `
+CREATE TABLE chat_messages(
+  id INTEGER PRIMARY KEY,
+  from_id INTEGER NOT NULL,
+  to_id INTEGER NOT NULL,
+  body TEXT NOT NULL,
+  created_at INTEGER NOT NULL,
+  read_at INTEGER
+);
+CREATE INDEX chat_to ON chat_messages(to_id, read_at);
+CREATE INDEX chat_pair ON chat_messages(from_id, to_id, id);
+CREATE TABLE chat_blocks(
+  player_id INTEGER NOT NULL,
+  blocked_id INTEGER NOT NULL,
+  PRIMARY KEY(player_id, blocked_id)
+);
+`
+
 const version = (db.prepare('PRAGMA user_version').get() as unknown as { user_version: number }).user_version
-for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10], [11, SCHEMA_V11], [12, SCHEMA_V12], [13, SCHEMA_V13], [14, SCHEMA_V14], [15, SCHEMA_V15], [16, SCHEMA_V16], [17, SCHEMA_V17], [18, SCHEMA_V18], [19, SCHEMA_V19]] as const) {
+for (const [v, sql] of [[1, SCHEMA_V1], [2, SCHEMA_V2], [3, SCHEMA_V3], [4, SCHEMA_V4], [5, SCHEMA_V5], [6, SCHEMA_V6], [7, SCHEMA_V7], [8, SCHEMA_V8], [9, SCHEMA_V9], [10, SCHEMA_V10], [11, SCHEMA_V11], [12, SCHEMA_V12], [13, SCHEMA_V13], [14, SCHEMA_V14], [15, SCHEMA_V15], [16, SCHEMA_V16], [17, SCHEMA_V17], [18, SCHEMA_V18], [19, SCHEMA_V19], [20, SCHEMA_V20]] as const) {
   if (version < v) {
     db.exec('BEGIN')
     db.exec(sql)

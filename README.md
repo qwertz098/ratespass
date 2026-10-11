@@ -92,6 +92,8 @@ Aktueller Bestand: **3778 Fragen** (davon 3556 auch auf Englisch spielbar) (`see
 
 **Layout:** Spielbildschirme (Quiz-Frage, Wordle, Sofa, Live-Fragen auf dem Handy, Duell-Übersicht) sind so gebaut, dass sie auf Handys ab 360×640 ohne Scrollen passen (kompakte Abstände unter 820/700 px Höhe, höhenabhängige Größen im Wordle).
 
+**Chat:** einfacher Textchat zwischen gegenseitigen Freunden (💬 auf der Startseite, im Profil und in der Spielauswahl); Nachrichten ≤ 500 Zeichen, 30 Tage gespeichert (`CHAT_RETENTION_DAYS`), Push ohne Text; Freund entfernen löscht den Verlauf und sperrt die Person.
+
 **Duelle:** je Gegner läuft höchstens ein Duell, auch gegen den Bot (eine erneute Herausforderung öffnet das laufende); nach dem Ende ist eine Revanche möglich. Die Startseite zeigt je Gegner nur das zuletzt beendete Spiel, ältere stehen unter „Verlauf anzeigen“ (`GET /api/games/history`).
 
 Jeder Spieler wählt im Profil sein **Level** – Basis, Nerd (Sci-Fi & Fantasy, Programmieren & IT, Anime & Manga, Retro-Games) oder Experte (MINT & Ingenieurwesen, Geisteswissenschaften, Kunst & Literatur, Informatik) – und kann einzelne Extra-Kategorien abwählen. Im Duell zählt immer die **niedrigste Einstellung** beider Spieler (niedrigstes Level, Schnitt der aktiven Kategorien); beim Spielstart wird die Auswahl im Spiel festgehalten. Details in [`docs/QUESTIONS.md`](docs/QUESTIONS.md).

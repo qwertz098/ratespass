@@ -347,6 +347,8 @@ const DEMO = (() => {
         return { body: { ...res, explanation: null, ladder: lview(l) } }
       }
     }
+    if (path === '/api/chat/unread') return { body: { unread: 0 } }
+    if (path.startsWith('/api/chat')) return err(501, 'demo_unavailable')
     if (path === '/api/pool') { if (method === 'POST') { st.pool = body?.member === true; save() } return { body: { members: 4, member: !!st.pool, game: null } } }
     if (path === '/api/games' && method === 'POST') {
       const o = String(body.opponent || 'bot')

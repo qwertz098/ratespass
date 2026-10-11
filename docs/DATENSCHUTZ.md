@@ -34,3 +34,6 @@ Siehe [`WORDLE.md`](WORDLE.md#datenschutz): Spiele/Versuche, Gruppen-Mitgliedsch
 
 ## Quiz-Pool
 `players.pool` (0/1) merkt, ob jemand im Quiz-Pool mitspielt (freiwillig; Anfragen eines Pool-Gegners tritt automatisch bei). Der Server wählt daraus zufällig ein teilnahmefähiges Mitglied (`server/pool.ts`: gleiche App-Sprache, in den letzten 7 Tagen aktiv, nicht in einem anderen Pool-Spiel); `games.pool=1` kennzeichnet Pool-Spiele. Pool-Duelle, in denen der Angefragte nicht binnen `POOL_EXPIRE_MIN` (30) Minuten spielt, verfallen. Nach außen sichtbar ist nur die Zahl der Mitglieder; das Spiel zeigt dem Gegner den Anzeigenamen. Beim Löschen des Profils wird das Flag zurückgesetzt.
+
+## Chat mit Freunden
+`chat_messages` (Absender, Empfänger, Text bis 500 Zeichen, Zeitpunkt, Lesestatus) nur zwischen gegenseitigen Kontakten (`server/chat.ts`). Aufbewahrung `CHAT_RETENTION_DAYS` (Standard 30), Löschung beim Entfernen des Freundes (Verlauf beider Seiten), beim Löschen des Profils und im Sweep. Wer einen Freund entfernt, sperrt ihn zugleich (`chat_blocks`): Die entfernte Person kann die Gegenrichtung nicht neu anlegen. Der Profil-Export (`/api/export`) enthält die eigenen Nachrichten (Auskunft). Push-Mitteilungen enthalten nie den Nachrichtentext.

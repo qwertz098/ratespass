@@ -347,3 +347,21 @@ input.guess { flex: 1; min-width: 0; font-size: 1.4rem; font-weight: 700; text-a
 /* Version im Profil und Hinweisleiste „Neue Version“ */
 .versionbox { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 13px; padding: 4px 4px 16px }
 .update-banner { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); max-width: 496px; margin: 0 auto; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); border: 1px solid var(--line); font-weight: 600 }
+
+/* Chat: Verlauf scrollt in der Karte, die Seite selbst bleibt stehen */
+body:has(.chatbox) { height: 100dvh; overflow: hidden }
+#app:has(.chatbox) { min-height: 0 }
+.chatbox { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 8px; padding: 10px }
+.chatlog { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding: 2px; overscroll-behavior: contain }
+.chatlog .empty { margin: auto; padding: 12px }
+.bubble { max-width: 82%; padding: 8px 12px; border-radius: 16px; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.35 }
+.bubble.mine { align-self: flex-end; background: var(--accent); color: var(--accent-ink); border-bottom-right-radius: 5px }
+.bubble.theirs { align-self: flex-start; background: var(--line); border-bottom-left-radius: 5px }
+.bubble .bt { font-size: 11px; opacity: .65; margin-top: 2px; text-align: right }
+.chatrow { display: flex; gap: 8px; align-items: flex-end }
+.chatrow textarea { flex: 1; resize: none; min-height: 44px; max-height: 110px; padding: 10px 12px; border-radius: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit }
+.chatbox .hint { margin: 0; text-align: center; font-size: .75rem }
+.chatbtn { position: relative }
+.ubadge { position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: #ea580c; color: #fff; font-size: 11px; font-weight: 700; display: grid; place-items: center; line-height: 1 }
+.ubadge.inline { position: static }
+@media (max-height: 700px) { .chatbox .hint { display: none } }

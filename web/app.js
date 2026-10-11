@@ -127,6 +127,7 @@ async function pickGame(c) {
   document.body.append(h('div', { class: 'sheet pick' }, h('div', { class: 'card stack' },
     h('div', { class: 'row' }, avatar(c), h('strong', { class: 'grow ell' }, t('friends.pickGame', { name: c.name })), h('button', { class: 'btn small', 'aria-label': t('review.cancel'), onclick: close }, '✕')),
     h('div', { class: 'list' },
+      opt('💬', t('chat.title'), t('chat.sub'), async () => go('#/chat/' + c.public_id)),
       opt('🧠', t('game.quizDuel'), t(running ? 'game.quizDuelRunning' : 'game.quizDuelSub'), async () => { const r = await api('POST', '/api/games', { opponent: c.public_id, lang: gameLang() }); go('#/game/' + r.id) }),
       opt('🟩', t('game.wordleDuel'), t('game.wordleDuelSub'), async () => { const r = await api('POST', '/api/wordle/duel', { public_id: c.public_id, lang: wlangs()[0] ?? 'de' }); toast(t('wordle.duelSent', { name: c.name })); go('#/wordle/group/' + r.group.id) })))))
 }
@@ -204,7 +205,7 @@ async function route() {
   try {
     if (!S.me) { loading(); if (!(await boot())) return }
     if (my !== runId) return
-    const pages = { '': home, history: historyPage, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top, live, 'live-join': liveJoin, sofa, wordle }
+    const pages = { '': home, history: historyPage, new: newGame, game: gameView, play, profile, contribute, licenses, invite, friends, ladder, lplay, room, rplay, join, top, live, 'live-join': liveJoin, sofa, wordle, chat }
     await (pages[page] ?? home)(arg, my, arg2)
   } catch (e) {
     if (my !== runId) return
@@ -310,7 +311,7 @@ function sessionLost() {
 
 /* ---------- Startseite ---------- */
 async function home(_, my) {
-  let wordleOpen = 0
+  let wordleOpen = 0, chatUnread = 0
   const unchanged = makeUnchanged()
   const render = (games, rooms = [], older = 0) => {
     if (my !== runId) return
@@ -321,7 +322,9 @@ async function home(_, my) {
     const section = (title, list) => list.length ? [h('h2', {}, title), h('div', { class: 'list' }, list.map(gameItem))] : []
     mount(
       h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Quis', h('b', {}, 'sel')),
-        h('button', { class: 'iconbtn', 'aria-label': t('profile.title'), onclick: () => go('#/profile') }, avatar(S.me, 'sm'))),
+        h('div', { class: 'row' },
+          h('button', { class: 'iconbtn chatbtn', 'aria-label': t('chat.title'), onclick: () => go('#/chat') }, '💬', chatUnread ? h('span', { class: 'ubadge' }, String(chatUnread)) : null),
+          h('button', { class: 'iconbtn', 'aria-label': t('profile.title'), onclick: () => go('#/profile') }, avatar(S.me, 'sm')))),
       h('div', { class: 'tiles' },
         h('button', { class: 'tile quiz', onclick: () => go('#/new') }, h('b', {}, t('home.quizduell')), h('span', { class: 'ts' }, '＋ ' + t('home.new'))),
         h('button', { class: 'tile wordle', onclick: () => go('#/wordle') }, h('b', {}, t('wordle.title')), h('span', { class: 'ts' }, wordleOpen ? t('wordle.open', { n: wordleOpen }) : t('wordle.allDone')))),
@@ -333,9 +336,10 @@ async function home(_, my) {
       h('div', { class: 'lbrow' }, h('button', { class: 'btn', onclick: () => go('#/top') }, t('home.lbQuiz')), h('button', { class: 'btn', onclick: () => go('#/wordle/board') }, t('wordle.board'))))
   }
   const load = guard(async () => {
-    const [g, r, w] = await Promise.all([api('GET', '/api/games'), api('GET', '/api/rooms'), api('GET', '/api/wordle').catch(() => null)])
+    const [g, r, w, cu] = await Promise.all([api('GET', '/api/games'), api('GET', '/api/rooms'), api('GET', '/api/wordle').catch(() => null), api('GET', '/api/chat/unread').catch(() => ({ unread: 0 }))])
+    chatUnread = cu.unread
     wordleOpen = w ? w.langs.filter((l) => l.lang === getLang() && !l.daily).length + w.groups.filter((x) => !x.today || x.today.status === 'playing').length : 0
-    if (!unchanged([g.games, g.history, r.rooms, wordleOpen])) render(g.games, r.rooms, g.history)
+    if (!unchanged([g.games, g.history, r.rooms, wordleOpen, chatUnread])) render(g.games, r.rooms, g.history)
   })
   await load()
   poll(load, 10000)
@@ -1446,6 +1450,7 @@ async function profile() {
   const installBox = h('div', { class: 'stack' }) // Installationsanleitung: erst nach Antippen des Knopfs ganz unten
   const contacts = S.contacts.length
     ? h('div', { class: 'list' }, S.contacts.map((c) => h('div', { class: 'item' }, avatar(c), h('div', { class: 'grow ell' }, c.name),
+      h('button', { class: 'btn small', 'aria-label': t('chat.title'), onclick: () => go('#/chat/' + c.public_id) }, '💬'),
       h('button', { class: 'btn small', onclick: () => pickGame(c) }, t('profile.challenge')),
       h('button', { class: 'btn small danger', 'aria-label': t('profile.remove'), onclick: guard(async () => { await api('DELETE', '/api/contacts/' + c.public_id); S.contacts = S.contacts.filter((x) => x.public_id !== c.public_id); setLocalContacts(S.contacts); route() }) }, '✕'))))
     : h('div', { class: 'empty' }, t('new.noContacts'))
@@ -1613,6 +1618,56 @@ async function friends() {
   }
   mount(topbar(t('friends.title')), h('div', { class: 'card stack' }, tabs, body), result, h('p', { class: 'hint' }, t('friends.localNote')))
   await show(store.get('rp.friendsTab') || 'mine')
+}
+
+/* ---------- Chat mit Freunden ---------- */
+const timeLabel = (ms) => { const d = new Date(ms), today = new Date(); return d.toLocaleTimeString(getLang(), { hour: '2-digit', minute: '2-digit' }) + (d.toDateString() === today.toDateString() ? '' : ' · ' + d.toLocaleDateString(getLang(), { day: 'numeric', month: 'short' })) }
+
+async function chat(arg, my) { return arg ? chatThread(arg, my) : chatList(my) }
+
+async function chatList(my) {
+  const r = await api('GET', '/api/chat')
+  if (my !== runId) return
+  const talking = new Set(r.conversations.map((c) => c.friend.public_id))
+  const fresh = S.contacts.filter((c) => !talking.has(c.public_id))
+  mount(topbar(t('chat.title')),
+    r.conversations.length ? h('div', { class: 'list' }, r.conversations.map((c) => h('button', { class: 'item', onclick: () => go('#/chat/' + c.friend.public_id) }, avatar(c.friend),
+      h('div', { class: 'grow' }, h('div', { class: 'ell' }, c.friend.name), h('div', { class: 'muted ell' }, (c.last.mine ? t('chat.you') + ' ' : '') + c.last.text)),
+      c.unread ? h('span', { class: 'ubadge inline' }, String(c.unread)) : null))) : h('div', { class: 'empty' }, S.contacts.length ? t('chat.none') : t('chat.noFriends')),
+    fresh.length ? [h('h2', {}, t('chat.new')), h('div', { class: 'list' }, fresh.map((c) => h('button', { class: 'item', onclick: () => go('#/chat/' + c.public_id) }, avatar(c), h('div', { class: 'grow ell' }, c.name), h('span', { class: 'badge' }, '💬'))))] : null,
+    S.contacts.length ? null : h('button', { class: 'btn block', onclick: () => go('#/friends') }, '＋ ' + t('friends.addFriend')),
+    h('p', { class: 'hint' }, t('chat.info', { days: 30 })))
+  poll(async () => { if (my === runId && (await api('GET', '/api/chat/unread').catch(() => null))?.unread) chatList(my) }, 8000)
+}
+
+async function chatThread(id, my) {
+  let first = true, last = 0, friend = null, maxLen = 500
+  const log = h('div', { class: 'chatlog' }), box = h('div', { class: 'card chatbox' })
+  const input = h('textarea', { rows: 1, maxLength: maxLen, placeholder: t('chat.placeholder'), 'aria-label': t('chat.placeholder'), enterKeyHint: 'send' })
+  const bubble = (m) => h('div', { class: 'bubble ' + (m.mine ? 'mine' : 'theirs') }, h('div', {}, m.text), h('div', { class: 'bt' }, timeLabel(m.at)))
+  const add = (msgs) => {
+    if (!msgs.length) return
+    const near = log.scrollHeight - log.scrollTop - log.clientHeight < 80
+    for (const m of msgs) { log.append(bubble(m)); last = Math.max(last, m.id) }
+    log.querySelector('.empty')?.remove()
+    if (first || near) log.scrollTop = log.scrollHeight
+  }
+  const pull = async () => {
+    const r = await api('GET', `/api/chat/${id}?after=${last}`)
+    if (my !== runId) return
+    if (!friend) { friend = r.friend; maxLen = r.max_length; input.maxLength = maxLen; mount(topbar(friend.name), box); log.append(h('div', { class: 'empty' }, t('chat.empty'))) }
+    add(r.messages); first = false
+  }
+  const sendBtn = h('button', { class: 'btn primary', onclick: guard(async () => {
+    const text = input.value.trim(); if (!text) return
+    sendBtn.disabled = true
+    try { const r = await api('POST', `/api/chat/${id}`, { text }); input.value = ''; input.style.height = ''; add([r.message]); log.scrollTop = log.scrollHeight } finally { sendBtn.disabled = false }
+    input.focus() }) }, t('chat.send'))
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendBtn.click() } })
+  input.addEventListener('input', () => { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 110) + 'px' })
+  box.append(log, h('div', { class: 'chatrow' }, input, sendBtn), h('p', { class: 'hint' }, t('chat.info', { days: 30 })))
+  await pull()
+  poll(guard(pull), 4000)
 }
 
 /* ---------- Einladung ---------- */
