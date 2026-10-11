@@ -729,7 +729,12 @@ const DEMO = (() => {
         return { body: { ...res, explanation: null, ladder: lview(l) } }
       }
     }
-    if (path === '/api/games' && method === 'POST') return newGame(String(body.opponent || 'bot'), body.lang === 'en' ? 'en' : 'de')
+    if (path === '/api/pool') { if (method === 'POST') { st.pool = body?.member === true; save() } return { body: { members: 4, member: !!st.pool, game: null } } }
+    if (path === '/api/games' && method === 'POST') {
+      const o = String(body.opponent || 'bot')
+      if (o === 'bot') { const open = st.games.find((g) => g.opp?.is_bot && g.status !== 'finished'); if (open) return { body: { id: open.id } } }
+      return newGame(o === 'pool' ? 'random' : o, body.lang === 'en' ? 'en' : 'de')
+    }
     if ((m = path.match(/^\/api\/games\/(\d+)(?:\/(\w+))?$/))) {
       const g = find(m[1]), act = m[2]
       if (!g) return err(404, 'not_found')
@@ -796,7 +801,7 @@ const dict = {
     'home.finished': 'Beendet', 'home.history': 'Verlauf anzeigen ({n} ältere)', 'history.title': 'Verlauf', 'history.empty': 'Noch keine beendeten Spiele.', 'home.empty': 'Noch keine Spiele. Starte dein erstes Duell!', 'home.round': 'Runde {n}/{total}',
     'home.won': 'Gewonnen', 'home.lost': 'Verloren', 'home.draw': 'Unentschieden',
     'new.title': 'Neues Spiel', 'new.random': 'Zufälliger Gegner', 'new.randomSub': 'Wir suchen jemanden für dich',
-    'new.bot': 'Gegen den Bot', 'new.botSub': 'Sofort spielen, jederzeit', 'new.contacts': 'Kontakte', 'new.noContacts': 'Noch keine Freunde. Lade jemanden ein.',
+    'new.bot': 'Gegen den Bot', 'new.botSub': 'Sofort spielen, jederzeit', 'new.botRunning': 'Läuft schon – öffnet das Spiel', 'pool.title': 'Quiz-Pool', 'pool.opponent': 'Pool-Gegner', 'pool.sub': 'Der Server wählt jemanden aus dem Quiz-Pool', 'pool.count': '{n} im Pool', 'pool.empty': 'Gerade niemand im Pool', 'pool.join': 'Im Quiz-Pool mitspielen', 'pool.info': 'Mitglieder können vom Server als Gegner angefragt werden (dein Anzeigename ist dann für den Gegner sichtbar). Spielt der Gegner nicht innerhalb von {min} Minuten, bekommst du eine Mitteilung und kannst neu anfragen. Immer nur ein Pool-Spiel gleichzeitig.', 'err.pool_empty': 'Gerade niemand im Pool – versuche es später noch einmal.', 'new.contacts': 'Kontakte', 'new.noContacts': 'Noch keine Freunde. Lade jemanden ein.',
     'new.invite': 'Einladungslink teilen', 'new.questionLang': 'Fragen-Sprache',
     'game.vs': 'gegen {name}', 'game.pick': 'Wähle eine Kategorie', 'game.play': 'Runde spielen', 'game.continue': 'Weiterspielen',
     'game.oppTurn': '{name} ist dran', 'game.waitingOpp': 'Wir suchen einen Gegner …', 'game.playBot': 'Stattdessen gegen den Bot', 'game.cancel': 'Abbrechen',
@@ -921,7 +926,7 @@ const dict = {
     'session.title': 'Sitzung nicht gefunden', 'session.info': 'Dein Schlüssel ist ungültig oder wurde gelöscht. Stelle dein Profil wieder her oder starte neu.', 'session.fresh': 'Neu starten (anonym)',
     'err.generic': 'Das hat nicht geklappt.', 'err.network': 'Keine Verbindung zum Server.', 'err.rate_limited': 'Zu viele Versuche – bitte kurz warten.',
     'err.bad_credentials': 'Benutzername oder Passwort falsch.', 'err.username_taken': 'Benutzername schon vergeben.', 'err.bad_username': 'Benutzername: 3–24 Zeichen (a–z, 0–9, _ . -).',
-    'err.bad_password': 'Passwort: mindestens 8 Zeichen.', 'err.bad_name': 'Name: 2–24 Zeichen.', 'err.bad_code': 'Code ungültig oder abgelaufen.', 'err.too_many_games': 'Zu viele laufende Spiele.',
+    'err.bad_password': 'Passwort: mindestens 8 Zeichen.', 'err.bad_name': 'Name: 2–24 Zeichen.', 'err.bad_code': 'Code ungültig oder abgelaufen.', 'err.too_many_games': 'Zu viele laufende Spiele.', 'err.bot_busy': 'Du spielst schon gegen den Bot. Beende erst dieses Spiel.',
     'err.no_questions': 'Für diese Sprache gibt es noch nicht genug Fragen.', 'err.duplicate': 'Diese Frage gibt es schon.', 'err.daily_limit': 'Tageslimit erreicht (10 Fragen).',
     'err.invalid_question': 'Die Frage ist nicht gültig: {message}', 'err.not_a_contact': 'Nur Freunde können herausgefordert werden.', 'err.bad_file': 'Das ist keine gültige Profil-Datei.',
     'err.unknown_player': 'Spieler nicht gefunden.',
@@ -942,7 +947,7 @@ const dict = {
     'home.finished': 'Finished', 'home.history': 'Show history ({n} older)', 'history.title': 'History', 'history.empty': 'No finished games yet.', 'home.empty': 'No games yet. Start your first duel!', 'home.round': 'Round {n}/{total}',
     'home.won': 'Won', 'home.lost': 'Lost', 'home.draw': 'Draw',
     'new.title': 'New game', 'new.random': 'Random opponent', 'new.randomSub': "We'll find someone for you",
-    'new.bot': 'Play the bot', 'new.botSub': 'Play instantly, any time', 'new.contacts': 'Contacts', 'new.noContacts': 'No friends yet. Invite someone.',
+    'new.bot': 'Play the bot', 'new.botSub': 'Play instantly, any time', 'new.botRunning': 'Already running – opens the game', 'pool.title': 'Quiz pool', 'pool.opponent': 'Pool opponent', 'pool.sub': 'The server picks someone from the quiz pool', 'pool.count': '{n} in the pool', 'pool.empty': 'Nobody in the pool right now', 'pool.join': 'Join the quiz pool', 'pool.info': 'Members can be picked by the server as an opponent (your display name is then visible to them). If the opponent does not play within {min} minutes you get a notification and can request again. Only one pool game at a time.', 'err.pool_empty': 'Nobody in the pool right now – try again later.', 'new.contacts': 'Contacts', 'new.noContacts': 'No friends yet. Invite someone.',
     'new.invite': 'Share invite link', 'new.questionLang': 'Question language',
     'game.vs': 'vs {name}', 'game.pick': 'Pick a category', 'game.play': 'Play round', 'game.continue': 'Continue',
     'game.oppTurn': "{name}'s turn", 'game.waitingOpp': 'Looking for an opponent …', 'game.playBot': 'Play the bot instead', 'game.cancel': 'Cancel',
@@ -1067,7 +1072,7 @@ const dict = {
     'session.title': 'Session not found', 'session.info': 'Your key is invalid or was deleted. Restore your profile or start fresh.', 'session.fresh': 'Start fresh (anonymous)',
     'err.generic': "That didn't work.", 'err.network': 'No connection to the server.', 'err.rate_limited': 'Too many attempts – please wait a moment.',
     'err.bad_credentials': 'Wrong username or password.', 'err.username_taken': 'Username already taken.', 'err.bad_username': 'Username: 3–24 characters (a–z, 0–9, _ . -).',
-    'err.bad_password': 'Password: at least 8 characters.', 'err.bad_name': 'Name: 2–24 characters.', 'err.bad_code': 'Code invalid or expired.', 'err.too_many_games': 'Too many running games.',
+    'err.bad_password': 'Password: at least 8 characters.', 'err.bad_name': 'Name: 2–24 characters.', 'err.bad_code': 'Code invalid or expired.', 'err.too_many_games': 'Too many running games.', 'err.bot_busy': 'You are already playing the bot. Finish that game first.',
     'err.no_questions': 'Not enough questions in this language yet.', 'err.duplicate': 'This question already exists.', 'err.daily_limit': 'Daily limit reached (10 questions).',
     'err.invalid_question': 'The question is not valid: {message}', 'err.not_a_contact': 'Only friends can be challenged.', 'err.bad_file': 'This is not a valid profile file.',
     'err.unknown_player': 'Player not found.',
@@ -1195,7 +1200,7 @@ function installGuide(h) {
 
 /** Version dieser App-Dateien: der Server setzt sie beim Ausliefern von app.js ein. Sie steht damit fest in dem Code, den der Browser wirklich ausführt –
  *  anders als /version.js (immer frisch vom Server) verrät sie also, wenn ein Gerät noch alten Code aus dem Zwischenspeicher fährt. */
-const VERSION = '0.0.88'
+const VERSION = '0.0.90'
 
 /* ---------- Helfer ---------- */
 const $app = document.getElementById('app')
@@ -1304,7 +1309,7 @@ const shareInvite = () => share(inviteUrl(), t('app.name'), t('friends.shareText
 
 /** Freunde, mit denen gerade ein Quiz-Duell läuft (wartend oder aktiv): Sie werden nicht erneut zum Herausfordern angeboten. */
 async function runningDuels() {
-  try { return new Set((await api('GET', '/api/games')).games.filter((g) => g.status !== 'finished' && g.opp?.public_id).map((g) => g.opp.public_id)) } catch { return new Set() }
+  try { return new Set((await api('GET', '/api/games')).games.filter((g) => g.status !== 'finished' && g.opp?.public_id).map((g) => (g.opp.is_bot ? 'bot' : g.opp.public_id))) } catch { return new Set() }
 }
 /** Gehört die Wordle-Gruppe zu einem Duell mit diesem Freund? (Duell-Gruppen heißen „A ⚔ B“.) */
 const isDuelWith = (g, c) => g.name === `${S.me.name} ⚔ ${c.name}`.slice(0, 30) || g.name === `${c.name} ⚔ ${S.me.name}`.slice(0, 30)
@@ -1550,8 +1555,14 @@ function gameItem(g) {
 }
 
 /* ---------- Neues Spiel ---------- */
+/** Schalter „Im Quiz-Pool mitspielen“ (Profil und Neues Spiel). */
+function poolToggle(on, onChange) {
+  return h('label', { class: 'row' }, h('input', { type: 'checkbox', checked: !!on, onchange: guard(async (e) => {
+    const r = await api('POST', '/api/pool', { member: e.target.checked }); onChange?.(r) }) }), h('span', { class: 'hint' }, t('pool.join')))
+}
+
 async function newGame() {
-  const busy = await runningDuels()
+  const [busy, pool] = await Promise.all([runningDuels(), api('GET', '/api/pool').catch(() => ({ members: 0, member: false, game: null }))])
   const free = S.contacts.filter((c) => !busy.has(c.public_id))
   const start = guard(async (opponent) => {
     const r = await api('POST', '/api/games', { opponent, lang: gameLang() })
@@ -1560,14 +1571,15 @@ async function newGame() {
   const roomCode = h('input', { type: 'text', maxLength: 12, autocapitalize: 'characters', autocomplete: 'off', placeholder: 'ABC123' })
   const langSel = h('select', { id: 'gl', onchange: (e) => store.set('rp.gameLang', e.target.value) },
     (S.meta.langs ?? []).map((l) => h('option', { value: l.lang, selected: l.lang === gameLang() }, langName(l.lang))))
-  const option = (title, sub, icon, fn) => h('button', { class: 'item', onclick: fn },
-    h('div', { class: 'avatar sm' }, icon), h('div', { class: 'grow' }, h('div', {}, title), h('div', { class: 'muted' }, sub)))
+  const option = (title, sub, icon, fn, badge) => h('button', { class: 'item', onclick: fn },
+    h('div', { class: 'avatar sm' }, icon), h('div', { class: 'grow' }, h('div', {}, title), h('div', { class: 'muted' }, sub)), badge ? h('span', { class: 'badge' }, badge) : null)
   mount(topbar(t('new.title')),
     free.length ? [h('h2', {}, t('new.challengeKnown')), h('div', { class: 'list' }, free.map((c) => h('button', { class: 'item', onclick: () => start(c.public_id) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, t('profile.challenge')))))] : null,
     h('h2', {}, t('new.duel')),
     h('div', { class: 'list' },
-      option(t('new.random'), t('new.randomSub'), '🎲', () => start('random')),
-      option(t('new.bot'), t('new.botSub'), '🤖', () => start('bot'))),
+      option(t('pool.opponent'), t(pool.game ? 'new.botRunning' : pool.members ? 'pool.sub' : 'pool.empty'), '🎲', () => start('pool'), t('pool.count', { n: pool.members })),
+      option(t('new.bot'), t(busy.has('bot') ? 'new.botRunning' : 'new.botSub'), '🤖', () => start('bot'))),
+    h('div', { class: 'card stack' }, poolToggle(pool.member), h('p', { class: 'hint' }, t('pool.info', { min: 30 }))),
     h('h2', {}, t('ladder.title')),
     h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
       const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),
@@ -2620,6 +2632,7 @@ function levelCard() {
 
 async function profile() {
   const p = S.me
+  const pool = await api('GET', '/api/pool').catch(() => ({ member: false }))
   const name = h('input', { type: 'text', value: p.name, maxLength: 24 })
   const birth = h('input', { type: 'number', inputMode: 'numeric', min: 1900, max: new Date().getFullYear() - 5, placeholder: '—', value: p.birth_year ?? '' })
   const uname = h('input', { type: 'text', autocomplete: 'username', autocapitalize: 'none', maxLength: 24 })
@@ -2653,6 +2666,7 @@ async function profile() {
       onchange: (e) => { e.target.checked ? store.del('rp.noReport') : store.set('rp.noReport', '1') } }), h('span', { class: 'hint' }, t('profile.reportBtn'))) : null,
     p.reviewer ? h('p', { class: 'hint' }, t('profile.reviewer')) : null,
     levelCard(),
+    h('h2', {}, t('pool.title')), h('div', { class: 'card stack' }, poolToggle(pool.member), h('p', { class: 'hint' }, t('pool.info', { min: 30 }))),
     h('h2', {}, t('profile.code')),
     h('div', { class: 'card stack' }, h('div', { class: 'code' }, p.public_id), h('p', { class: 'hint' }, t('profile.codeInfo')), h('button', { class: 'btn block', onclick: shareInvite }, '🔗 ' + t('profile.share'))),
     h('h2', {}, t('profile.contacts')), contacts,

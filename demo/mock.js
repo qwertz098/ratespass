@@ -347,7 +347,12 @@ const DEMO = (() => {
         return { body: { ...res, explanation: null, ladder: lview(l) } }
       }
     }
-    if (path === '/api/games' && method === 'POST') return newGame(String(body.opponent || 'bot'), body.lang === 'en' ? 'en' : 'de')
+    if (path === '/api/pool') { if (method === 'POST') { st.pool = body?.member === true; save() } return { body: { members: 4, member: !!st.pool, game: null } } }
+    if (path === '/api/games' && method === 'POST') {
+      const o = String(body.opponent || 'bot')
+      if (o === 'bot') { const open = st.games.find((g) => g.opp?.is_bot && g.status !== 'finished'); if (open) return { body: { id: open.id } } }
+      return newGame(o === 'pool' ? 'random' : o, body.lang === 'en' ? 'en' : 'de')
+    }
     if ((m = path.match(/^\/api\/games\/(\d+)(?:\/(\w+))?$/))) {
       const g = find(m[1]), act = m[2]
       if (!g) return err(404, 'not_found')

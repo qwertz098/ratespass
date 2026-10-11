@@ -123,7 +123,7 @@ function bumpFail(endpoint: string, why: string) {
 }
 
 /* ---------- Texte & Auslöser ---------- */
-export type PushKind = 'challenge' | 'turn' | 'matched' | 'won' | 'lost' | 'draw' | 'resigned' | 'timeout' | 'room_start' | 'room_done' | 'remind' | 'replaced'
+export type PushKind = 'challenge' | 'turn' | 'matched' | 'won' | 'lost' | 'draw' | 'resigned' | 'timeout' | 'room_start' | 'room_done' | 'remind' | 'replaced' | 'pool_idle' | 'pool_expired'
 const TEXT: Record<'de' | 'en', Record<PushKind, [string, string]>> = {
   de: {
     challenge: ['Neue Herausforderung', '{name} fordert dich zum Quiz-Duell heraus.'],
@@ -136,6 +136,8 @@ const TEXT: Record<'de' | 'en', Record<PushKind, [string, string]>> = {
     timeout: ['Spiel beendet', 'Das Spiel gegen {name} wurde wegen Inaktivität beendet.'],
     remind: ['Du bist dran', '{name} wartet auf deinen Zug.'],
     replaced: ['Duell mit Bot fortgesetzt', '{name} hat euer Duell mit einem Bot fortgesetzt, weil du länger nicht gespielt hast.'],
+    pool_idle: ['Pool-Gegner hat nicht gespielt', '{name} hat nicht gespielt. Frag einen neuen Pool-Gegner an.'],
+    pool_expired: ['Pool-Duell verfallen', 'Das Pool-Duell mit {name} ist verfallen, weil du nicht gespielt hast.'],
     room_start: ['Raum gestartet', '{name} hat die Runde gestartet – jetzt spielen!'],
     room_done: ['Runde beendet', 'Die Runde von {name} ist beendet – sieh dir die Rangliste an.'],
   },
@@ -150,6 +152,8 @@ const TEXT: Record<'de' | 'en', Record<PushKind, [string, string]>> = {
     timeout: ['Game over', 'The game against {name} ended due to inactivity.'],
     remind: ['Your turn', '{name} is waiting for your move.'],
     replaced: ['Duel continued with a bot', '{name} continued your duel with a bot because you have not played for a while.'],
+    pool_idle: ['Pool opponent did not play', '{name} did not play. Request a new pool opponent.'],
+    pool_expired: ['Pool duel expired', 'The pool duel with {name} expired because you did not play.'],
     room_start: ['Room started', '{name} has started the round – play now!'],
     room_done: ['Round finished', '{name}’s round is over – check the ranking.'],
   },
@@ -157,8 +161,8 @@ const TEXT: Record<'de' | 'en', Record<PushKind, [string, string]>> = {
 
 export function messageFor(lang: string, kind: PushKind, gameId: number, name: string): PushMessage {
   const [title, body] = TEXT[lang === 'de' ? 'de' : 'en'][kind]
-  const room = kind.startsWith('room_')
-  return { title, body: body.replace('{name}', name), url: `/#/${room ? 'room' : 'game'}/${gameId}`, tag: `${room ? 'room' : 'game'}-${gameId}` }
+  const room = kind.startsWith('room_'), pool = kind.startsWith('pool_')
+  return { title, body: body.replace('{name}', name), url: pool ? '/#/new' : `/#/${room ? 'room' : 'game'}/${gameId}`, tag: `${room ? 'room' : 'game'}-${gameId}` }
 }
 
 /** Benachrichtigt einen Spieler mit einer fertigen Nachricht (z. B. Wordle) nach dem Commit; Bots und Spieler ohne Abo werden ausgelassen. */

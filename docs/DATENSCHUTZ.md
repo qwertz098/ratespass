@@ -31,3 +31,6 @@ Spieler laden ihr Profil selbst herunter (Profil → „Profil & Verlauf herunte
 
 ## Wordle
 Siehe [`WORDLE.md`](WORDLE.md#datenschutz): Spiele/Versuche, Gruppen-Mitgliedschaften, geteilte Ergebnisse (14 Tage) und (nur bei eingeschalteter 9-Uhr-Erinnerung) die Zeitzone des Geräts; Löschung beim Verlassen der Gruppe bzw. beim Profil-Löschen.
+
+## Quiz-Pool
+`players.pool` (0/1) merkt, ob jemand im Quiz-Pool mitspielt (freiwillig; Anfragen eines Pool-Gegners tritt automatisch bei). Der Server wählt daraus zufällig ein teilnahmefähiges Mitglied (`server/pool.ts`: gleiche App-Sprache, in den letzten 7 Tagen aktiv, nicht in einem anderen Pool-Spiel); `games.pool=1` kennzeichnet Pool-Spiele. Pool-Duelle, in denen der Angefragte nicht binnen `POOL_EXPIRE_MIN` (30) Minuten spielt, verfallen. Nach außen sichtbar ist nur die Zahl der Mitglieder; das Spiel zeigt dem Gegner den Anzeigenamen. Beim Löschen des Profils wird das Flag zurückgesetzt.

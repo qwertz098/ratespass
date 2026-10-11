@@ -9,6 +9,7 @@ import {
 } from './auth.ts'
 import * as game from './game.ts'
 import * as ladder from './ladder.ts'
+import * as pool from './pool.ts'
 import * as rooms from './rooms.ts'
 import * as ai from './ai.ts'
 import * as lb from './leaderboard.ts'
@@ -226,10 +227,14 @@ router.delete('/api/contacts/:public_id', (c) => {
 router.get('/api/games', (c) => game.listGames(me(c)))
 router.get('/api/games/history', (c) => ({ games: game.listHistory(me(c)) }))
 
+/** Quiz-Pool: Mitgliedschaft und Zahl der teilnahmefähigen Mitglieder (Anfrage selbst: POST /api/games mit opponent „pool“). */
+router.get('/api/pool', (c) => pool.poolInfo(me(c)))
+router.post('/api/pool', (c) => pool.setPool(me(c), c.body?.member === true))
 router.post('/api/games', (c) => {
   const p = me(c)
   const opponent = String(c.body.opponent ?? '')
   if (!opponent) throw new HttpError(400, 'bad_opponent')
+  if (opponent === 'pool') { rateLimit(`pool:${p.id}`, 20, 3_600_000); return { id: pool.requestOpponent(p, pickLang(c.body.lang, p.lang)) } }
   const id = game.createGame(p, opponent === 'bot' || opponent === 'random' ? opponent : opponent.toUpperCase(), pickLang(c.body.lang, p.lang))
   return { id }
 })

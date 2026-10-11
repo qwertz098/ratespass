@@ -3,7 +3,7 @@
 Minimalistisches Duell-Quiz mit Wordle als **PWA**, betrieben als **ein Docker-Container**. Ohne Anmeldung spielbar, optionaler Account, offener und lizenzsauberer Fragenpool.
 
 - 2 Spieler, 6 Runden à 3 Fragen, Kategorie-Wahl aus 3 Vorschlägen, 4 Antworten, 20 s pro Frage – rundenbasiert (asynchron)
-- Gegner: Freunde per Einladungslink/Freundescode, zufälliger Gegner (Warteliste), Bot
+- Gegner: Freunde per Einladungslink/Freundescode, Quiz-Pool (Server fragt ein Pool-Mitglied an; ein Pool-Spiel gleichzeitig; verfällt nach 30 Min ohne Zug des Angefragten), Bot
 - **Kein Login nötig:** anonymes Profil beim ersten Start. Verlauf & Identität lassen sich als Datei exportieren oder per Einmal-Code auf ein anderes Gerät übertragen
 - **Befreunden** per Link, per Freundescode (auch einfach einen Link/Chat-Text einfügen) oder per **QR-Code** (anzeigen und mit der In-App-Kamera scannen; mit der Kamera-App des Handys geht der Link ebenfalls)
 - **Kontakte lokal + zentral:** Sie liegen auf dem Server (an den anonymen Zugangsschlüssel bzw. das Konto gebunden) und zusätzlich als lokale Kopie im Browser; ist die Server-Liste leer, werden sie aus der lokalen Kopie wiederhergestellt

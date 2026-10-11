@@ -3,6 +3,7 @@ import { createApp } from './app.ts'
 import { adminStatus } from './admin.ts'
 import { config } from './config.ts'
 import { sweep } from './game.ts'
+import { sweepPool } from './pool.ts'
 import { sweepRooms } from './rooms.ts'
 import { importPendingBatches } from './questions.ts'
 import { importPendingEstimates } from './estimates.ts'
@@ -16,6 +17,7 @@ importPendingBatches(config.batchDir)
 importPendingEstimates(path.join(config.batchDir, 'estimates'))
 loadWordlists()
 resumeLive()
+setInterval(() => { try { sweepPool() } catch (e) { console.error('pool', e) } }, 60_000).unref()
 setInterval(() => { try { wordlePushTick() } catch (e) { console.error('wordle push', e) } }, 60_000).unref()
 setInterval(() => { try { sweep(); sweepRooms(); sweepProfiles(); sweepLive(); sweepShares() } catch (e) { console.error('sweep', e) } }, 30 * 60_000).unref()
 

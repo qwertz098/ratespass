@@ -31,7 +31,7 @@ const shuffle = <T>(a: T[]): T[] => {
   return r
 }
 
-const nameOf = (id: number | null) => (id ? get<{ name: string }>('SELECT name FROM players WHERE id=?', id)?.name ?? '' : '')
+export const nameOf = (id: number | null) => (id ? get<{ name: string }>('SELECT name FROM players WHERE id=?', id)?.name ?? '' : '')
 
 export const getGame = (id: number) => get<GameRow>('SELECT * FROM games WHERE id=?', id)
 function mustGame(id: number, pid: number): GameRow {
@@ -80,7 +80,7 @@ function startRound(g: GameRow, n: number) {
   run("UPDATE games SET round=?, turn=?, phase='pick', updated_at=? WHERE id=?", n, picker, now(), g.id)
 }
 
-function activeCount(pid: number) {
+export function activeCount(pid: number) {
   return get<{ n: number }>("SELECT COUNT(*) n FROM games WHERE (p1=? OR p2=?) AND status IN ('waiting','active')", pid, pid)!.n
 }
 /** Offenes (wartendes oder laufendes) Spiel gegen den Bot: Gegen den Bot läuft je Person höchstens eins. */
@@ -91,11 +91,11 @@ export function openBotGame(pid: number): number | null {
 function guardBotFree(pid: number) {
   if (openBotGame(pid) !== null) throw new HttpError(409, 'bot_busy')
 }
-function guardLimit(pid: number) {
+export function guardLimit(pid: number) {
   if (activeCount(pid) >= config.maxActiveGames) throw new HttpError(429, 'too_many_games')
 }
 
-function insertGame(p1: number, p2: number | null, lang: string) {
+export function insertGame(p1: number, p2: number | null, lang: string) {
   const t = now()
   const eff = effectiveFor([p1, p2])
   const r = run('INSERT INTO games(p1,p2,lang,status,level,cats,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)', p1, p2, lang, p2 ? 'active' : 'waiting', eff.level, JSON.stringify(eff.cats), t, t)

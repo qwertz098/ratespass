@@ -38,6 +38,8 @@ export const config = {
     remindHours: Math.max(1, Number(env.DUEL_REMIND_HOURS ?? 24) || 24),
     takeoverHours: Math.max(1, Number(env.DUEL_TAKEOVER_HOURS ?? 24) || 24),
   },
+  /** Quiz-Pool: Nach so vielen Minuten ohne ersten Zug des angefragten Mitglieds verfällt das Pool-Spiel; so lange gilt ein Mitglied als aktiv (Tage). */
+  pool: { expireMin: Math.max(1, Number(env.POOL_EXPIRE_MIN ?? 30) || 30), activeDays: 7 },
   /** Wordle: Tageswechsel in dieser Zeitzone, Wortlisten-Verzeichnis, Gruppengröße, Mindestabstand zwischen Versuchen (ms). */
   wordle: { tz: env.WORDLE_TZ ?? 'Europe/Berlin', dir: env.WORDLE_DIR ?? path.join(root, 'wordlists'), groupMax: Math.max(2, Number(env.WORDLE_GROUP_MAX ?? 200) || 200), minGuessMs: 300 },
   /** Live-Gesellschaftsspiel (Zeiten in ms; in Tests verkürzt). */

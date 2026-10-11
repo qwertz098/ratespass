@@ -358,8 +358,14 @@ function gameItem(g) {
 }
 
 /* ---------- Neues Spiel ---------- */
+/** Schalter „Im Quiz-Pool mitspielen“ (Profil und Neues Spiel). */
+function poolToggle(on, onChange) {
+  return h('label', { class: 'row' }, h('input', { type: 'checkbox', checked: !!on, onchange: guard(async (e) => {
+    const r = await api('POST', '/api/pool', { member: e.target.checked }); onChange?.(r) }) }), h('span', { class: 'hint' }, t('pool.join')))
+}
+
 async function newGame() {
-  const busy = await runningDuels()
+  const [busy, pool] = await Promise.all([runningDuels(), api('GET', '/api/pool').catch(() => ({ members: 0, member: false, game: null }))])
   const free = S.contacts.filter((c) => !busy.has(c.public_id))
   const start = guard(async (opponent) => {
     const r = await api('POST', '/api/games', { opponent, lang: gameLang() })
@@ -368,14 +374,15 @@ async function newGame() {
   const roomCode = h('input', { type: 'text', maxLength: 12, autocapitalize: 'characters', autocomplete: 'off', placeholder: 'ABC123' })
   const langSel = h('select', { id: 'gl', onchange: (e) => store.set('rp.gameLang', e.target.value) },
     (S.meta.langs ?? []).map((l) => h('option', { value: l.lang, selected: l.lang === gameLang() }, langName(l.lang))))
-  const option = (title, sub, icon, fn) => h('button', { class: 'item', onclick: fn },
-    h('div', { class: 'avatar sm' }, icon), h('div', { class: 'grow' }, h('div', {}, title), h('div', { class: 'muted' }, sub)))
+  const option = (title, sub, icon, fn, badge) => h('button', { class: 'item', onclick: fn },
+    h('div', { class: 'avatar sm' }, icon), h('div', { class: 'grow' }, h('div', {}, title), h('div', { class: 'muted' }, sub)), badge ? h('span', { class: 'badge' }, badge) : null)
   mount(topbar(t('new.title')),
     free.length ? [h('h2', {}, t('new.challengeKnown')), h('div', { class: 'list' }, free.map((c) => h('button', { class: 'item', onclick: () => start(c.public_id) }, avatar(c), h('div', { class: 'grow' }, c.name), h('span', { class: 'badge' }, t('profile.challenge')))))] : null,
     h('h2', {}, t('new.duel')),
     h('div', { class: 'list' },
-      option(t('new.random'), t('new.randomSub'), '🎲', () => start('random')),
+      option(t('pool.opponent'), t(pool.game ? 'new.botRunning' : pool.members ? 'pool.sub' : 'pool.empty'), '🎲', () => start('pool'), t('pool.count', { n: pool.members })),
       option(t('new.bot'), t(busy.has('bot') ? 'new.botRunning' : 'new.botSub'), '🤖', () => start('bot'))),
+    h('div', { class: 'card stack' }, poolToggle(pool.member), h('p', { class: 'hint' }, t('pool.info', { min: 30 }))),
     h('h2', {}, t('ladder.title')),
     h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
       const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),
@@ -1428,6 +1435,7 @@ function levelCard() {
 
 async function profile() {
   const p = S.me
+  const pool = await api('GET', '/api/pool').catch(() => ({ member: false }))
   const name = h('input', { type: 'text', value: p.name, maxLength: 24 })
   const birth = h('input', { type: 'number', inputMode: 'numeric', min: 1900, max: new Date().getFullYear() - 5, placeholder: '—', value: p.birth_year ?? '' })
   const uname = h('input', { type: 'text', autocomplete: 'username', autocapitalize: 'none', maxLength: 24 })
@@ -1461,6 +1469,7 @@ async function profile() {
       onchange: (e) => { e.target.checked ? store.del('rp.noReport') : store.set('rp.noReport', '1') } }), h('span', { class: 'hint' }, t('profile.reportBtn'))) : null,
     p.reviewer ? h('p', { class: 'hint' }, t('profile.reviewer')) : null,
     levelCard(),
+    h('h2', {}, t('pool.title')), h('div', { class: 'card stack' }, poolToggle(pool.member), h('p', { class: 'hint' }, t('pool.info', { min: 30 }))),
     h('h2', {}, t('profile.code')),
     h('div', { class: 'card stack' }, h('div', { class: 'code' }, p.public_id), h('p', { class: 'hint' }, t('profile.codeInfo')), h('button', { class: 'btn block', onclick: shareInvite }, '🔗 ' + t('profile.share'))),
     h('h2', {}, t('profile.contacts')), contacts,
