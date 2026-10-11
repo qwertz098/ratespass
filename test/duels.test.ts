@@ -30,3 +30,18 @@ test('Ein laufendes Duell je Gegner; Liste zeigt je Gegner nur das letzte beende
   assert.deepEqual(h.map((g: any) => g.id), [g3, g2, g1])
   assert.deepEqual((await call('GET', '/api/games/history', undefined, c.token)).json.games, [], 'fremde Spiele erscheinen nicht')
 })
+
+test('Gegen den Bot läuft je Person höchstens ein Spiel; nach dem Ende ist ein neues möglich; Umwandlungen sind gesperrt', async () => {
+  const [a, b] = [await newPlayer('Bot Eins'), await newPlayer('Bot Zwei')]
+  const start = async (p: any) => (await call('POST', '/api/games', { opponent: 'bot', lang: 'de' }, p.token)).json.id as number
+  const g1 = await start(a)
+  assert.equal(await start(a), g1, 'zweiter Aufruf öffnet das laufende Botspiel')
+  assert.notEqual(await start(b), g1, 'andere Person = eigenes Botspiel')
+  // wartendes Zufallsspiel nicht zusätzlich gegen den Bot umwandeln
+  const w = (await call('POST', '/api/games', { opponent: 'random', lang: 'de' }, a.token)).json.id as number
+  const r = await call('POST', `/api/games/${w}/bot`, {}, a.token)
+  assert.equal(r.status, 409); assert.equal(r.json.error, 'bot_busy')
+  assert.equal((await call('POST', `/api/games/${g1}/resign`, {}, a.token)).status, 200)
+  assert.equal((await call('POST', `/api/games/${w}/bot`, {}, a.token)).status, 200, 'nach dem Ende wieder möglich')
+  assert.notEqual(await start(a), g1)
+})

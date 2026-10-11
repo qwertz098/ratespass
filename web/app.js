@@ -112,7 +112,7 @@ const shareInvite = () => share(inviteUrl(), t('app.name'), t('friends.shareText
 
 /** Freunde, mit denen gerade ein Quiz-Duell läuft (wartend oder aktiv): Sie werden nicht erneut zum Herausfordern angeboten. */
 async function runningDuels() {
-  try { return new Set((await api('GET', '/api/games')).games.filter((g) => g.status !== 'finished' && g.opp?.public_id).map((g) => g.opp.public_id)) } catch { return new Set() }
+  try { return new Set((await api('GET', '/api/games')).games.filter((g) => g.status !== 'finished' && g.opp?.public_id).map((g) => (g.opp.is_bot ? 'bot' : g.opp.public_id))) } catch { return new Set() }
 }
 /** Gehört die Wordle-Gruppe zu einem Duell mit diesem Freund? (Duell-Gruppen heißen „A ⚔ B“.) */
 const isDuelWith = (g, c) => g.name === `${S.me.name} ⚔ ${c.name}`.slice(0, 30) || g.name === `${c.name} ⚔ ${S.me.name}`.slice(0, 30)
@@ -375,7 +375,7 @@ async function newGame() {
     h('h2', {}, t('new.duel')),
     h('div', { class: 'list' },
       option(t('new.random'), t('new.randomSub'), '🎲', () => start('random')),
-      option(t('new.bot'), t('new.botSub'), '🤖', () => start('bot'))),
+      option(t('new.bot'), t(busy.has('bot') ? 'new.botRunning' : 'new.botSub'), '🤖', () => start('bot'))),
     h('h2', {}, t('ladder.title')),
     h('div', { class: 'list' }, option(t('ladder.title'), t('ladder.sub'), '💎', guard(async () => {
       const r = await api('POST', '/api/ladders', { lang: gameLang() }); go('#/ladder/' + r.id) }))),

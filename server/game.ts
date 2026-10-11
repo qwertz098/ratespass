@@ -83,6 +83,14 @@ function startRound(g: GameRow, n: number) {
 function activeCount(pid: number) {
   return get<{ n: number }>("SELECT COUNT(*) n FROM games WHERE (p1=? OR p2=?) AND status IN ('waiting','active')", pid, pid)!.n
 }
+/** Offenes (wartendes oder laufendes) Spiel gegen den Bot: Gegen den Bot läuft je Person höchstens eins. */
+export function openBotGame(pid: number): number | null {
+  const bot = ensureBot()
+  return get<{ id: number }>("SELECT id FROM games WHERE status IN ('waiting','active') AND ((p1=? AND p2=?) OR (p1=? AND p2=?)) ORDER BY updated_at DESC LIMIT 1", pid, bot, bot, pid)?.id ?? null
+}
+function guardBotFree(pid: number) {
+  if (openBotGame(pid) !== null) throw new HttpError(409, 'bot_busy')
+}
 function guardLimit(pid: number) {
   if (activeCount(pid) >= config.maxActiveGames) throw new HttpError(429, 'too_many_games')
 }
@@ -102,6 +110,7 @@ export const knows = (a: number, b: number) =>
 
 export function createGame(me: PlayerRow, opponent: string, lang: string): number {
   return tx(() => {
+    if (opponent === 'bot') { const open = openBotGame(me.id); if (open !== null) return open } // ein laufendes Spiel gegen den Bot: dieses öffnen
     guardLimit(me.id)
     let id: number
     if (opponent === 'bot') id = insertGame(me.id, ensureBot(), lang)
@@ -148,6 +157,7 @@ export function takeOverWithBot(gameId: number, me: PlayerRow) {
     const g = mustGame(gameId, me.id)
     if (g.status !== 'active') throw new HttpError(409, 'not_waiting')
     if (!canTakeOver(g, me.id)) throw new HttpError(409, 'too_early')
+    guardBotFree(me.id)
     const opp = other(g, me.id)!, bot = ensureBot()
     run(g.p1 === opp ? 'UPDATE games SET p1=?, turn=?, updated_at=? WHERE id=?' : 'UPDATE games SET p2=?, turn=?, updated_at=? WHERE id=?', bot, bot, now(), g.id)
     run('UPDATE answers SET player_id=? WHERE game_id=? AND player_id=?', bot, g.id, opp)
@@ -161,6 +171,7 @@ export function convertToBot(gameId: number, me: PlayerRow) {
   tx(() => {
     const g = mustGame(gameId, me.id)
     if (g.status !== 'waiting' || g.p1 !== me.id) throw new HttpError(409, 'not_waiting')
+    guardBotFree(me.id)
     run("UPDATE games SET p2=?, status='active' WHERE id=?", ensureBot(), g.id)
     startRound(getGame(g.id)!, 1)
     settle(g.id)
