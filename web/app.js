@@ -628,9 +628,9 @@ const WKEYS = {
 }
 async function wordlePlay(id, my) {
   let g = (await api('GET', `/api/wordle/games/${id}`)).game
-  let cur = '', busy = false
+  let cur = ['', '', '', '', ''], pos = 0, busy = false // cur: Buchstaben der aktuellen Zeile (leer = ''), pos: gewähltes Feld
   const title = { daily: t('wordle.today'), group: t('wordle.groupToday') }[g.kind] + ' · ' + langName(g.lang)
-  const rows = Array.from({ length: g.max }, () => Array.from({ length: 5 }, () => h('div', { class: 'wt' })))
+  const rows = Array.from({ length: g.max }, (_, i) => Array.from({ length: 5 }, (_, n) => h('div', { class: 'wt', onclick: () => select(i, n) })))
   const grid = h('div', { class: 'wgrid', role: 'grid', 'aria-label': title }, rows.map((r) => h('div', { class: 'wrow', role: 'row' }, r)))
   const msg = h('div', { class: 'wmsg', 'aria-live': 'polite' })
   const keyEls = new Map()
@@ -640,9 +640,10 @@ async function wordlePlay(id, my) {
   const paintRow = (i, flip) => {
     const gu = g.guesses[i]
     rows[i].forEach((tile, n) => {
-      const ch = gu ? gu.word[n] : i === g.guesses.length && !g.finished ? cur[n] : ''
+      const active = !gu && i === g.guesses.length && !g.finished
+      const ch = gu ? gu.word[n] : active ? cur[n] : ''
       tile.textContent = ch ? ch.toUpperCase() : ''
-      tile.className = 'wt' + (ch && !gu ? ' filled' : '') + (gu ? ' ' + gu.marks[n] + (flip ? ' flip' : '') : '')
+      tile.className = 'wt' + (ch && !gu ? ' filled' : '') + (active ? ' act' + (n === pos ? ' sel' : '') : '') + (gu ? ' ' + gu.marks[n] + (flip ? ' flip' : '') : '')
       if (gu) { tile.setAttribute('aria-label', `${ch.toUpperCase()}, ${t(MARKTXT[gu.marks[n]])}`); if (flip) tile.style.animationDelay = n * 0.18 + 's' } else tile.removeAttribute('aria-label')
     })
   }
@@ -674,16 +675,31 @@ async function wordlePlay(id, my) {
         g.kind === 'daily' ? h('button', { class: 'btn', onclick: openPicker }, '📨 ' + t('wordle.send')) : h('button', { class: 'btn', onclick: () => go('#/wordle/group/' + g.group_id) }, t('wordle.toGroup'))),
       h('button', { class: 'btn block', onclick: () => go('#/wordle') }, t('wordle.back')), picker))
   }
-  const type = (ch) => { if (busy || g.finished || cur.length >= 5) return; cur += ch.toLowerCase(); paintRow(g.guesses.length, false) }
-  const del = () => { if (busy || g.finished) return; cur = cur.slice(0, -1); paintRow(g.guesses.length, false) }
+  /** Feld der aktuellen Zeile anwählen: der nächste Buchstabe ersetzt dort, ohne dass man etwas löschen muss. */
+  const select = (i, n) => { if (busy || g.finished || i !== g.guesses.length) return; pos = n; paintRow(i, false) }
+  const type = (ch) => {
+    if (busy || g.finished) return
+    cur[pos] = ch.toLowerCase()
+    // weiter zum nächsten leeren Feld (rechts, sonst irgendeins); sind alle belegt, bleibt der Cursor stehen
+    const next = [pos + 1, pos + 2, pos + 3, pos + 4, 0, 1, 2, 3].map((k) => k % 5).find((k) => k !== pos && !cur[k])
+    if (next !== undefined) pos = next
+    paintRow(g.guesses.length, false)
+  }
+  const del = () => {
+    if (busy || g.finished) return
+    if (!cur[pos]) pos = Math.max(0, pos - 1)
+    cur[pos] = ''; paintRow(g.guesses.length, false)
+  }
+  const move = (d) => { if (busy || g.finished) return; pos = Math.min(4, Math.max(0, pos + d)); paintRow(g.guesses.length, false) }
   const submit = async () => {
     if (busy || g.finished) return
-    if (cur.length < 5) { shake(); msg.textContent = t('err.bad_word'); return }
+    if (!cur.every(Boolean)) { shake(); msg.textContent = t('err.bad_word'); return }
     busy = true
     try {
-      const r = await api('POST', `/api/wordle/games/${id}/guess`, { word: cur })
-      g = r.game; cur = ''; msg.textContent = ''
+      const r = await api('POST', `/api/wordle/games/${id}/guess`, { word: cur.join('') })
+      g = r.game; cur = ['', '', '', '', '']; pos = 0; msg.textContent = ''
       paintRow(g.guesses.length - 1, true)
+      if (!g.finished) paintRow(g.guesses.length, false) // Cursor auf Feld 1 der nächsten Zeile
       setTimeout(() => { paintKeys(); paintAll(); showResult() }, g.finished ? 1000 : 900)
     } catch (e) { shake(); msg.textContent = e instanceof ApiError ? errText(e) : t('err.generic') } finally { busy = false }
   }
@@ -694,6 +710,8 @@ async function wordlePlay(id, my) {
   const onKey = (e) => {
     if (e.ctrlKey || e.metaKey || e.altKey) return
     if (e.key === 'Enter') { e.preventDefault(); submit() } else if (e.key === 'Backspace') del()
+    else if (e.key === 'ArrowLeft') move(-1)
+    else if (e.key === 'ArrowRight') move(1)
     else if (e.key.length === 1 && /^[a-zA-Z]$/.test(e.key)) type(e.key)
   }
   document.addEventListener('keydown', onKey)

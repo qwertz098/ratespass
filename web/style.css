@@ -369,3 +369,7 @@ body:has(.chatbox) { height: 100dvh; overflow: hidden }
 /* „Freunde einladen“ auf der Startseite: farbig, damit er neben den Spielkacheln auffällt */
 .btn.invite { background: #d9480f; border-color: transparent; color: #fff; font-weight: 700 }
 .btn.invite:active { background: #c2410c }
+
+/* Wordle: Felder der aktuellen Zeile sind antippbar; das gewählte Feld ist hervorgehoben */
+.wt.act { cursor: pointer }
+.wt.sel { border-color: var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent) }
