@@ -373,3 +373,26 @@ body:has(.chatbox) { height: 100dvh; overflow: hidden }
 /* Wordle: Felder der aktuellen Zeile sind antippbar; das gewählte Feld ist hervorgehoben */
 .wt.act { cursor: pointer }
 .wt.sel { border-color: var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent) }
+
+/* Wordle-Statistik */
+.stiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
+.stile { display: grid; justify-items: center; gap: 4px; padding: 10px 6px; border-radius: 14px; background: var(--bg); text-align: center }
+.stile .sv { min-width: 3.2rem; padding: 4px 10px; border-radius: 12px; font-size: 1.6rem; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums }
+.stile .sv.o { background: #d9480f } .stile .sv.b { background: #3b6fb6 }
+.stile .sl { font-size: .8rem; color: var(--muted) }
+.sbars { display: grid; gap: 6px }
+.sbar { display: flex; align-items: center; gap: 8px }
+.sbar .sn { width: 1.2rem; text-align: right; font-weight: 700 }
+.sbar .sfill { padding: 3px 8px; border-radius: 6px; background: #6b7280; color: #fff; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; min-height: 26px }
+.sbar .sfill.zero { background: var(--line); color: var(--muted) }
+.sbar .sfill.hit { background: var(--good) }
+.sbar .sfill.miss { background: #9a3412 }
+.sbar .sfill.hit.miss { background: var(--bad) }
+@media (max-height: 760px) {
+  .stiles { gap: 8px }
+  .stile { padding: 6px 4px; gap: 2px }
+  .stile .sv { font-size: 1.3rem; padding: 2px 8px }
+  .sbars { gap: 3px }
+  .sbar .sfill { min-height: 22px; padding: 1px 8px }
+  .stile + .stile { margin: 0 }
+}

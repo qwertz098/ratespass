@@ -275,3 +275,31 @@ test('Admin: Statistik je Sprache und Tag, Wortlisten sperren/freigeben, Wort f�
   assert.deepEqual((await admin('GET', '/api/admin/wordle')).json.langs.find((l: any) => l.lang === 'en').upcoming[1], { day: tomorrow, word: pick, forced: true })
   assert.equal((await admin('POST', '/api/admin/wordle/reload', {})).status, 200)
 })
+
+test('Eigene Statistik: gespielt/gelöst/%, Verteilung, aktuelle und längste Serie; Gruppen-Vergleich ohne fremde Einzeldaten', async () => {
+  const [p, q] = [await newPlayer('Statistik Eins'), await newPlayer('Statistik Zwei')]
+  const today = (await call('GET', '/api/wordle', undefined, p.token)).json.day as string
+  const day = (back: number) => { const d = new Date(today + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - back); return d.toISOString().slice(0, 10) }
+  const add = (pl: any, kind: string, back: number, n: number, status: string, group_id = 0) => run(
+    'INSERT INTO wordle_games(player_id,kind,lang,day,group_id,word,guesses,status,points,started_at,last_at,finished_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',
+    pl.player.id ?? get<{ id: number }>('SELECT id FROM players WHERE public_id=?', pl.player.public_id)!.id, kind, 'en', day(back), group_id, 'apple', JSON.stringify(Array(n).fill('crane')), status, status === 'won' ? 7 - n : 0, 1, 1, 2)
+  for (const [back, n, st] of [[0, 2, 'won'], [1, 4, 'won'], [2, 4, 'won'], [3, 6, 'lost'], [5, 3, 'won'], [6, 3, 'won'], [7, 3, 'won'], [8, 5, 'won']] as const) add(p, 'daily', back, n, st)
+  const s = (await call('GET', '/api/wordle/stats?lang=en&kind=daily', undefined, p.token)).json
+  assert.equal(s.played, 8); assert.equal(s.won, 7); assert.equal(s.lost, 1); assert.equal(s.win_pct, 88)
+  assert.deepEqual(s.dist, [0, 1, 3, 2, 1, 0]); assert.equal(s.avg_guesses, 3.43)
+  assert.equal(s.streak, 3, 'aktuelle Serie endet heute'); assert.equal(s.best_streak, 4, 'längste Serie über die Lücke hinweg')
+  assert.equal((await call('GET', '/api/wordle/stats?lang=de&kind=daily', undefined, p.token)).json.played, 0, 'andere Sprache zählt separat')
+  assert.equal((await call('GET', '/api/wordle/stats?lang=xx', undefined, p.token)).status, 400)
+  // Gruppen
+  const g = (await call('POST', '/api/wordle/groups', { name: 'Statistikrunde', lang: 'en' }, p.token)).json.group
+  await call('POST', '/api/wordle/groups/join', { code: g.code }, q.token)
+  add(p, 'group', 0, 3, 'won', g.id); add(p, 'group', 1, 6, 'lost', g.id); add(q, 'group', 0, 2, 'won', g.id); add(q, 'group', 1, 4, 'won', g.id)
+  const gs = (await call('GET', '/api/wordle/stats?lang=en&kind=group', undefined, p.token)).json
+  assert.equal(gs.played, 2); assert.equal(gs.won, 1); assert.equal(gs.streak, null)
+  assert.equal(gs.groups.length, 1); const row = gs.groups[0]
+  assert.equal(row.name, 'Statistikrunde'); assert.equal(row.win_pct, 50); assert.equal(row.others_win_pct, 100); assert.equal(row.others_avg_guesses, 3); assert.equal(row.members, 2)
+  assert.ok(!JSON.stringify(gs).includes('Statistik Zwei'), 'keine Einzeldaten der anderen Mitglieder')
+  // Admin: Gesamtstatistik und Serien
+  const o = wordle.adminOverview(14).langs.find((l: any) => l.lang === 'en')!
+  assert.ok(o.overall.games >= 12 && o.overall.group_games >= 4); assert.ok(o.streaks.ge3 >= 1)
+})

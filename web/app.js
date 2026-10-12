@@ -555,8 +555,16 @@ async function wordle(arg, my, arg2) {
   if (arg === 'group') return wordleGroup(Number(arg2), my)
   if (arg === 'join') return wordleJoin(arg2, my)
   if (arg === 'board') return wordleBoard(my)
+  if (arg === 'stats') return wordleStats(my)
   if (arg === 'inbox') return wordleInbox(my)
   return wordleHub(my)
+}
+
+/** Statistik öffnen; mit einem beendeten Spiel wird dessen Versuchszahl in der Verteilung hervorgehoben. */
+let statHighlight = null
+function openStats(g) {
+  if (g) { store.set('rp.wStatLang', g.lang); store.set('rp.wStatKind', g.kind); statHighlight = g.status === 'won' ? g.guesses.length : 'lost' } else statHighlight = null
+  go('#/wordle/stats')
 }
 
 /** Beitrittscode aus einem Einladungslink (…/#/wordle/join/CODE), einem eingefügten Link oder dem Code selbst. */
@@ -607,7 +615,7 @@ async function wordleHub(my) {
       h('div', { class: 'card stack' }, h('label', { class: 'field' }, t('wordle.joinGroup'), h('div', { class: 'row' }, joinCode, h('button', { class: 'btn', onclick: () => joinWith(joinCode.value) }, t('room.join')))),
         h('button', { class: 'btn block', onclick: toggleScan }, '📷 ' + t('wordle.scan')), scanHolder),
       h('button', { class: 'btn block', onclick: () => go('#/wordle/inbox') }, '📨 ' + t('wordle.inbox'), d.inbox_unseen ? h('span', { class: 'badge' }, String(d.inbox_unseen)) : null),
-      h('button', { class: 'btn block', onclick: () => go('#/wordle/board') }, '🏆 ' + t('wordle.board')))
+      h('div', { class: 'row two' }, h('button', { class: 'btn', onclick: () => openStats() }, '📊 ' + t('wordle.stats')), h('button', { class: 'btn', onclick: () => go('#/wordle/board') }, '🏆 ' + t('wordle.board'))))
     function setExtra() { const box = document.getElementById('wextra'); box.replaceChildren(...(creating ? [createCard] : duel ? [duelCard] : [])) }
   }
   const unchanged = makeUnchanged()
@@ -673,7 +681,7 @@ async function wordlePlay(id, my) {
       g.status === 'won' ? h('p', { class: 'muted' }, t('wordle.points', { n: g.points })) : null,
       h('div', { class: 'row two' }, h('button', { class: 'btn primary', onclick: share }, '📋 ' + t('wordle.share')),
         g.kind === 'daily' ? h('button', { class: 'btn', onclick: openPicker }, '📨 ' + t('wordle.send')) : h('button', { class: 'btn', onclick: () => go('#/wordle/group/' + g.group_id) }, t('wordle.toGroup'))),
-      h('button', { class: 'btn block', onclick: () => go('#/wordle') }, t('wordle.back')), picker))
+      h('div', { class: 'row two' }, h('button', { class: 'btn', onclick: () => openStats(g) }, '📊 ' + t('wordle.stats')), h('button', { class: 'btn', onclick: () => go('#/wordle') }, t('wordle.back'))), picker))
   }
   /** Feld der aktuellen Zeile anwählen: der nächste Buchstabe ersetzt dort, ohne dass man etwas löschen muss. */
   const select = (i, n) => { if (busy || g.finished || i !== g.guesses.length) return; pos = n; paintRow(i, false) }
@@ -763,6 +771,38 @@ async function wordleGroup(id, my) {
     renderQr(link).then((q) => holder.replaceChildren(q)).catch(() => holder.replaceChildren(h('p', { class: 'hint' }, link)))
   }
   const load = guard(async () => { const [g, b] = await Promise.all([api('GET', `/api/wordle/groups/${id}`), api('GET', `/api/wordle/groups/${id}/board?scope=${scope}`)]); render(g.group, b) })
+  await load()
+}
+
+/** Eigene Wordle-Statistik: Serien, gespielt, % gelöst und Verteilung der Versuche (Täglich oder Gruppen, je Sprache). */
+async function wordleStats(my) {
+  let lang = store.get('rp.wStatLang') || store.get('rp.wLang') || getLang(), kind = store.get('rp.wStatKind') || 'daily'
+  if (!WLANGS.includes(lang)) lang = 'de'
+  if (kind !== 'group') kind = 'daily'
+  const hl = statHighlight
+  const render = (r) => {
+    if (my !== runId) return
+    const seg = (cur, opts, set) => h('div', { class: 'seg' }, opts.map(([v, l]) => h('button', { 'aria-pressed': String(cur === v), onclick: () => { set(v); load() } }, l)))
+    const tile = (label, value, cls) => h('div', { class: 'stile' }, h('div', { class: 'sv ' + cls }, String(value)), h('div', { class: 'sl' }, label))
+    const max = Math.max(1, ...r.dist, r.lost)
+    const bar = (label, n, cls) => h('div', { class: 'sbar' }, h('span', { class: 'sn' }, label), h('div', { class: 'sfill ' + (cls ?? '') + (n === 0 ? ' zero' : ''), style: `width:max(${Math.round((n / max) * 100)}%, 2rem)` }, String(n)))
+    mount(topbar(t('wordle.stats')),
+      h('div', { class: 'card stack' },
+        seg(lang, WLANGS.map((l) => [l, langName(l)]), (v) => { lang = v; store.set('rp.wStatLang', v) }),
+        seg(kind, [['daily', t('stats.daily')], ['group', t('stats.groups')]], (v) => { kind = v; store.set('rp.wStatKind', v) }),
+        r.played ? [
+          h('div', { class: 'stiles' },
+            r.streak === null ? null : [tile(t('stats.bestStreak'), r.best_streak, 'o'), tile(t('stats.currentStreak'), r.streak, 'o')],
+            tile(t('stats.played'), r.played, 'b'), tile(t('stats.solved'), r.win_pct + '%', 'b')),
+          h('h3', {}, t('stats.byGuesses')), h('p', { class: 'muted' }, r.avg_guesses === null ? '–' : t('stats.avg', { n: r.avg_guesses.toFixed(2) })),
+          h('div', { class: 'sbars' }, r.dist.map((n, i) => bar(String(i + 1), n, hl === i + 1 ? 'hit' : '')), r.lost ? bar('✗', r.lost, hl === 'lost' ? 'hit miss' : 'miss') : null)] : h('div', { class: 'empty' }, t('stats.empty'))),
+      r.groups.length ? [h('h2', {}, t('stats.vsGroup')), h('div', { class: 'list' }, r.groups.map((x) => h('button', { class: 'item', onclick: () => go('#/wordle/group/' + x.id) },
+        h('div', { class: 'avatar sm' }, x.members === 2 ? '⚔' : '👥'),
+        h('div', { class: 'grow' }, h('div', { class: 'ell' }, x.name),
+          h('div', { class: 'muted' }, t('stats.rowMe', { pct: x.win_pct, avg: x.avg_guesses === null ? '–' : x.avg_guesses.toFixed(2) }) + (x.others_win_pct === null ? '' : ' · ' + t('stats.rowOthers', { pct: x.others_win_pct, avg: x.others_avg_guesses === null ? '–' : x.others_avg_guesses.toFixed(2) })))),
+        h('span', { class: 'badge' }, '#' + x.rank))))] : null)
+  }
+  const load = guard(async () => render(await api('GET', `/api/wordle/stats?lang=${lang}&kind=${kind}`)))
   await load()
 }
 

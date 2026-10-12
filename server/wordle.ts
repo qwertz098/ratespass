@@ -348,6 +348,40 @@ function standing(groupId: number, pid: number) {
   return { points: mine, rank: 1 + members.filter((m) => (pts.get(m.player_id) ?? 0) > mine).length }
 }
 
+/* ---------- Eigene Statistik ---------- */
+const avgOf = (ns: number[]) => (ns.length ? Math.round((ns.reduce((a, b) => a + b, 0) / ns.length) * 100) / 100 : null)
+const pct = (won: number, played: number) => (played ? Math.round((won / played) * 100) : 0)
+
+/** Längste Folge aufeinanderfolgender Tage (aufsteigend sortierte, eindeutige Tage). */
+function longestRun(days: string[]): number {
+  let best = 0, run = 0, prev = ''
+  for (const d of days) { run = prev && addDays(prev, 1) === d ? run + 1 : 1; best = Math.max(best, run); prev = d }
+  return best
+}
+
+/** Eigene Statistik je Sprache für das Tages-Wordle (`kind` daily) bzw. alle Gruppen-Wordles (`group`): gespielt, gelöst, Verteilung der Versuche, Serien;
+ *  bei Gruppen zusätzlich je Gruppe der Vergleich mit den anderen Mitgliedern. Nur eigene Daten. */
+export function myStats(me: PlayerRow, lang: unknown, kind: unknown) {
+  if (!isWordleLang(lang)) throw new HttpError(400, 'bad_lang')
+  const k = kind === 'group' ? 'group' : 'daily'
+  const rows = all<{ day: string; status: string; n: number; group_id: number }>(
+    "SELECT day, status, json_array_length(guesses) n, group_id FROM wordle_games WHERE player_id=? AND kind=? AND lang=? AND status<>'playing' ORDER BY day", me.id, k, lang)
+  const won = rows.filter((r) => r.status === 'won')
+  const base = {
+    lang, kind: k, played: rows.length, won: won.length, lost: rows.length - won.length, win_pct: pct(won.length, rows.length),
+    avg_guesses: avgOf(won.map((r) => r.n)), dist: guessDist(won.map((r) => ({ n: r.n, c: 1 }))),
+  }
+  if (k === 'daily') return { ...base, streak: streakOf(me.id, lang), best_streak: longestRun([...new Set(won.map((r) => r.day))]), groups: [] }
+  const groups = all<GroupRow>('SELECT g.* FROM wordle_groups g JOIN wordle_members m ON m.group_id=g.id WHERE m.player_id=? AND g.lang=? ORDER BY g.name', me.id, lang).map((g) => {
+    const mine = rows.filter((r) => r.group_id === g.id), mineWon = mine.filter((r) => r.status === 'won')
+    const others = all<{ status: string; n: number }>("SELECT status, json_array_length(guesses) n FROM wordle_games WHERE group_id=? AND kind='group' AND player_id<>? AND status<>'playing'", g.id, me.id)
+    const othersWon = others.filter((r) => r.status === 'won')
+    return { id: g.id, name: g.name, members: memberCount(g.id), ...standing(g.id, me.id), played: mine.length, win_pct: pct(mineWon.length, mine.length), avg_guesses: avgOf(mineWon.map((r) => r.n)),
+      others_win_pct: others.length ? pct(othersWon.length, others.length) : null, others_avg_guesses: avgOf(othersWon.map((r) => r.n)) }
+  })
+  return { ...base, streak: null, best_streak: null, groups }
+}
+
 /* ---------- Hub und Bestenliste ---------- */
 export function hub(me: PlayerRow) {
   const day = dayOf()
@@ -445,7 +479,7 @@ export function wordlePushTick(at = now(), send: (pid: number, msg: { title: str
 }
 
 /* ---------- Admin: Statistik und Wortlisten ---------- */
-const guessDist = (rows: { n: number; c: number }[]) => { const d = [0, 0, 0, 0, 0, 0]; for (const r of rows) if (r.n >= 1 && r.n <= 6) d[r.n - 1] = r.c; return d }
+const guessDist = (rows: { n: number; c: number }[]) => { const d = [0, 0, 0, 0, 0, 0]; for (const r of rows) if (r.n >= 1 && r.n <= 6) d[r.n - 1] += r.c; return d }
 
 export function adminOverview(days = 14) {
   const today = dayOf(), from = addDays(today, -(Math.min(60, Math.max(1, days)) - 1))
@@ -462,7 +496,18 @@ export function adminOverview(days = 14) {
       const w = get<{ word: string; forced: number }>("SELECT word, forced FROM wordle_daily WHERE lang=? AND day=? AND scope='global'", lang, day)
       return { day, word: w?.word ?? null, forced: !!w?.forced }
     })
-    return { lang, words: { valid: words.total, solutions: words.sol ?? 0, banned: words.banned ?? 0 }, daily, upcoming }
+    // Gesamtstatistik (alle Zeiten) und Serien-Verteilung
+    const fin = all<{ kind: string; status: string; n: number; c: number }>("SELECT kind, status, json_array_length(guesses) n, COUNT(*) c FROM wordle_games WHERE lang=? AND status<>'playing' GROUP BY kind, status, n", lang)
+    const total = fin.reduce((a, r) => a + r.c, 0), totalWon = fin.filter((r) => r.status === 'won').reduce((a, r) => a + r.c, 0)
+    const wonRows = fin.filter((r) => r.status === 'won')
+    const overall = {
+      games: total, daily_games: fin.filter((r) => r.kind === 'daily').reduce((a, r) => a + r.c, 0), group_games: fin.filter((r) => r.kind === 'group').reduce((a, r) => a + r.c, 0),
+      win_pct: pct(totalWon, total), avg_guesses: totalWon ? Math.round((wonRows.reduce((a, r) => a + r.n * r.c, 0) / totalWon) * 100) / 100 : null,
+      dist: guessDist(wonRows), lost: total - totalWon,
+    }
+    const live = all<{ player_id: number }>("SELECT DISTINCT player_id FROM wordle_games WHERE kind='daily' AND lang=? AND status='won' AND day>=? LIMIT 5000", lang, addDays(today, -1)).map((r) => streakOf(r.player_id, lang, today))
+    const streaks = { ge3: live.filter((s) => s >= 3).length, ge7: live.filter((s) => s >= 7).length, ge30: live.filter((s) => s >= 30).length }
+    return { lang, words: { valid: words.total, solutions: words.sol ?? 0, banned: words.banned ?? 0 }, daily, upcoming, overall, streaks }
   })
   const groups = all<{ id: number; name: string; lang: string; members: number; plays7: number }>(
     `SELECT g.id, g.name, g.lang, (SELECT COUNT(*) FROM wordle_members m WHERE m.group_id=g.id) members,

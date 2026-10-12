@@ -252,6 +252,17 @@ const DEMO = (() => {
       if (word === g.word) { g.status = 'won'; g.points = 7 - g.guesses.length } else if (g.guesses.length >= 6) g.status = 'lost'
       save(); return { body: { game: wview(g) } }
     }
+    if (path === '/api/wordle/stats' && method === 'GET') {
+      const lang = qs.get('lang') || 'de', kind = qs.get('kind') === 'group' ? 'group' : 'daily'
+      const done = (st.wordle?.games ?? []).filter((g) => g.lang === lang && g.kind === kind && g.status !== 'playing'), won = done.filter((g) => g.status === 'won')
+      const dist = [0, 0, 0, 0, 0, 0]; won.forEach((g) => { dist[g.guesses.length - 1]++ })
+      const days = [...new Set(won.map((g) => g.day))].sort(); let best = 0, run = 0, prev = ''
+      for (const d of days) { run = prev && new Date(prev + 'T12:00:00Z').getTime() + 86400000 === new Date(d + 'T12:00:00Z').getTime() ? run + 1 : 1; best = Math.max(best, run); prev = d }
+      const today = new Date().toISOString().slice(0, 10), yest = new Date(Date.now() - 86400000).toISOString().slice(0, 10)
+      let cur = 0, d = days.includes(today) ? today : yest; while (days.includes(d)) { cur++; d = new Date(new Date(d + 'T12:00:00Z').getTime() - 86400000).toISOString().slice(0, 10) }
+      return { body: { lang, kind, played: done.length, won: won.length, lost: done.length - won.length, win_pct: done.length ? Math.round((won.length / done.length) * 100) : 0,
+        avg_guesses: won.length ? Math.round((won.reduce((a, g) => a + g.guesses.length, 0) / won.length) * 100) / 100 : null, dist, streak: kind === 'daily' ? cur : null, best_streak: kind === 'daily' ? best : null, groups: [] } }
+    }
     if (path.startsWith('/api/wordle')) return err(501, 'demo_unavailable')
     if (path === '/api/sofa' && method === 'GET') {
       const lang = qs.get('lang') || st.me.lang || 'de', n = Math.min(60, Math.max(2, Number(qs.get('n')) || 12))

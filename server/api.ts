@@ -374,6 +374,7 @@ router.get('/api/wordle/groups/:id/board', (c) => wordle.groupBoard(me(c), Numbe
 router.post('/api/wordle/duel', (c) => { rateLimit(`wduel:${me(c).id}`, 20, 3_600_000); return { group: wordle.duelInvite(me(c), c.body?.public_id, c.body?.lang) } })
 router.post('/api/wordle/share', (c) => { rateLimit(`wshare:${me(c).id}`, 60, 3_600_000); return wordle.shareResult(me(c), c.body?.game_id, { public_id: c.body?.public_id, group_id: c.body?.group_id }) })
 router.get('/api/wordle/inbox', (c) => wordle.inbox(me(c)))
+router.get('/api/wordle/stats', (c) => wordle.myStats(me(c), c.url.searchParams.get('lang'), c.url.searchParams.get('kind')))
 router.get('/api/wordle/board', (c) => wordle.board(me(c), c.url.searchParams.get('lang'), c.url.searchParams.get('scope')))
 router.get('/api/rooms', (c) => ({ rooms: rooms.listRooms(me(c)) }))
 router.post('/api/rooms', (c) => {
