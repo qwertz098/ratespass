@@ -369,6 +369,10 @@ body:has(.chatbox) { height: 100dvh; overflow: hidden }
 .ubadge.inline { position: static }
 @media (max-height: 700px) { .chatbox .hint { display: none } }
 
+/* „Freunde einladen“ auf der Startseite: farbig, damit er neben den Spielkacheln auffällt */
+.btn.invite { background: #d9480f; border-color: transparent; color: #fff; font-weight: 700 }
+.btn.invite:active { background: #c2410c }
+
 .demo-bar{max-width:520px;margin:0 auto;padding:12px 16px 0;display:grid;gap:10px}
 .demo-bar .row{justify-content:space-between}
 .demo-note{font-size:13px;color:var(--muted);margin:0}
@@ -828,7 +832,7 @@ const dict = {
     'game.resign': 'Aufgeben', 'game.resignConfirm': 'Wirklich aufgeben? Dein Gegner gewinnt.', 'game.rematch': 'Revanche', 'game.addContact': 'Als Kontakt speichern',
     'game.win': 'Du hast gewonnen!', 'game.lose': '{name} hat gewonnen.', 'game.draw': 'Unentschieden!', 'game.resigned': 'Aufgegeben', 'game.timeout': 'Zeit abgelaufen',
     'game.you': 'Du', 'game.round': 'Runde {n}', 'game.waitHint': 'Aktiviere im Profil Benachrichtigungen, dann sagen wir dir Bescheid.',
-    'welcome.title': 'Wie möchtest du heißen?', 'welcome.hint': 'Diesen Namen sehen deine Gegner. Du kannst ihn jederzeit im Profil ändern. Es ist keine Anmeldung nötig.',
+    'welcome.pool': 'Am Quiz-Pool mitwirken (freiwillig)', 'welcome.poolHint': 'Mitglieder kann der Server als Gegner für Duelle anfragen (dein Anzeigename ist dann für den Gegner sichtbar). Du kannst das jederzeit in den Einstellungen ändern: Profil → Quiz-Pool.', 'welcome.title': 'Wie möchtest du heißen?', 'welcome.hint': 'Diesen Namen sehen deine Gegner. Du kannst ihn jederzeit im Profil ändern. Es ist keine Anmeldung nötig.',
     'welcome.placeholder': 'Dein Name (2–24 Zeichen)', 'welcome.go': 'Los geht’s', 'welcome.random': 'Zufälligen Namen nehmen',
     'profile.reportBtn': 'Melde-Knopf ⚑ bei Fragen anzeigen', 'err.reports_disabled': 'Fragen melden ist auf diesem Server abgeschaltet.',
     'play.review': 'Zur Überarbeitung melden', 'review.part.question': 'Frage', 'review.part.answers': 'Antworten', 'review.kind.wrong': 'Falsch', 'review.kind.wording': 'Formulierung',
@@ -974,7 +978,7 @@ const dict = {
     'game.resign': 'Resign', 'game.resignConfirm': 'Really resign? Your opponent wins.', 'game.rematch': 'Rematch', 'game.addContact': 'Save as contact',
     'game.win': 'You won!', 'game.lose': '{name} won.', 'game.draw': "It's a draw!", 'game.resigned': 'Resigned', 'game.timeout': 'Timed out',
     'game.you': 'You', 'game.round': 'Round {n}', 'game.waitHint': 'Enable notifications in your profile and we will let you know.',
-    'welcome.title': 'What should we call you?', 'welcome.hint': 'Your opponents will see this name. You can change it any time in your profile. No sign-up needed.',
+    'welcome.pool': 'Join the quiz pool (optional)', 'welcome.poolHint': 'The server may pick members as an opponent for duels (your display name is then visible to them). You can change this any time in the settings: Profile → Quiz pool.', 'welcome.title': 'What should we call you?', 'welcome.hint': 'Your opponents will see this name. You can change it any time in your profile. No sign-up needed.',
     'welcome.placeholder': 'Your name (2–24 characters)', 'welcome.go': 'Let’s go', 'welcome.random': 'Use a random name',
     'profile.reportBtn': 'Show the report button ⚑ on questions', 'err.reports_disabled': 'Reporting questions is turned off on this server.',
     'play.review': 'Flag for revision', 'review.part.question': 'Question', 'review.part.answers': 'Answers', 'review.kind.wrong': 'Wrong', 'review.kind.wording': 'Wording',
@@ -1220,7 +1224,7 @@ function installGuide(h) {
 
 /** Version dieser App-Dateien: der Server setzt sie beim Ausliefern von app.js ein. Sie steht damit fest in dem Code, den der Browser wirklich ausführt –
  *  anders als /version.js (immer frisch vom Server) verrät sie also, wenn ein Gerät noch alten Code aus dem Zwischenspeicher fährt. */
-const VERSION = '0.0.91'
+const VERSION = '0.0.92'
 
 /* ---------- Helfer ---------- */
 const $app = document.getElementById('app')
@@ -1446,11 +1450,12 @@ async function boot() {
   if (!S.token) {
     // Erster Aufruf: erst Zustimmung zur Datenschutzerklärung (dokumentiert), dann Namenswahl
     let version = await askConsent(S.priv, false)
-    const name = await askName()
+    const { name, pool } = await askName()
     for (let tries = 0; ; tries++) {
       try {
         const r = await api('POST', '/api/players', { lang: getLang(), ...(name ? { name } : {}), consent: { version, age_ok: true } }, { auth: false })
         S.token = r.token; store.set('rp.token', r.token)
+        if (pool) await api('POST', '/api/pool', { member: true }).catch(() => {}) // freiwillige Pool-Mitgliedschaft aus dem Willkommensbildschirm
         break
       } catch (e) {
         if (!(e instanceof ApiError && e.code === 'privacy_changed') || tries > 2) throw e
@@ -1499,16 +1504,18 @@ function askConsent(priv, changed) {
 function askName() {
   return new Promise((resolve) => {
     const input = h('input', { type: 'text', maxLength: 24, placeholder: t('welcome.placeholder'), autocomplete: 'nickname', 'aria-label': t('profile.name') })
+    const pool = h('input', { type: 'checkbox' })
     const submit = () => {
       const v = input.value.trim()
       if (v.length < 2) return toast(t('err.bad_name'))
-      resolve(v)
+      resolve({ name: v, pool: pool.checked })
     }
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit() })
     mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Quis', h('b', {}, 'sel'))),
       h('div', { class: 'card stack' }, h('h3', {}, t('welcome.title')), h('p', { class: 'muted' }, t('welcome.hint')), input,
+        h('label', { class: 'row' }, pool, h('span', {}, t('welcome.pool'))), h('p', { class: 'hint' }, t('welcome.poolHint')),
         h('button', { class: 'btn primary block', onclick: submit }, t('welcome.go')),
-        h('button', { class: 'btn block', onclick: () => resolve('') }, t('welcome.random'))),
+        h('button', { class: 'btn block', onclick: () => resolve({ name: '', pool: pool.checked }) }, t('welcome.random'))),
       detectEnv().standalone ? null : h('details', { class: 'card install-card' }, h('summary', {}, t('install.welcome')), h('p', { class: 'muted' }, t('install.sub')), installGuide(h)))
     input.focus()
   })
@@ -1549,7 +1556,7 @@ async function home(_, my) {
       rooms.length ? [h('h2', {}, t('room.rounds')), h('div', { class: 'list' }, rooms.map(roomItem))] : null,
       section(t('home.yourTurn'), mine), section(t('home.theirTurn'), theirs), section(t('home.waiting'), waiting), section(t('home.finished'), done),
       older ? h('button', { class: 'btn block', onclick: () => go('#/history') }, t('home.history', { n: older })) : null,
-      h('button', { class: 'btn block', style: 'margin-top:12px', onclick: () => go('#/friends') }, '＋ ' + t('friends.invite')),
+      h('button', { class: 'btn block invite', style: 'margin-top:12px', onclick: () => go('#/friends') }, '＋ ' + t('friends.invite')),
       h('div', { class: 'lbrow' }, h('button', { class: 'btn', onclick: () => go('#/top') }, t('home.lbQuiz')), h('button', { class: 'btn', onclick: () => go('#/wordle/board') }, t('wordle.board'))))
   }
   const load = guard(async () => {

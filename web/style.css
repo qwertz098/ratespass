@@ -365,3 +365,7 @@ body:has(.chatbox) { height: 100dvh; overflow: hidden }
 .ubadge { position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: #ea580c; color: #fff; font-size: 11px; font-weight: 700; display: grid; place-items: center; line-height: 1 }
 .ubadge.inline { position: static }
 @media (max-height: 700px) { .chatbox .hint { display: none } }
+
+/* „Freunde einladen“ auf der Startseite: farbig, damit er neben den Spielkacheln auffällt */
+.btn.invite { background: #d9480f; border-color: transparent; color: #fff; font-weight: 700 }
+.btn.invite:active { background: #c2410c }

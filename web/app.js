@@ -229,11 +229,12 @@ async function boot() {
   if (!S.token) {
     // Erster Aufruf: erst Zustimmung zur Datenschutzerklärung (dokumentiert), dann Namenswahl
     let version = await askConsent(S.priv, false)
-    const name = await askName()
+    const { name, pool } = await askName()
     for (let tries = 0; ; tries++) {
       try {
         const r = await api('POST', '/api/players', { lang: getLang(), ...(name ? { name } : {}), consent: { version, age_ok: true } }, { auth: false })
         S.token = r.token; store.set('rp.token', r.token)
+        if (pool) await api('POST', '/api/pool', { member: true }).catch(() => {}) // freiwillige Pool-Mitgliedschaft aus dem Willkommensbildschirm
         break
       } catch (e) {
         if (!(e instanceof ApiError && e.code === 'privacy_changed') || tries > 2) throw e
@@ -282,16 +283,18 @@ function askConsent(priv, changed) {
 function askName() {
   return new Promise((resolve) => {
     const input = h('input', { type: 'text', maxLength: 24, placeholder: t('welcome.placeholder'), autocomplete: 'nickname', 'aria-label': t('profile.name') })
+    const pool = h('input', { type: 'checkbox' })
     const submit = () => {
       const v = input.value.trim()
       if (v.length < 2) return toast(t('err.bad_name'))
-      resolve(v)
+      resolve({ name: v, pool: pool.checked })
     }
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit() })
     mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Quis', h('b', {}, 'sel'))),
       h('div', { class: 'card stack' }, h('h3', {}, t('welcome.title')), h('p', { class: 'muted' }, t('welcome.hint')), input,
+        h('label', { class: 'row' }, pool, h('span', {}, t('welcome.pool'))), h('p', { class: 'hint' }, t('welcome.poolHint')),
         h('button', { class: 'btn primary block', onclick: submit }, t('welcome.go')),
-        h('button', { class: 'btn block', onclick: () => resolve('') }, t('welcome.random'))),
+        h('button', { class: 'btn block', onclick: () => resolve({ name: '', pool: pool.checked }) }, t('welcome.random'))),
       detectEnv().standalone ? null : h('details', { class: 'card install-card' }, h('summary', {}, t('install.welcome')), h('p', { class: 'muted' }, t('install.sub')), installGuide(h)))
     input.focus()
   })
@@ -332,7 +335,7 @@ async function home(_, my) {
       rooms.length ? [h('h2', {}, t('room.rounds')), h('div', { class: 'list' }, rooms.map(roomItem))] : null,
       section(t('home.yourTurn'), mine), section(t('home.theirTurn'), theirs), section(t('home.waiting'), waiting), section(t('home.finished'), done),
       older ? h('button', { class: 'btn block', onclick: () => go('#/history') }, t('home.history', { n: older })) : null,
-      h('button', { class: 'btn block', style: 'margin-top:12px', onclick: () => go('#/friends') }, '＋ ' + t('friends.invite')),
+      h('button', { class: 'btn block invite', style: 'margin-top:12px', onclick: () => go('#/friends') }, '＋ ' + t('friends.invite')),
       h('div', { class: 'lbrow' }, h('button', { class: 'btn', onclick: () => go('#/top') }, t('home.lbQuiz')), h('button', { class: 'btn', onclick: () => go('#/wordle/board') }, t('wordle.board'))))
   }
   const load = guard(async () => {
