@@ -6,7 +6,7 @@ Ziel: Die Bestenliste soll für Menschen fair bleiben. Bei einem Trivia-Spiel l�
 - **Opt-in mit eigenem Namen:** Nur wer aktiv teilnimmt, erscheint; der normale Anzeigename bleibt privat.
 - **Plausible Lesezeit:** Nur Antworten mit Reaktionszeit ≥ 600 ms + 2 ms je Zeichen der Frage zählen für die Wertung (Bots, die sofort antworten, scheiden aus).
 - **Mengenbegrenzung:** höchstens 400 gewertete Antworten pro Tag und 120 pro Stunde je Spieler.
-- **Wartezeit und Mindestmenge:** sichtbar erst ab 24 h Profilalter und 50 gewerteten Antworten (relative Wertung ab 100).
+- **Wartezeit und Mindestmenge:** sichtbar erst ab 24 h Profilalter und 50 gewerteten Antworten (relative Wertung ab 30).
 - **Zwei Zählweisen:** „nur gegen Menschen“ schließt Bot-Duelle und die Solo-Leiter aus – das trifft die einfachste Farm-Strategie.
 - **Auffälligkeits-Erkennung (Admin → Bestenliste):** Quote > 97 %; Quote deutlich über dem Durchschnitt aller Spieler bei *denselben* Fragen (Fragenquoten aus echten Antworten); sehr gleichförmige Antwortzeiten (Variationskoeffizient < 0,12); Aktivität in ≥ 22 verschiedenen Tagesstunden. Nur Hinweise – gesperrt wird **manuell** (Sperre entfernt den Namen und verhindert erneute Teilnahme), weil starke Spieler sonst zu Unrecht getroffen würden.
 - Bestehende Rate-Limits (Profile pro IP, Beitritts-/Meldungs-Limits).

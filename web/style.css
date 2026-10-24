@@ -396,3 +396,9 @@ body:has(.chatbox) { height: 100dvh; overflow: hidden }
   .sbar .sfill { min-height: 22px; padding: 1px 8px }
   .stile + .stile { margin: 0 }
 }
+
+/* Wordle-Hub: Kopfzeile bricht um statt zu überlagern; Erinnerung einzeilig, „aus“ gedämpft */
+.whead { row-gap: 6px }
+.whead > h3 { min-width: max-content }
+.whead .badge, .btn.bell { white-space: nowrap }
+.btn.bell.off { color: var(--muted); background: transparent; border-style: dashed }

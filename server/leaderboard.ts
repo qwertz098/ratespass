@@ -16,7 +16,7 @@ export const DAY_CAP = 400
 export const HOUR_CAP = 120
 export const MIN_AGE_MS = 24 * 3_600_000
 export const MIN_ANSWERS = 50
-export const MIN_RELATIVE = 100
+export const MIN_RELATIVE = 30
 
 export const SCOPES = ['week', 'month', 'all'] as const
 export type Scope = (typeof SCOPES)[number]

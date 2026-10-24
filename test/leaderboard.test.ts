@@ -100,8 +100,9 @@ test('Zählweise: mit Bots vs. nur Menschen, absolut vs. relativ, nur Teilnehmer
   const rel = await board(a.token, 'scope=all&bots=incl&kind=rel')
   assert.equal(rel.top[0].name, 'Zwei'); assert.equal(rel.top[0].rate, 91.7)
   const relExcl = await board(a.token, 'scope=all&bots=excl&kind=rel')
-  assert.deepEqual(relExcl.top.map((r: any) => r.name), ['Zwei'], 'relativ erst ab 100 Antworten: Eins hat nur 60')
-  assert.equal(relExcl.me.rank, null); assert.equal(relExcl.me.needs, 40)
+  assert.deepEqual(relExcl.top.map((r: any) => r.name), ['Zwei', 'Eins'], 'relativ schon ab 30 Antworten: Eins hat 60 (Quote 50 %)')
+  assert.equal(relExcl.me.rank, 2); assert.equal(relExcl.me.needs, 0)
+  const { MIN_RELATIVE } = await import('../server/leaderboard.ts'); assert.equal(MIN_RELATIVE, 30)
 })
 
 test('Bot-Schutz Basis: zu schnelle Antworten, Tageslimit, Mindestalter und Mindestmenge', async () => {

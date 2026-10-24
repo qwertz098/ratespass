@@ -229,12 +229,13 @@ async function boot() {
   if (!S.token) {
     // Erster Aufruf: erst Zustimmung zur Datenschutzerklärung (dokumentiert), dann Namenswahl
     let version = await askConsent(S.priv, false)
-    const { name, pool } = await askName()
+    const { name, pool, lb } = await askName()
     for (let tries = 0; ; tries++) {
       try {
         const r = await api('POST', '/api/players', { lang: getLang(), ...(name ? { name } : {}), consent: { version, age_ok: true } }, { auth: false })
         S.token = r.token; store.set('rp.token', r.token)
         if (pool) await api('POST', '/api/pool', { member: true }).catch(() => {}) // freiwillige Pool-Mitgliedschaft aus dem Willkommensbildschirm
+        if (lb) await api('POST', '/api/leaderboard/join', { use_display_name: true }).catch(() => toast(t('welcome.lbFailed'))) // freiwillige Bestenlisten-Teilnahme mit dem Anzeigenamen
         break
       } catch (e) {
         if (!(e instanceof ApiError && e.code === 'privacy_changed') || tries > 2) throw e
@@ -283,18 +284,19 @@ function askConsent(priv, changed) {
 function askName() {
   return new Promise((resolve) => {
     const input = h('input', { type: 'text', maxLength: 24, placeholder: t('welcome.placeholder'), autocomplete: 'nickname', 'aria-label': t('profile.name') })
-    const pool = h('input', { type: 'checkbox' })
+    const pool = h('input', { type: 'checkbox' }), lb = h('input', { type: 'checkbox' })
     const submit = () => {
       const v = input.value.trim()
       if (v.length < 2) return toast(t('err.bad_name'))
-      resolve({ name: v, pool: pool.checked })
+      resolve({ name: v, pool: pool.checked, lb: lb.checked })
     }
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit() })
     mount(h('div', { class: 'top' }, h('h1', { class: 'brand' }, 'Quis', h('b', {}, 'sel'))),
       h('div', { class: 'card stack' }, h('h3', {}, t('welcome.title')), h('p', { class: 'muted' }, t('welcome.hint')), input,
         h('label', { class: 'row' }, pool, h('span', {}, t('welcome.pool'))), h('p', { class: 'hint' }, t('welcome.poolHint')),
+        h('label', { class: 'row' }, lb, h('span', {}, t('welcome.lb'))), h('p', { class: 'hint' }, t('welcome.lbHint')),
         h('button', { class: 'btn primary block', onclick: submit }, t('welcome.go')),
-        h('button', { class: 'btn block', onclick: () => resolve({ name: '', pool: pool.checked }) }, t('welcome.random'))),
+        h('button', { class: 'btn block', onclick: () => resolve({ name: '', pool: pool.checked, lb: lb.checked }) }, t('welcome.random'))),
       detectEnv().standalone ? null : h('details', { class: 'card install-card' }, h('summary', {}, t('install.welcome')), h('p', { class: 'muted' }, t('install.sub')), installGuide(h)))
     input.focus()
   })
@@ -544,10 +546,10 @@ const wstatus = (s) => !s ? t('wordle.status.none') : s.status === 'won' ? t('wo
 const wbadge = (s) => h('span', { class: 'badge ' + (s?.status === 'won' ? 'good' : s?.status === 'lost' ? 'bad' : '') }, s ? (s.status === 'won' ? '✓ ' + s.guesses + '/6' : s.status === 'lost' ? '✗' : '…') : t('wordle.new'))
 const localTz = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || '' } catch { return '' } }
 /** Erinnerung um 9 Uhr (lokale Zeit) für ein Wordle ein-/ausschalten; schaltet bei Bedarf zuerst die Push-Benachrichtigungen des Geräts ein. */
-const wordleBell = (key, on, after) => h('button', { class: 'btn small' + (on ? ' primary' : ''), 'aria-pressed': String(on), title: t('wordle.bell'), onclick: guard(async () => {
+const wordleBell = (key, on, after) => h('button', { class: 'btn small bell' + (on ? ' primary' : ' off'), 'aria-pressed': String(on), title: t('wordle.bell'), onclick: guard(async () => {
   if (!on && (await pushStatus()) !== 'on') { if (!pushSupported()) return toast(t('push.unsupported')); await enablePush() }
   await api('POST', '/api/wordle/push', { key, on: !on, tz: localTz() }); toast(t(on ? 'wordle.bellOff' : 'wordle.bellOn')); after()
-}) }, '🔔 ' + t(on ? 'wordle.bellIs' : 'wordle.bellAsk'))
+}) }, t(on ? 'wordle.bellIs' : 'wordle.bellAsk'))
 const wInviteLink = (code) => location.origin + '/#/wordle/join/' + code
 
 async function wordle(arg, my, arg2) {
@@ -604,7 +606,7 @@ async function wordleHub(my) {
     mount(topbar(t('wordle.title')),
       h('p', { class: 'hint' }, t('wordle.sub')),
       wlangs().map((lang) => h('div', { class: 'card stack' },
-        h('div', { class: 'row' }, h('h3', { class: 'grow' }, langName(lang)), d.langs.find((x) => x.lang === lang).streak ? h('span', { class: 'badge' }, '🔥 ' + t('wordle.streak', { n: d.langs.find((x) => x.lang === lang).streak })) : null, wordleBell('daily:' + lang, d.langs.find((x) => x.lang === lang).push, load)),
+        h('div', { class: 'row wrap whead' }, h('h3', { class: 'grow' }, langName(lang)), d.langs.find((x) => x.lang === lang).streak ? h('span', { class: 'badge' }, '🔥 ' + t(d.langs.find((x) => x.lang === lang).streak === 1 ? 'wordle.streak1' : 'wordle.streak', { n: d.langs.find((x) => x.lang === lang).streak })) : null, wordleBell('daily:' + lang, d.langs.find((x) => x.lang === lang).push, load)),
         h('button', { class: 'item', onclick: () => startGame('daily', lang) }, h('div', { class: 'avatar sm' }, '🟩'), h('div', { class: 'grow' }, h('div', {}, t('wordle.today')), h('div', { class: 'muted' }, wstatus(d.langs.find((x) => x.lang === lang).daily))), wbadge(d.langs.find((x) => x.lang === lang).daily)))),
       h('h2', {}, t('wordle.groups')),
       d.groups.length ? h('div', { class: 'list' }, d.groups.map((g) => h('button', { class: 'item', onclick: () => go('#/wordle/group/' + g.id) }, h('div', { class: 'avatar sm' }, g.members === 2 ? '⚔' : '👥'), h('div', { class: 'grow' }, h('div', { class: 'ell' }, g.name), h('div', { class: 'muted' }, langName(g.lang) + ' · ' + (g.members === 1 ? t('wordle.member1') : t('wordle.members', { n: g.members })) + ' · ' + t('wordle.standing', { rank: g.rank, points: g.points }))), wbadge(g.today)))) : h('div', { class: 'empty' }, t('wordle.noGroups')),
