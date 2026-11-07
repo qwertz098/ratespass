@@ -23,7 +23,7 @@
     "build:demo": "node tools/build-demo.mjs"
   },
   "devDependencies": {
-    "@types/node": "^26.6.5",
+    "@types/node": "^26.6.6",
     "typescript": "^7.0.2",
     "web-push": "^3.6.7"
   }
